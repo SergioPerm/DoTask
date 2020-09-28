@@ -30,7 +30,7 @@ class ContainerViewController: UIViewController {
             }
         })
         
-        let navigationController = UINavigationController(rootViewController: mainViewController)
+        _ = UINavigationController(rootViewController: mainViewController)
         
         let addItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addAction(sender:)))
         

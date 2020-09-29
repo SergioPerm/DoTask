@@ -9,7 +9,11 @@
 import Foundation
 
 protocol TaskListDataSourceObserver: class {
+    func tasksWillChange()
+    func tasksDidChange()
     func taskInserted(at newIndexPath: IndexPath)
     func taskDeleted(at indexPath: IndexPath)
     func taskUpdated(at indexPath: IndexPath)
+    func taskSectionDelete(indexSet: IndexSet)
+    func taskSectionInsert(indexSet: IndexSet)
 }

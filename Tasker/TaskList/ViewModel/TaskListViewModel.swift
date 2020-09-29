@@ -26,29 +26,32 @@ class TaskListViewModel {
 }
 
 // MARK: - Exposed functions
-internal extension TaskListViewModel {
-//    func viewWillAppear(view: ProfileListView) {
-//        self.view = view
-//        view.tableViewReload()
-//    }
-//
-//    func viewWillDisappear() {
-//        self.view = nil
-//    }
+extension TaskListViewModel {
+    func viewWillAppear(view: TaskListView) {
+        self.view = view
+    }
+
+    func viewWillDisappear() {
+        self.view = nil
+    }
 //
 //    func addProfile(named userName: String) {
 //        dataSource.addProfile(named: userName)
 //    }
 //
-//    func clearData() {
-//        dataSource.clearData()
-//    }
-//
-//    func tableViewDidSelectRow(at indexPath: IndexPath) {
-//        let profiles = dataSource.profiles
-//        guard indexPath.row < profiles.count else { fatalError() }
-//        view?.showAccounts(of: profiles[indexPath.row])
-//    }
+    func clearData() {
+        dataSource.clearData()
+    }
+
+    func tableViewDidSelectRow(at indexPath: IndexPath) {
+        let taskModel = taskModelForIndexPath(indexPath: indexPath)
+        view?.editTask(taskModel: taskModel)
+    }
+    
+    func taskModelForIndexPath(indexPath: IndexPath) -> TaskModel {
+        return dataSource.taskForIndexPath(indexPath: indexPath)
+    }
+    
     func addTask(from taskModel: TaskModel) {
         dataSource.addTask(from: taskModel)
     }
@@ -59,6 +62,23 @@ internal extension TaskListViewModel {
 }
 
 extension TaskListViewModel: TaskListDataSourceObserver {
+    func tasksWillChange() {
+        view?.tableViewBeginUpdates()
+    }
+    
+    func tasksDidChange() {
+        tableViewItems = dataSource.tasksWithSections
+        view?.tableViewEndUpdates()
+    }
+    
+    func taskSectionDelete(indexSet: IndexSet) {
+        view?.tableViewSectionDelete(at: indexSet)
+    }
+    
+    func taskSectionInsert(indexSet: IndexSet) {
+        view?.tableViewSectionInsert(at: indexSet)
+    }
+    
     func taskInserted(at newIndexPath: IndexPath) {
         view?.tableViewInsertRow(at: newIndexPath)
     }
@@ -68,8 +88,6 @@ extension TaskListViewModel: TaskListDataSourceObserver {
     }
     
     func taskUpdated(at indexPath: IndexPath) {
-        view?.tableViewBeginUpdates()
+        view?.tableViewUpdateRow(at: indexPath)
     }
-    
-    
 }

@@ -24,10 +24,8 @@ class ContainerViewController: UIViewController {
     
     func configureMainViewConrtoller() {
         
-        mainViewController = TaskListViewController(editTaskAction: { [weak self] taskID in
-            if let taskID = taskID {
-                self?.editTask(taskID: taskID)
-            }
+        mainViewController = TaskListViewController(editTaskAction: { [weak self] taskModel in
+            self?.editTask(taskModel: taskModel)
         })
         
         _ = UINavigationController(rootViewController: mainViewController)
@@ -42,23 +40,34 @@ class ContainerViewController: UIViewController {
     }
 
     @objc func addAction(sender: UIBarButtonItem) {
-        let detailTaskViewController = DetailTaskViewController()
+        let detailTaskViewController = DetailTaskViewController(taskModel: nil, onSave: { [weak self] taskModel, detailVC in
+            self?.mainViewController.viewModel.addTask(from: taskModel)
+            detailVC.remove()
+        }, onCalendarSelect: { [weak self] currentDate, detailVC in
+            self?.openDatePicker(withDate: currentDate, for: detailVC)
+        }, onTimeReminderSelect: { [weak self] currentTime, detailVC in
+            let test = ""
+        })
         addSubviewAtIndex(detailTaskViewController, at: 1)
-        //mainViewController.viewModel.addTask(from: <#T##TaskModel#>)
     }
     
-    func editTask(taskID: String) {
-        
+    func editTask(taskModel: TaskModel) {
+        let detailTaskViewController = DetailTaskViewController(taskModel: taskModel, onSave: { [weak self] taskModel, detailVC in
+            self?.mainViewController.viewModel.updateTask(from: taskModel)
+            detailVC.remove()
+        }, onCalendarSelect: { [weak self] currentDate, detailVC in
+            self?.openDatePicker(withDate: currentDate, for: detailVC)
+        }, onTimeReminderSelect: { [weak self] currentTime, detailVC in
+            let test = ""
+        })
+        addSubviewAtIndex(detailTaskViewController, at: 1)
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func openDatePicker(withDate date: Date, for instanceVC: CalendarPickerInstance) {
+        let calendarPicker = CalendarPickerViewController(baseDate: Date(), selectDate: date) { [weak instanceVC] selectDate in
+            instanceVC?.selectedCalendarDate = selectDate
+        }
+        addSubviewAtIndex(calendarPicker, at: 2)
+        view.showDimmedBelowSubview(subview: calendarPicker.view, for: view)
     }
-    */
-
 }

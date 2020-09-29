@@ -19,26 +19,29 @@ class DetailTaskViewController: UIViewController {
     // MARK: Data model
     var taskModel: TaskModel
     
+    // MARK: Handlers
+    var taskWillSave: (_ taskModel: TaskModel, _ vc: DetailTaskViewController) -> Void
+    var onCalendarSelect: (_ selectedDate: Date, _ vc: DetailTaskViewController) -> Void
+    var onTimeReminderSelect: (_ selectedTime: Date, _ vc: DetailTaskViewController) -> Void
     
     // MARK: View properties
-    let dateLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "HelveticaNeue", size: 15)
-        label.textColor = .systemGray
-        label.contentMode = .left
+    let screenSize: CGRect = {
+        return UIScreen.main.bounds
+    }()
+    
+    let viewOriginOnStart: CGPoint = {
+        let screenSize = UIScreen.main.bounds
+        let origin = CGPoint(x: screenSize.origin.x, y: screenSize.height)
         
-        return label
+        return origin
+    }()
+    
+    let dateLabel: UILabel = {
+        return Label.makeDetailTaskStandartLabel(textColor: .systemGray)
     }()
     
     let timeLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "HelveticaNeue", size: 15)
-        label.textColor = .systemGray
-        label.contentMode = .left
-        
-        return label
+        return Label.makeDetailTaskStandartLabel(textColor: .systemGray)
     }()
     
     let timeStackView: UIStackView = {
@@ -71,52 +74,39 @@ class DetailTaskViewController: UIViewController {
     var accesoryBottomConstraint: NSLayoutConstraint = NSLayoutConstraint()
     
     let calendarBtn: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "dateCalendar"), for: .normal)
-                
-        return button
+        return Button.makeStandartButtonWithImage(image: UIImage(named: "dateCalendar")!)
     }()
     
     let reminderBtn: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "clockAlarm"), for: .normal)
-                
-        return button
+        return Button.makeStandartButtonWithImage(image: UIImage(named: "clockAlarm")!)
     }()
     
     let locationBtn: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setImage(UIImage(systemName: "mappin.and.ellipse"), for: .normal)
-                
-        return button
+        return Button.makeStandartButtonWithImage(image: UIImage(systemName: "mappin.and.ellipse")!)
     }()
     
     let saveBtn: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setImage(UIImage(systemName: "checkmark"), for: .normal)
-                
-        return button
+        return Button.makeStandartButtonWithImage(image: UIImage(systemName: "checkmark")!)
     }()
     
     // MARK: Init
-    convenience init() {
-        self.init(taskModel: nil)
-    }
         
-    init(taskModel: TaskModel?) {
-
-        if let taskModel = taskModel {
-            self.taskModel = taskModel
-        } else {
-            self.taskModel = TaskModel()
-        }
-                
+    init(taskModel: TaskModel?, onSave saveTaskHandler: @escaping (_ taskModel: TaskModel, _ vc: DetailTaskViewController) -> Void, onCalendarSelect calendarSelectHandler: @escaping (_ selectedDate: Date, _ vc: DetailTaskViewController) -> Void,
+         onTimeReminderSelect timeReminderSelectHandler: @escaping (_ selectedTime: Date, _ vc: DetailTaskViewController) -> Void) {
+        
+        self.taskModel = taskModel ?? TaskModel()
+        
+        self.taskWillSave = saveTaskHandler
+        self.onCalendarSelect = calendarSelectHandler
+        self.onTimeReminderSelect = timeReminderSelectHandler
+        
         super.init(nibName: nil, bundle: nil)
         
         setupNotifications()
     }
     
     deinit {
+        print("detail task de init")
         deleteNotifications()
     }
     
@@ -190,10 +180,25 @@ class DetailTaskViewController: UIViewController {
         })
     }
     
+    private func hideView(completion: @escaping ()->()) {
+        titleTextView.resignFirstResponder()
+        
+        UIView.animate(withDuration: 0.2,
+                       delay: 0,
+                       options: .curveEaseOut,
+                       animations: {
+                        self.view.frame.origin = self.viewOriginOnStart
+        }, completion: { (finished) in
+            completion()
+        })
+    }
+    
     private func setupView() {
-        let screenSize: CGRect = UIScreen.main.bounds
-        let viewOriginOnStart = CGPoint(x: viewOrigin.x, y: screenSize.height)
-                
+
+        //fill data
+        titleTextView.text = taskModel.title
+        titleTextView.delegate = self
+        
         view.frame = CGRect(origin: viewOriginOnStart, size: CGSize(width: viewWidth, height: screenSize.height - viewOrigin.y + 16))
         
         view.addSubview(dateLabel)
@@ -244,6 +249,9 @@ class DetailTaskViewController: UIViewController {
         accesoryStackView.addArrangedSubview(reminderBtn)
         accesoryStackView.addArrangedSubview(locationBtn)
         accesoryStackView.addArrangedSubview(saveBtn)
+        
+        saveBtn.addTarget(self, action: #selector(saveTaskAction(sender:)), for: .touchUpInside)
+        calendarBtn.addTarget(self, action: #selector(calendarTapAction(sender:)), for: .touchUpInside)
         
         view.addSubview(accesoryStackView)
         
@@ -297,4 +305,45 @@ class DetailTaskViewController: UIViewController {
     }
     */
 
+}
+
+// MARK: UITextViewDelegate
+
+extension DetailTaskViewController: UITextViewDelegate {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let updatedTitle = (textView.text as NSString?)?.replacingCharacters(in: range, with: text)
+        taskModel.title = updatedTitle!
+        
+        return true
+    }
+}
+
+// MARK: Actions
+
+extension DetailTaskViewController {
+    
+    @objc func saveTaskAction(sender: UIButton) {
+        hideView { [weak self] in
+            guard let self = self else { return }
+            self.taskWillSave(self.taskModel, self)
+        }
+    }
+    
+    @objc func calendarTapAction(sender: UIButton) {
+        onCalendarSelect(taskModel.taskDate ?? Date(), self)
+    }
+    
+}
+
+// MARK: CelendarPickerInstance
+extension DetailTaskViewController: CalendarPickerInstance {
+    var selectedCalendarDate: Date? {
+        set {
+            taskModel.taskDate = newValue
+        }
+        
+        get {
+            return taskModel.taskDate
+        }
+    }
 }

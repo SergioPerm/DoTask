@@ -15,5 +15,9 @@ protocol TaskListView: class {
     func tableViewInsertRow(at newIndexPath: IndexPath)
     func tableViewDeleteRow(at indexPath: IndexPath)
     func tableViewUpdateRow(at indexPath: IndexPath)
+    func tableViewSectionInsert(at indexSet: IndexSet)
+    func tableViewSectionDelete(at indexSet: IndexSet)
     func tableViewEndUpdates()
+    
+    func editTask(taskModel: TaskModel)
 }

@@ -85,14 +85,6 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
     }
     
     var tasksWithSections: [DailyModel] {
-        
-        do {
-            try fetchedResultsController.performFetch()
-        } catch {
-            let fetchError = error as NSError
-            print("\(fetchError), \(fetchError.userInfo)")
-        }
-        
         if let sections = fetchedResultsController.sections {
             var dailyModels = [DailyModel]()
             
@@ -111,7 +103,7 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
             return dailyModels
         }
         
-        return [DailyModel()]
+        return [DailyModel]()
     }
     
     var tasks: [Task] {
@@ -162,7 +154,60 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
 
 extension TaskListDataSourceCoreDataImpl: NSFetchedResultsControllerDelegate {
     
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        observer?.tasksWillChange()
+    }
     
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        observer?.tasksDidChange()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+        
+        let section = IndexSet(integer: sectionIndex)
+        
+        switch type {
+        case .delete:
+            observer?.taskSectionDelete(indexSet: section)
+        case .insert:
+            observer?.taskSectionInsert(indexSet: section)
+        case .move:
+            return
+        case .update:
+            return
+        @unknown default:
+            return
+        }
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        
+        switch type {
+        case .delete:
+            observer?.taskDeleted(at: indexPath!)
+        case .insert:
+            if let indexPath = newIndexPath {
+                observer?.taskInserted(at: indexPath)
+            }
+        case .move:
+            if let indexPath = indexPath {
+                observer?.taskDeleted(at: indexPath)
+            }
+            if let newIndexPath = newIndexPath {
+                observer?.taskInserted(at: newIndexPath)
+            }
+        case .update:
+            if let indexPath = indexPath {
+                observer?.taskUpdated(at: indexPath)
+//                let task = fetchedResultsController.object(at: indexPath)
+//                guard let cell = tableView.cellForRow(at: indexPath) as? ToDoCell else { break }
+//                configureCell(cell: cell, withObject: task)
+            }
+        default:
+            break
+        }
+        
+    }
     
 }
 

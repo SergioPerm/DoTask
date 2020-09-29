@@ -14,9 +14,9 @@ class TaskListViewController: UIViewController {
     public let viewModel = TaskListViewModelAssembler.createInstance()
     
     private var tableView: UITableView!
-    private let editTaskAction: ((_ taskID: String?) ->  Void)
+    private let editTaskAction: ((_ taskModel: TaskModel) ->  Void)
         
-    init(editTaskAction: @escaping (_ taskID: String?) ->  Void) {
+    init(editTaskAction: @escaping (_ taskModel: TaskModel) ->  Void) {
         self.editTaskAction = editTaskAction
         
         super.init(nibName: nil, bundle: nil)
@@ -39,9 +39,21 @@ class TaskListViewController: UIViewController {
 //            viewModel.addTask(from: taskModel)
 //
 //        }
+        viewModel.clearData()
+
         
         setupView()
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.viewWillAppear(view: self)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        viewModel.viewWillDisappear()
     }
     
 }
@@ -58,6 +70,10 @@ extension TaskListViewController {
         tableView.separatorStyle = .none
         tableView.rowHeight = 40
         tableView.backgroundColor = .green
+    }
+    
+    private func configureCell(cell: TaskListTableViewCell, taskModel: TaskModel) {
+        cell.cellLabel.text = taskModel.title
     }
 }
 
@@ -105,6 +121,50 @@ extension TaskListViewController: UITableViewDataSource {
 }
 
 extension TaskListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel.tableViewDidSelectRow(at: indexPath)
+    }
+}
+
+// MARK: TaskListView
+
+extension TaskListViewController: TaskListView {
+    func editTask(taskModel: TaskModel) {
+        editTaskAction(taskModel)
+    }
     
+    func tableViewSectionInsert(at indexSet: IndexSet) {
+        tableView.insertSections(indexSet, with: .left)
+    }
+    
+    func tableViewSectionDelete(at indexSet: IndexSet) {
+        tableView.deleteSections(indexSet, with: .right)
+    }
+    
+    func tableViewReload() {
+        tableView.reloadData()
+    }
+    
+    func tableViewBeginUpdates() {
+        tableView.beginUpdates()
+    }
+    
+    func tableViewInsertRow(at newIndexPath: IndexPath) {
+        tableView.insertRows(at: [newIndexPath], with: .right)
+    }
+    
+    func tableViewDeleteRow(at indexPath: IndexPath) {
+        tableView.deleteRows(at: [indexPath], with: .left)
+    }
+    
+    func tableViewUpdateRow(at indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! TaskListTableViewCell
+        let taskModel = viewModel.taskModelForIndexPath(indexPath: indexPath)
+        configureCell(cell: cell, taskModel: taskModel)
+    }
+    
+    func tableViewEndUpdates() {
+        tableView.endUpdates()
+    }
     
 }

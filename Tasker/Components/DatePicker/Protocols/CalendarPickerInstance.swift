@@ -10,4 +10,5 @@ import Foundation
 
 protocol CalendarPickerInstance: class {
     var selectedCalendarDate: Date? { get set }
+    func closeCalendar()
 }

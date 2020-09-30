@@ -64,9 +64,16 @@ class ContainerViewController: UIViewController {
     }
     
     func openDatePicker(withDate date: Date, for instanceVC: CalendarPickerInstance) {
-        let calendarPicker = CalendarPickerViewController(baseDate: Date(), selectDate: date) { [weak instanceVC] selectDate in
+        
+        let calendarPicker = CalendarPickerViewController(baseDate: Date(), selectDate: date, onSelectedDateChanged: { [weak instanceVC] selectDate in
             instanceVC?.selectedCalendarDate = selectDate
-        }
+        }, onCancel: { [weak self, weak instanceVC] pickerVC in
+            instanceVC?.selectedCalendarDate = nil
+            instanceVC?.closeCalendar()
+            pickerVC.remove()
+            self?.view.removeDimmedView()
+        })
+        
         addSubviewAtIndex(calendarPicker, at: 2)
         view.showDimmedBelowSubview(subview: calendarPicker.view, for: view)
     }

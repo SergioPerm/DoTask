@@ -330,6 +330,7 @@ extension DetailTaskViewController {
     }
     
     @objc func calendarTapAction(sender: UIButton) {
+        titleTextView.resignFirstResponder()
         onCalendarSelect(taskModel.taskDate ?? Date(), self)
     }
     
@@ -337,6 +338,10 @@ extension DetailTaskViewController {
 
 // MARK: CelendarPickerInstance
 extension DetailTaskViewController: CalendarPickerInstance {
+    func closeCalendar() {
+        titleTextView.becomeFirstResponder()
+    }
+    
     var selectedCalendarDate: Date? {
         set {
             taskModel.taskDate = newValue

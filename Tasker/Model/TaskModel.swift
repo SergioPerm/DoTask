@@ -23,6 +23,7 @@ struct TaskModel {
         self.title = ""
         self.reminderGeo = false
         self.reminderDate = false
+        self.taskDate = Date()
     }
     
     init(with task: Task) {

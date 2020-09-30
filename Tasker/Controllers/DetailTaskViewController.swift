@@ -19,10 +19,36 @@ class DetailTaskViewController: UIViewController {
     // MARK: Data model
     var taskModel: TaskModel
     
+    var selectedDate: Date? {
+        didSet {
+            taskModel.taskDate = selectedDate
+            
+            guard let selectedDate = selectedDate else {
+                let calendarImage = UIImage(named: "dateCalendar")
+                calendarBtn.setImage(calendarImage, for: .normal)
+                dateLabel.text = ""
+                return
+            }
+            
+            let calendar = Calendar.current
+            let components = calendar.dateComponents([.day], from: selectedDate)
+            
+            let calendarImage = UIImage(named: "date\(components.day!)")
+            
+            calendarBtn.setImage(calendarImage, for: .normal)
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd/MM/yyyy"
+            
+            dateLabel.text = dateFormatter.string(from: selectedDate)
+        }
+    }
+    
     // MARK: Handlers
     var taskWillSave: (_ taskModel: TaskModel, _ vc: DetailTaskViewController) -> Void
     var onCalendarSelect: (_ selectedDate: Date, _ vc: DetailTaskViewController) -> Void
     var onTimeReminderSelect: (_ selectedTime: Date, _ vc: DetailTaskViewController) -> Void
+    var onCancelTaskHandler: (_ vc: DetailTaskViewController) -> Void
     
     // MARK: View properties
     let screenSize: CGRect = {
@@ -34,6 +60,30 @@ class DetailTaskViewController: UIViewController {
         let origin = CGPoint(x: screenSize.origin.x, y: screenSize.height)
         
         return origin
+    }()
+    
+    let swipeCloseView: UIView = {
+        let swipeView = UIView()
+        swipeView.translatesAutoresizingMaskIntoConstraints = false
+        swipeView.backgroundColor = .clear
+
+        let chevron = UIImageView(image: UIImage(systemName: "chevron.compact.down"))
+        chevron.contentMode = .scaleAspectFit
+        chevron.translatesAutoresizingMaskIntoConstraints = false
+        chevron.tintColor = #colorLiteral(red: 0.8888786765, green: 0.8888786765, blue: 0.8888786765, alpha: 1)
+        
+        swipeView.addSubview(chevron)
+        
+        let constraints = [
+            chevron.centerYAnchor.constraint(equalTo: swipeView.centerYAnchor),
+            chevron.centerXAnchor.constraint(equalTo: swipeView.centerXAnchor),
+            chevron.widthAnchor.constraint(equalTo: chevron.heightAnchor, multiplier: 2),
+            chevron.heightAnchor.constraint(equalToConstant: 27)
+        ]
+        
+        NSLayoutConstraint.activate(constraints)
+                        
+        return swipeView
     }()
     
     let dateLabel: UILabel = {
@@ -91,16 +141,22 @@ class DetailTaskViewController: UIViewController {
     
     // MARK: Init
         
-    init(taskModel: TaskModel?, onSave saveTaskHandler: @escaping (_ taskModel: TaskModel, _ vc: DetailTaskViewController) -> Void, onCalendarSelect calendarSelectHandler: @escaping (_ selectedDate: Date, _ vc: DetailTaskViewController) -> Void,
+    init(taskModel: TaskModel?, onSave saveTaskHandler: @escaping (_ taskModel: TaskModel, _ vc: DetailTaskViewController) -> Void,
+         onCancel onCancelTaskHandler: @escaping(_ vc: DetailTaskViewController) -> Void,
+         onCalendarSelect calendarSelectHandler: @escaping (_ selectedDate: Date, _ vc: DetailTaskViewController) -> Void,
          onTimeReminderSelect timeReminderSelectHandler: @escaping (_ selectedTime: Date, _ vc: DetailTaskViewController) -> Void) {
         
         self.taskModel = taskModel ?? TaskModel()
-        
+            
         self.taskWillSave = saveTaskHandler
+        self.onCancelTaskHandler = onCancelTaskHandler
         self.onCalendarSelect = calendarSelectHandler
         self.onTimeReminderSelect = timeReminderSelectHandler
-        
+                
         super.init(nibName: nil, bundle: nil)
+    
+        self.selectedCalendarDate = self.taskModel.taskDate
+        self.titleTextView.text = taskModel?.title
         
         setupNotifications()
     }
@@ -194,22 +250,32 @@ class DetailTaskViewController: UIViewController {
     }
     
     private func setupView() {
-
-        //fill data
-        titleTextView.text = taskModel.title
+        
         titleTextView.delegate = self
         
         view.frame = CGRect(origin: viewOriginOnStart, size: CGSize(width: viewWidth, height: screenSize.height - viewOrigin.y + 16))
+        view.clipsToBounds = true
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapToCloseAction(_:)))
+        swipeCloseView.addGestureRecognizer(tap)
+        
+        view.addSubview(swipeCloseView)
+        
+        var constraints = [
+            swipeCloseView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            swipeCloseView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            swipeCloseView.topAnchor.constraint(equalTo: view.topAnchor),
+            swipeCloseView.heightAnchor.constraint(equalToConstant: 40)
+        ]
         
         view.addSubview(dateLabel)
         
-        var constraints = [
+        constraints.append(contentsOf: [
             dateLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            dateLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 54),
+            dateLabel.topAnchor.constraint(equalTo: swipeCloseView.bottomAnchor, constant: 14),
             dateLabel.widthAnchor.constraint(equalToConstant: 100)
-        ]
+        ])
         
-        dateLabel.text = "17/01/1986"
         timeLabel.text = "15:34"
         
         let clockImageView = UIImageView(image: UIImage(systemName: "alarm"))
@@ -223,7 +289,7 @@ class DetailTaskViewController: UIViewController {
         
         constraints.append(contentsOf: [
             timeStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            timeStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 54),
+            timeStackView.topAnchor.constraint(equalTo: swipeCloseView.bottomAnchor, constant: 14),
             timeStackView.widthAnchor.constraint(equalToConstant: 59),
             clockImageView.heightAnchor.constraint(equalToConstant: 12),
             timeLabel.widthAnchor.constraint(equalToConstant: 40)
@@ -263,6 +329,13 @@ class DetailTaskViewController: UIViewController {
         ])
         
         NSLayoutConstraint.activate(constraints)
+        
+//        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeToCloseAction(_:)))
+//        swipeGesture.direction = .down
+//        view.addGestureRecognizer(swipeGesture)
+        
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(swipeToCloseAction(_:)))
+        view.addGestureRecognizer(panGestureRecognizer)
         
         view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         
@@ -334,6 +407,66 @@ extension DetailTaskViewController {
         onCalendarSelect(taskModel.taskDate ?? Date(), self)
     }
     
+    @objc func reminderTapAction(sender: UIButton) {
+        titleTextView.resignFirstResponder()
+        onTimeReminderSelect(taskModel.reminderDate ? taskModel.taskDate ?? Date() : Date(), self)
+    }
+    
+    @objc func tapToCloseAction(_ recognizer: UITapGestureRecognizer) {
+        hideView { [weak self] in
+            guard let self = self else { return }
+            self.onCancelTaskHandler(self)
+        }
+    }
+    
+    @objc func swipeToCloseAction(_ recognizer: UIPanGestureRecognizer) {
+        let gestureIsDraggingFromTopToBottom = recognizer.velocity(in: view).y > 0
+        if !gestureIsDraggingFromTopToBottom { return }
+        
+        switch recognizer.state {
+        case .changed:
+            if let rView = recognizer.view {
+                
+                if rView.frame.origin.y < viewOrigin.y {
+                    rView.frame.origin = viewOrigin
+                }
+                
+                var draggingDistance = recognizer.translation(in: view).y
+                                
+                draggingDistance *= 0.15
+                
+                let swipePositionY = rView.frame.origin.y + draggingDistance
+                
+                if swipePositionY > viewOrigin.y {
+                    rView.frame.origin.y = rView.frame.origin.y + draggingDistance
+                    recognizer.setTranslation(CGPoint.zero, in: view)
+                }
+                
+                if rView.frame.origin.y > 85.0 {
+                    hideView { [weak self] in
+                        guard let self = self else { return }
+                        self.onCancelTaskHandler(self)
+                    }
+                }
+            }
+        case .ended:
+            if let rView = recognizer.view {
+                if rView.frame.origin.y < 85.0 {
+                    UIView.animate(withDuration: 0.2) {
+                        self.view.frame.origin.y = self.viewOrigin.y
+                    }
+                } else {
+                    hideView { [weak self] in
+                        guard let self = self else { return }
+                        self.onCancelTaskHandler(self)
+                    }
+                }
+            }
+        default:
+            break
+        }
+    }
+    
 }
 
 // MARK: CelendarPickerInstance
@@ -344,7 +477,7 @@ extension DetailTaskViewController: CalendarPickerInstance {
     
     var selectedCalendarDate: Date? {
         set {
-            taskModel.taskDate = newValue
+            selectedDate = newValue
         }
         
         get {

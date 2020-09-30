@@ -38,15 +38,17 @@ class ContainerViewController: UIViewController {
         self.add(mainViewController.navigationController!)
         
     }
-
+    
     @objc func addAction(sender: UIBarButtonItem) {
         let detailTaskViewController = DetailTaskViewController(taskModel: nil, onSave: { [weak self] taskModel, detailVC in
             self?.mainViewController.viewModel.addTask(from: taskModel)
             detailVC.remove()
+        }, onCancel: { detailVC in
+            detailVC.remove()
         }, onCalendarSelect: { [weak self] currentDate, detailVC in
             self?.openDatePicker(withDate: currentDate, for: detailVC)
         }, onTimeReminderSelect: { [weak self] currentTime, detailVC in
-            let test = ""
+                
         })
         addSubviewAtIndex(detailTaskViewController, at: 1)
     }
@@ -55,20 +57,29 @@ class ContainerViewController: UIViewController {
         let detailTaskViewController = DetailTaskViewController(taskModel: taskModel, onSave: { [weak self] taskModel, detailVC in
             self?.mainViewController.viewModel.updateTask(from: taskModel)
             detailVC.remove()
+        }, onCancel: { detailVC in
+            detailVC.remove()
         }, onCalendarSelect: { [weak self] currentDate, detailVC in
             self?.openDatePicker(withDate: currentDate, for: detailVC)
         }, onTimeReminderSelect: { [weak self] currentTime, detailVC in
-            let test = ""
+                let test = ""
         })
         addSubviewAtIndex(detailTaskViewController, at: 1)
     }
     
-    func openDatePicker(withDate date: Date, for instanceVC: CalendarPickerInstance) {
+    func openTimePicker(withTime date: Date, for instanceVC: TimePickerInstance) {
         
+    }
+    
+    func openDatePicker(withDate date: Date, for instanceVC: CalendarPickerInstance) {
         let calendarPicker = CalendarPickerViewController(baseDate: Date(), selectDate: date, onSelectedDateChanged: { [weak instanceVC] selectDate in
             instanceVC?.selectedCalendarDate = selectDate
         }, onCancel: { [weak self, weak instanceVC] pickerVC in
-            instanceVC?.selectedCalendarDate = nil
+            instanceVC?.selectedCalendarDate = date
+            instanceVC?.closeCalendar()
+            pickerVC.remove()
+            self?.view.removeDimmedView()
+        }, onSave: { [weak self, weak instanceVC] pickerVC in
             instanceVC?.closeCalendar()
             pickerVC.remove()
             self?.view.removeDimmedView()

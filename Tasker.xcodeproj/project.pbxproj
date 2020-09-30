@@ -12,6 +12,11 @@
 		B1603C572521E1870022BE49 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1603C562521E1870022BE49 /* ContainerViewController.swift */; };
 		B1603C5A2521EAB70022BE49 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1603C592521EAB70022BE49 /* UIViewController.swift */; };
 		B1603C5C2521FC200022BE49 /* DetailTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1603C5B2521FC200022BE49 /* DetailTaskViewController.swift */; };
+		B189A99125247E1D00EAC6A0 /* TimePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B189A98D25247E1C00EAC6A0 /* TimePickerViewController.swift */; };
+		B189A99225247E1D00EAC6A0 /* TimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B189A98F25247E1C00EAC6A0 /* TimePickerView.swift */; };
+		B189A9942524803E00EAC6A0 /* TimePickerInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B189A9932524803E00EAC6A0 /* TimePickerInstance.swift */; };
+		B189A99725249ACA00EAC6A0 /* testView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B189A99625249ACA00EAC6A0 /* testView.xib */; };
+		B189A9992524D68D00EAC6A0 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = B189A9982524D68D00EAC6A0 /* Date.swift */; };
 		B1A913F0252056FA0021E15C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A913EF252056FA0021E15C /* AppDelegate.swift */; };
 		B1A913FA252056FA0021E15C /* Tasker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B1A913F8252056FA0021E15C /* Tasker.xcdatamodeld */; };
 		B1A913FC252056FC0021E15C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1A913FB252056FC0021E15C /* Assets.xcassets */; };
@@ -50,6 +55,11 @@
 		B1603C562521E1870022BE49 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		B1603C592521EAB70022BE49 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		B1603C5B2521FC200022BE49 /* DetailTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskViewController.swift; sourceTree = "<group>"; };
+		B189A98D25247E1C00EAC6A0 /* TimePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimePickerViewController.swift; sourceTree = "<group>"; };
+		B189A98F25247E1C00EAC6A0 /* TimePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimePickerView.swift; sourceTree = "<group>"; };
+		B189A9932524803E00EAC6A0 /* TimePickerInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerInstance.swift; sourceTree = "<group>"; };
+		B189A99625249ACA00EAC6A0 /* testView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = testView.xib; sourceTree = "<group>"; };
+		B189A9982524D68D00EAC6A0 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		B1A913EC252056FA0021E15C /* Tasker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tasker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1A913EF252056FA0021E15C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B1A913F9252056FA0021E15C /* Tasker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Tasker.xcdatamodel; sourceTree = "<group>"; };
@@ -108,8 +118,43 @@
 			children = (
 				B1603C592521EAB70022BE49 /* UIViewController.swift */,
 				B1D5DECE252388ED00124DAD /* UIView.swift */,
+				B189A9982524D68D00EAC6A0 /* Date.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B189A98A25247E1C00EAC6A0 /* TimePicker */ = {
+			isa = PBXGroup;
+			children = (
+				B189A98B25247E1C00EAC6A0 /* Protocols */,
+				B189A98D25247E1C00EAC6A0 /* TimePickerViewController.swift */,
+				B189A98E25247E1C00EAC6A0 /* Views */,
+			);
+			path = TimePicker;
+			sourceTree = "<group>";
+		};
+		B189A98B25247E1C00EAC6A0 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				B189A9932524803E00EAC6A0 /* TimePickerInstance.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		B189A98E25247E1C00EAC6A0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B189A98F25247E1C00EAC6A0 /* TimePickerView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B189A99525249AB700EAC6A0 /* Temp */ = {
+			isa = PBXGroup;
+			children = (
+				B189A99625249ACA00EAC6A0 /* testView.xib */,
+			);
+			path = Temp;
 			sourceTree = "<group>";
 		};
 		B1A913E3252056FA0021E15C = {
@@ -131,6 +176,7 @@
 		B1A913EE252056FA0021E15C /* Tasker */ = {
 			isa = PBXGroup;
 			children = (
+				B189A99525249AB700EAC6A0 /* Temp */,
 				B1D5DEAF252386D500124DAD /* Components */,
 				B1D5DEAA2523666A00124DAD /* Resources */,
 				B1D5DEA72523659F00124DAD /* Factories */,
@@ -260,6 +306,7 @@
 		B1D5DEAF252386D500124DAD /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				B189A98A25247E1C00EAC6A0 /* TimePicker */,
 				B1D5DEB0252386E300124DAD /* DatePicker */,
 			);
 			path = Components;
@@ -376,6 +423,7 @@
 				B1A913FC252056FC0021E15C /* Assets.xcassets in Resources */,
 				B1D5DECA2523884700124DAD /* CalendarPickerHeaderView.xib in Resources */,
 				B1D5DEC92523884700124DAD /* CalendarPickerViewCell.xib in Resources */,
+				B189A99725249ACA00EAC6A0 /* testView.xib in Resources */,
 				B1D5DEC82523884700124DAD /* CalendarPickerFooterView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -392,6 +440,7 @@
 				B1D5DECC2523884700124DAD /* CalendarPickerViewCell.swift in Sources */,
 				B1D5DEAC2523667500124DAD /* Font.swift in Sources */,
 				B1D5DECF252388ED00124DAD /* UIView.swift in Sources */,
+				B189A99125247E1D00EAC6A0 /* TimePickerViewController.swift in Sources */,
 				B1A9142F2520B6E10021E15C /* TaskListDataSourceAssembler.swift in Sources */,
 				B1D5DEC52523884700124DAD /* CalendarPickerViewController.swift in Sources */,
 				B1603C5A2521EAB70022BE49 /* UIViewController.swift in Sources */,
@@ -409,10 +458,13 @@
 				B1A9142425209CC60021E15C /* Task+CoreDataClass.swift in Sources */,
 				B1603C5C2521FC200022BE49 /* DetailTaskViewController.swift in Sources */,
 				B1A9142525209CC60021E15C /* Task+CoreDataProperties.swift in Sources */,
+				B189A9992524D68D00EAC6A0 /* Date.swift in Sources */,
+				B189A99225247E1D00EAC6A0 /* TimePickerView.swift in Sources */,
 				B1A913F0252056FA0021E15C /* AppDelegate.swift in Sources */,
 				B1D5DEC62523884700124DAD /* MonthModel.swift in Sources */,
 				B1A914292520AB640021E15C /* TaskListView.swift in Sources */,
 				B1603C572521E1870022BE49 /* ContainerViewController.swift in Sources */,
+				B189A9942524803E00EAC6A0 /* TimePickerInstance.swift in Sources */,
 				B1D5DEA9252365B300124DAD /* Label.swift in Sources */,
 				B1603C522521C0480022BE49 /* DailyModel.swift in Sources */,
 				B1D5DEAE2523690F00124DAD /* Button.swift in Sources */,

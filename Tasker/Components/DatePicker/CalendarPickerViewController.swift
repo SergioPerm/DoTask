@@ -259,6 +259,7 @@ class CalendarPickerViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         showView()
         
+        ///Scroll to selected month
         if let diffAmountMonths = selectedDate?.endOfMonth.months(from: baseDate) {
             let currentIndexPath = IndexPath(row: 0, section: diffAmountMonths)
             collectionView.scrollToItem(at: currentIndexPath, at: .centeredVertically, animated: false)

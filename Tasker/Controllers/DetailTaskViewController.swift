@@ -21,13 +21,20 @@ class DetailTaskViewController: UIViewController {
     
     var selectedDate: Date? {
         didSet {
-            taskModel.taskDate = selectedDate
-            
             guard let selectedDate = selectedDate else {
                 let calendarImage = UIImage(named: "dateCalendar")
+                taskModel.taskDate = nil
                 calendarBtn.setImage(calendarImage, for: .normal)
                 dateLabel.text = ""
                 return
+            }
+            
+            if let taskDate = taskModel.taskDate {
+                ///Move the old time to the new date
+                let timeComponents = Calendar.current.dateComponents([.hour, .minute], from: taskDate)
+                if let hour = timeComponents.hour, let minute = timeComponents.minute {
+                    taskModel.taskDate = Calendar.current.date(bySettingHour: hour, minute: minute, second: 0, of: selectedDate)
+                }
             }
             
             let calendar = Calendar.current

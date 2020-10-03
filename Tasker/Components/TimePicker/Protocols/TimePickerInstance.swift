@@ -9,6 +9,6 @@
 import Foundation
 
 protocol TimePickerInstance: class {
-    var selectedTime: Date? { get set }
+    var selectedReminderTime: Date? { get set }
     func closeTimePicker()
 }

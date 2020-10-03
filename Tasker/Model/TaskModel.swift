@@ -30,8 +30,8 @@ struct TaskModel {
         self.uid = task.identificator.uuidString
         self.title = task.title!
         self.taskDate = task.taskDate
-        self.reminderGeo = false
-        self.reminderDate = false
+        self.reminderGeo = task.reminderGeo
+        self.reminderDate = task.reminderDate
         self.lat = task.lat
         self.lon = task.lon
     }

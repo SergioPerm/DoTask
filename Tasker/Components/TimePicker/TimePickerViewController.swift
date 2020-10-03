@@ -38,7 +38,7 @@ class TimePickerViewController: UIViewController {
     private var timePicker: UIPickerView
     private var baseTime: Date
         
-    private var selectedDate:(day:Date, hour:Int, minute:Int)
+    public var selectedDate:(day:Date, hour:Int, minute:Int)
     
     private let dateFormatter = DateFormatter()
     private let numberFormatter = NumberFormatter()
@@ -46,19 +46,18 @@ class TimePickerViewController: UIViewController {
     private var hours:[Int] = []
     private var minutes:[Int] = []
     
-    private var selectedTimeChanged: ((Date?) -> Void)
-    private var cancelTimePickerHandler: (_ vc: TimePickerViewController) -> Void
-    private var saveTimePickerHandler: (_ vc: TimePickerViewController) -> Void
+    //private var selectedTimeChanged: ((Date?) -> Void)
+    private var deleteReminderHandler: (_ vc: TimePickerViewController) -> Void
+    private var setReminderHandler: (_ vc: TimePickerViewController, _ setTime: Date) -> Void
     
     // MARK: Initializers
     
-    init(baseTime: Date?, onSelectedTime selectedTimeChanded: @escaping (Date?) -> Void, onCancel cancelTimePickerHandler: @escaping (_ vc: TimePickerViewController) -> Void, onSave saveTimePickerHandler: @escaping (_ vc: TimePickerViewController) -> Void) {
+    init(baseTime: Date?, onDelete deleteReminderHandler: @escaping (_ vc: TimePickerViewController) -> Void, onSet setReminderHandler: @escaping (_ vc: TimePickerViewController, _ setTime: Date) -> Void) {
         self.baseTime = baseTime ?? Date()
         self.timePicker = UIPickerView()
         
-        self.selectedTimeChanged = selectedTimeChanded
-        self.cancelTimePickerHandler = cancelTimePickerHandler
-        self.saveTimePickerHandler = saveTimePickerHandler
+        self.deleteReminderHandler = deleteReminderHandler
+        self.setReminderHandler = setReminderHandler
         
         selectedDate.day = baseTime ?? Date()
         selectedDate.hour = 0
@@ -115,7 +114,8 @@ class TimePickerViewController: UIViewController {
         let indexHour = hours.firstIndex(of: hour)
         
         timePicker.selectRow(indexHour!, inComponent: 0, animated: false)
-
+        selectedDate.hour = hours[indexHour!]
+        
         var minuteIndex: CGFloat = CGFloat(min/5)
         minuteIndex.round(.down)
         let roundMinutes = Int(minuteIndex) * 5
@@ -123,13 +123,17 @@ class TimePickerViewController: UIViewController {
         let indexMinute = minutes.firstIndex(of: roundMinutes)
         
         timePicker.selectRow(indexMinute!, inComponent: 2, animated: false)
+        selectedDate.minute = minutes[indexMinute!]
         
-        UIView.animate(withDuration: 0.2,
+        UIView.animate(withDuration: 0.3,
                        delay: 0,
                        options: .curveLinear,
                        animations: {
                         self.view.frame.origin = CGPoint(x: self.view.frame.origin.x, y: self.view.frame.origin.y + safeAreaGuide.layoutFrame.width)
         }, completion: nil)
+        
+        //temp solution in this place
+        baseTime = Calendar.current.date(bySettingHour: selectedDate.hour, minute: selectedDate.minute, second: 0, of: baseTime) ?? baseTime
         
     }
     
@@ -240,11 +244,7 @@ class TimePickerViewController: UIViewController {
     }
     
     private func currentSelectedDate() -> Date? {
-        var timeComponents = DateComponents()
-        timeComponents.hour = selectedDate.hour
-        timeComponents.minute = selectedDate.minute
-        
-        if let date = Calendar.current.date(byAdding: timeComponents, to: selectedDate.day) {
+        if let date = Calendar.current.date(bySettingHour: selectedDate.hour, minute: selectedDate.minute, second: 0, of: selectedDate.day) {
             return date
         }
         
@@ -253,11 +253,11 @@ class TimePickerViewController: UIViewController {
     
     // MARK: Actions
     @objc func deleteAction(sender: UIButton) {
-        //delegate?.deleteReminder()
+        deleteReminderHandler(self)
     }
     
     @objc func setAction(sender: UIButton) {
-        //delegate?.setReminderWithTime(reminderTime: baseTime)
+        setReminderHandler(self, baseTime)
     }
     
 }

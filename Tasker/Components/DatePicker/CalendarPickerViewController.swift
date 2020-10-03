@@ -145,7 +145,7 @@ class CalendarPickerViewController: UIViewController {
         view.frame.origin = CGPoint(x: view.frame.origin.x, y: startViewOrigin)
         view.isHidden = false
         
-        UIView.animate(withDuration: 0.2,
+        UIView.animate(withDuration: 0.3,
                        delay: 0,
                        options: .curveLinear,
                        animations: {
@@ -263,7 +263,7 @@ class CalendarPickerViewController: UIViewController {
         if let diffAmountMonths = selectedDate?.endOfMonth.months(from: baseDate) {
             let currentIndexPath = IndexPath(row: 0, section: diffAmountMonths)
             collectionView.scrollToItem(at: currentIndexPath, at: .centeredVertically, animated: false)
-            alignCollectionView()
+            alignMonthInCollectionView()
         }
     }
     
@@ -494,46 +494,12 @@ extension CalendarPickerViewController: UICollectionViewDelegate {
     }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-                
         // Stop scrollView sliding:
         targetContentOffset.pointee = scrollView.contentOffset
-        alignCollectionView()
-//        let sectionHeight = (collectionMargins * 2) + (cellSize.height * 6) + (cellsInterInsets * 5)
-//
-//        // calculate where scrollView should snap to:
-//        let indexOfMajorCell = self.indexOfMajorCell()
-//
-//        // calculate conditions:
-//        let dataSourceCount = days.count
-//        let swipeVelocityThreshold: CGFloat = 0.5 // after some trail and error
-//        let hasEnoughVelocityToSlideToTheNextCell = indexOfCellBeforeDragging + 1 < dataSourceCount && velocity.y > swipeVelocityThreshold
-//        let hasEnoughVelocityToSlideToThePreviousCell = indexOfCellBeforeDragging >= 0 && velocity.y < -swipeVelocityThreshold
-//        let majorCellIsTheCellBeforeDragging = indexOfMajorCell == indexOfCellBeforeDragging
-//        let didUseSwipeToSkipCell = majorCellIsTheCellBeforeDragging && (hasEnoughVelocityToSlideToTheNextCell || hasEnoughVelocityToSlideToThePreviousCell)
-//
-//        if didUseSwipeToSkipCell {
-//
-//            let snapToIndex = indexOfCellBeforeDragging + (hasEnoughVelocityToSlideToTheNextCell ? 1 : -1)
-//            let toValue = sectionHeight * CGFloat(snapToIndex)
-//
-//            if (snapToIndex >= 0) {
-//                setDataForHeaderView(for: days[snapToIndex].firstDay)
-//                // Damping equal 1 => no oscillations => decay animation:
-//                UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity.y, options: .allowUserInteraction, animations: {
-//                    scrollView.contentOffset = CGPoint(x: 0, y: toValue)
-//                    scrollView.layoutIfNeeded()
-//                }, completion: nil)
-//            }
-//
-//        } else {
-//            setDataForHeaderView(for: days[indexOfMajorCell].firstDay)
-//            let offsetForSlide = CGFloat(indexOfMajorCell) * sectionHeight
-//            collectionView.setContentOffset(CGPoint(x: 0, y: offsetForSlide), animated: true)
-//        }
+        alignMonthInCollectionView()
     }
     
-    func alignCollectionView() {
-
+    func alignMonthInCollectionView() {
         let velocity = CGPoint(x: 0, y: 0)
         
         let sectionHeight = (collectionMargins * 2) + (cellSize.height * 6) + (cellsInterInsets * 5)

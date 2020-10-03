@@ -44,6 +44,33 @@ class DetailTaskViewController: UIViewController {
         }
     }
     
+    var selectedTime: Date? {
+        didSet {
+            guard let selectedTime = selectedTime else {
+                taskModel.reminderDate = false
+                timeStackView.isHidden = true
+                if let reminderImage = reminderBtn.imageView?.image {
+                    reminderBtn.setImage(UIImage.grayscale(image: reminderImage), for: .normal)
+                }
+                return
+            }
+            taskModel.taskDate = selectedTime
+            
+            timeStackView.isHidden = false
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "HH:mm"
+            
+            timeLabel.text = dateFormatter.string(from: selectedTime)
+            
+            if let reminderImage = UIImage(named: "clockAlarm") {
+                reminderBtn.setImage(reminderImage, for: .normal)
+            }
+            
+            taskModel.reminderDate = true
+        }
+    }
+    
     // MARK: Handlers
     var taskWillSave: (_ taskModel: TaskModel, _ vc: DetailTaskViewController) -> Void
     var onCalendarSelect: (_ selectedDate: Date, _ vc: DetailTaskViewController) -> Void
@@ -156,6 +183,7 @@ class DetailTaskViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     
         self.selectedCalendarDate = self.taskModel.taskDate
+        self.selectedReminderTime = self.taskModel.reminderDate ? self.taskModel.taskDate : nil
         self.titleTextView.text = taskModel?.title
         
         setupNotifications()
@@ -275,9 +303,7 @@ class DetailTaskViewController: UIViewController {
             dateLabel.topAnchor.constraint(equalTo: swipeCloseView.bottomAnchor, constant: 14),
             dateLabel.widthAnchor.constraint(equalToConstant: 100)
         ])
-        
-        timeLabel.text = "15:34"
-        
+                
         let clockImageView = UIImageView(image: UIImage(systemName: "alarm"))
         clockImageView.tintColor = .systemGray
         clockImageView.contentMode = .scaleAspectFit
@@ -298,7 +324,7 @@ class DetailTaskViewController: UIViewController {
         view.addSubview(titleTextView)
         
         constraints.append(contentsOf: [
-            titleTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 20),
+            titleTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             titleTextView.topAnchor.constraint(equalTo: view.topAnchor, constant: 72),
             titleTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20)
         ])
@@ -318,6 +344,7 @@ class DetailTaskViewController: UIViewController {
         
         saveBtn.addTarget(self, action: #selector(saveTaskAction(sender:)), for: .touchUpInside)
         calendarBtn.addTarget(self, action: #selector(calendarTapAction(sender:)), for: .touchUpInside)
+        reminderBtn.addTarget(self, action: #selector(reminderTapAction(sender:)), for: .touchUpInside)
         
         view.addSubview(accesoryStackView)
         
@@ -409,7 +436,7 @@ extension DetailTaskViewController {
     
     @objc func reminderTapAction(sender: UIButton) {
         titleTextView.resignFirstResponder()
-        onTimeReminderSelect(taskModel.reminderDate ? taskModel.taskDate ?? Date() : Date(), self)
+        onTimeReminderSelect(taskModel.taskDate ?? Date(), self)
     }
     
     @objc func tapToCloseAction(_ recognizer: UITapGestureRecognizer) {
@@ -476,12 +503,30 @@ extension DetailTaskViewController: CalendarPickerInstance {
     }
     
     var selectedCalendarDate: Date? {
-        set {
-            selectedDate = newValue
-        }
-        
         get {
             return taskModel.taskDate
         }
+        
+        set {
+            selectedDate = newValue
+        }
     }
+}
+
+// MARK: TimePickerInstance
+extension DetailTaskViewController: TimePickerInstance {
+    var selectedReminderTime: Date? {
+        get {
+            return taskModel.taskDate
+        }
+        set {
+            selectedTime = newValue
+        }
+    }
+    
+    func closeTimePicker() {
+        titleTextView.becomeFirstResponder()
+    }
+    
+    
 }

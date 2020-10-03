@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B1228E1325289DDB00567062 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1228E1225289DDB00567062 /* UIImage.swift */; };
 		B1603C522521C0480022BE49 /* DailyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1603C512521C0480022BE49 /* DailyModel.swift */; };
 		B1603C552521C5C20022BE49 /* TaskListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1603C542521C5C20022BE49 /* TaskListTableViewCell.swift */; };
 		B1603C572521E1870022BE49 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1603C562521E1870022BE49 /* ContainerViewController.swift */; };
@@ -50,6 +51,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B1228E1225289DDB00567062 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		B1603C512521C0480022BE49 /* DailyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyModel.swift; sourceTree = "<group>"; };
 		B1603C542521C5C20022BE49 /* TaskListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListTableViewCell.swift; sourceTree = "<group>"; };
 		B1603C562521E1870022BE49 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				B1603C592521EAB70022BE49 /* UIViewController.swift */,
 				B1D5DECE252388ED00124DAD /* UIView.swift */,
 				B189A9982524D68D00EAC6A0 /* Date.swift */,
+				B1228E1225289DDB00567062 /* UIImage.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -441,6 +444,7 @@
 				B1D5DEAC2523667500124DAD /* Font.swift in Sources */,
 				B1D5DECF252388ED00124DAD /* UIView.swift in Sources */,
 				B189A99125247E1D00EAC6A0 /* TimePickerViewController.swift in Sources */,
+				B1228E1325289DDB00567062 /* UIImage.swift in Sources */,
 				B1A9142F2520B6E10021E15C /* TaskListDataSourceAssembler.swift in Sources */,
 				B1D5DEC52523884700124DAD /* CalendarPickerViewController.swift in Sources */,
 				B1603C5A2521EAB70022BE49 /* UIViewController.swift in Sources */,

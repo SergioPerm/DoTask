@@ -48,7 +48,7 @@ class ContainerViewController: UIViewController {
         }, onCalendarSelect: { [weak self] currentDate, detailVC in
             self?.openDatePicker(withDate: currentDate, for: detailVC)
         }, onTimeReminderSelect: { [weak self] currentTime, detailVC in
-                
+            self?.openTimePicker(withTime: currentTime, for: detailVC)
         })
         addSubviewAtIndex(detailTaskViewController, at: 1)
     }
@@ -62,13 +62,26 @@ class ContainerViewController: UIViewController {
         }, onCalendarSelect: { [weak self] currentDate, detailVC in
             self?.openDatePicker(withDate: currentDate, for: detailVC)
         }, onTimeReminderSelect: { [weak self] currentTime, detailVC in
-                let test = ""
+            self?.openTimePicker(withTime: currentTime, for: detailVC)
         })
         addSubviewAtIndex(detailTaskViewController, at: 1)
     }
     
     func openTimePicker(withTime date: Date, for instanceVC: TimePickerInstance) {
+        let timePicker = TimePickerViewController(baseTime: date, onDelete: { [weak self, weak instanceVC] pickerVC in
+            instanceVC?.selectedReminderTime = nil
+            instanceVC?.closeTimePicker()
+            pickerVC.remove()
+            self?.view.removeDimmedView()
+        }, onSet: { [weak self, weak instanceVC] pickerVC, setTime in
+            instanceVC?.selectedReminderTime = setTime
+            instanceVC?.closeTimePicker()
+            pickerVC.remove()
+            self?.view.removeDimmedView()
+        })
         
+        addSubviewAtIndex(timePicker, at: 2)
+        view.showDimmedBelowSubview(subview: timePicker.view, for: view)
     }
     
     func openDatePicker(withDate date: Date, for instanceVC: CalendarPickerInstance) {

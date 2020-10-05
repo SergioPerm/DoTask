@@ -39,7 +39,7 @@ class TaskListViewController: UIViewController {
 //            viewModel.addTask(from: taskModel)
 //
 //        }
-        viewModel.clearData()
+        //viewModel.clearData()
 
         
         setupView()
@@ -123,6 +123,20 @@ extension TaskListViewController: UITableViewDataSource {
 extension TaskListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.tableViewDidSelectRow(at: indexPath)
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let contextItemDelete = UIContextualAction(style: .destructive, title: "") { [weak self] (contextualAction, view, completion) in
+            self?.viewModel.deleteTask(at: indexPath)
+        }
+        contextItemDelete.backgroundColor = UIColor.white
+        contextItemDelete.image = UIGraphicsImageRenderer(size: CGSize(width: 30, height: 30)).image { _ in
+            UIImage(named: "recycle")?.draw(in: CGRect(x: 0, y: 0, width: 30, height: 30))
+        }
+        
+        let configuration = UISwipeActionsConfiguration(actions: [contextItemDelete])
+        
+        return configuration
     }
 }
 

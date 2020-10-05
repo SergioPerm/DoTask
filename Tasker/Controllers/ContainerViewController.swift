@@ -66,7 +66,7 @@ class ContainerViewController: UIViewController {
         })
         addSubviewAtIndex(detailTaskViewController, at: 1)
     }
-    
+        
     func openTimePicker(withTime date: Date, for instanceVC: TimePickerInstance) {
         let timePicker = TimePickerViewController(baseTime: date, onDelete: { [weak self, weak instanceVC] pickerVC in
             instanceVC?.selectedReminderTime = nil
@@ -102,3 +102,4 @@ class ContainerViewController: UIViewController {
         view.showDimmedBelowSubview(subview: calendarPicker.view, for: view)
     }
 }
+

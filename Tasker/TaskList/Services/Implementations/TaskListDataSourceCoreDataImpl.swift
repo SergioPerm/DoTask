@@ -15,6 +15,7 @@ class TaskListDataSourceCoreDataImpl: NSObject {
     // MARK: - Properites
     weak var observer: TaskListDataSourceObserver?
     private let fetchedResultsController: NSFetchedResultsController<Task>
+    private let notificationCenter = PushNotificationService.shared
     
     init(context: NSManagedObjectContext) {
         self.context = context
@@ -24,7 +25,8 @@ class TaskListDataSourceCoreDataImpl: NSObject {
         
         // Add Sort Descriptors
         let sortDescriptor = NSSortDescriptor(key: "taskDate", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor]
+        let sortDescriptor2 = NSSortDescriptor(key: "title", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor, sortDescriptor2]
         fetchRequest.fetchBatchSize = 20
         // Initialize Fetched Results Controller
         self.fetchedResultsController = NSFetchedResultsController<Task>(fetchRequest: fetchRequest, managedObjectContext: self.context, sectionNameKeyPath: "dailyName", cacheName: nil)
@@ -38,53 +40,74 @@ class TaskListDataSourceCoreDataImpl: NSObject {
 
 // MARK: TaskListDataSource
 extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
-    func taskForIndexPath(indexPath: IndexPath) -> TaskModel {
+    func taskModelForIndexPath(indexPath: IndexPath) -> TaskModel {
         let task = fetchedResultsController.object(at: indexPath)
         return TaskModel(with: task)
     }
-        
-    func deleteTask(task: Task) {
-        context.delete(task)
-    }
     
-    func updateTask(from taskModel: TaskModel) {
-        
-        if let uuidFilter: UUID = UUID(uuidString: taskModel.uid) {
+    func taskByIdentifier(identifier: String) -> Task? {
+        if let uuid = UUID(uuidString: identifier) {
             let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
-            let predicate = NSPredicate(format: "identificator == %@", uuidFilter as NSUUID)
+            let predicate = NSPredicate(format: "identificator == %@", uuid as NSUUID)
             
             fetchRequest.predicate = predicate
             
             do {
-                let tasksForUpdate = try context.fetch(fetchRequest)
+                let tasks = try context.fetch(fetchRequest)
                 
-                if tasksForUpdate.count > 0 {
-                    let task = tasksForUpdate[0]
-                    task.title = taskModel.title
-                    task.taskDate = taskModel.taskDate
-                    task.reminderDate = taskModel.reminderDate
-                    task.reminderGeo = taskModel.reminderGeo
-                    task.lat = taskModel.lat!
-                    task.lon = taskModel.lon!
-                    
-                    do {
-                        try context.save()
-                    } catch {
-                        fatalError()
-                    }
+                if tasks.isEmpty {
+                    return nil
+                }
+                
+                return tasks[0]
+            } catch {
+                fatalError()
+            }
+        }
+        
+        return nil
+    }
+    
+    func taskForTaskModel(taskModel: TaskModel) -> Task? {
+        if let uuidFilter: UUID = UUID(uuidString: taskModel.uid) {
+            return taskByIdentifier(identifier: uuidFilter.uuidString)
+        }
+        return nil
+    }
+    
+    func deleteTask(from taskModel: TaskModel) {
+        if let task = taskForTaskModel(taskModel: taskModel) {
+            context.delete(task)
+            let notifyModel = NotifyByDateModel(with: taskModel)
+            notificationCenter.deleteLocalNotifications(identifiers: [notifyModel.identifier])
+        }
+    }
+        
+    func updateTask(from taskModel: TaskModel) {
+        if let task = taskForTaskModel(taskModel: taskModel) {
+            task.title = taskModel.title
+            task.taskDate = taskModel.taskDate
+            task.reminderDate = taskModel.reminderDate
+            task.reminderGeo = taskModel.reminderGeo
+            task.lat = taskModel.lat!
+            task.lon = taskModel.lon!
+            
+            do {
+                try context.save()
+                
+                let notifyModel = NotifyByDateModel(with: taskModel)
+                notificationCenter.deleteLocalNotifications(identifiers: [notifyModel.identifier])
+                if taskModel.reminderDate {
+                    notificationCenter.addLocalNotification(notifyModel: notifyModel)
                 }
             } catch {
                 fatalError()
             }
-        
-            
-        } else {
-            fatalError()
         }
-
     }
     
     var tasksWithSections: [DailyModel] {
+        _ = fetchTasks()
         if let sections = fetchedResultsController.sections {
             var dailyModels = [DailyModel]()
             
@@ -124,7 +147,7 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
             newTask.taskDate = taskModel.taskDate
             newTask.reminderDate = taskModel.reminderDate
             newTask.reminderGeo = taskModel.reminderGeo
-            
+                        
             if let lat = taskModel.lat, let lon = taskModel.lon {
                 newTask.lat = lat
                 newTask.lon = lon
@@ -132,6 +155,10 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
             
             do {
                 try context.save()
+                if taskModel.reminderDate {
+                    let notifyModel = NotifyByDateModel(with: taskModel)
+                    notificationCenter.addLocalNotification(notifyModel: notifyModel)
+                }
             } catch {
                 fatalError()
             }

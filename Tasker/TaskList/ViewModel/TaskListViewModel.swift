@@ -21,6 +21,8 @@ class TaskListViewModel {
         self.dataSource.observer = self
         
         self.tableViewItems = dataSource.tasksWithSections
+        
+        PushNotificationService.shared.attachObserver(self)
     }
     
 }
@@ -34,11 +36,7 @@ extension TaskListViewModel {
     func viewWillDisappear() {
         self.view = nil
     }
-//
-//    func addProfile(named userName: String) {
-//        dataSource.addProfile(named: userName)
-//    }
-//
+
     func clearData() {
         dataSource.clearData()
     }
@@ -49,7 +47,7 @@ extension TaskListViewModel {
     }
     
     func taskModelForIndexPath(indexPath: IndexPath) -> TaskModel {
-        return dataSource.taskForIndexPath(indexPath: indexPath)
+        return dataSource.taskModelForIndexPath(indexPath: indexPath)
     }
     
     func addTask(from taskModel: TaskModel) {
@@ -58,6 +56,11 @@ extension TaskListViewModel {
     
     func updateTask(from taskModel: TaskModel) {
         dataSource.updateTask(from: taskModel)
+    }
+    
+    func deleteTask(at indexPath: IndexPath) {
+        let taskModel = taskModelForIndexPath(indexPath: indexPath)
+        dataSource.deleteTask(from: taskModel)
     }
 }
 
@@ -89,5 +92,16 @@ extension TaskListViewModel: TaskListDataSourceObserver {
     
     func taskUpdated(at indexPath: IndexPath) {
         view?.tableViewUpdateRow(at: indexPath)
+    }
+}
+
+// MARK: NotificationTaskObserver
+
+extension TaskListViewModel: NotificationTaskObserver {
+    func onTapNotification(with id: String) {
+        if let task = dataSource.taskByIdentifier(identifier: id) {
+            let taskModel = TaskModel(with: task)
+            view?.editTask(taskModel: taskModel)
+        }
     }
 }

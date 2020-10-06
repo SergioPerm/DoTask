@@ -68,8 +68,8 @@ extension TaskListViewController {
         tableView.frame = view.frame
         
         tableView.separatorStyle = .none
-        tableView.rowHeight = 40
-        tableView.backgroundColor = .green
+        tableView.rowHeight = 75
+        tableView.backgroundColor = .white
     }
     
     private func configureCell(cell: TaskListTableViewCell, taskModel: TaskModel) {
@@ -121,9 +121,12 @@ extension TaskListViewController: UITableViewDataSource {
 
 extension TaskListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel.tableViewDidSelectRow(at: indexPath)
+        let cell = tableView.cellForRow(at: indexPath) as! TaskListTableViewCell
+        cell.animateSelection {
+            self.viewModel.tableViewDidSelectRow(at: indexPath)
+        }
     }
-    
+        
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let contextItemDelete = UIContextualAction(style: .destructive, title: "") { [weak self] (contextualAction, view, completion) in
             self?.viewModel.deleteTask(at: indexPath)

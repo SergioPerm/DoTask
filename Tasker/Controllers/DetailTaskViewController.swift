@@ -380,14 +380,14 @@ class DetailTaskViewController: UIViewController {
 //        view.layer.mask = mask
         
         view.layer.cornerRadius = 16
-        view.layer.shadowOffset = CGSize(width: 0, height: 3)
+        view.layer.shadowOffset = CGSize(width: 0, height: 6)
         view.layer.shadowRadius = 6
         view.layer.shadowOpacity = 0.3
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.shadowPath = UIBezierPath(roundedRect: view.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: 16, height: 16)).cgPath
         view.layer.shouldRasterize = true
         view.layer.rasterizationScale = UIScreen.main.scale
-        
+                
     }
     
     private func setupViewOrigin() {

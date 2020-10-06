@@ -10,7 +10,7 @@ import UIKit
 
 extension UIView {
     
-    static var dimmedView: UIView?
+    static var dimmedViews = [UIView]()
     
     var globalView: UIView? {
         return UIApplication.shared.windows.first { $0.isKeyWindow }
@@ -22,9 +22,9 @@ extension UIView {
     }
     
     func showDimmedBelowSubview(subview: UIView, for view: UIView) {
-        UIView.dimmedView = UIView()
+        UIView.dimmedViews.append(UIView())// = UIView()
         
-        guard let dimmedView = UIView.dimmedView else { return }
+        guard let dimmedView = UIView.dimmedViews.last else { return }
         
         dimmedView.backgroundColor = UIColor.black.withAlphaComponent(0.3)
         dimmedView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -34,7 +34,7 @@ extension UIView {
     }
     
     func removeDimmedView() {
-        if let dimmedView = UIView.dimmedView {
+        if let dimmedView = UIView.dimmedViews.popLast(){
             dimmedView.removeFromSuperview()
         }
     }

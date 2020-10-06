@@ -43,28 +43,34 @@ class ContainerViewController: UIViewController {
         let detailTaskViewController = DetailTaskViewController(taskModel: nil, onSave: { [weak self] taskModel, detailVC in
             self?.mainViewController.viewModel.addTask(from: taskModel)
             detailVC.remove()
-        }, onCancel: { detailVC in
+            self?.view.removeDimmedView()
+        }, onCancel: { [weak self] detailVC in
             detailVC.remove()
+            self?.view.removeDimmedView()
         }, onCalendarSelect: { [weak self] currentDate, detailVC in
             self?.openDatePicker(withDate: currentDate, for: detailVC)
         }, onTimeReminderSelect: { [weak self] currentTime, detailVC in
             self?.openTimePicker(withTime: currentTime, for: detailVC)
         })
         addSubviewAtIndex(detailTaskViewController, at: 1)
+        view.showDimmedBelowSubview(subview: detailTaskViewController.view, for: view)
     }
     
     func editTask(taskModel: TaskModel) {
         let detailTaskViewController = DetailTaskViewController(taskModel: taskModel, onSave: { [weak self] taskModel, detailVC in
             self?.mainViewController.viewModel.updateTask(from: taskModel)
             detailVC.remove()
-        }, onCancel: { detailVC in
+            self?.view.removeDimmedView()
+        }, onCancel: { [weak self] detailVC in
             detailVC.remove()
+            self?.view.removeDimmedView()
         }, onCalendarSelect: { [weak self] currentDate, detailVC in
             self?.openDatePicker(withDate: currentDate, for: detailVC)
         }, onTimeReminderSelect: { [weak self] currentTime, detailVC in
             self?.openTimePicker(withTime: currentTime, for: detailVC)
         })
-        addSubviewAtIndex(detailTaskViewController, at: 1)
+        add(detailTaskViewController)//addSubviewAtIndex(detailTaskViewController, at: 1)
+        view.showDimmedBelowSubview(subview: detailTaskViewController.view, for: view)
     }
         
     func openTimePicker(withTime date: Date, for instanceVC: TimePickerInstance) {
@@ -79,8 +85,7 @@ class ContainerViewController: UIViewController {
             pickerVC.remove()
             self?.view.removeDimmedView()
         })
-        
-        addSubviewAtIndex(timePicker, at: 2)
+        add(timePicker)
         view.showDimmedBelowSubview(subview: timePicker.view, for: view)
     }
     
@@ -97,8 +102,8 @@ class ContainerViewController: UIViewController {
             pickerVC.remove()
             self?.view.removeDimmedView()
         })
-        
-        addSubviewAtIndex(calendarPicker, at: 2)
+        add(calendarPicker)
+        //addSubviewAtIndex(calendarPicker, at: 2)
         view.showDimmedBelowSubview(subview: calendarPicker.view, for: view)
     }
 }

@@ -24,33 +24,14 @@ extension Task {
     @NSManaged public var reminderGeo: Bool
     @NSManaged public var taskDate: Date?
     @NSManaged public var title: String?
+    @NSManaged public var isDone: Bool
     
     @objc var dailyName: String? {
-        
-        var dailyTitle = ""
-        
-        if let taskDate = self.taskDate {
-            let isCurrentDay = Calendar.current.isDateInToday(taskDate)
-            let isTomorrowDay = Calendar.current.isDateInTomorrow(taskDate)
-            
-            if isCurrentDay {
-                dailyTitle = "TODAY"
-            } else if isTomorrowDay {
-                dailyTitle = "TOMORROW"
-            } else {
-                let currentDay = Date()
-                if Calendar.current.isDate(taskDate, equalTo: currentDay, toGranularity: .weekOfYear) {
-                    dailyTitle = "CURRENT WEEK"
-                } else {
-                    dailyTitle = "LATER"
-                }
-            }
-        } else {
-            dailyTitle = "LATER"
+        guard let taskDate = self.taskDate else {
+            return "LATER"
         }
         
-        return dailyTitle
-        
+        return taskDate.dailyNameForTask()
     }
     
 }

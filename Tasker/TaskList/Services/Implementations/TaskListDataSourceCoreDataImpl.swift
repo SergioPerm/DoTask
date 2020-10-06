@@ -78,8 +78,17 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
     func deleteTask(from taskModel: TaskModel) {
         if let task = taskForTaskModel(taskModel: taskModel) {
             context.delete(task)
-            let notifyModel = NotifyByDateModel(with: taskModel)
-            notificationCenter.deleteLocalNotifications(identifiers: [notifyModel.identifier])
+            do {
+                try context.save()
+                
+                let notifyModel = NotifyByDateModel(with: taskModel)
+                notificationCenter.deleteLocalNotifications(identifiers: [notifyModel.identifier])
+                if taskModel.reminderDate {
+                    notificationCenter.addLocalNotification(notifyModel: notifyModel)
+                }
+            } catch {
+                fatalError()
+            }
         }
     }
         

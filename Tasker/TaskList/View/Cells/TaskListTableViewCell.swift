@@ -9,11 +9,7 @@
 import UIKit
 
 class TaskListTableViewCell: UITableViewCell {
-
-    static let reuseIdentifier = "TaskListTableViewCell"
-    
-    var taskIdentifier: String?
-    
+        
     let cellLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false

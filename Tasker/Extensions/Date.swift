@@ -8,6 +8,13 @@
 
 import Foundation
 
+enum dailyName: String {
+    case today = "TODAY"
+    case tommorow = "TOMORROW"
+    case currentWeek = "CURRENT WEEK"
+    case later = "LATER"
+}
+
 extension Date {
     /// Returns the amount of months from another date
     func months(from date: Date) -> Int {
@@ -27,5 +34,27 @@ extension Date {
         components.month = 1
         components.second = -1
         return Calendar(identifier: .gregorian).date(byAdding: components, to: startOfMonth)!
+    }
+    
+    func dailyNameForTask() -> String {
+        let calendar = Calendar.current.taskCalendar
+        let currentDate = calendar.startOfDay(for: Date())
+        
+        if self < currentDate {
+            return dailyName.today.rawValue
+        }
+        
+        let isCurrentDay = calendar.isDateInToday(self)
+        let isTomorrowDay = calendar.isDateInTomorrow(self)
+        
+        if isCurrentDay {
+            return dailyName.today.rawValue
+        } else if isTomorrowDay {
+            return dailyName.tommorow.rawValue
+        } else if calendar.isDate(self, equalTo: Date(), toGranularity: .weekOfMonth) {
+            return dailyName.currentWeek.rawValue
+        }
+        
+        return dailyName.later.rawValue
     }
 }

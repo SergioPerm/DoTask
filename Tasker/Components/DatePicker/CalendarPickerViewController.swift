@@ -216,7 +216,7 @@ class CalendarPickerViewController: UIViewController {
     
     private let selectedDateChanged: (Date?) -> Void
     
-    private let calendar = Calendar(identifier: .iso8601)
+    private let calendar = Calendar.current.taskCalendar
     
     private lazy var dateFormatter: DateFormatter = {
       let dateFormatter = DateFormatter()

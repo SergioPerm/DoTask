@@ -92,7 +92,6 @@ extension TaskListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: TaskListTableViewCell.reuseIdentifier) as! TaskListTableViewCell
         let taskModel = viewModel.tableViewItems[indexPath.section].tasks[indexPath.row]
         cell.cellLabel.text = taskModel.title
-        cell.taskIdentifier = taskModel.uid
         
         return cell
     }

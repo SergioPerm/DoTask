@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B10DF889252C629C000FF924 /* Calendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10DF888252C629C000FF924 /* Calendar.swift */; };
 		B1228E1325289DDB00567062 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1228E1225289DDB00567062 /* UIImage.swift */; };
 		B12F7E5C2529F83600B71AAC /* PushNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12F7E5B2529F83600B71AAC /* PushNotificationService.swift */; };
 		B1603C522521C0480022BE49 /* DailyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1603C512521C0480022BE49 /* DailyModel.swift */; };
@@ -37,6 +38,7 @@
 		B1A9142F2520B6E10021E15C /* TaskListDataSourceAssembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A9142E2520B6E10021E15C /* TaskListDataSourceAssembler.swift */; };
 		B1D5C4BA252AFE8100C4B988 /* NotifyByDateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5C4B9252AFE8100C4B988 /* NotifyByDateModel.swift */; };
 		B1D5C4BE252B540000C4B988 /* NotificationTaskObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5C4BD252B540000C4B988 /* NotificationTaskObserver.swift */; };
+		B1D5C4C0252B674800C4B988 /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5C4BF252B674800C4B988 /* UITableViewCell.swift */; };
 		B1D5DEA9252365B300124DAD /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5DEA8252365B300124DAD /* Label.swift */; };
 		B1D5DEAC2523667500124DAD /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5DEAB2523667500124DAD /* Font.swift */; };
 		B1D5DEAE2523690F00124DAD /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5DEAD2523690F00124DAD /* Button.swift */; };
@@ -54,6 +56,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B10DF888252C629C000FF924 /* Calendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calendar.swift; sourceTree = "<group>"; };
 		B1228E1225289DDB00567062 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		B12F7E5B2529F83600B71AAC /* PushNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationService.swift; sourceTree = "<group>"; };
 		B1603C512521C0480022BE49 /* DailyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyModel.swift; sourceTree = "<group>"; };
@@ -86,6 +89,7 @@
 		B1A9142E2520B6E10021E15C /* TaskListDataSourceAssembler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListDataSourceAssembler.swift; sourceTree = "<group>"; };
 		B1D5C4B9252AFE8100C4B988 /* NotifyByDateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotifyByDateModel.swift; sourceTree = "<group>"; };
 		B1D5C4BD252B540000C4B988 /* NotificationTaskObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTaskObserver.swift; sourceTree = "<group>"; };
+		B1D5C4BF252B674800C4B988 /* UITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
 		B1D5DEA8252365B300124DAD /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
 		B1D5DEAB2523667500124DAD /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		B1D5DEAD2523690F00124DAD /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
@@ -128,6 +132,8 @@
 				B1D5DECE252388ED00124DAD /* UIView.swift */,
 				B189A9982524D68D00EAC6A0 /* Date.swift */,
 				B1228E1225289DDB00567062 /* UIImage.swift */,
+				B1D5C4BF252B674800C4B988 /* UITableViewCell.swift */,
+				B10DF888252C629C000FF924 /* Calendar.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -475,12 +481,14 @@
 				B1A9142F2520B6E10021E15C /* TaskListDataSourceAssembler.swift in Sources */,
 				B1D5C4BE252B540000C4B988 /* NotificationTaskObserver.swift in Sources */,
 				B1D5DEC52523884700124DAD /* CalendarPickerViewController.swift in Sources */,
+				B1D5C4C0252B674800C4B988 /* UITableViewCell.swift in Sources */,
 				B1603C5A2521EAB70022BE49 /* UIViewController.swift in Sources */,
 				B1A914272520A9250021E15C /* TaskListViewModel.swift in Sources */,
 				B1A9140825205DE20021E15C /* CoreDataService.swift in Sources */,
 				B1D5DED22523993000124DAD /* CalendarPickerInstance.swift in Sources */,
 				B1A9141D2520775E0021E15C /* TaskModel.swift in Sources */,
 				B1603C552521C5C20022BE49 /* TaskListTableViewCell.swift in Sources */,
+				B10DF889252C629C000FF924 /* Calendar.swift in Sources */,
 				B1A9141B252063FA0021E15C /* TaskListDataSourceObserver.swift in Sources */,
 				B1D5DEC72523884700124DAD /* DayModel.swift in Sources */,
 				B1D5DECD2523884700124DAD /* CalendarPickerHeaderView.swift in Sources */,

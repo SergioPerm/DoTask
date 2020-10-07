@@ -29,12 +29,18 @@ class DetailTaskViewController: UIViewController {
                 return
             }
             
-            if let taskDate = taskModel.taskDate {
-                ///Move the old time to the new date
-                let timeComponents = Calendar.current.dateComponents([.hour, .minute], from: taskDate)
+            func setDateInModel(timeComponents: DateComponents) {
                 if let hour = timeComponents.hour, let minute = timeComponents.minute {
                     taskModel.taskDate = Calendar.current.date(bySettingHour: hour, minute: minute, second: 0, of: selectedDate)
                 }
+            }
+            
+            if let taskDate = taskModel.taskDate {
+                let timeComponents = Calendar.current.dateComponents([.hour, .minute], from: taskDate)
+                setDateInModel(timeComponents: timeComponents)
+            } else {
+                let timeComponents = Calendar.current.dateComponents([.hour, .minute], from: Date())
+                setDateInModel(timeComponents: timeComponents)
             }
             
             let calendar = Calendar.current

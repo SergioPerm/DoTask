@@ -26,7 +26,11 @@ class TaskListDataSourceCoreDataImpl: NSObject {
         // Add Sort Descriptors
         let sortDescriptor = NSSortDescriptor(key: "taskDate", ascending: true)
         let sortDescriptor2 = NSSortDescriptor(key: "title", ascending: true)
+        
+        let predicate = NSPredicate(format: "isDone == %@", false)
+        
         fetchRequest.sortDescriptors = [sortDescriptor, sortDescriptor2]
+        fetchRequest.predicate = predicate
         fetchRequest.fetchBatchSize = 20
         // Initialize Fetched Results Controller
         self.fetchedResultsController = NSFetchedResultsController<Task>(fetchRequest: fetchRequest, managedObjectContext: self.context, sectionNameKeyPath: "dailyName", cacheName: nil)
@@ -66,6 +70,24 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
         }
         
         return nil
+    }
+    
+    func setDoneForTask(with identifier: String) {
+        if let task = taskByIdentifier(identifier: identifier) {
+            let taskModel = TaskModel(with: task)
+            task.isDone = true
+            do {
+                try context.save()
+                
+                let notifyModel = NotifyByDateModel(with: taskModel)
+                notificationCenter.deleteLocalNotifications(identifiers: [notifyModel.identifier])
+                if taskModel.reminderDate {
+                    notificationCenter.addLocalNotification(notifyModel: notifyModel)
+                }
+            } catch {
+                fatalError()
+            }
+        }
     }
     
     func taskForTaskModel(taskModel: TaskModel) -> Task? {

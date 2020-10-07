@@ -62,6 +62,10 @@ extension TaskListViewModel {
         let taskModel = taskModelForIndexPath(indexPath: indexPath)
         dataSource.deleteTask(from: taskModel)
     }
+    
+    func setDoneForTask(with taskIdentifier: String) {
+        dataSource.setDoneForTask(with: taskIdentifier)
+    }
 }
 
 extension TaskListViewModel: TaskListDataSourceObserver {

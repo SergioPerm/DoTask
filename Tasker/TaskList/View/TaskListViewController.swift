@@ -55,7 +55,7 @@ class TaskListViewController: UIViewController {
         super.viewWillDisappear(animated)
         viewModel.viewWillDisappear()
     }
-    
+        
 }
 
 extension TaskListViewController {
@@ -73,9 +73,16 @@ extension TaskListViewController {
     }
     
     private func configureCell(cell: TaskListTableViewCell, taskModel: TaskModel) {
-        cell.cellLabel.text = taskModel.title
+        cell.doneHandler = doneCellAction(_:)
+        cell.taskModel = taskModel
+    }
+    
+    private func doneCellAction(_ taskIdentifier: String) {
+        viewModel.setDoneForTask(with: taskIdentifier)
     }
 }
+
+// MARK: UITableViewDataSource
 
 extension TaskListViewController: UITableViewDataSource {
     
@@ -91,7 +98,12 @@ extension TaskListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TaskListTableViewCell.reuseIdentifier) as! TaskListTableViewCell
         let taskModel = viewModel.tableViewItems[indexPath.section].tasks[indexPath.row]
-        cell.cellLabel.text = taskModel.title
+//        cell.titleLabel.text = taskModel.title
+//        cell.dateLabel.text = "17/01/2021"
+
+        
+        configureCell(cell: cell, taskModel: taskModel)
+//        cell.taskIdentifier = taskModel.uid
         
         return cell
     }
@@ -118,6 +130,8 @@ extension TaskListViewController: UITableViewDataSource {
     }
     
 }
+
+// MARK: UITableViewDelegate
 
 extension TaskListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

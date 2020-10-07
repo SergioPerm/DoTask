@@ -9,17 +9,68 @@
 import UIKit
 
 class TaskListTableViewCell: UITableViewCell {
+    
+    // MARK: External propperies
+    
+    public var taskModel: TaskModel? {
+        didSet {
+            guard let taskModel = taskModel else {
+                titleLabel.text = ""
+                dateLabel.text = ""
+                return
+            }
+            
+            titleLabel.text = taskModel.title
+            
+            if let taskDate = taskModel.taskDate {
+                dateLabel.text = dateFormatter.string(from: taskDate)
+            } else {
+                dateLabel.text = ""
+            }
+            
+            taskIdentifier = taskModel.uid
+        }
+    }
+    
+    public var doneHandler: ((_ taskIdentifier: String)->())?
+    
+    // MARK: Cell properties
+    private let dateFormatter: DateFormatter = DateFormatter()
+    
+    private var taskIdentifier: String?
         
-    let cellLabel: UILabel = {
+    private let shapeLayer = CAShapeLayer()
+        
+    private let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 15)
-        label.textColor = .red
+        label.textColor = #colorLiteral(red: 0.2369126672, green: 0.6231006994, blue: 1, alpha: 1)
         
         return label
     }()
     
-    let shadowLayer: ShadowView = {
+    private let dateLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 10)
+        label.textColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        
+        return label
+    }()
+    
+    private let doneView: UIView = {
+        let view = UIView()
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.borderWidth = 2
+        view.layer.borderColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.8470588235)
+        view.layer.cornerRadius = 3
+                
+        return view
+    }()
+    
+    private let shadowLayer: ShadowView = {
         let shadowLayer = ShadowView()
         shadowLayer.translatesAutoresizingMaskIntoConstraints = false
         shadowLayer.backgroundColor = .white
@@ -27,7 +78,7 @@ class TaskListTableViewCell: UITableViewCell {
         return shadowLayer
     }()
     
-    let backView: UIView = {
+    private let backView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .white
@@ -37,9 +88,25 @@ class TaskListTableViewCell: UITableViewCell {
         
         return view
     }()
-    
+        
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setup()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        shapeLayer.removeFromSuperlayer()
+    }
+    
+}
+
+extension TaskListTableViewCell {
+    private func setup() {
+        dateFormatter.dateFormat = "dd/MM/yyyy"
         
         selectionStyle = .none
         
@@ -61,24 +128,42 @@ class TaskListTableViewCell: UITableViewCell {
             backView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.8)
         ])
         
-        backView.addSubview(cellLabel)
+        addSubview(doneView)
+        
+        constraints.append(contentsOf: [
+            doneView.heightAnchor.constraint(equalToConstant: 24),
+            doneView.widthAnchor.constraint(equalToConstant: 24),
+            doneView.leadingAnchor.constraint(equalTo: backView.leadingAnchor, constant: 20),
+            doneView.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
+        
+        backView.addSubview(titleLabel)
+        
+        constraints.append(contentsOf: [
+            titleLabel.centerYAnchor.constraint(equalTo: backView.centerYAnchor, constant: -10),
+            titleLabel.leadingAnchor.constraint(equalTo: doneView.trailingAnchor, constant: 10),
+            titleLabel.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: -20),
+            titleLabel.heightAnchor.constraint(equalToConstant: 20)
+        ])
+        
+        backView.addSubview(dateLabel)
+        
+        constraints.append(contentsOf: [
+            dateLabel.centerYAnchor.constraint(equalTo: backView.centerYAnchor, constant: 12),
+            dateLabel.leadingAnchor.constraint(equalTo: doneView.trailingAnchor, constant: 10),
+            dateLabel.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: -20),
+            dateLabel.heightAnchor.constraint(equalToConstant: 20)
+        ])
         
         backgroundColor = .clear
         
-        cellLabel.centerYAnchor.constraint(equalTo: backView.centerYAnchor).isActive = true
-        cellLabel.leadingAnchor.constraint(equalTo: backView.leadingAnchor, constant: 20).isActive = true
-        cellLabel.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: 20).isActive = true
-        cellLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
         NSLayoutConstraint.activate(constraints)
         
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapDoneAction(sender:)))
+        doneView.addGestureRecognizer(tapRecognizer)
     }
     
-    func animateSelection(onFinish: @escaping ()->()) {
+    public func animateSelection(onFinish: @escaping ()->()) {
         UIView.animateKeyframes(withDuration: 0.4,
                                 delay: 0, options: .calculationModeCubic,
                                 animations: {
@@ -93,6 +178,39 @@ class TaskListTableViewCell: UITableViewCell {
                 onFinish()
             }
         }
+    }
+    
+    @objc private func tapDoneAction(sender: UIView) {
+        animateCheckMark(view: doneView) {
+            if let taskIdentifier = self.taskIdentifier, let doneHandler = self.doneHandler {
+                doneHandler(taskIdentifier)
+            }
+        }
+    }
+    
+    private func animateCheckMark(view: UIView, finishHandler:@escaping (()->())) {
+        CATransaction.begin()
+        CATransaction.setCompletionBlock {
+            finishHandler()
+        }
+        
+        let path = UIBezierPath()
+        path.move(to: CGPoint(x: 3, y: view.bounds.height/2))
+        path.addLine(to: CGPoint(x: view.bounds.width/2 - 3, y: view.bounds.height - 3))
+        path.addLine(to: CGPoint(x: view.bounds.width - 3, y: 4))
+        
+        shapeLayer.fillColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0).cgColor
+        shapeLayer.strokeColor = #colorLiteral(red: 0.1115362046, green: 0.701875, blue: 0.1496753436, alpha: 0.8470588235).cgColor
+        shapeLayer.lineWidth = 3
+        shapeLayer.path = path.cgPath
+        
+        view.layer.addSublayer(shapeLayer)
+        
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        animation.fromValue = 0
+        animation.duration = 0.3
+        shapeLayer.add(animation, forKey: "myAnimation")
+        CATransaction.commit()
     }
 }
 

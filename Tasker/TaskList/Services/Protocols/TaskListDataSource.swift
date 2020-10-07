@@ -12,6 +12,7 @@ protocol TaskListDataSource {
     var tasksWithSections: [DailyModel] { get }
     var observer: TaskListDataSourceObserver? { get set }
 
+    func setDoneForTask(with identifier: String)
     func taskByIdentifier(identifier: String) -> Task?
     func taskModelForIndexPath(indexPath: IndexPath) -> TaskModel
     func taskForTaskModel(taskModel: TaskModel) -> Task?

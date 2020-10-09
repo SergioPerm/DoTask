@@ -17,6 +17,7 @@ struct TaskModel {
     var reminderGeo: Bool
     var lat: Double?
     var lon: Double?
+    var isNew: Bool = false
     
     init() {
         self.uid = UUID().uuidString
@@ -24,6 +25,7 @@ struct TaskModel {
         self.reminderGeo = false
         self.reminderDate = false
         self.taskDate = Date()
+        self.isNew = true
     }
     
     init(with task: Task) {

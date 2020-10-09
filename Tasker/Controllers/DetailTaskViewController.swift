@@ -131,7 +131,9 @@ class DetailTaskViewController: UIViewController {
     }()
     
     let timeLabel: UILabel = {
-        return Label.makeDetailTaskStandartLabel(textColor: .systemGray)
+        let label = Label.makeDetailTaskStandartLabel(textColor: .systemGray)
+        label.textAlignment = .right
+        return label
     }()
     
     let timeStackView: UIStackView = {
@@ -146,10 +148,13 @@ class DetailTaskViewController: UIViewController {
     
     let titleTextView: UITextView = {
         let textView = UITextView()
+        textView.font = Font.detailTaskStandartTitle.uiFont
         textView.translatesAutoresizingMaskIntoConstraints = false
         
         return textView
     }()
+    
+    let placeholderLabel: UILabel = UILabel()
     
     let accesoryStackView: UIStackView = {
         let stackView = UIStackView()
@@ -329,9 +334,9 @@ class DetailTaskViewController: UIViewController {
         constraints.append(contentsOf: [
             timeStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             timeStackView.topAnchor.constraint(equalTo: swipeCloseView.bottomAnchor, constant: 14),
-            timeStackView.widthAnchor.constraint(equalToConstant: 59),
+            timeStackView.widthAnchor.constraint(equalToConstant: 79),
             clockImageView.heightAnchor.constraint(equalToConstant: 12),
-            timeLabel.widthAnchor.constraint(equalToConstant: 40)
+            timeLabel.widthAnchor.constraint(equalToConstant: 60)
         ])
         
         view.addSubview(titleTextView)
@@ -342,6 +347,9 @@ class DetailTaskViewController: UIViewController {
             titleTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20)
         ])
         
+        titleTextView.delegate = self
+        
+        setupPlaceholder()
         
         let textViewBottomConstraint = titleTextView.bottomAnchor.constraint(equalTo: accesoryStackView.topAnchor, constant: 24)
         textViewBottomConstraint.priority = UILayoutPriority(rawValue: 250)
@@ -370,20 +378,10 @@ class DetailTaskViewController: UIViewController {
         
         NSLayoutConstraint.activate(constraints)
         
-//        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeToCloseAction(_:)))
-//        swipeGesture.direction = .down
-//        view.addGestureRecognizer(swipeGesture)
-        
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(swipeToCloseAction(_:)))
         view.addGestureRecognizer(panGestureRecognizer)
         
         view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        
-//        let path = UIBezierPath(roundedRect: view.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: 16, height: 16))
-//        let mask = CAShapeLayer()
-//        mask.path = path.cgPath
-//
-//        view.layer.mask = mask
         
         view.layer.cornerRadius = 16
         view.layer.shadowOffset = CGSize(width: 0, height: 6)
@@ -394,6 +392,16 @@ class DetailTaskViewController: UIViewController {
         view.layer.shouldRasterize = true
         view.layer.rasterizationScale = UIScreen.main.scale
                 
+    }
+    
+    private func setupPlaceholder() {
+        placeholderLabel.text = "Task description"
+        placeholderLabel.font = Font.detailTaskStandartTitle.uiFont
+        placeholderLabel.sizeToFit()
+        titleTextView.addSubview(placeholderLabel)
+        placeholderLabel.frame.origin = CGPoint(x: 5, y: (titleTextView.font?.pointSize)! / 2)
+        placeholderLabel.textColor = UIColor.lightGray
+        placeholderLabel.isHidden = !titleTextView.text.isEmpty
     }
     
     private func setupViewOrigin() {
@@ -429,6 +437,10 @@ extension DetailTaskViewController: UITextViewDelegate {
         
         return true
     }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        placeholderLabel.isHidden = !textView.text.isEmpty
+    }
 }
 
 // MARK: Actions
@@ -436,6 +448,11 @@ extension DetailTaskViewController: UITextViewDelegate {
 extension DetailTaskViewController {
     
     @objc func saveTaskAction(sender: UIButton) {
+        if titleTextView.text == "" {
+            titleTextView.shake(duration: 2)
+            return
+        }
+        
         hideView { [weak self] in
             guard let self = self else { return }
             self.taskWillSave(self.taskModel, self)
@@ -449,7 +466,26 @@ extension DetailTaskViewController {
     
     @objc func reminderTapAction(sender: UIButton) {
         titleTextView.resignFirstResponder()
-        onTimeReminderSelect(taskModel.taskDate ?? Date(), self)
+        
+        var taskTime = taskModel.taskDate ?? Date()
+        if !taskModel.reminderDate {
+            let calendar = Calendar.current.taskCalendar
+            if calendar.isDateInToday(taskTime) {
+                let timeComponents = calendar.dateComponents([.hour, .minute], from: Date())
+                
+                if let hour = timeComponents.hour, let minute = timeComponents.minute {
+                    guard let dateWithTime = Calendar.current.taskCalendar.date(bySettingHour: hour, minute: minute, second: 0, of: taskTime) else { return }
+                    taskTime = dateWithTime
+                }
+                
+            
+            } else {
+                guard let dateWithTime = Calendar.current.taskCalendar.date(bySettingHour: 8, minute: 00, second: 0, of: taskTime) else { return }
+                taskTime = dateWithTime
+            }
+        }
+        
+        onTimeReminderSelect(taskTime, self)
     }
     
     @objc func tapToCloseAction(_ recognizer: UITapGestureRecognizer) {

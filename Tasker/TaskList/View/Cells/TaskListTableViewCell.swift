@@ -24,10 +24,12 @@ class TaskListTableViewCell: UITableViewCell {
             
             if let taskDate = taskModel.taskDate {
                 dateLabel.text = dateFormatter.string(from: taskDate)
+                timeLabel.text = taskModel.reminderDate ? timeFormatter.string(from: taskDate) : ""
             } else {
                 dateLabel.text = ""
+                timeLabel.text = ""
             }
-            
+
             taskIdentifier = taskModel.uid
         }
     }
@@ -36,27 +38,24 @@ class TaskListTableViewCell: UITableViewCell {
     
     // MARK: Cell properties
     private let dateFormatter: DateFormatter = DateFormatter()
+    private let timeFormatter: DateFormatter = DateFormatter()
     
     private var taskIdentifier: String?
         
     private let shapeLayer = CAShapeLayer()
         
+    // MARK: View's properties
+    
     private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 15)
-        label.textColor = #colorLiteral(red: 0.2369126672, green: 0.6231006994, blue: 1, alpha: 1)
-        
-        return label
+        return Label.makeCellMainLabel(textColor: #colorLiteral(red: 0.2369126672, green: 0.6231006994, blue: 1, alpha: 1))
     }()
     
     private let dateLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 10)
-        label.textColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
-        
-        return label
+        return Label.makeCellAdditionalLabel(textColor: #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1))
+    }()
+    
+    private let timeLabel: UILabel = {
+        return Label.makeCellAdditionalLabel(textColor: #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1))
     }()
     
     private let doneView: UIView = {
@@ -89,6 +88,8 @@ class TaskListTableViewCell: UITableViewCell {
         return view
     }()
         
+    // MARK: Initializers
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setup()
@@ -105,8 +106,12 @@ class TaskListTableViewCell: UITableViewCell {
 }
 
 extension TaskListTableViewCell {
+    
+    // MARK: Setup Cell
+    
     private func setup() {
         dateFormatter.dateFormat = "dd/MM/yyyy"
+        timeFormatter.dateFormat = "HH:mm"
         
         selectionStyle = .none
         
@@ -147,12 +152,15 @@ extension TaskListTableViewCell {
         ])
         
         backView.addSubview(dateLabel)
+        backView.addSubview(timeLabel)
         
         constraints.append(contentsOf: [
             dateLabel.centerYAnchor.constraint(equalTo: backView.centerYAnchor, constant: 12),
             dateLabel.leadingAnchor.constraint(equalTo: doneView.trailingAnchor, constant: 10),
-            dateLabel.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: -20),
-            dateLabel.heightAnchor.constraint(equalToConstant: 20)
+            dateLabel.heightAnchor.constraint(equalToConstant: 20),
+            timeLabel.centerYAnchor.constraint(equalTo: backView.centerYAnchor, constant: 12),
+            timeLabel.leadingAnchor.constraint(equalTo: dateLabel.trailingAnchor, constant: 10),
+            timeLabel.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: -20)
         ])
         
         backgroundColor = .clear
@@ -162,6 +170,18 @@ extension TaskListTableViewCell {
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapDoneAction(sender:)))
         doneView.addGestureRecognizer(tapRecognizer)
     }
+        
+    // MARK: Actions
+    
+    @objc private func tapDoneAction(sender: UIView) {
+        animateCheckMark(view: doneView) {
+            if let taskIdentifier = self.taskIdentifier, let doneHandler = self.doneHandler {
+                doneHandler(taskIdentifier)
+            }
+        }
+    }
+    
+    // MARK: Animations
     
     public func animateSelection(onFinish: @escaping ()->()) {
         UIView.animateKeyframes(withDuration: 0.4,
@@ -176,14 +196,6 @@ extension TaskListTableViewCell {
         }) { finished in
             if finished {
                 onFinish()
-            }
-        }
-    }
-    
-    @objc private func tapDoneAction(sender: UIView) {
-        animateCheckMark(view: doneView) {
-            if let taskIdentifier = self.taskIdentifier, let doneHandler = self.doneHandler {
-                doneHandler(taskIdentifier)
             }
         }
     }
@@ -213,6 +225,8 @@ extension TaskListTableViewCell {
         CATransaction.commit()
     }
 }
+
+// MARK: Setup shadow
 
 class ShadowView: UIView {
 

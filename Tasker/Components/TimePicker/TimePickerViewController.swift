@@ -114,12 +114,12 @@ class TimePickerViewController: UIViewController {
                 
         view.frame = CGRect(origin: CGPoint(x: 0, y: -safeAreaGuide.layoutFrame.height), size: CGSize(width: viewWidth, height: viewHeight))//CGRect(x: viewOrigin.x, y: viewOrigin.y, width: viewWidth, height: viewHeight)
         
-        view.layer.backgroundColor = UIColor.white.cgColor
+        view.layer.backgroundColor = Color.whiteColor.uiColor.cgColor
         view.layer.cornerRadius = 8
         
         timePicker.frame = CGRect(x: 0, y: (viewHeight-viewWidth)/2, width: viewWidth, height: viewWidth)
         timePicker.translatesAutoresizingMaskIntoConstraints = false
-        timePicker.setValue(UIColor.clear, forKey: "magnifierLineColor")
+        timePicker.setValue(Color.clearColor.uiColor, forKey: "magnifierLineColor")
         
         timePicker.delegate = self
         timePicker.dataSource = self
@@ -194,31 +194,25 @@ class TimePickerViewController: UIViewController {
         
         let currentDateComponents = Calendar.current.dateComponents([.hour, .minute], from: baseTime )
         
-        hours = setupHours(startingHour: currentDateComponents.hour!)
         minutes = setupMinutes(startingMinute: currentDateComponents.minute!, interval: 5)
+        
+        if minutes[0] < currentDateComponents.minute! {
+            hours = setupHours(startingHour: currentDateComponents.hour! + 1)
+        } else {
+            hours = setupHours(startingHour: currentDateComponents.hour!)
+        }
         
         selectedDate.day = Calendar.current.startOfDay(for: baseTime)
         selectedDate.hour = hours[0]
         selectedDate.minute = minutes[0]
         
-//        let hour = Calendar.current.component(.hour, from: baseTime)
-//        let min = Calendar.current.component(.minute, from: baseTime)
-
         let indexHour = hours.firstIndex(of: selectedDate.hour)
         
         timePicker.selectRow(indexHour!, inComponent: 0, animated: false)
-        //selectedDate.hour = hours[indexHour!]
-        
-//        var minuteIndex: CGFloat = CGFloat(min/5)
-//        minuteIndex.round(.down)
-//        minuteIndex = minuteIndex == 0 ? 1 : minuteIndex
-//
-//        let roundMinutes = Int(minuteIndex) * 5
 
         let indexMinute = minutes.firstIndex(of: selectedDate.minute)
         
         timePicker.selectRow(indexMinute!, inComponent: 2, animated: false)
-        //selectedDate.minute = minutes[indexMinute!]
         
         baseTime = Calendar.current.date(bySettingHour: selectedDate.hour, minute: selectedDate.minute, second: 0, of: baseTime) ?? baseTime
     }
@@ -237,15 +231,10 @@ class TimePickerViewController: UIViewController {
     private func setupMinutes(startingMinute:Int, interval:Int = 1) -> [Int] {
         var result:[Int] = []
         
-        var count = Int(60.0 / Double(interval))
-        
-        if startingMinute % 5 == 0 {
-            count -= 1
-            result.append(startingMinute)
-        }
-        
+        let count = Int(60.0 / Double(interval))
+                
         for i in 0..<count {
-            let value = ((Int(ceil(Double(startingMinute) / Double(interval))) + i + 1) * interval) % 60
+            let value = ((Int(ceil(Double(startingMinute) / Double(interval))) + i) * interval) % 60
             result.append(value)
         }
         

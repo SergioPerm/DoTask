@@ -18,6 +18,26 @@ struct Label {
             .lineBreak(.byTruncatingTail)
             .autolayout(true)
     }
+    
+    static func makeCellAdditionalLabel (with title: String? = nil, textColor: UIColor) -> UILabel {
+        UILabel()
+            .color(textColor)
+            .font(Font.cellAdditionalTitle.uiFont)
+            .text(title)
+            .lines(1)
+            .lineBreak(.byTruncatingTail)
+            .autolayout(true)
+    }
+    
+    static func makeCellMainLabel (with title: String? = nil, textColor: UIColor) -> UILabel {
+        UILabel()
+            .color(textColor)
+            .font(Font.cellMainTitle.uiFont)
+            .text(title)
+            .lines(1)
+            .lineBreak(.byTruncatingTail)
+            .autolayout(true)
+    }
 }
 
 extension UILabel {

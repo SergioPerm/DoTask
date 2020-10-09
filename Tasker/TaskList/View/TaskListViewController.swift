@@ -14,9 +14,19 @@ class TaskListViewController: UIViewController {
     public let viewModel = TaskListViewModelAssembler.createInstance()
     
     private var tableView: UITableView!
-    private let editTaskAction: ((_ taskModel: TaskModel) ->  Void)
+    
+//    private let addTaskBtn: UIView = {
+//        let btn = TaskAddButton()
+//        
+//        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(addTaskAction(sender:)))
+//        btn.addGestureRecognizer(tapRecognizer)
+//        
+//        return btn
+//    }()
+    
+    private let editTaskAction: ((_ taskModel: TaskModel?) ->  Void)
         
-    init(editTaskAction: @escaping (_ taskModel: TaskModel) ->  Void) {
+    init(editTaskAction: @escaping (_ taskModel: TaskModel?) ->  Void) {
         self.editTaskAction = editTaskAction
         
         super.init(nibName: nil, bundle: nil)
@@ -29,26 +39,22 @@ class TaskListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        for n in 1...10 {
-//
-//            var taskModel = TaskModel()
-//            taskModel.uid = UUID().uuidString
-//            taskModel.title = "\(n)"
-//            taskModel.taskDate = Date()
-//
-//            viewModel.addTask(from: taskModel)
-//
-//        }
         //viewModel.clearData()
-
-        
         setupView()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.viewWillAppear(view: self)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let btn = TaskAddButton {
+            self.editTaskAction(nil)
+        }
+        
+        view.insertSubview(btn, aboveSubview: tableView)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -64,12 +70,15 @@ extension TaskListViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(TaskListTableViewCell.self, forCellReuseIdentifier: TaskListTableViewCell.reuseIdentifier)
+        
         view.addSubview(tableView)
+        
         tableView.frame = view.frame
         
         tableView.separatorStyle = .none
         tableView.rowHeight = 75
         tableView.backgroundColor = .white
+        
     }
     
     private func configureCell(cell: TaskListTableViewCell, taskModel: TaskModel) {
@@ -79,6 +88,12 @@ extension TaskListViewController {
     
     private func doneCellAction(_ taskIdentifier: String) {
         viewModel.setDoneForTask(with: taskIdentifier)
+    }
+    
+    // MARK: Actions
+    
+    @objc private func addTaskAction(sender: UIView) {
+        
     }
 }
 
@@ -98,13 +113,8 @@ extension TaskListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TaskListTableViewCell.reuseIdentifier) as! TaskListTableViewCell
         let taskModel = viewModel.tableViewItems[indexPath.section].tasks[indexPath.row]
-//        cell.titleLabel.text = taskModel.title
-//        cell.dateLabel.text = "17/01/2021"
-
-        
         configureCell(cell: cell, taskModel: taskModel)
-//        cell.taskIdentifier = taskModel.uid
-        
+
         return cell
     }
     
@@ -116,9 +126,9 @@ extension TaskListViewController: UITableViewDataSource {
         let label = UILabel()
         label.frame = CGRect.init(x: 5, y: 5, width: headerView.frame.width-10, height: headerView.frame.height-10)
         label.text = headerName
-        label.font = UIFont(name: "HelveticaNeue-Bold", size: 35)// my custom font
+        label.font = Font.tableHeader.uiFont//UIFont(name: "HelveticaNeue-Bold", size: 35)// my custom font
         
-        label.textColor = #colorLiteral(red: 0.2369126672, green: 0.6231006994, blue: 1, alpha: 1)
+        label.textColor = #colorLiteral(red: 0.2392156863, green: 0.6235294118, blue: 0.9960784314, alpha: 1)
         
         headerView.addSubview(label)
         
@@ -145,7 +155,7 @@ extension TaskListViewController: UITableViewDelegate {
         let contextItemDelete = UIContextualAction(style: .destructive, title: "") { [weak self] (contextualAction, view, completion) in
             self?.viewModel.deleteTask(at: indexPath)
         }
-        contextItemDelete.backgroundColor = UIColor.white
+        contextItemDelete.backgroundColor = Color.whiteColor.uiColor
         contextItemDelete.image = UIGraphicsImageRenderer(size: CGSize(width: 30, height: 30)).image { _ in
             UIImage(named: "recycle")?.draw(in: CGRect(x: 0, y: 0, width: 30, height: 30))
         }

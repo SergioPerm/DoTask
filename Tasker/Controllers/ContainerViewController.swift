@@ -10,55 +10,68 @@ import UIKit
 
 class ContainerViewController: UIViewController {
 
+    // MARK: Main View
+    
     var mainViewController: TaskListViewController!
+    
+    // MARK: View Life-cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        
         view.backgroundColor = .clear
         
         configureMainViewConrtoller()
-        // Do any additional setup after loading the view.
     }
+}
+
+extension ContainerViewController {
+    
+    // MARK: Setup
     
     func configureMainViewConrtoller() {
-        
         mainViewController = TaskListViewController(editTaskAction: { [weak self] taskModel in
             self?.editTask(taskModel: taskModel)
         })
         
         _ = UINavigationController(rootViewController: mainViewController)
+                
+        let navLabel = UILabel()
+        let navTitle = NSMutableAttributedString(string: "Task", attributes:[
+            NSAttributedString.Key.foregroundColor: Color.blueColor.uiColor,
+            NSAttributedString.Key.font: Font.mainTitle.uiFont])
+
+        navTitle.append(NSMutableAttributedString(string: "er", attributes:[
+            NSAttributedString.Key.font: Font.mainTitle2.uiFont,
+            NSAttributedString.Key.foregroundColor: Color.pinkColor.uiColor]))
+
+        navLabel.attributedText = navTitle
+        mainViewController.navigationItem.titleView = navLabel
         
-        let addItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addAction(sender:)))
-        
-        mainViewController.navigationItem.rightBarButtonItem = addItem
-        mainViewController.title = "Tasker"
+        if let navBar = mainViewController.navigationController?.navigationBar {
+            
+            navBar.standardAppearance.backgroundColor = UIColor.clear
+            navBar.standardAppearance.backgroundEffect = nil
+            navBar.standardAppearance.shadowImage = UIImage()
+            navBar.standardAppearance.shadowColor = .clear
+            navBar.standardAppearance.backgroundImage = UIImage()
+            
+        }
         
         self.add(mainViewController.navigationController!)
+    }
         
-    }
+    // MARK: Views actions
     
-    @objc func addAction(sender: UIBarButtonItem) {
-        let detailTaskViewController = DetailTaskViewController(taskModel: nil, onSave: { [weak self] taskModel, detailVC in
-            self?.mainViewController.viewModel.addTask(from: taskModel)
-            detailVC.remove()
-            self?.view.removeDimmedView()
-        }, onCancel: { [weak self] detailVC in
-            detailVC.remove()
-            self?.view.removeDimmedView()
-        }, onCalendarSelect: { [weak self] currentDate, detailVC in
-            self?.openDatePicker(withDate: currentDate, for: detailVC)
-        }, onTimeReminderSelect: { [weak self] currentTime, detailVC in
-            self?.openTimePicker(withTime: currentTime, for: detailVC)
-        })
-        addSubviewAtIndex(detailTaskViewController, at: 1)
-        view.showDimmedBelowSubview(subview: detailTaskViewController.view, for: view)
-    }
-    
-    func editTask(taskModel: TaskModel) {
+    func editTask(taskModel: TaskModel?) {
+        let taskModel = taskModel ?? nil
+                
         let detailTaskViewController = DetailTaskViewController(taskModel: taskModel, onSave: { [weak self] taskModel, detailVC in
-            self?.mainViewController.viewModel.updateTask(from: taskModel)
+            if taskModel.isNew {
+                self?.mainViewController.viewModel.addTask(from: taskModel)
+            } else {
+                self?.mainViewController.viewModel.updateTask(from: taskModel)
+            }
+            
             detailVC.remove()
             self?.view.removeDimmedView()
         }, onCancel: { [weak self] detailVC in
@@ -69,7 +82,8 @@ class ContainerViewController: UIViewController {
         }, onTimeReminderSelect: { [weak self] currentTime, detailVC in
             self?.openTimePicker(withTime: currentTime, for: detailVC)
         })
-        add(detailTaskViewController)//addSubviewAtIndex(detailTaskViewController, at: 1)
+        
+        add(detailTaskViewController)
         view.showDimmedBelowSubview(subview: detailTaskViewController.view, for: view)
     }
         
@@ -85,6 +99,7 @@ class ContainerViewController: UIViewController {
             pickerVC.remove()
             self?.view.removeDimmedView()
         })
+        
         add(timePicker)
         view.showDimmedBelowSubview(subview: timePicker.view, for: view)
     }
@@ -102,8 +117,8 @@ class ContainerViewController: UIViewController {
             pickerVC.remove()
             self?.view.removeDimmedView()
         })
+        
         add(calendarPicker)
-        //addSubviewAtIndex(calendarPicker, at: 2)
         view.showDimmedBelowSubview(subview: calendarPicker.view, for: view)
     }
 }

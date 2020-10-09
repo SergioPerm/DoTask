@@ -16,7 +16,7 @@ class CalendarPickerViewCell: UICollectionViewCell {
         let radius: CGFloat = frame.width/2
         circleLayer.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 2.0 * radius, height: 2.0 * radius), cornerRadius: radius).cgPath
         circleLayer.position = CGPoint(x: radius - radius, y: radius - radius)
-        circleLayer.fillColor = #colorLiteral(red: 0.305240575, green: 0.7878151489, blue: 0.8980392157, alpha: 1).cgColor
+        circleLayer.fillColor = Color.blueColor.uiColor.cgColor
         
         return circleLayer
     }()
@@ -27,8 +27,8 @@ class CalendarPickerViewCell: UICollectionViewCell {
         circleLayer.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: (2.0 * radius) - 4, height: (2.0 * radius)-4), cornerRadius: radius).cgPath
         circleLayer.position = CGPoint(x: radius - radius + 2, y: radius - radius + 2)
         circleLayer.lineWidth = 2
-        circleLayer.strokeColor = #colorLiteral(red: 0.305240575, green: 0.7878151489, blue: 0.8980392157, alpha: 1).cgColor
-        circleLayer.fillColor = UIColor.clear.cgColor
+        circleLayer.strokeColor = Color.blueColor.uiColor.cgColor
+        circleLayer.fillColor = Color.clearColor.uiColor.cgColor
          
         return circleLayer
     }()
@@ -61,7 +61,7 @@ extension CalendarPickerViewCell {
             return
         }
         
-        dayLabel.textColor = day.isWeekend ? #colorLiteral(red: 1, green: 0.5330614917, blue: 0.5982242903, alpha: 1) : #colorLiteral(red: 0, green: 0.4784313725, blue: 1, alpha: 1)
+        dayLabel.textColor = day.isWeekend ? Color.pinkColor.uiColor : Color.blueColor.uiColor
         
         if day.currentDay {
             if currentDayLayer.superlayer == nil {
@@ -72,9 +72,9 @@ extension CalendarPickerViewCell {
         }
 
         if day.isSelected {
+            dayLabel.textColor = Color.whiteColor.uiColor
             if selectLayer.superlayer == nil {
                 self.layer.sublayers?.insert(selectLayer, at: 0)
-                self.dayLabel.textColor = .white
             }
         } else {
             selectLayer.removeFromSuperlayer()

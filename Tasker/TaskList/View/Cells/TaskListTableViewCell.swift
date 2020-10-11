@@ -58,15 +58,22 @@ class TaskListTableViewCell: UITableViewCell {
         return Label.makeCellAdditionalLabel(textColor: #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1))
     }()
     
-    private let doneView: UIView = {
-        let view = UIView()
+    private let checkView: UIView = {
+        let checkView = UIView()
         
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.borderWidth = 2
-        view.layer.borderColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.8470588235)
-        view.layer.cornerRadius = 3
+        checkView.translatesAutoresizingMaskIntoConstraints = false
+        checkView.layer.borderWidth = 2
+        checkView.layer.borderColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.8470588235)
+        checkView.layer.cornerRadius = 3
+    
+        return checkView
+    }()
+    
+    private let doneView: UIView = {
+        let tapView = UIView()
+        tapView.translatesAutoresizingMaskIntoConstraints = false
                 
-        return view
+        return tapView
     }()
     
     private let shadowLayer: ShadowView = {
@@ -87,6 +94,13 @@ class TaskListTableViewCell: UITableViewCell {
         
         return view
     }()
+    
+//    private let testFill: CAShapeLayer = {
+//
+//
+//
+//        return shape
+//    }()
         
     // MARK: Initializers
     
@@ -133,13 +147,23 @@ extension TaskListTableViewCell {
             backView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.8)
         ])
         
+        doneView.addSubview(checkView)
+        
+        constraints.append(contentsOf: [
+            checkView.widthAnchor.constraint(equalToConstant: 24),
+            checkView.heightAnchor.constraint(equalToConstant: 24),
+            checkView.centerYAnchor.constraint(equalTo: doneView.centerYAnchor),
+            checkView.centerXAnchor.constraint(equalTo: doneView.centerXAnchor)
+        ])
+        
         addSubview(doneView)
         
         constraints.append(contentsOf: [
-            doneView.heightAnchor.constraint(equalToConstant: 24),
-            doneView.widthAnchor.constraint(equalToConstant: 24),
-            doneView.leadingAnchor.constraint(equalTo: backView.leadingAnchor, constant: 20),
-            doneView.centerYAnchor.constraint(equalTo: centerYAnchor)
+            doneView.leadingAnchor.constraint(equalTo: backView.leadingAnchor, constant: 10),
+            doneView.centerYAnchor.constraint(equalTo: backView.centerYAnchor),
+            doneView.topAnchor.constraint(equalTo: backView.topAnchor),
+            doneView.bottomAnchor.constraint(equalTo: backView.bottomAnchor),
+            doneView.widthAnchor.constraint(equalToConstant: 40)
         ])
         
         backView.addSubview(titleLabel)
@@ -162,7 +186,7 @@ extension TaskListTableViewCell {
             timeLabel.leadingAnchor.constraint(equalTo: dateLabel.trailingAnchor, constant: 10),
             timeLabel.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: -20)
         ])
-        
+                
         backgroundColor = .clear
         
         NSLayoutConstraint.activate(constraints)
@@ -174,7 +198,7 @@ extension TaskListTableViewCell {
     // MARK: Actions
     
     @objc private func tapDoneAction(sender: UIView) {
-        animateCheckMark(view: doneView) {
+        animateCheckMark(view: checkView) {
             if let taskIdentifier = self.taskIdentifier, let doneHandler = self.doneHandler {
                 doneHandler(taskIdentifier)
             }
@@ -184,20 +208,19 @@ extension TaskListTableViewCell {
     // MARK: Animations
     
     public func animateSelection(onFinish: @escaping ()->()) {
-        UIView.animateKeyframes(withDuration: 0.4,
-                                delay: 0, options: .calculationModeCubic,
-                                animations: {
-                                    UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.2) {
-                                        self.shadowLayer.layer.shadowOpacity = 0.1
-                                    }
-                                    UIView.addKeyframe(withRelativeStartTime: 0.2, relativeDuration: 0.4) {
-                                        self.shadowLayer.layer.shadowOpacity = 0.3
-                                    }
-        }) { finished in
-            if finished {
-                onFinish()
-            }
+        CATransaction.begin()
+        CATransaction.setCompletionBlock {
+            onFinish()
         }
+        
+        let animationIn = CAKeyframeAnimation(keyPath: "shadowOpacity")
+        
+        animationIn.values = [0.3, 0.1, 0.3]
+        animationIn.keyTimes = [0, 0.6, 1.0]
+                
+        shadowLayer.layer.add(animationIn, forKey: "pulse")
+        
+        CATransaction.commit()
     }
     
     private func animateCheckMark(view: UIView, finishHandler:@escaping (()->())) {

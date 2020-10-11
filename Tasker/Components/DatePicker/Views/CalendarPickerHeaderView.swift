@@ -12,7 +12,7 @@ class CalendarPickerHeaderView: UIView {
 
     let kCONTENT_XIB_NAME = "CalendarPickerHeaderView"
     var borderBottom: CALayer?
-    let borderWidth: CGFloat = 0.3
+    let borderWidth: CGFloat = 1
     let borderColor =  #colorLiteral(red: 0.8892104444, green: 0.8892104444, blue: 0.8892104444, alpha: 1).cgColor
     
     @IBOutlet var contentView: UIView!
@@ -60,7 +60,7 @@ class CalendarPickerHeaderView: UIView {
         monthYearLabel.font = monthYearLabel.font.withSize(frame.width/(280/22))
         
         guard let border = borderBottom else { return }
-        border.frame = CGRect(x: 0, y: frame.height - borderWidth*2, width: frame.width, height: borderWidth)
+        border.frame = CGRect(x: 0, y: frame.height - borderWidth, width: frame.width, height: borderWidth)
     }
     
 }

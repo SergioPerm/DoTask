@@ -43,6 +43,8 @@ class CalendarPickerViewController: UIViewController {
         return collectionView
     }()
     
+    // MARK: Scroll view values
+    
     private lazy var cellSize: CGSize = {
         let flowLayout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         let padding = (collectionMargins * 2) + (cellsInterInsets * (cellPerRowCount - 1))
@@ -263,7 +265,7 @@ class CalendarPickerViewController: UIViewController {
         if let diffAmountMonths = selectedDate?.endOfMonth.months(from: baseDate) {
             let currentIndexPath = IndexPath(row: 0, section: diffAmountMonths)
             collectionView.scrollToItem(at: currentIndexPath, at: .centeredVertically, animated: false)
-            alignMonthInCollectionView()
+            alignMonthInCollectionView(velocity: CGPoint.zero)
         }
     }
     
@@ -419,7 +421,7 @@ extension CalendarPickerViewController {
     func setDataForHeaderView(for currentDate: Date) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "LLLL YYYY"
-        headerView.monthYearLabel.text = dateFormatter.string(from: currentDate)
+        headerView.monthYearLabel.text = dateFormatter.string(from: currentDate).capitalizingFirstLetter()
     }
 }
 
@@ -492,15 +494,14 @@ extension CalendarPickerViewController: UICollectionViewDelegate {
         let safeIndex = max(0, min(numberOfItems - 1, index))
         return safeIndex
     }
-    
+        
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        // Stop scrollView sliding:
+
         targetContentOffset.pointee = scrollView.contentOffset
-        alignMonthInCollectionView()
+        alignMonthInCollectionView(velocity: velocity)
     }
-    
-    func alignMonthInCollectionView() {
-        let velocity = CGPoint(x: 0, y: 0)
+        
+    func alignMonthInCollectionView(velocity: CGPoint) {
         
         let sectionHeight = (collectionMargins * 2) + (cellSize.height * 6) + (cellsInterInsets * 5)
 
@@ -521,18 +522,19 @@ extension CalendarPickerViewController: UICollectionViewDelegate {
             let toValue = sectionHeight * CGFloat(snapToIndex)
 
             if (snapToIndex >= 0) {
-                setDataForHeaderView(for: days[snapToIndex].firstDay)
                 // Damping equal 1 => no oscillations => decay animation:
-                UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity.y, options: .allowUserInteraction, animations: {
+                UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity.y < 0 ? velocity.y * -1 : velocity.y, options: .allowUserInteraction, animations: {
                     self.collectionView.contentOffset = CGPoint(x: 0, y: toValue)
                     self.collectionView.layoutIfNeeded()
-                }, completion: nil)
+                }, completion: { finished in
+                    self.setDataForHeaderView(for: self.days[snapToIndex].firstDay)
+                })
             }
 
         } else {
-            setDataForHeaderView(for: days[indexOfMajorCell].firstDay)
             let offsetForSlide = CGFloat(indexOfMajorCell) * sectionHeight
             collectionView.setContentOffset(CGPoint(x: 0, y: offsetForSlide), animated: true)
+            setDataForHeaderView(for: days[indexOfMajorCell].firstDay)
         }
     }
 }

@@ -12,6 +12,19 @@ extension UIView {
     
     static var dimmedViews = [UIView]()
     
+    var statusBarHeight: CGFloat {
+        return UIDevice.hasNotch ? 44 : 20
+    }
+    
+    var safeAreaFrame: CGRect {
+        guard let globalView = self.globalView else { return CGRect.zero }
+        
+        var safeFrame = globalView.safeAreaLayoutGuide.layoutFrame
+        safeFrame.origin.y = safeFrame.origin.y == 0 ? statusBarHeight : safeFrame.origin.y
+        
+        return safeFrame
+    }
+    
     var globalView: UIView? {
         return UIApplication.shared.windows.first { $0.isKeyWindow }
     }
@@ -20,8 +33,6 @@ extension UIView {
         let rootView = UIApplication.shared.windows.first { $0.isKeyWindow }
         return self.superview?.convert(self.frame, to: rootView)
     }
-    
-    
     
     func showDimmedBelowSubview(subview: UIView, for view: UIView) {
         UIView.dimmedViews.append(UIView())// = UIView()
@@ -53,7 +64,7 @@ extension UIView {
         
         let shakeGroup = CAAnimationGroup()
         shakeGroup.animations = [translation, rotation]
-        shakeGroup.duration = 1.0
+        shakeGroup.duration = duration
         layer.add(shakeGroup, forKey: "shakeIt")
     }
     

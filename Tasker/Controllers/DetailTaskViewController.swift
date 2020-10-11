@@ -107,10 +107,15 @@ class DetailTaskViewController: UIViewController {
         swipeView.translatesAutoresizingMaskIntoConstraints = false
         swipeView.backgroundColor = .clear
 
-        let chevron = UIImageView(image: UIImage(systemName: "chevron.compact.down"))
+        var chevron = UIImageView()
+        if #available(iOS 13.0, *) {
+            chevron = UIImageView(image: UIImage(systemName: "chevron.compact.down"))
+        } else {
+            chevron = UIImageView(image: UIImage(named: "chevron"))
+        }
         chevron.contentMode = .scaleAspectFit
         chevron.translatesAutoresizingMaskIntoConstraints = false
-        chevron.tintColor = #colorLiteral(red: 0.8888786765, green: 0.8888786765, blue: 0.8888786765, alpha: 1)
+        chevron.tintColor = #colorLiteral(red: 0.8901960784, green: 0.8901960784, blue: 0.8901960784, alpha: 1)
         
         swipeView.addSubview(chevron)
         
@@ -177,11 +182,11 @@ class DetailTaskViewController: UIViewController {
     }()
     
     let locationBtn: UIButton = {
-        return Button.makeStandartButtonWithImage(image: UIImage(systemName: "mappin.and.ellipse")!)
+        return Button.makeStandartButtonWithImage(image: UIImage(named: "warning")!)
     }()
     
     let saveBtn: UIButton = {
-        return Button.makeStandartButtonWithImage(image: UIImage(systemName: "checkmark")!)
+        return Button.makeStandartButtonWithImage(image: UIImage(named: "checkmark")!)
     }()
     
     // MARK: Init
@@ -267,33 +272,8 @@ class DetailTaskViewController: UIViewController {
         super.viewWillAppear(animated)
         showView()
     }
-    
-    // MARK: View SETUP
-    private func showView() {
-        print("Show view")
-
-        UIView.animate(withDuration: 0.3,
-                       delay: 0,
-                       options: .curveEaseOut,
-                       animations: {
-                        self.view.frame.origin = self.viewOrigin
-        }, completion: { (finished) in
-            self.titleTextView.becomeFirstResponder()
-        })
-    }
-    
-    private func hideView(completion: @escaping ()->()) {
-        titleTextView.resignFirstResponder()
         
-        UIView.animate(withDuration: 0.2,
-                       delay: 0,
-                       options: .curveEaseOut,
-                       animations: {
-                        self.view.frame.origin = self.viewOriginOnStart
-        }, completion: { (finished) in
-            completion()
-        })
-    }
+    // MARK: View SETUP
     
     private func setupView() {
         
@@ -321,8 +301,13 @@ class DetailTaskViewController: UIViewController {
             dateLabel.topAnchor.constraint(equalTo: swipeCloseView.bottomAnchor, constant: 14),
             dateLabel.widthAnchor.constraint(equalToConstant: 100)
         ])
-                
-        let clockImageView = UIImageView(image: UIImage(systemName: "alarm"))
+              
+        var clockImageView = UIImageView()
+        if #available(iOS 13.0, *) {
+            clockImageView = UIImageView(image: UIImage(systemName: "alarm"))
+        } else {
+            clockImageView = UIImageView(image: UIImage(named: "alarm"))
+        }
         clockImageView.tintColor = .systemGray
         clockImageView.contentMode = .scaleAspectFit
         
@@ -394,6 +379,8 @@ class DetailTaskViewController: UIViewController {
                 
     }
     
+    // MARK: Setup TextView place holder
+    
     private func setupPlaceholder() {
         placeholderLabel.text = "Task description"
         placeholderLabel.font = Font.detailTaskStandartTitle.uiFont
@@ -404,28 +391,41 @@ class DetailTaskViewController: UIViewController {
         placeholderLabel.isHidden = !titleTextView.text.isEmpty
     }
     
+    // MARK: Setup View Origin
+    
     private func setupViewOrigin() {
-        print("Setup viewOrigin")
+        let safeAreaFrame = view.safeAreaFrame
         
-        let safeAreaGuide = self.getSaveAreaLayoutGuide()
-        let safeAreaOrigin = safeAreaGuide.layoutFrame.origin
-            
-        viewOrigin = CGPoint(x: safeAreaOrigin.x, y: safeAreaOrigin.y+30)
-        viewWidth = safeAreaGuide.layoutFrame.width
-        viewHeight = safeAreaGuide.layoutFrame.height
-
+        viewOrigin = CGPoint(x: safeAreaFrame.origin.x, y: safeAreaFrame.origin.y + 40)//CGPoint(x: globalViewOrigin.x, y: globalViewOrigin.y)
+        viewWidth = safeAreaFrame.width
+        viewHeight = safeAreaFrame.height
     }
+    
+    private func showView() {
+        print("Show view")
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        UIView.animate(withDuration: 0.3,
+                       delay: 0,
+                       options: .curveEaseOut,
+                       animations: {
+                        self.view.frame.origin = self.viewOrigin
+        }, completion: { (finished) in
+            self.titleTextView.becomeFirstResponder()
+        })
     }
-    */
-
+    
+    private func hideView(completion: @escaping ()->()) {
+        titleTextView.resignFirstResponder()
+        
+        UIView.animate(withDuration: 0.2,
+                       delay: 0,
+                       options: .curveEaseOut,
+                       animations: {
+                        self.view.frame.origin = self.viewOriginOnStart
+        }, completion: { (finished) in
+            completion()
+        })
+    }
 }
 
 // MARK: UITextViewDelegate
@@ -449,7 +449,7 @@ extension DetailTaskViewController {
     
     @objc func saveTaskAction(sender: UIButton) {
         if titleTextView.text == "" {
-            titleTextView.shake(duration: 2)
+            titleTextView.shake(duration: 1)
             return
         }
         
@@ -506,19 +506,19 @@ extension DetailTaskViewController {
                 if rView.frame.origin.y < viewOrigin.y {
                     rView.frame.origin = viewOrigin
                 }
-                
-                var draggingDistance = recognizer.translation(in: view).y
                                 
-                draggingDistance *= 0.15
-                
+                var draggingDistance = recognizer.translation(in: view).y
+
+                draggingDistance *= 0.2
+
                 let swipePositionY = rView.frame.origin.y + draggingDistance
-                
+
                 if swipePositionY > viewOrigin.y {
                     rView.frame.origin.y = rView.frame.origin.y + draggingDistance
                     recognizer.setTranslation(CGPoint.zero, in: view)
                 }
-                
-                if rView.frame.origin.y > 85.0 {
+
+                if rView.frame.origin.y > viewOrigin.y + 45 {
                     hideView { [weak self] in
                         guard let self = self else { return }
                         self.onCancelTaskHandler(self)
@@ -527,8 +527,8 @@ extension DetailTaskViewController {
             }
         case .ended:
             if let rView = recognizer.view {
-                if rView.frame.origin.y < 85.0 {
-                    UIView.animate(withDuration: 0.2) {
+                if rView.frame.origin.y <= viewOrigin.y + 45 {
+                    UIView.animate(withDuration: 0.3) {
                         self.view.frame.origin.y = self.viewOrigin.y
                     }
                 } else {

@@ -48,13 +48,19 @@ extension ContainerViewController {
         mainViewController.navigationItem.titleView = navLabel
         
         if let navBar = mainViewController.navigationController?.navigationBar {
-            
-            navBar.standardAppearance.backgroundColor = UIColor.clear
-            navBar.standardAppearance.backgroundEffect = nil
-            navBar.standardAppearance.shadowImage = UIImage()
-            navBar.standardAppearance.shadowColor = .clear
-            navBar.standardAppearance.backgroundImage = UIImage()
-            
+            if #available(iOS 13.0, *) {
+                navBar.standardAppearance.backgroundColor = UIColor.clear
+                navBar.standardAppearance.backgroundEffect = nil
+                navBar.standardAppearance.shadowImage = UIImage()
+                navBar.standardAppearance.shadowColor = .clear
+                navBar.standardAppearance.backgroundImage = UIImage()
+            } else {
+                // Fallback on earlier versions
+                navBar.backgroundColor = .clear
+                navBar.setBackgroundImage(UIImage(), for:.default)
+                navBar.shadowImage = UIImage()
+                navBar.layoutIfNeeded()
+            }
         }
         
         self.add(mainViewController.navigationController!)
@@ -64,7 +70,7 @@ extension ContainerViewController {
     
     func editTask(taskModel: TaskModel?) {
         let taskModel = taskModel ?? nil
-                
+        
         let detailTaskViewController = DetailTaskViewController(taskModel: taskModel, onSave: { [weak self] taskModel, detailVC in
             if taskModel.isNew {
                 self?.mainViewController.viewModel.addTask(from: taskModel)

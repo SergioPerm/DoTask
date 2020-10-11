@@ -14,7 +14,7 @@ class CalendarPickerFooterView: UIView {
     var borderTop: CALayer?
     var borderMiddle: CALayer?
     var borderMiddleVertical: CALayer?
-    let borderWidth: CGFloat = 0.3
+    let borderWidth: CGFloat = 1
     let borderColor =  #colorLiteral(red: 0.8892104444, green: 0.8892104444, blue: 0.8892104444, alpha: 1).cgColor
     
     @IBOutlet var contentView: UIView!

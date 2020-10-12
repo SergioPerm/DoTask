@@ -16,7 +16,7 @@ extension UIView {
         return UIDevice.hasNotch ? 44 : 20
     }
     
-    var safeAreaFrame: CGRect {
+    var globalSafeAreaFrame: CGRect {
         guard let globalView = self.globalView else { return CGRect.zero }
         
         var safeFrame = globalView.safeAreaLayoutGuide.layoutFrame

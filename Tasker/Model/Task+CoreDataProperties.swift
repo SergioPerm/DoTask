@@ -25,6 +25,7 @@ extension Task {
     @NSManaged public var taskDate: Date?
     @NSManaged public var title: String?
     @NSManaged public var isDone: Bool
+    @NSManaged public var importanceLevel: Int16
     
     @objc var dailyName: String? {
         guard let taskDate = self.taskDate else {

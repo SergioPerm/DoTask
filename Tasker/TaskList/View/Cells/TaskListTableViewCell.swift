@@ -24,10 +24,32 @@ class TaskListTableViewCell: UITableViewCell {
             
             if let taskDate = taskModel.taskDate {
                 dateLabel.text = dateFormatter.string(from: taskDate)
+                
+                if taskDate < Date().startOfDay() {
+                    dateLabel.textColor = #colorLiteral(red: 1, green: 0.4627013226, blue: 0.494058354, alpha: 1)
+                    dateLabel.font = Font.cellAdditionalTitle.uiFont
+                } else {
+                    dateLabel.textColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+                    dateLabel.font = Font.cellAdditionalTitle.uiFont
+                }
+                
                 timeLabel.text = taskModel.reminderDate ? timeFormatter.string(from: taskDate) : ""
             } else {
                 dateLabel.text = ""
                 timeLabel.text = ""
+            }
+            
+            let importanceLevel = ImportanceLevel(rawValue: Int(taskModel.importanceLevel)) ?? .noImportant
+            
+            switch importanceLevel {
+            case .noImportant:
+                importanceView.backgroundColor = .clear
+            case .important:
+                importanceView.backgroundColor = #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1)
+            case .veryImportant:
+                importanceView.backgroundColor = #colorLiteral(red: 0.9372549057, green: 0.7798047149, blue: 0.2104026425, alpha: 1)
+            case .fuckedUpImportant:
+                importanceView.backgroundColor = #colorLiteral(red: 0.9372549057, green: 0.1278472226, blue: 0.1422514355, alpha: 1)
             }
 
             taskIdentifier = taskModel.uid
@@ -94,14 +116,14 @@ class TaskListTableViewCell: UITableViewCell {
         
         return view
     }()
-    
-//    private let testFill: CAShapeLayer = {
-//
-//
-//
-//        return shape
-//    }()
+                
+    private let importanceView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
         
+        return view
+    }()
+    
     // MARK: Initializers
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -184,9 +206,18 @@ extension TaskListTableViewCell {
             dateLabel.heightAnchor.constraint(equalToConstant: 20),
             timeLabel.centerYAnchor.constraint(equalTo: backView.centerYAnchor, constant: 12),
             timeLabel.leadingAnchor.constraint(equalTo: dateLabel.trailingAnchor, constant: 10),
-            timeLabel.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: -20)
+            timeLabel.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: -40)
         ])
-                
+        
+        backView.addSubview(importanceView)
+        
+        constraints.append(contentsOf: [
+            importanceView.topAnchor.constraint(equalTo: backView.topAnchor),
+            importanceView.bottomAnchor.constraint(equalTo: backView.bottomAnchor),
+            importanceView.trailingAnchor.constraint(equalTo: backView.trailingAnchor),
+            importanceView.widthAnchor.constraint(equalToConstant: 20)
+        ])
+                        
         backgroundColor = .clear
         
         NSLayoutConstraint.activate(constraints)

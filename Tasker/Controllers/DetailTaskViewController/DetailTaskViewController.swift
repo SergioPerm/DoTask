@@ -24,7 +24,9 @@ class DetailTaskViewController: UIViewController {
             guard let selectedDate = selectedDate else {
                 let calendarImage = UIImage(named: "dateCalendar")
                 taskModel.taskDate = nil
-                calendarBtn.setImage(calendarImage, for: .normal)
+                if let calendarBtn = calendarBtn {
+                    calendarBtn.day = nil
+                }
                 dateLabel.text = ""
                 return
             }
@@ -42,14 +44,11 @@ class DetailTaskViewController: UIViewController {
                 let timeComponents = Calendar.current.dateComponents([.hour, .minute], from: Date())
                 setDateInModel(timeComponents: timeComponents)
             }
-            
-            let calendar = Calendar.current
-            let components = calendar.dateComponents([.day], from: selectedDate)
-            
-            let calendarImage = UIImage(named: "date\(components.day!)")
-            
-            calendarBtn.setImage(calendarImage, for: .normal)
-            
+                        
+            if let calendarBtn = calendarBtn {
+                calendarBtn.day = selectedDate
+            }
+                        
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "dd/MM/yyyy"
             
@@ -62,8 +61,8 @@ class DetailTaskViewController: UIViewController {
             guard let selectedTime = selectedTime else {
                 taskModel.reminderDate = false
                 timeStackView.isHidden = true
-                if let reminderImage = reminderBtn.imageView?.image {
-                    reminderBtn.setImage(UIImage.grayscale(image: reminderImage), for: .normal)
+                if let alarmBtn = alarmBtn {
+                    alarmBtn.alarmIsSet = false
                 }
                 return
             }
@@ -76,8 +75,8 @@ class DetailTaskViewController: UIViewController {
             
             timeLabel.text = dateFormatter.string(from: selectedTime)
             
-            if let reminderImage = UIImage(named: "clockAlarm") {
-                reminderBtn.setImage(reminderImage, for: .normal)
+            if let alarmBtn = alarmBtn {
+                alarmBtn.alarmIsSet = true
             }
             
             taskModel.reminderDate = true
@@ -91,6 +90,8 @@ class DetailTaskViewController: UIViewController {
     var onCancelTaskHandler: (_ vc: DetailTaskViewController) -> Void
     
     // MARK: View properties
+    let topInset: CGFloat = 40
+    
     let screenSize: CGRect = {
         return UIScreen.main.bounds
     }()
@@ -173,17 +174,17 @@ class DetailTaskViewController: UIViewController {
     
     var accesoryBottomConstraint: NSLayoutConstraint = NSLayoutConstraint()
     
-    let calendarBtn: UIButton = {
-        return Button.makeStandartButtonWithImage(image: UIImage(named: "dateCalendar")!)
-    }()
+//    let calendarBtn: UIButton = {
+//        return Button.makeStandartButtonWithImage(image: UIImage(named: "dateCalendar")!)
+//    }()
     
     let reminderBtn: UIButton = {
         return Button.makeStandartButtonWithImage(image: UIImage(named: "clockAlarm")!)
     }()
     
-    let locationBtn: UIButton = {
-        return Button.makeStandartButtonWithImage(image: UIImage(named: "warning")!)
-    }()
+    var importanceBtn: ImportanceButton?
+    var calendarBtn: CalendarButton?
+    var alarmBtn: AlarmButton?
     
     let saveBtn: UIButton = {
         return Button.makeStandartButtonWithImage(image: UIImage(named: "checkmark")!)
@@ -343,14 +344,26 @@ class DetailTaskViewController: UIViewController {
         
         constraints.append(contentsOf: [textViewBottomConstraint])
         
-        accesoryStackView.addArrangedSubview(calendarBtn)
-        accesoryStackView.addArrangedSubview(reminderBtn)
-        accesoryStackView.addArrangedSubview(locationBtn)
+        importanceBtn = ImportanceButton(onTapAction: { [weak self] in
+            self?.importanceLevelTapAction()
+            }, importanceLevel: Int(taskModel.importanceLevel))
+        
+        calendarBtn = CalendarButton(onTapAction: { [weak self] in
+            self?.calendarTapAction()
+            }, day: selectedDate)
+        
+        alarmBtn = AlarmButton(onTapAction: { [weak self] in
+            self?.reminderTapAction()
+            }, alarmSet: taskModel.reminderDate)
+        
+        importanceBtn!.importanceLevel = ImportanceLevel(rawValue: Int(taskModel.importanceLevel))!
+         
+        accesoryStackView.addArrangedSubview(calendarBtn!)
+        accesoryStackView.addArrangedSubview(alarmBtn!)
+        accesoryStackView.addArrangedSubview(importanceBtn!)
         accesoryStackView.addArrangedSubview(saveBtn)
         
         saveBtn.addTarget(self, action: #selector(saveTaskAction(sender:)), for: .touchUpInside)
-        calendarBtn.addTarget(self, action: #selector(calendarTapAction(sender:)), for: .touchUpInside)
-        reminderBtn.addTarget(self, action: #selector(reminderTapAction(sender:)), for: .touchUpInside)
         
         view.addSubview(accesoryStackView)
         
@@ -394,16 +407,14 @@ class DetailTaskViewController: UIViewController {
     // MARK: Setup View Origin
     
     private func setupViewOrigin() {
-        let safeAreaFrame = view.safeAreaFrame
+        let safeAreaFrame = view.globalSafeAreaFrame
         
-        viewOrigin = CGPoint(x: safeAreaFrame.origin.x, y: safeAreaFrame.origin.y + 40)//CGPoint(x: globalViewOrigin.x, y: globalViewOrigin.y)
+        viewOrigin = CGPoint(x: safeAreaFrame.origin.x, y: safeAreaFrame.origin.y + topInset)
         viewWidth = safeAreaFrame.width
         viewHeight = safeAreaFrame.height
     }
     
     private func showView() {
-        print("Show view")
-
         UIView.animate(withDuration: 0.3,
                        delay: 0,
                        options: .curveEaseOut,
@@ -417,7 +428,7 @@ class DetailTaskViewController: UIViewController {
     private func hideView(completion: @escaping ()->()) {
         titleTextView.resignFirstResponder()
         
-        UIView.animate(withDuration: 0.2,
+        UIView.animate(withDuration: 0.3,
                        delay: 0,
                        options: .curveEaseOut,
                        animations: {
@@ -447,6 +458,8 @@ extension DetailTaskViewController: UITextViewDelegate {
 
 extension DetailTaskViewController {
     
+    // MARK: -Accessory view actions
+    
     @objc func saveTaskAction(sender: UIButton) {
         if titleTextView.text == "" {
             titleTextView.shake(duration: 1)
@@ -459,12 +472,12 @@ extension DetailTaskViewController {
         }
     }
     
-    @objc func calendarTapAction(sender: UIButton) {
+    func calendarTapAction() {
         titleTextView.resignFirstResponder()
         onCalendarSelect(taskModel.taskDate ?? Date(), self)
     }
     
-    @objc func reminderTapAction(sender: UIButton) {
+    func reminderTapAction() {
         titleTextView.resignFirstResponder()
         
         var taskTime = taskModel.taskDate ?? Date()
@@ -487,6 +500,12 @@ extension DetailTaskViewController {
         
         onTimeReminderSelect(taskTime, self)
     }
+    
+    func importanceLevelTapAction() {
+        taskModel.importanceLevel += 1
+    }
+    
+    // MARK: -Close actions
     
     @objc func tapToCloseAction(_ recognizer: UITapGestureRecognizer) {
         hideView { [weak self] in

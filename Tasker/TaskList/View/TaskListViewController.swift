@@ -38,7 +38,6 @@ class TaskListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         //viewModel.clearData()
         setupView()
     }

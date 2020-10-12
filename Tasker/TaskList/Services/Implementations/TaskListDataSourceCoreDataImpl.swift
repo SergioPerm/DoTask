@@ -122,6 +122,7 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
             task.reminderGeo = taskModel.reminderGeo
             task.lat = taskModel.lat!
             task.lon = taskModel.lon!
+            task.importanceLevel = taskModel.importanceLevel
             
             do {
                 try context.save()
@@ -178,7 +179,8 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
             newTask.taskDate = taskModel.taskDate
             newTask.reminderDate = taskModel.reminderDate
             newTask.reminderGeo = taskModel.reminderGeo
-                        
+            newTask.importanceLevel = taskModel.importanceLevel
+            
             if let lat = taskModel.lat, let lon = taskModel.lon {
                 newTask.lat = lat
                 newTask.lon = lon
@@ -198,8 +200,15 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
     }
     
     func clearData() {
-        for task in tasks {
-            context.delete(task)
+        let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
+
+        do {
+            let tasksForDelete = try context.fetch(fetchRequest)
+            for task in tasksForDelete {
+                context.delete(task)
+            }
+        } catch {
+            fatalError()
         }
         
         do {

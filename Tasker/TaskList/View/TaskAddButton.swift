@@ -88,7 +88,7 @@ extension TaskAddButton {
         addGestureRecognizer(tapGesture)
     }
     
-    @objc func tapAction(sender: UIView) {
+    @objc private func tapAction(sender: UIView) {
         
         CATransaction.begin()
         CATransaction.setCompletionBlock {

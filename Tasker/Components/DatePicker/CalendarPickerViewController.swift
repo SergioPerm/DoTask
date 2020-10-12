@@ -464,16 +464,21 @@ extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! CalendarPickerViewCell
-        if cell == selectedCell {
-            return
-        }
+//        if cell == selectedCell {
+//            selectedDateChanged(day!.date)
+//            selectedDate = day!.date
+//            return
+//        }
         
         let day = cell.day
                          
         if day!.isWithinDisplayedMonth {
             selectedDateChanged(day!.date)
             selectedDate = day!.date
-            selectedCell = cell
+            
+            if cell != selectedCell {
+                selectedCell = cell
+            }
         }
     }
 }

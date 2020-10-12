@@ -18,6 +18,13 @@ struct TaskModel {
     var lat: Double?
     var lon: Double?
     var isNew: Bool = false
+    var importanceLevel: Int16 {
+        didSet {
+            if importanceLevel > 3 {
+                importanceLevel = 0
+            }
+        }
+    }
     
     init() {
         self.uid = UUID().uuidString
@@ -26,6 +33,7 @@ struct TaskModel {
         self.reminderDate = false
         self.taskDate = Date()
         self.isNew = true
+        self.importanceLevel = 0
     }
     
     init(with task: Task) {
@@ -36,6 +44,7 @@ struct TaskModel {
         self.reminderDate = task.reminderDate
         self.lat = task.lat
         self.lon = task.lon
+        self.importanceLevel = task.importanceLevel
     }
     
 }

@@ -36,6 +36,16 @@ extension Date {
         return Calendar(identifier: .gregorian).date(byAdding: components, to: startOfMonth)!
     }
     
+    func isDayToday() -> Bool {
+        let calendar = Calendar.current.taskCalendar
+        return calendar.isDateInToday(self)
+    }
+    
+    func startOfDay() -> Date {
+        let calendar = Calendar.current.taskCalendar
+        return calendar.startOfDay(for: self)
+    }
+    
     func dailyNameForTask() -> String {
         let calendar = Calendar.current.taskCalendar
         let currentDate = calendar.startOfDay(for: Date())

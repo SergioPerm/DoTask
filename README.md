@@ -13,5 +13,11 @@ used frameworks:
 Architectural patterns:
 - MVVM (in TaskList component) with fetchedResultsController as data source
 
+now testing in ios 11.4 and 13.*
+
+unrealized feauters:
+- task diary
+- geo reminder
+- icloud
 
 ![Interface](https://media.giphy.com/media/iGYg4fRwZRLnvAPWAQ/giphy.gif)

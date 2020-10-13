@@ -11,6 +11,7 @@ used frameworks:
 - User Notifications
 
 Architectural patterns:
-- MVVM (in TaskList component)
+- MVVM (in TaskList component) with fetchedResultsController as data source
 
-![Interface] (https://media.giphy.com/media/iGYg4fRwZRLnvAPWAQ/giphy.gif)
+
+![Interface](https://media.giphy.com/media/iGYg4fRwZRLnvAPWAQ/giphy.gif)

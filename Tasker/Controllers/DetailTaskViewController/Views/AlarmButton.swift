@@ -12,9 +12,12 @@ class AlarmButton: UIView {
     
     public var alarmIsSet: Bool {
         didSet {
-            updateFramesInShapes()
+            redrawAlarmShape(alarmFrame: bounds)
         }
     }
+    
+    private let bellHeightAttitudeToHeightFrame: CGFloat = 0.45
+    private let bellWidthAttitudeToHeightFrame: CGFloat = 0.31
     
     private let onTapActionHandler: () -> Void
     
@@ -33,17 +36,11 @@ class AlarmButton: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        drawAlarmShape(alarmFrame: bounds)
+        redrawAlarmShape(alarmFrame: bounds)
     }
-    
 }
 
 extension AlarmButton {
-    
-    private func updateFramesInShapes() {
-        drawAlarmShape(alarmFrame: bounds)
-    }
-    
     private func setup() {
           let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapAction(sender:)))
         addGestureRecognizer(tapGesture)
@@ -53,14 +50,13 @@ extension AlarmButton {
         onTapActionHandler()
     }
     
-    private func drawAlarmShape(alarmFrame: CGRect) {
+    private func redrawAlarmShape(alarmFrame: CGRect) {
         alarmShape.removeFromSuperlayer()
         
         //setup size of bell
-        let bellHeight = frame.height * 0.45
-        let bellWidth = bellHeight * 0.7
+        let bellHeight = frame.height * bellHeightAttitudeToHeightFrame
+        let bellWidth = frame.height * bellWidthAttitudeToHeightFrame
         let bellVisorLenght = bellWidth * 0.2
-        
         let inset = (frame.height - bellHeight)/2
                         
         //draw
@@ -110,6 +106,7 @@ extension AlarmButton {
         bellBrush = CGPoint(x: bellBrush.x + bellVisorLenght, y: bellBrush.y)
         path.addLine(to: bellBrush)
                 
+        //Shape
         alarmShape = CAShapeLayer()
         
         alarmShape.fillColor = alarmIsSet ? UIColor.yellow.cgColor : UIColor.clear.cgColor
@@ -120,5 +117,4 @@ extension AlarmButton {
                     
         layer.addSublayer(alarmShape)
     }
-    
 }

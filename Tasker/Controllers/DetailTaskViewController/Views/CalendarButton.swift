@@ -10,6 +10,8 @@ import UIKit
 
 class CalendarButton: UIView {
     
+    private let calendarWidthAttitudeToHeightFrame: CGFloat = 0.55
+    
     private let onTapActionHandler: () -> Void
     
     private var dayLabel: UILabel = {
@@ -37,31 +39,33 @@ class CalendarButton: UIView {
     }
     
     private lazy var calendarShape: CAShapeLayer = {
-        let flowWidth = frame.width
         
-        let sideLength = frame.height * 0.55
-        let inset = (frame.height - sideLength)/2
+        //Setup calendar size
+        let scaleForHeight: CGFloat = 0.8
         
-        let backInset = flowWidth/2 - frame.height/2
-        let scale: CGFloat = 0.8
-        let sideHeight: CGFloat = sideLength*scale
+        let sideWidth = frame.height * calendarWidthAttitudeToHeightFrame
+        let hingeLenght: CGFloat = sideWidth/5
+        let inset = (frame.height - sideWidth)/2
         
-        let hingeLenght: CGFloat = 5.0
+        let backInset = frame.width/2 - frame.height/2
+        let sideHeight: CGFloat = sideWidth * scaleForHeight
         
-        let calendarOrigin = CGPoint(x: backInset + inset, y: inset + (sideLength-(sideHeight))/2)
-        let calendarSize = CGSize(width: sideLength, height: sideHeight)
+        let calendarOrigin = CGPoint(x: backInset + inset, y: inset + (sideWidth-(sideHeight))/2)
+        let calendarSize = CGSize(width: sideWidth, height: sideHeight)
                 
+        //Draw
         let rectPath = UIBezierPath(roundedRect: CGRect(origin: calendarOrigin, size: calendarSize), cornerRadius: 2)
-                    
-        var hingeBrush = CGPoint(x: calendarOrigin.x + sideLength/3, y: calendarOrigin.y - hingeLenght/2)
+        
+        var hingeBrush = CGPoint(x: calendarOrigin.x + sideWidth/3, y: calendarOrigin.y - hingeLenght/2)
         rectPath.move(to: hingeBrush)
         hingeBrush = CGPoint(x: hingeBrush.x, y: hingeBrush.y + hingeLenght)
         rectPath.addLine(to: hingeBrush)
-        hingeBrush = CGPoint(x: hingeBrush.x + sideLength/3, y: calendarOrigin.y - hingeLenght/2)
+        hingeBrush = CGPoint(x: hingeBrush.x + sideWidth/3, y: calendarOrigin.y - hingeLenght/2)
         rectPath.move(to: hingeBrush)
         hingeBrush = CGPoint(x: hingeBrush.x, y: hingeBrush.y + hingeLenght)
         rectPath.addLine(to: hingeBrush)
         
+        //Shape
         let shapeLayer = CAShapeLayer()
         
         shapeLayer.fillColor = UIColor.clear.cgColor

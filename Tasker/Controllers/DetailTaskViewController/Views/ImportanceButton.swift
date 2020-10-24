@@ -23,21 +23,31 @@ class ImportanceButton: UIView {
     
     private let onTapActionHandler: () -> Void
     
-    //private var countMarks: CGFloat = 1
+    private let diagonalAttitudeToHeightFrame: CGFloat = 0.55
+    
+    //Dictionary for storing magnification animation values
+    private let importanceLevelMagnification: [ImportanceLevel: CGFloat] = {
+        var maginificationDictionary = [ImportanceLevel: CGFloat]()
+        maginificationDictionary[ImportanceLevel.noImportant] = 1.0
+        maginificationDictionary[ImportanceLevel.important] = 1.2
+        maginificationDictionary[ImportanceLevel.veryImportant] = 1.4
+        maginificationDictionary[ImportanceLevel.fuckedUpImportant] = 1.7
+        
+        return maginificationDictionary
+    }()
+    
     var importanceLevel: ImportanceLevel
         
     private var marksShape: CAShapeLayer = CAShapeLayer()
     
     private lazy var warningShape: CAShapeLayer = {
-        let sideLenght = frame.height
-        let flowWidth = frame.width
-        
-        let diagonal: CGFloat = 0.55 * sideLenght
+        //Setup shape size
+        let diagonal: CGFloat = frame.height * diagonalAttitudeToHeightFrame
         let sideByDiagonal: CGFloat = diagonal / sqrt(2)
         let inset = (frame.height - sideByDiagonal)/2
+        let backInset = frame.width/2 - frame.height/2
         
-        let backInset = flowWidth/2 - sideLenght/2
-        
+        //Draw
         let rectPath = UIBezierPath(roundedRect: CGRect(x: backInset + inset, y: inset, width: sideByDiagonal, height: sideByDiagonal), cornerRadius: 2)
                 
         let bounds: CGRect = rectPath.cgPath.boundingBox
@@ -51,6 +61,7 @@ class ImportanceButton: UIView {
         transform = transform.translatedBy(x: -center.x, y: -center.y)
         rectPath.apply(transform)
 
+        //Shape
         let shapeLayer = CAShapeLayer()
         
         shapeLayer.fillColor = UIColor.clear.cgColor
@@ -77,7 +88,6 @@ class ImportanceButton: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
         updateFramesInShapes()
     }
 
@@ -96,29 +106,18 @@ extension ImportanceButton {
     
     @objc private func tapAction(sender: UIView) {
         let levelToSet = importanceLevel.currentValue() == 3 ? 0 : importanceLevel.currentValue() + 1
-        if let impLevel = ImportanceLevel(rawValue: levelToSet) {
-            self.importanceLevel = impLevel
+        if let importanceLevel = ImportanceLevel(rawValue: levelToSet) {
+            self.importanceLevel = importanceLevel
             updateFramesInShapes()
             
-            let animationIn = CAKeyframeAnimation(keyPath: "transform.scale")
-            
-            var magnificationLvl = 1.0
-            
-            switch impLevel {
-            case .noImportant:
-                magnificationLvl = 1.0
-            case .important:
-                magnificationLvl = 1.2
-            case .veryImportant:
-                magnificationLvl = 1.4
-            case .fuckedUpImportant:
-                magnificationLvl = 1.7
+            if let magnificationLvl = importanceLevelMagnification[importanceLevel] {
+                let animationIn = CAKeyframeAnimation(keyPath: "transform.scale")
+
+                animationIn.values = [1.0, magnificationLvl, 1.0]
+                animationIn.keyTimes = [0, 0.3, 0.8]
+                
+                layer.add(animationIn, forKey: "pulse")
             }
-            
-            animationIn.values = [1.0, magnificationLvl, 1.0]
-            animationIn.keyTimes = [0, 0.3, 0.8]
-            
-            layer.add(animationIn, forKey: "pulse")
         }
         onTapActionHandler()
     }

@@ -248,9 +248,9 @@ class DetailTaskViewController: UIViewController {
         let keyboardEndFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         let convertedKeyboardEndFrame = view.convert(keyboardEndFrame, from: view.window)
         let rawAnimationCurve = (notification.userInfo![UIResponder.keyboardAnimationCurveUserInfoKey] as! NSNumber).uint32Value << 16
-        let animationCurve = UIView.AnimationOptions.init(rawValue: UInt(rawAnimationCurve))//fromRaw(UInt(rawAnimationCurve))
+        let animationCurve = UIView.AnimationOptions.init(rawValue: UInt(rawAnimationCurve))
         
-        accesoryBottomConstraint.constant = convertedKeyboardEndFrame.minY - view.bounds.maxY//view.bounds.maxY - convertedKeyboardEndFrame.minY
+        accesoryBottomConstraint.constant = convertedKeyboardEndFrame.minY - view.bounds.maxY
         
         UIView.animate(withDuration: animationDuration,
                        delay: 0.0,

@@ -131,7 +131,7 @@ class CalendarPickerViewController: UIViewController {
     }
     
     private func showView() {
-        let mainView = view.globalView
+        let mainView = UIView.globalView
         
         let safeAreaGuide = getSafeAreaLayoutGuide()
         let viewWidth = safeAreaGuide.layoutFrame.width - 40

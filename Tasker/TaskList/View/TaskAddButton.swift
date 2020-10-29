@@ -73,7 +73,7 @@ class TaskAddButton: UIView {
 
 extension TaskAddButton {
     private func setup() {
-        guard let globalFrame = globalView?.frame else { return }
+        guard let globalFrame = UIView.globalView?.frame else { return }
         let btnWidth = globalFrame.width/5 * 0.9
         let btnOrigin = CGPoint(x: globalFrame.width - btnWidth - 20, y: globalFrame.height - btnWidth - 20)
         frame = CGRect(x: btnOrigin.x, y: btnOrigin.y, width: btnWidth, height: btnWidth)

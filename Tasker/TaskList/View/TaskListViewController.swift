@@ -15,14 +15,6 @@ class TaskListViewController: UIViewController {
     
     private var tableView: UITableView!
     
-//    private let addTaskBtn: UIView = {
-//        let btn = TaskAddButton()
-//        
-//        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(addTaskAction(sender:)))
-//        btn.addGestureRecognizer(tapRecognizer)
-//        
-//        return btn
-//    }()
     
     private let editTaskAction: ((_ taskModel: TaskModel?) ->  Void)
         
@@ -38,7 +30,6 @@ class TaskListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //viewModel.clearData()
         setupView()
     }
     
@@ -46,16 +37,7 @@ class TaskListViewController: UIViewController {
         super.viewWillAppear(animated)
         viewModel.viewWillAppear(view: self)
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        let btn = TaskAddButton {
-            self.editTaskAction(nil)
-        }
         
-        view.insertSubview(btn, aboveSubview: tableView)
-    }
-    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         viewModel.viewWillDisappear()
@@ -78,6 +60,10 @@ extension TaskListViewController {
         tableView.rowHeight = 75
         tableView.backgroundColor = .white
         
+        let btn = TaskAddButton {
+            self.editTaskAction(nil)
+        }
+        view.insertSubview(btn, aboveSubview: tableView)
     }
     
     private func configureCell(cell: TaskListTableViewCell, taskModel: TaskModel) {

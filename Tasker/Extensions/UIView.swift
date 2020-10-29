@@ -12,12 +12,12 @@ extension UIView {
     
     static var dimmedViews = [UIView]()
     
-    var statusBarHeight: CGFloat {
+    static var statusBarHeight: CGFloat {
         return UIDevice.hasNotch ? 44 : 20
     }
     
-    var globalSafeAreaFrame: CGRect {
-        guard let globalView = self.globalView else { return CGRect.zero }
+    static var globalSafeAreaFrame: CGRect {
+        guard let globalView = UIView.globalView else { return CGRect.zero }
         
         var safeFrame = globalView.safeAreaLayoutGuide.layoutFrame
         safeFrame.origin.y = safeFrame.origin.y == 0 ? statusBarHeight : safeFrame.origin.y
@@ -25,7 +25,7 @@ extension UIView {
         return safeFrame
     }
     
-    var globalView: UIView? {
+    static var globalView: UIView? {
         return UIApplication.shared.windows.first { $0.isKeyWindow }
     }
     

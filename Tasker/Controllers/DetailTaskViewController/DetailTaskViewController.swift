@@ -392,22 +392,10 @@ class DetailTaskViewController: UIViewController {
                 
     }
     
-    // MARK: Setup TextView place holder
-    
-    private func setupPlaceholder() {
-        placeholderLabel.text = "Task description"
-        placeholderLabel.font = Font.detailTaskStandartTitle.uiFont
-        placeholderLabel.sizeToFit()
-        titleTextView.addSubview(placeholderLabel)
-        placeholderLabel.frame.origin = CGPoint(x: 5, y: (titleTextView.font?.pointSize)! / 2)
-        placeholderLabel.textColor = UIColor.lightGray
-        placeholderLabel.isHidden = !titleTextView.text.isEmpty
-    }
-    
     // MARK: Setup View Origin
     
     private func setupViewOrigin() {
-        let safeAreaFrame = view.globalSafeAreaFrame
+        let safeAreaFrame = UIView.globalSafeAreaFrame
         
         viewOrigin = CGPoint(x: safeAreaFrame.origin.x, y: safeAreaFrame.origin.y + topInset)
         viewWidth = safeAreaFrame.width
@@ -425,6 +413,18 @@ class DetailTaskViewController: UIViewController {
         })
     }
     
+    // MARK: Setup TextView place holder
+    
+    private func setupPlaceholder() {
+        placeholderLabel.text = "Task description"
+        placeholderLabel.font = Font.detailTaskStandartTitle.uiFont
+        placeholderLabel.sizeToFit()
+        titleTextView.addSubview(placeholderLabel)
+        placeholderLabel.frame.origin = CGPoint(x: 5, y: (titleTextView.font?.pointSize)! / 2)
+        placeholderLabel.textColor = UIColor.lightGray
+        placeholderLabel.isHidden = !titleTextView.text.isEmpty
+    }
+        
     private func hideView(completion: @escaping ()->()) {
         titleTextView.resignFirstResponder()
         

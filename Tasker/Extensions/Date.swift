@@ -67,4 +67,12 @@ extension Date {
         
         return dailyName.later.rawValue
     }
+    
+    func localDate() -> Date {
+        let nowUTC = self
+        let timeZoneOffset = Double(TimeZone.current.secondsFromGMT(for: nowUTC))
+        guard let localDate = Calendar.current.date(byAdding: .second, value: Int(timeZoneOffset), to: nowUTC) else {return self}
+
+        return localDate
+    }
 }

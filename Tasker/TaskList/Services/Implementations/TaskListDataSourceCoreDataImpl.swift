@@ -266,9 +266,6 @@ extension TaskListDataSourceCoreDataImpl: NSFetchedResultsControllerDelegate {
         case .update:
             if let indexPath = indexPath {
                 observer?.taskUpdated(at: indexPath)
-//                let task = fetchedResultsController.object(at: indexPath)
-//                guard let cell = tableView.cellForRow(at: indexPath) as? ToDoCell else { break }
-//                configureCell(cell: cell, withObject: task)
             }
         default:
             break

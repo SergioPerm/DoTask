@@ -11,6 +11,12 @@ import UIKit
 class CalendarPickerViewController: UIViewController {
     
     // MARK: Views
+    private lazy var globalFrame = UIView.globalSafeAreaFrame
+    private lazy var viewWidth: CGFloat = globalFrame.width * StyleGuide.datePickerSpaces.ratioToScreenWidth
+    private lazy var viewHeight = collectionHeight + panelHeight * panelsCount
+    private lazy var panelHeight = collectionHeight * StyleGuide.datePickerSpaces.ratioPanelToCollection
+    private var panelsCount: CGFloat = 3.0
+        
     private lazy var headerView: CalendarPickerHeaderView = {
         let headerView = CalendarPickerHeaderView()
         headerView.translatesAutoresizingMaskIntoConstraints = false
@@ -45,129 +51,17 @@ class CalendarPickerViewController: UIViewController {
     
     // MARK: Scroll view values
     
+    private var indexOfCellBeforeDragging = 0
+    private lazy var collectionHeight: CGFloat = cellSize.height * 6 + StyleGuide.datePickerSpaces.cellsInterItemSpacing * 5 + StyleGuide.datePickerSpaces.collectionMargins * 2
+    
     private lazy var cellSize: CGSize = {
-        let flowLayout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        let padding = (collectionMargins * 2) + (cellsInterInsets * (cellPerRowCount - 1))
-        let availableWidthForCells = viewWidth! - padding
-        let cellWidth = availableWidthForCells / cellPerRowCount
+        let padding = (StyleGuide.datePickerSpaces.collectionMargins * 2) + (StyleGuide.datePickerSpaces.cellsInterItemSpacing * (StyleGuide.datePickerSpaces.cellPerRowCount - 1))
+        let availableWidthForCells = viewWidth - padding
+        let cellWidth = availableWidthForCells / StyleGuide.datePickerSpaces.cellPerRowCount
             
         return CGSize(width: cellWidth, height: cellWidth)
     }()
-    
-    let cellsInterInsets: CGFloat = 5.0
-    let cellPerRowCount: CGFloat = 7.0
-    let collectionMargins: CGFloat = 20.0
-    
-    var viewWidth: CGFloat?
-    
-    private var indexOfCellBeforeDragging = 0
-    
-    private func setupView() {
-        
-        //main view
-        view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        
-        let safeLayoutGuide = getSafeAreaLayoutGuide()
-        viewWidth = safeLayoutGuide.layoutFrame.width - 40
-        view.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: .zero)
-        let viewOrigin = CGPoint(x: (safeLayoutGuide.layoutFrame.width - viewWidth!)/2, y: 20)
-        view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        view.layer.cornerRadius = 8
-        view.clipsToBounds = true
-                
-        //Header view
-        view.addSubview(headerView)
-        
-        //Collection view
-        let collectionheight = cellSize.width * 6 + cellsInterInsets * 5 + collectionMargins * 2
-        
-        let panelHeight = viewWidth!/(280/50)//280 / 50
-        
-        let viewHeight = collectionheight + panelHeight * 3
-        
-        collectionView.register(UINib.init(nibName: "CalendarPickerViewCell", bundle: nil), forCellWithReuseIdentifier: CalendarPickerViewCell.reuseIdentifier)
-        
-        collectionView.delegate = self
-        collectionView.dataSource = self
-                
-        let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-  
-        layout.sectionInset = UIEdgeInsets(top: collectionMargins, left: collectionMargins, bottom: collectionMargins, right: collectionMargins)
-        layout.minimumLineSpacing = cellsInterInsets
-        layout.minimumInteritemSpacing = cellsInterInsets
-
-        view.addSubview(collectionView)
-
-        
-        //Footer view
-        view.addSubview(footerView)
-        
-        var constraints = [
-            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            headerView.topAnchor.constraint(equalTo: view.topAnchor),
-            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: panelHeight)
-        ]
-                
-        constraints.append(contentsOf: [
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 0),
-            collectionView.heightAnchor.constraint(equalToConstant: collectionheight)
-        ])
-        
-        constraints.append(contentsOf: [
-            footerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            footerView.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 0),
-            footerView.heightAnchor.constraint(equalToConstant: panelHeight * 2)
-        ])
-        
-        NSLayoutConstraint.activate(constraints)
-        
-        view.frame = CGRect(origin: viewOrigin, size: CGSize(width: self.viewWidth!, height: viewHeight))
-        view.isHidden = true
-
-    }
-    
-    private func showView() {
-        let mainView = UIView.globalView
-        
-        let safeAreaGuide = getSafeAreaLayoutGuide()
-        let viewWidth = safeAreaGuide.layoutFrame.width - 40
-        let viewHeight = safeAreaGuide.layoutFrame.height * 0.7
-        
-        let viewOriginAtMainView = CGPoint(x: (safeAreaGuide.layoutFrame.width - viewWidth)/2, y: (safeAreaGuide.layoutFrame.height - viewHeight)/2)
-        
-        let viewOriginDiffrence = mainView!.convert(viewOriginAtMainView, to: view)
-        let viewOriginY = view.frame.origin.y + viewOriginDiffrence.y
-        
-        let startViewOrigin = viewOriginY - (mainView!.frame.height + viewOriginAtMainView.y)
-        
-        view.frame.origin = CGPoint(x: view.frame.origin.x, y: startViewOrigin)
-        view.isHidden = false
-        
-        UIView.animate(withDuration: 0.3,
-                       delay: 0,
-                       options: .curveLinear,
-                       animations: {
-                        self.view.frame.origin = CGPoint(x: self.view.frame.origin.x, y: viewOriginY)
-        }, completion: nil)
-    }
-    
-    private func getSafeAreaLayoutGuide() -> UILayoutGuide {
-        
-        var safeAreaGuide = UILayoutGuide()
-        
-        if #available(iOS 11.0, *) {
-            let window = UIApplication.shared.windows[0]
-            safeAreaGuide = window.safeAreaLayoutGuide
-        }
-        
-        return safeAreaGuide
-        
-    }
-   
+               
     var cancelDatePickerHandler: (_ vc:CalendarPickerViewController) -> Void
     var saveDatePickerHandler: (_ vc:CalendarPickerViewController) -> Void
     
@@ -175,10 +69,13 @@ class CalendarPickerViewController: UIViewController {
     
     private var selectedCell: CalendarPickerViewCell? {
         didSet {
-            selectedCell!.day?.isSelected = true
-            selectedCell!.updateVisibleStatus()
-            oldValue?.day?.isSelected = false
-            oldValue?.updateVisibleStatus()
+            guard let selectedCell = selectedCell else { return }
+            selectedCell.day?.isSelected = true
+            selectedCell.updateVisibleStatus()
+            
+            guard let oldSelectedCell = oldValue else { return }
+            oldSelectedCell.day?.isSelected = false
+            oldSelectedCell.updateVisibleStatus()
         }
     }
     
@@ -192,16 +89,15 @@ class CalendarPickerViewController: UIViewController {
 
             let dateComponents = calendar.component(.day, from: selectedDate)
             let numberFormatter = NumberFormatter()
-
+            
             numberFormatter.numberStyle = .ordinal
-
-            let day = numberFormatter.string(from: dateComponents as NSNumber)
+            
+            guard let day = numberFormatter.string(from: dateComponents as NSNumber) else { return }
+            
             let dateFormatter = DateFormatter()
-
             dateFormatter.dateFormat = "MMMM"
-
-            let dateString = "\(dateFormatter.string(from: selectedDate)) \(day!)"
-
+            let dateString = "\(dateFormatter.string(from: selectedDate)) \(day)"
+            
             footerView.currentDateLabel.text = dateString
             footerView.clearDateButton.isHidden = false
         }
@@ -209,7 +105,7 @@ class CalendarPickerViewController: UIViewController {
 
     private var baseDate: Date {
       didSet {
-        days = generateDaysForThreeYears(for: baseDate)
+        _ = days
         collectionView.reloadData()
       }
     }
@@ -284,6 +180,91 @@ class CalendarPickerViewController: UIViewController {
     }
 }
 
+//MARK: - Setup and show View
+
+extension CalendarPickerViewController {
+    private func setupView() {
+        //main view
+        view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        view.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: .zero)
+                
+        let viewOrigin = CGPoint(x: (globalFrame.width - viewWidth)/2, y: 20)
+        view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        view.layer.cornerRadius = 8
+        view.clipsToBounds = true
+                
+        //Header view
+        view.addSubview(headerView)
+        
+        //Collectiob view
+        collectionView.register(UINib.init(nibName: "CalendarPickerViewCell", bundle: nil), forCellWithReuseIdentifier: CalendarPickerViewCell.reuseIdentifier)
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+                
+        let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+
+        let collectionInset = StyleGuide.datePickerSpaces.collectionMargins
+        layout.sectionInset = UIEdgeInsets(top: collectionInset, left: collectionInset, bottom: collectionInset, right: collectionInset)
+        layout.minimumLineSpacing = StyleGuide.datePickerSpaces.cellsInterItemSpacing
+        layout.minimumInteritemSpacing = StyleGuide.datePickerSpaces.cellsInterItemSpacing
+
+        view.addSubview(collectionView)
+
+        //Footer view
+        view.addSubview(footerView)
+        
+        //Autolayout
+        var constraints = [
+            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            headerView.topAnchor.constraint(equalTo: view.topAnchor),
+            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            headerView.heightAnchor.constraint(equalToConstant: panelHeight)
+        ]
+                
+        constraints.append(contentsOf: [
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
+            collectionView.heightAnchor.constraint(equalToConstant: collectionHeight)
+        ])
+        
+        constraints.append(contentsOf: [
+            footerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            footerView.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 0),
+            footerView.heightAnchor.constraint(equalToConstant: panelHeight * 2)
+        ])
+        
+        NSLayoutConstraint.activate(constraints)
+        
+        view.frame = CGRect(origin: viewOrigin, size: CGSize(width: self.viewWidth, height: viewHeight))
+        view.isHidden = true
+    }
+    
+    private func showView() {
+        guard let mainView = UIView.globalView else { return }
+                
+        let viewOriginAtMainView = CGPoint(x: (globalFrame.width - viewWidth)/2, y: (globalFrame.height - viewHeight)/2)
+        let viewOriginDiffrence = mainView.convert(viewOriginAtMainView, to: view)
+        let viewOriginY = view.frame.origin.y + viewOriginDiffrence.y
+        
+        self.view.frame.origin = CGPoint(x: self.view.frame.origin.x, y: viewOriginY)
+         
+        self.view.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+        self.view.alpha = 0.3
+        
+        view.isHidden = false
+        UIView.animate(withDuration: 0.2,
+                       delay: 0,
+                       options: .curveEaseInOut,
+                       animations: {
+                        self.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                        self.view.alpha = 1.0
+        }, completion: nil)
+    }
+}
+
 //MARK: - Calendar calculation
 extension CalendarPickerViewController {
     enum CalendarDataError: Error {
@@ -325,7 +306,7 @@ extension CalendarPickerViewController {
     }
     
     func getWeekday(from weekdayDate: Date) -> Int {
-        let weekDay = calendar.component(.weekday, from: weekdayDate)
+        let weekDay = calendar.component(.weekday, from: weekdayDate.localDate())
         return weekDay == 1 ? 7 : weekDay - 1
     }
     
@@ -340,7 +321,6 @@ extension CalendarPickerViewController {
         let offsetInInitialRow = firstDayWeekday
         
         var days: [DayModel] = (1..<(numberOfDaysInMonth + offsetInInitialRow)).map { day in
-         
             let isWithinDisplayedMonth = day >= offsetInInitialRow
             let dayOffset = isWithinDisplayedMonth ? day - offsetInInitialRow : -(offsetInInitialRow - day)
             
@@ -457,19 +437,9 @@ extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return cellSize
     }
-        
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: collectionMargins, left: collectionMargins, bottom: collectionMargins, right: collectionMargins)
-    }
-    
+            
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! CalendarPickerViewCell
-//        if cell == selectedCell {
-//            selectedDateChanged(day!.date)
-//            selectedDate = day!.date
-//            return
-//        }
-        
         let day = cell.day
                          
         if day!.isWithinDisplayedMonth {
@@ -492,7 +462,7 @@ extension CalendarPickerViewController: UICollectionViewDelegate {
     }
 
     private func indexOfMajorCell() -> Int {
-        let sectionHeight = (collectionMargins * 2) + (cellSize.height * 6) + (cellsInterInsets * 5)
+        let sectionHeight = (StyleGuide.datePickerSpaces.collectionMargins * 2) + (cellSize.height * 6) + (StyleGuide.datePickerSpaces.cellsInterItemSpacing * 5)
         let proportionalOffset = collectionView.contentOffset.y / sectionHeight
         let index = Int(round(proportionalOffset))
         let numberOfItems = days.count
@@ -508,7 +478,7 @@ extension CalendarPickerViewController: UICollectionViewDelegate {
         
     func alignMonthInCollectionView(velocity: CGPoint) {
         
-        let sectionHeight = (collectionMargins * 2) + (cellSize.height * 6) + (cellsInterInsets * 5)
+        let sectionHeight = (StyleGuide.datePickerSpaces.collectionMargins * 2) + (cellSize.height * 6) + (StyleGuide.datePickerSpaces.cellsInterItemSpacing * 5)
 
         // calculate where scrollView should snap to:
         let indexOfMajorCell = self.indexOfMajorCell()

@@ -13,7 +13,6 @@ extension Calendar {
     var taskCalendar: Calendar {
         get {
             var calendar = Calendar(identifier: .iso8601)
-            calendar.firstWeekday = 2
             return calendar
         }
     }

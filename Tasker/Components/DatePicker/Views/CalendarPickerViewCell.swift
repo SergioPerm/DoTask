@@ -35,12 +35,9 @@ class CalendarPickerViewCell: UICollectionViewCell {
     
     @IBOutlet weak var dayLabel: UILabel!
     
-    var day: DayModel? {
+    var day: DayModel! {
         didSet {
-            guard let day = day else { return }
-            
             dayLabel.text = day.number
-            
             dayLabel.font = dayLabel.font.withSize(frame.width/(30/15))
             
             updateVisibleStatus()

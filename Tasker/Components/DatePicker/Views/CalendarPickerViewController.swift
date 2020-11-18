@@ -10,6 +10,9 @@ import UIKit
 
 class CalendarPickerViewController: UIViewController {
     
+    // MARK: ViewModel
+    let viewModel: CalendarPickerViewModelType
+    
     // MARK: Views
     private lazy var globalFrame = UIView.globalSafeAreaFrame
     private lazy var viewWidth: CGFloat = globalFrame.width * StyleGuide.datePickerSpaces.ratioToScreenWidth
@@ -78,16 +81,43 @@ class CalendarPickerViewController: UIViewController {
             oldSelectedCell.updateVisibleStatus()
         }
     }
+        
+    private let selectedDateChanged: (Date?) -> Void
     
-    private var selectedDate: Date? {
-        didSet {
+    private let calendar = Calendar.current.taskCalendar
+    
+    // MARK: Initializers
+    
+    init(selectedDate: Date,
+         onSelectedDateChanged selectedDateChangedHandler: @escaping (Date?) -> Void,
+         onCancel cancelDatePickerHandler: @escaping (_ vc:CalendarPickerViewController) -> Void,
+         onSave saveDatePickerHandler: @escaping (_ vc:CalendarPickerViewController) -> Void) {
+        
+        self.viewModel = CalendarPickerViewModel(selectedDate: selectedDate)
+        
+        
+        self.cancelDatePickerHandler = cancelDatePickerHandler
+        self.saveDatePickerHandler = saveDatePickerHandler
+        
+
+        self.selectedDateChanged = selectedDateChangedHandler
+        
+        super.init(nibName: nil, bundle: nil)
+        
+        self.viewModel.baseDate.bind { [weak self] baseDate in
+            self?.collectionView.reloadData()
+        }
+        
+        self.viewModel.selectedDate.bind { [weak self] selectedDate in
+            
+            guard let strongSelf = self else { return }
             guard let selectedDate = selectedDate else {
-                footerView.currentDateLabel.text = "No selected date"
-                footerView.clearDateButton.isHidden = true
+                strongSelf.footerView.currentDateLabel.text = "No selected date"
+                strongSelf.footerView.clearDateButton.isHidden = true
                 return
             }
 
-            let dateComponents = calendar.component(.day, from: selectedDate)
+            let dateComponents = strongSelf.calendar.component(.day, from: selectedDate)
             let numberFormatter = NumberFormatter()
             
             numberFormatter.numberStyle = .ordinal
@@ -98,48 +128,15 @@ class CalendarPickerViewController: UIViewController {
             dateFormatter.dateFormat = "MMMM"
             let dateString = "\(dateFormatter.string(from: selectedDate)) \(day)"
             
-            footerView.currentDateLabel.text = dateString
-            footerView.clearDateButton.isHidden = false
+            strongSelf.footerView.currentDateLabel.text = dateString
+            strongSelf.footerView.clearDateButton.isHidden = false
         }
-    }
-
-    private var baseDate: Date {
-      didSet {
-        _ = days
-        collectionView.reloadData()
-      }
-    }
-    
-    private lazy var days = generateDaysForThreeYears(for: baseDate)
-    
-    private let selectedDateChanged: (Date?) -> Void
-    
-    private let calendar = Calendar.current.taskCalendar
-    
-    private lazy var dateFormatter: DateFormatter = {
-      let dateFormatter = DateFormatter()
-      dateFormatter.dateFormat = "d"
-      return dateFormatter
-    }()
-    
-    // MARK: Initializers
-
-    init(baseDate: Date, selectDate: Date, onSelectedDateChanged selectedDateChangedHandler: @escaping (Date?) -> Void, onCancel cancelDatePickerHandler: @escaping (_ vc:CalendarPickerViewController) -> Void, onSave saveDatePickerHandler: @escaping (_ vc:CalendarPickerViewController) -> Void) {
         
-        self.selectedDate = selectDate
-        self.cancelDatePickerHandler = cancelDatePickerHandler
-        self.saveDatePickerHandler = saveDatePickerHandler
+        self.viewModel.days.bind { [weak self] _ in
+            self?.collectionView.reloadData()
+        }
         
-        self.baseDate = baseDate
-        self.selectedDateChanged = selectedDateChangedHandler
-                        
-        super.init(nibName: nil, bundle: nil)
-        
-        self.setSelectedDate(fromValue: selectDate)
-    }
-
-    private func setSelectedDate(fromValue: Date) {
-        self.selectedDate = fromValue
+        self.viewModel.calculateDays()
     }
     
     required init?(coder: NSCoder) {
@@ -158,7 +155,7 @@ class CalendarPickerViewController: UIViewController {
         showView()
         
         ///Scroll to selected month
-        if let diffAmountMonths = selectedDate?.endOfMonth.months(from: baseDate) {
+        if let diffAmountMonths = viewModel.selectedDate.value?.endOfMonth.months(from: viewModel.baseDate.value) {
             let currentIndexPath = IndexPath(row: 0, section: diffAmountMonths)
             collectionView.scrollToItem(at: currentIndexPath, at: .centeredVertically, animated: false)
             alignMonthInCollectionView(velocity: CGPoint.zero)
@@ -175,8 +172,8 @@ class CalendarPickerViewController: UIViewController {
     }
     
     @objc func clearDateAction(sender: UIButton) {
-        selectedDate = nil
-        selectedDateChanged(selectedDate)
+        viewModel.selectedDate.value = nil
+        selectedDateChanged(viewModel.selectedDate.value)
     }
 }
 
@@ -265,139 +262,9 @@ extension CalendarPickerViewController {
     }
 }
 
-//MARK: - Calendar calculation
+//MARK: - Common
+
 extension CalendarPickerViewController {
-    enum CalendarDataError: Error {
-      case metadataGeneration
-    }
-        
-    func generateDaysForThreeYears(for baseDate: Date) -> [MonthModel] {
-        var yearComponent = DateComponents()
-        var allMonths: [MonthModel] = []
-        allMonths.removeAll()
-        
-        for year in 0...2 {
-            yearComponent.year = year
-            var yearDate = Date()
-            if year == 0 {
-                yearDate = baseDate
-            } else {
-                yearDate = calendar.date(byAdding: yearComponent, to: baseDate)!
-            }
-            
-            let yearNum = calendar.component(.year, from: yearDate)
-
-            var firstDayInYear = yearDate
-            if year > 0 {
-                firstDayInYear = calendar.date(from: DateComponents(year: yearNum, month: 1, day: 1))!
-            }
-            
-            let monthNumber = calendar.component(.month, from: firstDayInYear)
-
-            for month in monthNumber...12 {
-                let currentMonthDate = calendar.date(from: DateComponents(year: yearNum, month: month, day: 1))!
-                allMonths.append(generateMonth(for: currentMonthDate))
-                //allMonths.append(generateDaysInMonth(for: currentMonthDate))
-            }
-            
-        }
-        
-        return allMonths
-    }
-    
-    func getWeekday(from weekdayDate: Date) -> Int {
-        let weekDay = calendar.component(.weekday, from: weekdayDate.localDate())
-        return weekDay == 1 ? 7 : weekDay - 1
-    }
-    
-    func monthModel(from monthDate: Date) throws -> MonthModel {
-        guard
-            let numberOfDaysInMonth = calendar.range(of: .day, in: .month, for: monthDate)?.count,
-            let firstDayOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: monthDate)) else {
-                throw CalendarDataError.metadataGeneration
-        }
-        
-        let firstDayWeekday = getWeekday(from: firstDayOfMonth)
-        let offsetInInitialRow = firstDayWeekday
-        
-        var days: [DayModel] = (1..<(numberOfDaysInMonth + offsetInInitialRow)).map { day in
-            let isWithinDisplayedMonth = day >= offsetInInitialRow
-            let dayOffset = isWithinDisplayedMonth ? day - offsetInInitialRow : -(offsetInInitialRow - day)
-            
-            return generateDay(offsetBy: dayOffset, for: firstDayOfMonth, isWithinDisplayedMonth: isWithinDisplayedMonth)
-        }
-        
-        days += generateStartOfNextMonth(using: firstDayOfMonth, totalDays: days.count)
-        
-        return MonthModel(numberOfDays: numberOfDaysInMonth, firstDay: firstDayOfMonth, firstDayWeekday: firstDayWeekday, days: days)
-    }
-    
-    func generateMonth(for monthDate: Date) -> MonthModel {
-        guard let monthData = try? monthModel(from: monthDate) else {
-            fatalError("An error occurred when generating the metadata for \(monthDate)")
-        }
-        
-        return monthData
-    }
-    
-    func generateDaysInMonth(for baseDate: Date) -> [DayModel] {
-        guard let monthData = try? monthModel(from: baseDate) else {
-            fatalError("An error occurred when generating the metadata for \(baseDate)")
-        }
-        
-        let numberOfDaysInMonth = monthData.numberOfDays
-        let offsetInInitialRow = monthData.firstDayWeekday
-        let firstDayOfMonth = monthData.firstDay
-
-        var days: [DayModel] = (1..<(numberOfDaysInMonth + offsetInInitialRow)).map { day in
-
-            let isWithinDisplayedMonth = day >= offsetInInitialRow
-            let dayOffset = isWithinDisplayedMonth ? day - offsetInInitialRow : -(offsetInInitialRow - day)
-
-            return generateDay(offsetBy: dayOffset, for: firstDayOfMonth, isWithinDisplayedMonth: isWithinDisplayedMonth)
-        }
-
-        days += generateStartOfNextMonth(using: firstDayOfMonth, totalDays: days.count)
-        
-        return days
-    }
-    
-    func generateStartOfNextMonth(using firstDayOfDisplayedMonth: Date, totalDays: Int) -> [DayModel] {
-        guard let lastDayInMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1),to: firstDayOfDisplayedMonth) else {
-            return []
-        }
-        
-        let additionalDays = 42 - totalDays//14 - calendar.component(.weekday, from: lastDayInMonth)
-               
-        guard additionalDays > 0 else {
-            return []
-        }
-                
-        let days: [DayModel] = (1...additionalDays)
-            .map {
-                generateDay(
-                    offsetBy: $0,
-                    for: lastDayInMonth,
-                    isWithinDisplayedMonth: false)
-        }
-        
-        return days
-    }
-    
-    func generateDay(offsetBy dayOffset: Int, for firstDayOfMonth: Date, isWithinDisplayedMonth: Bool) -> DayModel {
-        let dayDate = calendar.date(byAdding: .day, value: dayOffset, to: firstDayOfMonth)!
-        let weekDay = getWeekday(from: dayDate)
-
-        let isCurrentDay = calendar.isDate(dayDate, equalTo: baseDate, toGranularity: .day)
-        let isSelected = calendar.isDate(dayDate, equalTo: selectedDate!, toGranularity: .day)
-        
-        return DayModel(date: dayDate, number: dateFormatter.string(from: dayDate),
-                        isSelected: isSelected,
-                        isWithinDisplayedMonth: isWithinDisplayedMonth,
-                        isWeekend: weekDay > 5 ? true : false,
-                        currentDay: isCurrentDay)
-    }
-    
     func setDataForHeaderView(for currentDate: Date) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "LLLL YYYY"
@@ -409,15 +276,15 @@ extension CalendarPickerViewController {
 
 extension CalendarPickerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return days[section].days.count
+        return viewModel.days.value[section].days.count
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return days.count
+        return viewModel.days.value.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let day = days[indexPath.section].days[indexPath.row]
+        let day = viewModel.days.value[indexPath.section].days[indexPath.row]
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarPickerViewCell.reuseIdentifier, for: indexPath) as! CalendarPickerViewCell
 
@@ -440,11 +307,11 @@ extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
             
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! CalendarPickerViewCell
-        let day = cell.day
-                         
-        if day!.isWithinDisplayedMonth {
-            selectedDateChanged(day!.date)
-            selectedDate = day!.date
+                  
+        guard let day = cell.day else { return }
+        if day.isWithinDisplayedMonth {
+            selectedDateChanged(day.date)
+            viewModel.selectedDate.value = day.date
             
             if cell != selectedCell {
                 selectedCell = cell
@@ -465,7 +332,7 @@ extension CalendarPickerViewController: UICollectionViewDelegate {
         let sectionHeight = (StyleGuide.datePickerSpaces.collectionMargins * 2) + (cellSize.height * 6) + (StyleGuide.datePickerSpaces.cellsInterItemSpacing * 5)
         let proportionalOffset = collectionView.contentOffset.y / sectionHeight
         let index = Int(round(proportionalOffset))
-        let numberOfItems = days.count
+        let numberOfItems = viewModel.days.value.count
         let safeIndex = max(0, min(numberOfItems - 1, index))
         return safeIndex
     }
@@ -484,7 +351,7 @@ extension CalendarPickerViewController: UICollectionViewDelegate {
         let indexOfMajorCell = self.indexOfMajorCell()
 
         // calculate conditions:
-        let dataSourceCount = days.count
+        let dataSourceCount = viewModel.days.value.count
         let swipeVelocityThreshold: CGFloat = 0.5 // after some trail and error
         let hasEnoughVelocityToSlideToTheNextCell = indexOfCellBeforeDragging + 1 < dataSourceCount && velocity.y > swipeVelocityThreshold
         let hasEnoughVelocityToSlideToThePreviousCell = indexOfCellBeforeDragging >= 0 && velocity.y < -swipeVelocityThreshold
@@ -502,14 +369,14 @@ extension CalendarPickerViewController: UICollectionViewDelegate {
                     self.collectionView.contentOffset = CGPoint(x: 0, y: toValue)
                     self.collectionView.layoutIfNeeded()
                 }, completion: { finished in
-                    self.setDataForHeaderView(for: self.days[snapToIndex].firstDay)
+                    self.setDataForHeaderView(for: self.viewModel.days.value[snapToIndex].firstDay)
                 })
             }
 
         } else {
             let offsetForSlide = CGFloat(indexOfMajorCell) * sectionHeight
             collectionView.setContentOffset(CGPoint(x: 0, y: offsetForSlide), animated: true)
-            setDataForHeaderView(for: days[indexOfMajorCell].firstDay)
+            setDataForHeaderView(for: viewModel.days.value[indexOfMajorCell].firstDay)
         }
     }
 }

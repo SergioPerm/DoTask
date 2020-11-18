@@ -64,6 +64,9 @@
 		B1D5DECD2523884700124DAD /* CalendarPickerHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5DEC42523884700124DAD /* CalendarPickerHeaderView.swift */; };
 		B1D5DECF252388ED00124DAD /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5DECE252388ED00124DAD /* UIView.swift */; };
 		B1D5DED22523993000124DAD /* CalendarPickerInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5DED12523993000124DAD /* CalendarPickerInstance.swift */; };
+		B1E0653025651A8300948AB5 /* CalendarPickerViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E0652F25651A8300948AB5 /* CalendarPickerViewModelType.swift */; };
+		B1E0653225651EC100948AB5 /* CalendarPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E0653125651EC100948AB5 /* CalendarPickerViewModel.swift */; };
+		B1E06534256524EF00948AB5 /* Boxing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E06533256524EF00948AB5 /* Boxing.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -126,6 +129,9 @@
 		B1D5DEC42523884700124DAD /* CalendarPickerHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarPickerHeaderView.swift; sourceTree = "<group>"; };
 		B1D5DECE252388ED00124DAD /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		B1D5DED12523993000124DAD /* CalendarPickerInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerInstance.swift; sourceTree = "<group>"; };
+		B1E0652F25651A8300948AB5 /* CalendarPickerViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerViewModelType.swift; sourceTree = "<group>"; };
+		B1E0653125651EC100948AB5 /* CalendarPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerViewModel.swift; sourceTree = "<group>"; };
+		B1E06533256524EF00948AB5 /* Boxing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Boxing.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +182,7 @@
 			isa = PBXGroup;
 			children = (
 				B1804BB7255A8CED007FECCF /* StyleGuide.swift */,
+				B1E06533256524EF00948AB5 /* Boxing.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -407,10 +414,10 @@
 			isa = PBXGroup;
 			children = (
 				B1D5DED02523991900124DAD /* Protocols */,
-				B1D5DEB92523884700124DAD /* CalendarPickerViewController.swift */,
 				B1D5DEBA2523884700124DAD /* Models */,
 				B1D5DEBD2523884700124DAD /* Resources */,
 				B1D5DEC12523884700124DAD /* Views */,
+				B1E065352565374100948AB5 /* ViewModel */,
 			);
 			path = DatePicker;
 			sourceTree = "<group>";
@@ -437,6 +444,7 @@
 		B1D5DEC12523884700124DAD /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B1D5DEB92523884700124DAD /* CalendarPickerViewController.swift */,
 				B1D5DEC22523884700124DAD /* CalendarPickerFooterView.swift */,
 				B1D5DEC32523884700124DAD /* CalendarPickerViewCell.swift */,
 				B1D5DEC42523884700124DAD /* CalendarPickerHeaderView.swift */,
@@ -448,8 +456,17 @@
 			isa = PBXGroup;
 			children = (
 				B1D5DED12523993000124DAD /* CalendarPickerInstance.swift */,
+				B1E0652F25651A8300948AB5 /* CalendarPickerViewModelType.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		B1E065352565374100948AB5 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B1E0653125651EC100948AB5 /* CalendarPickerViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -538,7 +555,9 @@
 				B1228E1325289DDB00567062 /* UIImage.swift in Sources */,
 				B1A9142F2520B6E10021E15C /* TaskListDataSourceAssembler.swift in Sources */,
 				B12944952534A807002FD1EF /* AlarmButton.swift in Sources */,
+				B1E0653225651EC100948AB5 /* CalendarPickerViewModel.swift in Sources */,
 				B1D5C4BE252B540000C4B988 /* NotificationTaskObserver.swift in Sources */,
+				B1E06534256524EF00948AB5 /* Boxing.swift in Sources */,
 				B1D5DEC52523884700124DAD /* CalendarPickerViewController.swift in Sources */,
 				B1D5C4C0252B674800C4B988 /* UITableViewCell.swift in Sources */,
 				B1603C5A2521EAB70022BE49 /* UIViewController.swift in Sources */,
@@ -576,6 +595,7 @@
 				B1D5DEAE2523690F00124DAD /* Button.swift in Sources */,
 				B1664045254464C8007D1AFD /* UIBarButtonItem.swift in Sources */,
 				B1D5DECB2523884700124DAD /* CalendarPickerFooterView.swift in Sources */,
+				B1E0653025651A8300948AB5 /* CalendarPickerViewModelType.swift in Sources */,
 				B12944972534C7E1002FD1EF /* Angle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

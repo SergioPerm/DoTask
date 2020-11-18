@@ -1,0 +1,169 @@
+//
+//  CalendarPickerViewModel.swift
+//  Tasker
+//
+//  Created by kluv on 18/11/2020.
+//  Copyright © 2020 itotdel. All rights reserved.
+//
+
+import Foundation
+
+class CalendarPickerViewModel: CalendarPickerViewModelType {
+ 
+    var days: Boxing<[MonthModel]>
+    var baseDate = Boxing(Date())
+    var selectedDate: Boxing<Date?>
+        
+    private let calendar = Calendar.current.taskCalendar
+    
+    private lazy var dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "d"
+        return dateFormatter
+    }()
+    
+    enum CalendarDataError: Error {
+      case metadataGeneration
+    }
+            
+    init(selectedDate: Date?) {
+        self.selectedDate = Boxing(selectedDate)
+        self.days = Boxing([])
+    }
+    
+    func calculateDays() {
+        days.value = generateDaysForThreeYears(for: baseDate.value)
+    }
+    
+    private func generateDaysForThreeYears(for baseDate: Date) -> [MonthModel] {
+        var yearComponent = DateComponents()
+        var allMonths: [MonthModel] = []
+        allMonths.removeAll()
+        
+        for year in 0...2 {
+            yearComponent.year = year
+            var yearDate = Date()
+            if year == 0 {
+                yearDate = baseDate
+            } else {
+                yearDate = calendar.date(byAdding: yearComponent, to: baseDate)!
+            }
+            
+            let yearNum = calendar.component(.year, from: yearDate)
+
+            var firstDayInYear = yearDate
+            if year > 0 {
+                firstDayInYear = calendar.date(from: DateComponents(year: yearNum, month: 1, day: 1))!
+            }
+            
+            let monthNumber = calendar.component(.month, from: firstDayInYear)
+
+            for month in monthNumber...12 {
+                let currentMonthDate = calendar.date(from: DateComponents(year: yearNum, month: month, day: 1))!
+                allMonths.append(generateMonth(for: currentMonthDate))
+                //allMonths.append(generateDaysInMonth(for: currentMonthDate))
+            }
+            
+        }
+        
+        return allMonths
+    }
+    
+    private func getWeekday(from weekdayDate: Date) -> Int {
+        let weekDay = calendar.component(.weekday, from: weekdayDate.localDate())
+        return weekDay == 1 ? 7 : weekDay - 1
+    }
+    
+    private func monthModel(from monthDate: Date) throws -> MonthModel {
+        guard
+            let numberOfDaysInMonth = calendar.range(of: .day, in: .month, for: monthDate)?.count,
+            let firstDayOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: monthDate)) else {
+                throw CalendarDataError.metadataGeneration
+        }
+        
+        let firstDayWeekday = getWeekday(from: firstDayOfMonth)
+        let offsetInInitialRow = firstDayWeekday
+        
+        var days: [DayModel] = (1..<(numberOfDaysInMonth + offsetInInitialRow)).map { day in
+            let isWithinDisplayedMonth = day >= offsetInInitialRow
+            let dayOffset = isWithinDisplayedMonth ? day - offsetInInitialRow : -(offsetInInitialRow - day)
+            
+            return generateDay(offsetBy: dayOffset, for: firstDayOfMonth, isWithinDisplayedMonth: isWithinDisplayedMonth)
+        }
+        
+        days += generateStartOfNextMonth(using: firstDayOfMonth, totalDays: days.count)
+        
+        return MonthModel(numberOfDays: numberOfDaysInMonth, firstDay: firstDayOfMonth, firstDayWeekday: firstDayWeekday, days: days)
+    }
+    
+    private func generateMonth(for monthDate: Date) -> MonthModel {
+        guard let monthData = try? monthModel(from: monthDate) else {
+            fatalError("An error occurred when generating the metadata for \(monthDate)")
+        }
+        
+        return monthData
+    }
+    
+    private func generateDaysInMonth(for baseDate: Date) -> [DayModel] {
+        guard let monthData = try? monthModel(from: baseDate) else {
+            fatalError("An error occurred when generating the metadata for \(baseDate)")
+        }
+        
+        let numberOfDaysInMonth = monthData.numberOfDays
+        let offsetInInitialRow = monthData.firstDayWeekday
+        let firstDayOfMonth = monthData.firstDay
+
+        var days: [DayModel] = (1..<(numberOfDaysInMonth + offsetInInitialRow)).map { day in
+
+            let isWithinDisplayedMonth = day >= offsetInInitialRow
+            let dayOffset = isWithinDisplayedMonth ? day - offsetInInitialRow : -(offsetInInitialRow - day)
+
+            return generateDay(offsetBy: dayOffset, for: firstDayOfMonth, isWithinDisplayedMonth: isWithinDisplayedMonth)
+        }
+
+        days += generateStartOfNextMonth(using: firstDayOfMonth, totalDays: days.count)
+        
+        return days
+    }
+    
+    private func generateStartOfNextMonth(using firstDayOfDisplayedMonth: Date, totalDays: Int) -> [DayModel] {
+        guard let lastDayInMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1),to: firstDayOfDisplayedMonth) else {
+            return []
+        }
+        
+        let additionalDays = 42 - totalDays//14 - calendar.component(.weekday, from: lastDayInMonth)
+               
+        guard additionalDays > 0 else {
+            return []
+        }
+                
+        let days: [DayModel] = (1...additionalDays)
+            .map {
+                generateDay(
+                    offsetBy: $0,
+                    for: lastDayInMonth,
+                    isWithinDisplayedMonth: false)
+        }
+        
+        return days
+    }
+    
+    private func generateDay(offsetBy dayOffset: Int, for firstDayOfMonth: Date, isWithinDisplayedMonth: Bool) -> DayModel {
+        let dayDate = calendar.date(byAdding: .day, value: dayOffset, to: firstDayOfMonth)!
+        let weekDay = getWeekday(from: dayDate)
+
+        let isCurrentDay = calendar.isDate(dayDate, equalTo: baseDate.value, toGranularity: .day)
+        var isSelected = false
+        
+        if let selectDate = selectedDate.value {
+            isSelected = calendar.isDate(dayDate, equalTo: selectDate, toGranularity: .day)
+        }
+        
+        return DayModel(date: dayDate, number: dateFormatter.string(from: dayDate),
+                        isSelected: isSelected,
+                        isWithinDisplayedMonth: isWithinDisplayedMonth,
+                        isWeekend: weekDay > 5 ? true : false,
+                        currentDay: isCurrentDay)
+    }
+    
+}

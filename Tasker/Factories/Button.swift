@@ -9,10 +9,41 @@
 import UIKit
 
 struct Button {
-    static func makeStandartButtonWithImage(image: UIImage) -> UIButton {
+    static func makeStandartButton(image: UIImage?, text: String? = nil) -> UIButton {
         let button = UIButton(type: .custom)
-        button.setImage(image, for: .normal)
+        
+        if let image = image {
+            button.setImage(image, for: .normal)
+        }
+        
+        if let text = text {
+            button.setTitle(text, for: .normal)
+            button.setTitleColor(.black, for: .normal)
+        }
                 
         return button
+    }
+}
+
+extension UIButton {
+    func image(_ img: UIImage) -> UIButton {
+        setImage(img, for: .normal)
+        return self
+    }
+    
+    func autolayout(_ atl: Bool) -> UIButton {
+        translatesAutoresizingMaskIntoConstraints = !atl
+        return self
+    }
+    
+    func title(_ ttl: String) -> UIButton {
+        setTitle(ttl, for: .normal)
+        setTitleColor(.black, for: .normal)
+        return self
+    }
+    
+    func font(_ fnt: UIFont) -> UIButton {
+        titleLabel?.font = fnt
+        return self
     }
 }

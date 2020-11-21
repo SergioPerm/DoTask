@@ -10,7 +10,6 @@
 import Foundation
 import CoreData
 
-
 extension Task {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Task> {
@@ -26,6 +25,7 @@ extension Task {
     @NSManaged public var title: String?
     @NSManaged public var isDone: Bool
     @NSManaged public var importanceLevel: Int16
+    @NSManaged public var mainTaskListOrder: Int16
     
     @objc var dailyName: String? {
         guard let taskDate = self.taskDate else {

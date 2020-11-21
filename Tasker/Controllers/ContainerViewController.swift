@@ -172,7 +172,7 @@ extension ContainerViewController {
         add(timePicker, withDimmedBack: true)
     }
     
-    func openDatePicker(withDate date: Date, for instanceVC: CalendarPickerInstance) {
+    func openDatePicker(withDate date: Date?, for instanceVC: CalendarPickerInstance) {
 
         let calendarPicker = CalendarPickerViewController(selectedDate: date, onSelectedDateChanged: { [weak instanceVC] selectDate in
             instanceVC?.selectedCalendarDate = selectDate

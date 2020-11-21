@@ -26,19 +26,21 @@ enum TimeComponent: Int {
 }
 
 class TimePickerViewController: UIViewController {
-        
-    // MARK: Properties
+    
+    // MARK: View's
     
     private lazy var timePickerView: UIView = {
         let timePickerView = UIView()
         
         return timePickerView
     }()
-        
-    private var timePicker: UIPickerView
+    
+    private var timePicker: UIPickerView = UIPickerView()
+    
+    // MARK: Properties
+            
     private var baseTime: Date
-        
-    public var selectedDate:(day:Date, hour:Int, minute:Int)
+    private var selectedDate:(day:Date, hour:Int, minute:Int)
     
     private let dateFormatter = DateFormatter()
     private let numberFormatter = NumberFormatter()
@@ -46,7 +48,8 @@ class TimePickerViewController: UIViewController {
     private var hours:[Int] = []
     private var minutes:[Int] = []
     
-    //private var selectedTimeChanged: ((Date?) -> Void)
+    // MARK: Handlers
+    
     private var deleteReminderHandler: (_ vc: TimePickerViewController) -> Void
     private var setReminderHandler: (_ vc: TimePickerViewController, _ setTime: Date) -> Void
     
@@ -54,8 +57,7 @@ class TimePickerViewController: UIViewController {
     
     init(baseTime: Date?, onDelete deleteReminderHandler: @escaping (_ vc: TimePickerViewController) -> Void, onSet setReminderHandler: @escaping (_ vc: TimePickerViewController, _ setTime: Date) -> Void) {
         self.baseTime = baseTime ?? Date()
-        self.timePicker = UIPickerView()
-        
+                
         self.deleteReminderHandler = deleteReminderHandler
         self.setReminderHandler = setReminderHandler
         
@@ -85,39 +87,38 @@ class TimePickerViewController: UIViewController {
     // MARK: Setup VIEW
     
     private func showView() {
-        let mainView = UIView.globalView
+        let scale = StyleGuide.TimePicker.scaleShowAnimationValue
+        self.view.transform = CGAffineTransform(scaleX: scale, y: scale)
+        self.view.alpha = StyleGuide.TimePicker.alphaShowAnimationValue
         
-        let safeAreaGuide = getSafeAreaLayoutGuide()
-        let viewWidth = safeAreaGuide.layoutFrame.width - 40
-        let viewHeight = safeAreaGuide.layoutFrame.height * 0.7
-        
-        let viewOriginAtMainView = CGPoint(x: (safeAreaGuide.layoutFrame.width - viewWidth)/2, y: (safeAreaGuide.layoutFrame.height - viewHeight)/2)
-        
-        let viewOriginDifference = mainView!.convert(viewOriginAtMainView, to: view)
-        let viewOrigin = CGPoint(x: view.frame.origin.x + 20, y: view.frame.origin.y + viewOriginDifference.y - safeAreaGuide.layoutFrame.width)
-        
-        view.frame = CGRect(origin: viewOrigin, size: CGSize(width: viewWidth, height: viewHeight))
-        
-        UIView.animate(withDuration: 0.3,
+        view.isHidden = false
+        UIView.animate(withDuration: 0.2,
                        delay: 0,
-                       options: .curveLinear,
+                       options: .curveEaseInOut,
                        animations: {
-                        self.view.frame.origin = CGPoint(x: self.view.frame.origin.x, y: self.view.frame.origin.y + safeAreaGuide.layoutFrame.width)
+                        self.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                        self.view.alpha = 1.0
         }, completion: nil)
     }
     
     private func setupView() {
-                        
-        let safeAreaGuide = getSafeAreaLayoutGuide()
-        let viewWidth = safeAreaGuide.layoutFrame.width - 40
-        let viewHeight = safeAreaGuide.layoutFrame.height * 0.7
+        guard let mainView = UIView.globalView else { return }
+        
+        let safeAreaFrame = UIView.globalSafeAreaFrame
+        let viewWidth = safeAreaFrame.width * StyleGuide.TimePicker.ratioToScreenWidth
+        let viewHeight = safeAreaFrame.height * StyleGuide.TimePicker.ratioToScreenHeight
                 
-        view.frame = CGRect(origin: CGPoint(x: 0, y: -safeAreaGuide.layoutFrame.height), size: CGSize(width: viewWidth, height: viewHeight))//CGRect(x: viewOrigin.x, y: viewOrigin.y, width: viewWidth, height: viewHeight)
+        let viewOriginAtMainView = CGPoint(x: (safeAreaFrame.width - viewWidth)/2, y: (safeAreaFrame.height - viewHeight)/2)
         
+        let viewOriginDifference = mainView.convert(viewOriginAtMainView, to: view)
+        let viewOrigin = CGPoint(x: view.frame.origin.x + (safeAreaFrame.width - viewWidth)/2, y: view.frame.origin.y + viewOriginDifference.y)
+        
+        view.frame = CGRect(origin: viewOrigin, size: CGSize(width: viewWidth, height: viewHeight))
+                
         view.layer.backgroundColor = Color.whiteColor.uiColor.cgColor
-        view.layer.cornerRadius = 8
+        view.layer.cornerRadius = StyleGuide.TimePicker.viewCornerRadius
         
-        timePicker.frame = CGRect(x: 0, y: (viewHeight-viewWidth)/2, width: viewWidth, height: viewWidth)
+        timePicker.frame = CGRect(x: 0, y: viewHeight/2, width: viewWidth, height: viewWidth)
         timePicker.translatesAutoresizingMaskIntoConstraints = false
         timePicker.setValue(Color.clearColor.uiColor, forKey: "magnifierLineColor")
         
@@ -125,33 +126,18 @@ class TimePickerViewController: UIViewController {
         timePicker.dataSource = self
         
         view.addSubview(timePicker)
-        
-        var constraints = [
-            timePicker.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
-            timePicker.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            timePicker.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            timePicker.heightAnchor.constraint(equalToConstant: 300)
-        ]
-                
+                        
         let stackViewButtons = UIStackView()
         stackViewButtons.translatesAutoresizingMaskIntoConstraints = false
         
-        let btnCancel = UIButton(type: .system)
-        btnCancel.setTitle("Delete", for: .normal)
-        btnCancel.setTitleColor(.black, for: .normal)
-        btnCancel.translatesAutoresizingMaskIntoConstraints = false
-        btnCancel.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 17)
+        let btnCancel = UIButton().title("Delete").autolayout(true).font(Font.timePickerBtnFont.uiFont)
         btnCancel.addTarget(self, action: #selector(deleteAction(sender:)), for: .touchUpInside)
         
-        let btnSave = UIButton(type: .system)
-        btnSave.setTitle("Set", for: .normal)
-        btnSave.setTitleColor(.black, for: .normal)
-        btnSave.translatesAutoresizingMaskIntoConstraints = false
-        btnSave.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 17)
-        btnSave.addTarget(self, action: #selector(setAction(sender:)), for: .touchUpInside)
+        let btnSet = UIButton().title("Set").autolayout(true).font(Font.timePickerBtnFont.uiFont)
+        btnSet.addTarget(self, action: #selector(setAction(sender:)), for: .touchUpInside)
         
         stackViewButtons.addArrangedSubview(btnCancel)
-        stackViewButtons.addArrangedSubview(btnSave)
+        stackViewButtons.addArrangedSubview(btnSet)
         
         stackViewButtons.axis = .horizontal
         stackViewButtons.alignment = .fill
@@ -159,31 +145,25 @@ class TimePickerViewController: UIViewController {
         
         view.addSubview(stackViewButtons)
         
+        var constraints = [
+            timePicker.topAnchor.constraint(equalTo: view.topAnchor),
+            timePicker.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            timePicker.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            timePicker.bottomAnchor.constraint(equalTo: stackViewButtons.topAnchor)
+        ]
+        
         constraints.append(contentsOf: [
             stackViewButtons.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             stackViewButtons.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             stackViewButtons.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            stackViewButtons.heightAnchor.constraint(equalToConstant: 75)
+            stackViewButtons.heightAnchor.constraint(equalToConstant: StyleGuide.TimePicker.ratioPanelToViewHeight * viewHeight)
         ])
         
         NSLayoutConstraint.activate(constraints)
         
+        view.isHidden = true
     }
-    
-    private func getSafeAreaLayoutGuide() -> UILayoutGuide {
         
-        var safeAreaGuide = UILayoutGuide()
-        
-        if #available(iOS 11.0, *) {
-            let window = UIApplication.shared.windows[0]
-            //window.convert(<#T##point: CGPoint##CGPoint#>, to: <#T##UIView?#>)
-            safeAreaGuide = window.safeAreaLayoutGuide
-        }
-        
-        return safeAreaGuide
-        
-    }
-    
     // MARK: Calculate time data
     
     ////Normalize base time and current picker time
@@ -194,27 +174,28 @@ class TimePickerViewController: UIViewController {
         
         let currentDateComponents = Calendar.current.dateComponents([.hour, .minute], from: baseTime )
         
-        minutes = setupMinutes(startingMinute: currentDateComponents.minute!, interval: 5)
+        guard let hour = currentDateComponents.hour, let minute = currentDateComponents.minute else { return }
         
-        if minutes[0] < currentDateComponents.minute! {
-            hours = setupHours(startingHour: currentDateComponents.hour! + 1)
-        } else {
-            hours = setupHours(startingHour: currentDateComponents.hour!)
+        minutes = setupMinutes(startingMinute: minute, interval: 5)
+        
+        var startingHour = hour
+        if minutes[0] < minute {
+            startingHour += 1
         }
+        
+        hours = setupHours(startingHour: startingHour)
         
         selectedDate.day = Calendar.current.startOfDay(for: baseTime)
         selectedDate.hour = hours[0]
         selectedDate.minute = minutes[0]
         
-        let indexHour = hours.firstIndex(of: selectedDate.hour)
+        guard let indexHour = hours.firstIndex(of: selectedDate.hour), let indexMinute = minutes.firstIndex(of: selectedDate.minute) else { return }
+                
+        timePicker.selectRow(indexHour, inComponent: 0, animated: false)
+        timePicker.selectRow(indexMinute, inComponent: 2, animated: false)
         
-        timePicker.selectRow(indexHour!, inComponent: 0, animated: false)
-
-        let indexMinute = minutes.firstIndex(of: selectedDate.minute)
-        
-        timePicker.selectRow(indexMinute!, inComponent: 2, animated: false)
-        
-        baseTime = Calendar.current.date(bySettingHour: selectedDate.hour, minute: selectedDate.minute, second: 0, of: baseTime) ?? baseTime
+        //normalize baseTime
+        baseTime = dateFromSelectedDate() ?? baseTime
     }
     
     private func setupHours(startingHour:Int) -> [Int] {
@@ -241,7 +222,7 @@ class TimePickerViewController: UIViewController {
         return result
     }
     
-    private func currentSelectedDate() -> Date? {
+    private func dateFromSelectedDate() -> Date? {
         if let date = Calendar.current.date(bySettingHour: selectedDate.hour, minute: selectedDate.minute, second: 0, of: selectedDate.day) {
             return date
         }
@@ -287,21 +268,23 @@ extension TimePickerViewController: UIPickerViewDataSource {
 extension TimePickerViewController: UIPickerViewDelegate {
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
-        return 100
+        return StyleGuide.TimePicker.pickerRowHeightComponent
     }
     
     func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
-        return 60
+        return StyleGuide.TimePicker.pickerWidthComponent
     }
     
     func getTextForComponentFromRow(timeComponent: TimeComponent, row: Int) -> String {
         switch timeComponent {
         case .hour:
-            return "\(numberFormatter.string(from: NSNumber(value: hours[row % hours.count]))!)"
+            guard let textComponent = numberFormatter.string(from: NSNumber(value: hours[row % hours.count])) else { return "" }
+            return "\(textComponent)"
         case .separator:
             return ":"
         case .minute:
-            return "\(numberFormatter.string(from: NSNumber(value: minutes[row % minutes.count]))!)"
+            guard let textComponent = numberFormatter.string(from: NSNumber(value: minutes[row % hours.count])) else { return "" }
+            return "\(textComponent)"
         default:
             return ""
         }
@@ -309,7 +292,7 @@ extension TimePickerViewController: UIPickerViewDelegate {
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         let pickerLabel = UILabel()
-        pickerLabel.textColor = #colorLiteral(red: 0.2369126672, green: 0.6231006994, blue: 1, alpha: 1)
+        pickerLabel.textColor = StyleGuide.TimePicker.pickerTextColor
         
         if let timeComponent = TimeComponent.init(rawValue: component) {
             pickerLabel.text = getTextForComponentFromRow(timeComponent: timeComponent, row: row)
@@ -332,8 +315,7 @@ extension TimePickerViewController: UIPickerViewDelegate {
             }
         }
         
-        if let date = currentSelectedDate() {
-            baseTime = date
-        }
+        //normalize baseTime
+        baseTime = dateFromSelectedDate() ?? baseTime
     }
 }

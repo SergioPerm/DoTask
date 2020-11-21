@@ -15,7 +15,6 @@ class TaskListViewController: UIViewController {
     
     private var tableView: UITableView!
     
-    
     private let editTaskAction: ((_ taskModel: TaskModel?) ->  Void)
         
     init(editTaskAction: @escaping (_ taskModel: TaskModel?) ->  Void) {
@@ -36,6 +35,8 @@ class TaskListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.viewWillAppear(view: self)
+        
+        //viewModel.clearData()
     }
         
     override func viewWillDisappear(_ animated: Bool) {

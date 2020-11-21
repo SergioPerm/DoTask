@@ -85,7 +85,7 @@ class DetailTaskViewController: UIViewController {
     
     // MARK: Handlers
     var taskWillSave: (_ taskModel: TaskModel, _ vc: DetailTaskViewController) -> Void
-    var onCalendarSelect: (_ selectedDate: Date, _ vc: DetailTaskViewController) -> Void
+    var onCalendarSelect: (_ selectedDate: Date?, _ vc: DetailTaskViewController) -> Void
     var onTimeReminderSelect: (_ selectedTime: Date, _ vc: DetailTaskViewController) -> Void
     var onCancelTaskHandler: (_ vc: DetailTaskViewController) -> Void
     
@@ -173,13 +173,9 @@ class DetailTaskViewController: UIViewController {
     }()
     
     var accesoryBottomConstraint: NSLayoutConstraint = NSLayoutConstraint()
-    
-//    let calendarBtn: UIButton = {
-//        return Button.makeStandartButtonWithImage(image: UIImage(named: "dateCalendar")!)
-//    }()
-    
+        
     let reminderBtn: UIButton = {
-        return Button.makeStandartButtonWithImage(image: UIImage(named: "clockAlarm")!)
+        return Button.makeStandartButton(image: UIImage(named: "clockAlarm")!, text: nil)
     }()
     
     var importanceBtn: ImportanceButton?
@@ -187,14 +183,14 @@ class DetailTaskViewController: UIViewController {
     var alarmBtn: AlarmButton?
     
     let saveBtn: UIButton = {
-        return Button.makeStandartButtonWithImage(image: UIImage(named: "checkmark")!)
+        return Button.makeStandartButton(image: UIImage(named: "checkmark")!)
     }()
     
     // MARK: Init
         
     init(taskModel: TaskModel?, onSave saveTaskHandler: @escaping (_ taskModel: TaskModel, _ vc: DetailTaskViewController) -> Void,
          onCancel onCancelTaskHandler: @escaping(_ vc: DetailTaskViewController) -> Void,
-         onCalendarSelect calendarSelectHandler: @escaping (_ selectedDate: Date, _ vc: DetailTaskViewController) -> Void,
+         onCalendarSelect calendarSelectHandler: @escaping (_ selectedDate: Date?, _ vc: DetailTaskViewController) -> Void,
          onTimeReminderSelect timeReminderSelectHandler: @escaping (_ selectedTime: Date, _ vc: DetailTaskViewController) -> Void) {
         
         self.taskModel = taskModel ?? TaskModel()
@@ -474,7 +470,7 @@ extension DetailTaskViewController {
     
     func calendarTapAction() {
         titleTextView.resignFirstResponder()
-        onCalendarSelect(taskModel.taskDate ?? Date(), self)
+        onCalendarSelect(taskModel.taskDate, self)
     }
     
     func reminderTapAction() {

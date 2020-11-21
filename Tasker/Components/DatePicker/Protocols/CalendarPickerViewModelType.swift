@@ -9,9 +9,6 @@
 import Foundation
 
 protocol CalendarPickerViewModelType: class {
-    var baseDate: Boxing<Date> { get }
-    var selectedDate: Boxing<Date?> { get set}
-    var days: Boxing<[MonthModel]> { get }
-    
-    func calculateDays()
+    var inputs: CalendarPickerViewModelInputs { get }
+    var outputs: CalendarPickerViewModelOutputs { get }
 }

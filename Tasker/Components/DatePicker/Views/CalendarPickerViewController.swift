@@ -11,13 +11,19 @@ import UIKit
 class CalendarPickerViewController: UIViewController {
     
     // MARK: ViewModel
+    
     let viewModel: CalendarPickerViewModelType
     
+    // MARK: Vars
+    
+    private var selectedDate: Date?
+    
     // MARK: Views
+    
     private lazy var globalFrame = UIView.globalSafeAreaFrame
-    private lazy var viewWidth: CGFloat = globalFrame.width * StyleGuide.datePickerSpaces.ratioToScreenWidth
+    private lazy var viewWidth: CGFloat = globalFrame.width * StyleGuide.CalendarDatePicker.ratioToScreenWidth
     private lazy var viewHeight = collectionHeight + panelHeight * panelsCount
-    private lazy var panelHeight = collectionHeight * StyleGuide.datePickerSpaces.ratioPanelToCollection
+    private lazy var panelHeight = collectionHeight * StyleGuide.CalendarDatePicker.ratioPanelToCollection
     private var panelsCount: CGFloat = 3.0
         
     private lazy var headerView: CalendarPickerHeaderView = {
@@ -52,24 +58,19 @@ class CalendarPickerViewController: UIViewController {
         return collectionView
     }()
     
-    // MARK: Scroll view values
+    // MARK: CollectionView values
     
     private var indexOfCellBeforeDragging = 0
-    private lazy var collectionHeight: CGFloat = cellSize.height * 6 + StyleGuide.datePickerSpaces.cellsInterItemSpacing * 5 + StyleGuide.datePickerSpaces.collectionMargins * 2
+    private lazy var collectionHeight: CGFloat = cellSize.height * 6 + StyleGuide.CalendarDatePicker.cellsInterItemSpacing * 5 + StyleGuide.CalendarDatePicker.collectionMargins * 2
     
     private lazy var cellSize: CGSize = {
-        let padding = (StyleGuide.datePickerSpaces.collectionMargins * 2) + (StyleGuide.datePickerSpaces.cellsInterItemSpacing * (StyleGuide.datePickerSpaces.cellPerRowCount - 1))
+        let padding = (StyleGuide.CalendarDatePicker.collectionMargins * 2) + (StyleGuide.CalendarDatePicker.cellsInterItemSpacing * (StyleGuide.CalendarDatePicker.cellPerRowCount - 1))
         let availableWidthForCells = viewWidth - padding
-        let cellWidth = availableWidthForCells / StyleGuide.datePickerSpaces.cellPerRowCount
+        let cellWidth = availableWidthForCells / StyleGuide.CalendarDatePicker.cellPerRowCount
             
         return CGSize(width: cellWidth, height: cellWidth)
     }()
-               
-    var cancelDatePickerHandler: (_ vc:CalendarPickerViewController) -> Void
-    var saveDatePickerHandler: (_ vc:CalendarPickerViewController) -> Void
-    
-    // MARK: Calendar Data Values
-    
+                       
     private var selectedCell: CalendarPickerViewCell? {
         didSet {
             guard let selectedCell = selectedCell else { return }
@@ -81,34 +82,83 @@ class CalendarPickerViewController: UIViewController {
             oldSelectedCell.updateVisibleStatus()
         }
     }
-        
-    private let selectedDateChanged: (Date?) -> Void
-    
+            
     private let calendar = Calendar.current.taskCalendar
+    
+    // MARK: Handlers
+    
+    private var cancelDatePickerHandler: (_ vc:CalendarPickerViewController) -> Void
+    private var saveDatePickerHandler: (_ vc:CalendarPickerViewController) -> Void
+    private let selectedDateChanged: (Date?) -> Void
     
     // MARK: Initializers
     
-    init(selectedDate: Date,
+    init(selectedDate: Date?,
          onSelectedDateChanged selectedDateChangedHandler: @escaping (Date?) -> Void,
          onCancel cancelDatePickerHandler: @escaping (_ vc:CalendarPickerViewController) -> Void,
          onSave saveDatePickerHandler: @escaping (_ vc:CalendarPickerViewController) -> Void) {
         
+        self.selectedDate = selectedDate
         self.viewModel = CalendarPickerViewModel(selectedDate: selectedDate)
-        
         
         self.cancelDatePickerHandler = cancelDatePickerHandler
         self.saveDatePickerHandler = saveDatePickerHandler
-        
-
         self.selectedDateChanged = selectedDateChangedHandler
         
         super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+      fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: View Lifecycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        bindViewModel()
+        viewModel.inputs.calculateDays()
+        setupView()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        showView()
         
-        self.viewModel.baseDate.bind { [weak self] baseDate in
+        ///Scroll to selected month
+        if let selectedDate = viewModel.outputs.selectedDate.value {
+            let diffAmountMonths = selectedDate.endOfMonth.months(from: Date())
+            let currentIndexPath = IndexPath(row: 0, section: diffAmountMonths)
+            collectionView.scrollToItem(at: currentIndexPath, at: .centeredVertically, animated: false)
+            alignMonthInCollectionView(velocity: CGPoint.zero)
+        }
+    }
+    
+    //MARK: Actions
+    
+    @objc func cancelAction(sender: UIButton) {
+        cancelDatePickerHandler(self)
+    }
+    
+    @objc func saveAction(sender: UIButton) {
+        saveDatePickerHandler(self)
+    }
+    
+    @objc func clearDateAction(sender: UIButton) {
+        viewModel.inputs.clearSelectedDay()
+        selectedDateChanged(viewModel.outputs.selectedDate.value)
+    }
+}
+
+//MARK: - Bind viewModel
+
+extension CalendarPickerViewController {
+    private func bindViewModel() {
+        self.viewModel.outputs.days.bind { [weak self] _ in
             self?.collectionView.reloadData()
         }
         
-        self.viewModel.selectedDate.bind { [weak self] selectedDate in
+        self.viewModel.outputs.selectedDate.bind { [weak self] selectedDate in
+            self?.selectedDate = selectedDate
             
             guard let strongSelf = self else { return }
             guard let selectedDate = selectedDate else {
@@ -131,49 +181,6 @@ class CalendarPickerViewController: UIViewController {
             strongSelf.footerView.currentDateLabel.text = dateString
             strongSelf.footerView.clearDateButton.isHidden = false
         }
-        
-        self.viewModel.days.bind { [weak self] _ in
-            self?.collectionView.reloadData()
-        }
-        
-        self.viewModel.calculateDays()
-    }
-    
-    required init?(coder: NSCoder) {
-      fatalError("init(coder:) has not been implemented")
-    }
-
-    
-    // MARK: View Lifecycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupView()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        showView()
-        
-        ///Scroll to selected month
-        if let diffAmountMonths = viewModel.selectedDate.value?.endOfMonth.months(from: viewModel.baseDate.value) {
-            let currentIndexPath = IndexPath(row: 0, section: diffAmountMonths)
-            collectionView.scrollToItem(at: currentIndexPath, at: .centeredVertically, animated: false)
-            alignMonthInCollectionView(velocity: CGPoint.zero)
-        }
-    }
-    
-    //MARK: Actions
-    @objc func cancelAction(sender: UIButton) {
-        cancelDatePickerHandler(self)
-    }
-    
-    @objc func saveAction(sender: UIButton) {
-        saveDatePickerHandler(self)
-    }
-    
-    @objc func clearDateAction(sender: UIButton) {
-        viewModel.selectedDate.value = nil
-        selectedDateChanged(viewModel.selectedDate.value)
     }
 }
 
@@ -182,14 +189,11 @@ class CalendarPickerViewController: UIViewController {
 extension CalendarPickerViewController {
     private func setupView() {
         //main view
-        view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        view.backgroundColor = StyleGuide.CalendarDatePicker.viewBackgroundColor
         view.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: .zero)
-                
-        let viewOrigin = CGPoint(x: (globalFrame.width - viewWidth)/2, y: 20)
-        view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        view.layer.cornerRadius = 8
+        view.layer.cornerRadius = StyleGuide.CalendarDatePicker.viewCornerRadius
         view.clipsToBounds = true
-                
+        
         //Header view
         view.addSubview(headerView)
         
@@ -201,10 +205,10 @@ extension CalendarPickerViewController {
                 
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
 
-        let collectionInset = StyleGuide.datePickerSpaces.collectionMargins
+        let collectionInset = StyleGuide.CalendarDatePicker.collectionMargins
         layout.sectionInset = UIEdgeInsets(top: collectionInset, left: collectionInset, bottom: collectionInset, right: collectionInset)
-        layout.minimumLineSpacing = StyleGuide.datePickerSpaces.cellsInterItemSpacing
-        layout.minimumInteritemSpacing = StyleGuide.datePickerSpaces.cellsInterItemSpacing
+        layout.minimumLineSpacing = StyleGuide.CalendarDatePicker.cellsInterItemSpacing
+        layout.minimumInteritemSpacing = StyleGuide.CalendarDatePicker.cellsInterItemSpacing
 
         view.addSubview(collectionView)
 
@@ -229,13 +233,13 @@ extension CalendarPickerViewController {
         constraints.append(contentsOf: [
             footerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            footerView.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 0),
+            footerView.topAnchor.constraint(equalTo: collectionView.bottomAnchor),
             footerView.heightAnchor.constraint(equalToConstant: panelHeight * 2)
         ])
         
         NSLayoutConstraint.activate(constraints)
         
-        view.frame = CGRect(origin: viewOrigin, size: CGSize(width: self.viewWidth, height: viewHeight))
+        view.frame.size = CGSize(width: self.viewWidth, height: viewHeight)
         view.isHidden = true
     }
     
@@ -244,12 +248,13 @@ extension CalendarPickerViewController {
                 
         let viewOriginAtMainView = CGPoint(x: (globalFrame.width - viewWidth)/2, y: (globalFrame.height - viewHeight)/2)
         let viewOriginDiffrence = mainView.convert(viewOriginAtMainView, to: view)
-        let viewOriginY = view.frame.origin.y + viewOriginDiffrence.y
+        let origin = CGPoint(x: view.frame.origin.x + viewOriginDiffrence.x, y: view.frame.origin.y + viewOriginDiffrence.y)
         
-        self.view.frame.origin = CGPoint(x: self.view.frame.origin.x, y: viewOriginY)
+        self.view.frame.origin = origin
          
-        self.view.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
-        self.view.alpha = 0.3
+        let scale = StyleGuide.CalendarDatePicker.scaleShowAnimationValue
+        self.view.transform = CGAffineTransform(scaleX: scale, y: scale)
+        self.view.alpha = StyleGuide.CalendarDatePicker.alphaShowAnimationValue
         
         view.isHidden = false
         UIView.animate(withDuration: 0.2,
@@ -276,15 +281,15 @@ extension CalendarPickerViewController {
 
 extension CalendarPickerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.days.value[section].days.count
+        return viewModel.outputs.days.value[section].days.count
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return viewModel.days.value.count
+        return viewModel.outputs.days.value.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let day = viewModel.days.value[indexPath.section].days[indexPath.row]
+        let day = viewModel.outputs.days.value[indexPath.section].days[indexPath.row]
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarPickerViewCell.reuseIdentifier, for: indexPath) as! CalendarPickerViewCell
 
@@ -311,8 +316,8 @@ extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
         guard let day = cell.day else { return }
         if day.isWithinDisplayedMonth {
             selectedDateChanged(day.date)
-            viewModel.selectedDate.value = day.date
-            
+            viewModel.inputs.setSelectedDay(date: day.date)
+              
             if cell != selectedCell {
                 selectedCell = cell
             }
@@ -329,10 +334,10 @@ extension CalendarPickerViewController: UICollectionViewDelegate {
     }
 
     private func indexOfMajorCell() -> Int {
-        let sectionHeight = (StyleGuide.datePickerSpaces.collectionMargins * 2) + (cellSize.height * 6) + (StyleGuide.datePickerSpaces.cellsInterItemSpacing * 5)
+        let sectionHeight = (StyleGuide.CalendarDatePicker.collectionMargins * 2) + (cellSize.height * 6) + (StyleGuide.CalendarDatePicker.cellsInterItemSpacing * 5)
         let proportionalOffset = collectionView.contentOffset.y / sectionHeight
         let index = Int(round(proportionalOffset))
-        let numberOfItems = viewModel.days.value.count
+        let numberOfItems = viewModel.outputs.days.value.count
         let safeIndex = max(0, min(numberOfItems - 1, index))
         return safeIndex
     }
@@ -345,13 +350,13 @@ extension CalendarPickerViewController: UICollectionViewDelegate {
         
     func alignMonthInCollectionView(velocity: CGPoint) {
         
-        let sectionHeight = (StyleGuide.datePickerSpaces.collectionMargins * 2) + (cellSize.height * 6) + (StyleGuide.datePickerSpaces.cellsInterItemSpacing * 5)
+//        let sectionHeight = (StyleGuide.datePickerSpaces.collectionMargins * 2) + (cellSize.height * 6) + (StyleGuide.datePickerSpaces.cellsInterItemSpacing * 5)
 
         // calculate where scrollView should snap to:
         let indexOfMajorCell = self.indexOfMajorCell()
 
         // calculate conditions:
-        let dataSourceCount = viewModel.days.value.count
+        let dataSourceCount = viewModel.outputs.days.value.count
         let swipeVelocityThreshold: CGFloat = 0.5 // after some trail and error
         let hasEnoughVelocityToSlideToTheNextCell = indexOfCellBeforeDragging + 1 < dataSourceCount && velocity.y > swipeVelocityThreshold
         let hasEnoughVelocityToSlideToThePreviousCell = indexOfCellBeforeDragging >= 0 && velocity.y < -swipeVelocityThreshold
@@ -361,7 +366,7 @@ extension CalendarPickerViewController: UICollectionViewDelegate {
         if didUseSwipeToSkipCell {
 
             let snapToIndex = indexOfCellBeforeDragging + (hasEnoughVelocityToSlideToTheNextCell ? 1 : -1)
-            let toValue = sectionHeight * CGFloat(snapToIndex)
+            let toValue = collectionHeight * CGFloat(snapToIndex)
 
             if (snapToIndex >= 0) {
                 // Damping equal 1 => no oscillations => decay animation:
@@ -369,14 +374,14 @@ extension CalendarPickerViewController: UICollectionViewDelegate {
                     self.collectionView.contentOffset = CGPoint(x: 0, y: toValue)
                     self.collectionView.layoutIfNeeded()
                 }, completion: { finished in
-                    self.setDataForHeaderView(for: self.viewModel.days.value[snapToIndex].firstDay)
+                    self.setDataForHeaderView(for: self.viewModel.outputs.days.value[snapToIndex].firstDay)
                 })
             }
 
         } else {
-            let offsetForSlide = CGFloat(indexOfMajorCell) * sectionHeight
+            let offsetForSlide = CGFloat(indexOfMajorCell) * collectionHeight
             collectionView.setContentOffset(CGPoint(x: 0, y: offsetForSlide), animated: true)
-            setDataForHeaderView(for: viewModel.days.value[indexOfMajorCell].firstDay)
+            setDataForHeaderView(for: viewModel.outputs.days.value[indexOfMajorCell].firstDay)
         }
     }
 }

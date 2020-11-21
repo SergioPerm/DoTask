@@ -25,6 +25,7 @@ struct TaskModel {
             }
         }
     }
+    var mainTaskListOrder: Int16
     
     init() {
         self.uid = UUID().uuidString
@@ -34,6 +35,7 @@ struct TaskModel {
         self.taskDate = Date()
         self.isNew = true
         self.importanceLevel = 0
+        self.mainTaskListOrder = self.taskDate == nil ? 1 : 0
     }
     
     init(with task: Task) {
@@ -45,6 +47,7 @@ struct TaskModel {
         self.lat = task.lat
         self.lon = task.lon
         self.importanceLevel = task.importanceLevel
+        self.mainTaskListOrder = task.mainTaskListOrder
     }
     
 }

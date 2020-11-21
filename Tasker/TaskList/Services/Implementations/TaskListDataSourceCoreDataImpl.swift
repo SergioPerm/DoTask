@@ -23,13 +23,13 @@ class TaskListDataSourceCoreDataImpl: NSObject {
         // Setting up fetchedResultsController
         let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
         
-        // Add Sort Descriptors
-        let sortDescriptor = NSSortDescriptor(key: "taskDate", ascending: true)
-        let sortDescriptor2 = NSSortDescriptor(key: "title", ascending: true)
+        let sortDescriptor = NSSortDescriptor(key: "mainTaskListOrder", ascending: true)
+        let sortDescriptor2 = NSSortDescriptor(key: "taskDate", ascending: true)
+        let sortDescriptor3 = NSSortDescriptor(key: "title", ascending: true)
         
         let predicate = NSPredicate(format: "isDone == %@", false)
         
-        fetchRequest.sortDescriptors = [sortDescriptor, sortDescriptor2]
+        fetchRequest.sortDescriptors = [sortDescriptor, sortDescriptor2, sortDescriptor3]
         fetchRequest.predicate = predicate
         fetchRequest.fetchBatchSize = 20
         // Initialize Fetched Results Controller
@@ -39,7 +39,6 @@ class TaskListDataSourceCoreDataImpl: NSObject {
         
         fetchedResultsController.delegate = self
     }
-    
 }
 
 // MARK: TaskListDataSource
@@ -123,6 +122,7 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
             task.lat = taskModel.lat!
             task.lon = taskModel.lon!
             task.importanceLevel = taskModel.importanceLevel
+            task.mainTaskListOrder = taskModel.taskDate == nil ? 1 : 0
             
             do {
                 try context.save()
@@ -180,6 +180,7 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
             newTask.reminderDate = taskModel.reminderDate
             newTask.reminderGeo = taskModel.reminderGeo
             newTask.importanceLevel = taskModel.importanceLevel
+            newTask.mainTaskListOrder = taskModel.taskDate == nil ? 1 : 0
             
             if let lat = taskModel.lat, let lon = taskModel.lon {
                 newTask.lat = lat

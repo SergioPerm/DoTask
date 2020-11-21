@@ -8,12 +8,33 @@
 
 import Foundation
 
-class CalendarPickerViewModel: CalendarPickerViewModelType {
- 
+class CalendarPickerViewModel: CalendarPickerViewModelType, CalendarPickerViewModelInputs, CalendarPickerViewModelOutputs {
+   
+    // MARK: CalendarPickerViewModelType
+    
+    var inputs: CalendarPickerViewModelInputs { return self }
+    var outputs: CalendarPickerViewModelOutputs { return self }
+    
+    // MARK: Outputs
     var days: Boxing<[MonthModel]>
-    var baseDate = Boxing(Date())
     var selectedDate: Boxing<Date?>
         
+    // MARK: Inputs
+    func calculateDays() {
+        days.value = generateDaysForThreeYears()
+    }
+    
+    func clearSelectedDay() {
+        selectedDate.value = nil
+    }
+    
+    func setSelectedDay(date: Date) {
+        selectedDate.value = date
+    }
+    
+    // MARK: Properties
+    
+    private let baseDate = Date()
     private let calendar = Calendar.current.taskCalendar
     
     private lazy var dateFormatter: DateFormatter = {
@@ -26,16 +47,16 @@ class CalendarPickerViewModel: CalendarPickerViewModelType {
       case metadataGeneration
     }
             
+    // MARK: Initializers
+    
     init(selectedDate: Date?) {
         self.selectedDate = Boxing(selectedDate)
         self.days = Boxing([])
     }
+        
+    // MARK: Calendar calculations
     
-    func calculateDays() {
-        days.value = generateDaysForThreeYears(for: baseDate.value)
-    }
-    
-    private func generateDaysForThreeYears(for baseDate: Date) -> [MonthModel] {
+    private func generateDaysForThreeYears() -> [MonthModel] {
         var yearComponent = DateComponents()
         var allMonths: [MonthModel] = []
         allMonths.removeAll()
@@ -152,7 +173,7 @@ class CalendarPickerViewModel: CalendarPickerViewModelType {
         let dayDate = calendar.date(byAdding: .day, value: dayOffset, to: firstDayOfMonth)!
         let weekDay = getWeekday(from: dayDate)
 
-        let isCurrentDay = calendar.isDate(dayDate, equalTo: baseDate.value, toGranularity: .day)
+        let isCurrentDay = calendar.isDate(dayDate, equalTo: baseDate, toGranularity: .day)
         var isSelected = false
         
         if let selectDate = selectedDate.value {

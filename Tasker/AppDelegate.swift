@@ -12,15 +12,18 @@ import CoreData
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    var coordinator: MainCoordinator?
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         PushNotificationService.shared.checkAuthorization()
 
-        let container = ContainerViewController()
+        let presenter = ContainerPresenterController()
+        coordinator = MainCoordinator(presenter: presenter)
+        coordinator?.start()
         
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = container
+        window?.rootViewController = presenter
         window?.makeKeyAndVisible()
         
         return true

@@ -16,6 +16,11 @@ extension UIView {
         return UIDevice.hasNotch ? 44 : 20
     }
     
+    var globalSafeAreaInsets: UIEdgeInsets {
+        let window = UIApplication.shared.windows[0]
+        return window.safeAreaInsets
+    }
+    
     static var globalSafeAreaFrame: CGRect {
         guard let globalView = UIView.globalView else { return CGRect.zero }
         

@@ -29,6 +29,15 @@ extension UIViewController {
         }
     }
     
+    func remove(withDimmedBack: Bool) {
+        if withDimmedBack {
+            view.removeDimmedView()
+        }
+        willMove(toParent: nil)
+        view.removeFromSuperview()
+        removeFromParent()
+    }
+    
     func remove() {
         willMove(toParent: nil)
         view.removeFromSuperview()

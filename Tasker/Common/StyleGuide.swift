@@ -9,6 +9,15 @@
 import UIKit
 
 struct StyleGuide {
+    enum DetailTask {
+        //view
+        static let topMargin: CGFloat = 40.0
+        static let viewCornerRadius: CGFloat = 16.0
+        
+        //colors
+        static let viewBGColor: UIColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+    }
+    
     enum CalendarDatePicker {
         //ratio sizes
         static let ratioToScreenWidth: CGFloat = 0.75

@@ -11,9 +11,9 @@ used frameworks:
 - User Notifications
 
 Architectural patterns:
-- MVVM (in TaskList component) with fetchedResultsController as data source
+- MVVM + Coordinator, MVC
 
-now testing in ios 11.4 and 13.*
+iOS 11.* support
 
 unrealized feauters:
 - task diary

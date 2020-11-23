@@ -12,18 +12,22 @@ class TaskListViewController: UIViewController, PresentableController {
     
     var presentableControllerViewType: PresentableControllerViewType
     var presenter: PresenterController?
-
+    
     // MARK: - Dependencies
     public let viewModel: TaskListViewModel //= TaskListViewModelAssembler.createInstance()
     
     private var tableView: UITableView!
     
+    private var menuViewController: MenuViewController?
+    private var withSlideMenu: Bool
+    
     var editTaskAction: ((_ taskUID: String?) ->  Void)?
-        
+    
     init(viewModel: TaskListViewModel, presenter: PresenterController?, presentableControllerViewType: PresentableControllerViewType) {
         self.viewModel = viewModel
         self.presenter = presenter
         self.presentableControllerViewType = presentableControllerViewType
+        self.withSlideMenu = true
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -43,16 +47,35 @@ class TaskListViewController: UIViewController, PresentableController {
         
         //viewModel.clearData()
     }
-        
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         viewModel.viewWillDisappear()
     }
-        
+    
 }
 
 extension TaskListViewController {
     private func setupView() {
+        let navLabel = UILabel()
+        let navTitle = NSMutableAttributedString(string: "Task", attributes:[
+            NSAttributedString.Key.foregroundColor: Color.blueColor.uiColor,
+            NSAttributedString.Key.font: Font.mainTitle.uiFont])
+        
+        navTitle.append(NSMutableAttributedString(string: "er", attributes:[
+            NSAttributedString.Key.font: Font.mainTitle2.uiFont,
+            NSAttributedString.Key.foregroundColor: Color.pinkColor.uiColor]))
+        
+        navLabel.attributedText = navTitle
+        self.navigationItem.titleView = navLabel
+        
+        if withSlideMenu {
+            self.menuViewController = MenuViewController(presenter: presenter, presentableControllerViewType: .menuViewController)
+            self.menuViewController?.delegate = self
+            
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(tapMenuAction(sender:)))
+        }
+        
         tableView = UITableView()
         tableView.dataSource = self
         tableView.delegate = self
@@ -88,6 +111,10 @@ extension TaskListViewController {
     @objc private func addTaskAction(sender: UIView) {
         
     }
+    
+    @objc private func tapMenuAction(sender: UIBarButtonItem) {
+        menuViewController?.presentMenu()
+    }
 }
 
 // MARK: UITableViewDataSource
@@ -107,7 +134,7 @@ extension TaskListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: TaskListTableViewCell.reuseIdentifier) as! TaskListTableViewCell
         let taskModel = viewModel.tableViewItems[indexPath.section].tasks[indexPath.row]
         configureCell(cell: cell, taskModel: taskModel)
-
+        
         return cell
     }
     
@@ -143,7 +170,7 @@ extension TaskListViewController: UITableViewDelegate {
             self.viewModel.tableViewDidSelectRow(at: indexPath)
         }
     }
-        
+    
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let contextItemDelete = UIContextualAction(style: .destructive, title: "") { [weak self] (contextualAction, view, completion) in
             self?.viewModel.deleteTask(at: indexPath)
@@ -156,6 +183,18 @@ extension TaskListViewController: UITableViewDelegate {
         let configuration = UISwipeActionsConfiguration(actions: [contextItemDelete])
         
         return configuration
+    }
+}
+
+// MARK: MenuViewControllerDelegate
+
+extension TaskListViewController: MenuViewControllerDelegate {
+    func addMenuButton() {
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(tapMenuAction(sender:)))
+    }
+    
+    func someAction() {
+        menuViewController?.toggleMenu()
     }
 }
 

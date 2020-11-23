@@ -60,6 +60,7 @@
 		B1C39D64256BC72E0005C4B6 /* DetailTaskCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C39D63256BC72E0005C4B6 /* DetailTaskCoordinator.swift */; };
 		B1C39D67256BCB340005C4B6 /* CalendarPickerAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C39D66256BCB340005C4B6 /* CalendarPickerAssembly.swift */; };
 		B1C39D6A256BD5390005C4B6 /* TimePickerAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C39D69256BD5390005C4B6 /* TimePickerAssembly.swift */; };
+		B1C39D6D256BE40E0005C4B6 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C39D6C256BE40E0005C4B6 /* MenuViewController.swift */; };
 		B1C5F80D2566551E0040EB3C /* CalendarPickerViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C5F80C2566551E0040EB3C /* CalendarPickerViewModelInputs.swift */; };
 		B1D5C4BA252AFE8100C4B988 /* NotifyByDateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5C4B9252AFE8100C4B988 /* NotifyByDateModel.swift */; };
 		B1D5C4BE252B540000C4B988 /* NotificationTaskObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5C4BD252B540000C4B988 /* NotificationTaskObserver.swift */; };
@@ -139,6 +140,7 @@
 		B1C39D63256BC72E0005C4B6 /* DetailTaskCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskCoordinator.swift; sourceTree = "<group>"; };
 		B1C39D66256BCB340005C4B6 /* CalendarPickerAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerAssembly.swift; sourceTree = "<group>"; };
 		B1C39D69256BD5390005C4B6 /* TimePickerAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerAssembly.swift; sourceTree = "<group>"; };
+		B1C39D6C256BE40E0005C4B6 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		B1C5F80C2566551E0040EB3C /* CalendarPickerViewModelInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerViewModelInputs.swift; sourceTree = "<group>"; };
 		B1D5C4B9252AFE8100C4B988 /* NotifyByDateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotifyByDateModel.swift; sourceTree = "<group>"; };
 		B1D5C4BD252B540000C4B988 /* NotificationTaskObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTaskObserver.swift; sourceTree = "<group>"; };
@@ -273,6 +275,7 @@
 		B18349EE256AEBD200D0D096 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				B1C39D6B256BE3CF0005C4B6 /* SlideMenu */,
 				B189A98A25247E1C00EAC6A0 /* TimePicker */,
 				B1D5DEB0252386E300124DAD /* DatePicker */,
 				B18C91BF25334D4B004DFB73 /* DetailTask */,
@@ -487,6 +490,14 @@
 			path = Assembly;
 			sourceTree = "<group>";
 		};
+		B1C39D6B256BE3CF0005C4B6 /* SlideMenu */ = {
+			isa = PBXGroup;
+			children = (
+				B1C39D6C256BE40E0005C4B6 /* MenuViewController.swift */,
+			);
+			path = SlideMenu;
+			sourceTree = "<group>";
+		};
 		B1D5C4BB252B53DE00C4B988 /* PushNotifications */ = {
 			isa = PBXGroup;
 			children = (
@@ -680,6 +691,7 @@
 				B1603C5A2521EAB70022BE49 /* UIViewController.swift in Sources */,
 				B1A914272520A9250021E15C /* TaskListViewModel.swift in Sources */,
 				B1804BB8255A8CED007FECCF /* StyleGuide.swift in Sources */,
+				B1C39D6D256BE40E0005C4B6 /* MenuViewController.swift in Sources */,
 				B1A9140825205DE20021E15C /* CoreDataService.swift in Sources */,
 				B1D5DED22523993000124DAD /* CalendarPickerViewOutputs.swift in Sources */,
 				B18349ED256AEB7500D0D096 /* MainCoordinator.swift in Sources */,

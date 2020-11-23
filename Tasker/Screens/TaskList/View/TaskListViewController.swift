@@ -69,6 +69,22 @@ extension TaskListViewController {
         navLabel.attributedText = navTitle
         self.navigationItem.titleView = navLabel
         
+        if let navBar = self.navigationController?.navigationBar {
+            if #available(iOS 13.0, *) {
+                navBar.standardAppearance.backgroundColor = UIColor.white//UIColor.clear
+                navBar.standardAppearance.backgroundEffect = nil
+                navBar.standardAppearance.shadowImage = UIImage()
+                navBar.standardAppearance.shadowColor = .clear
+                navBar.standardAppearance.backgroundImage = UIImage()
+            } else {
+                // Fallback on earlier versions
+                navBar.backgroundColor = .clear
+                navBar.setBackgroundImage(UIImage(), for:.default)
+                navBar.shadowImage = UIImage()
+                navBar.layoutIfNeeded()
+            }
+        }
+        
         if withSlideMenu {
             self.menuViewController = MenuViewController(presenter: presenter, presentableControllerViewType: .menuViewController)
             self.menuViewController?.delegate = self
@@ -150,6 +166,7 @@ extension TaskListViewController: UITableViewDataSource {
         
         label.textColor = #colorLiteral(red: 0.2392156863, green: 0.6235294118, blue: 0.9960784314, alpha: 1)
         
+        headerView.backgroundColor = UIColor.white
         headerView.addSubview(label)
         
         return headerView

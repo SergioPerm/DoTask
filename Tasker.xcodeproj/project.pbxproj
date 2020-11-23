@@ -22,12 +22,9 @@
 		B15C9B7A25695BB800A809B1 /* DetailTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15C9B7925695BB800A809B1 /* DetailTaskViewModel.swift */; };
 		B1603C522521C0480022BE49 /* DailyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1603C512521C0480022BE49 /* DailyModel.swift */; };
 		B1603C552521C5C20022BE49 /* TaskListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1603C542521C5C20022BE49 /* TaskListTableViewCell.swift */; };
-		B1603C572521E1870022BE49 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1603C562521E1870022BE49 /* ContainerViewController.swift */; };
 		B1603C5A2521EAB70022BE49 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1603C592521EAB70022BE49 /* UIViewController.swift */; };
 		B1603C5C2521FC200022BE49 /* DetailTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1603C5B2521FC200022BE49 /* DetailTaskViewController.swift */; };
-		B166404325444257007D1AFD /* CalendarPlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B166404225444257007D1AFD /* CalendarPlanViewController.swift */; };
 		B1664045254464C8007D1AFD /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1664044254464C8007D1AFD /* UIBarButtonItem.swift */; };
-		B16CDD322546F5F300B9218D /* LeftMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16CDD312546F5F300B9218D /* LeftMenuViewController.swift */; };
 		B1804BB8255A8CED007FECCF /* StyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1804BB7255A8CED007FECCF /* StyleGuide.swift */; };
 		B18349E3256AEA9800D0D096 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18349E2256AEA9800D0D096 /* Coordinator.swift */; };
 		B18349E7256AEACB00D0D096 /* PresenterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18349E6256AEACB00D0D096 /* PresenterController.swift */; };
@@ -100,12 +97,9 @@
 		B15C9B7925695BB800A809B1 /* DetailTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskViewModel.swift; sourceTree = "<group>"; };
 		B1603C512521C0480022BE49 /* DailyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyModel.swift; sourceTree = "<group>"; };
 		B1603C542521C5C20022BE49 /* TaskListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListTableViewCell.swift; sourceTree = "<group>"; };
-		B1603C562521E1870022BE49 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		B1603C592521EAB70022BE49 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		B1603C5B2521FC200022BE49 /* DetailTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskViewController.swift; sourceTree = "<group>"; };
-		B166404225444257007D1AFD /* CalendarPlanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPlanViewController.swift; sourceTree = "<group>"; };
 		B1664044254464C8007D1AFD /* UIBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
-		B16CDD312546F5F300B9218D /* LeftMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftMenuViewController.swift; sourceTree = "<group>"; };
 		B1804BB7255A8CED007FECCF /* StyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleGuide.swift; sourceTree = "<group>"; };
 		B18349E2256AEA9800D0D096 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		B18349E6256AEACB00D0D096 /* PresenterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresenterController.swift; sourceTree = "<group>"; };
@@ -216,14 +210,6 @@
 				B1664044254464C8007D1AFD /* UIBarButtonItem.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		B16640412544422B007D1AFD /* CalendarPlanViewController */ = {
-			isa = PBXGroup;
-			children = (
-				B166404225444257007D1AFD /* CalendarPlanViewController.swift */,
-			);
-			path = CalendarPlanViewController;
 			sourceTree = "<group>";
 		};
 		B1804BB6255A8CC9007FECCF /* Common */ = {
@@ -360,14 +346,13 @@
 		B1A913EE252056FA0021E15C /* Tasker */ = {
 			isa = PBXGroup;
 			children = (
-				B18349EE256AEBD200D0D096 /* Screens */,
-				B18349E0256AEA5A00D0D096 /* Coordinators */,
 				B1804BB6255A8CC9007FECCF /* Common */,
+				B18349E0256AEA5A00D0D096 /* Coordinators */,
+				B18349EE256AEBD200D0D096 /* Screens */,
 				B189A99525249AB700EAC6A0 /* Temp */,
 				B1D5DEAA2523666A00124DAD /* Resources */,
 				B1D5DEA72523659F00124DAD /* Factories */,
 				B1603C582521EA740022BE49 /* Extensions */,
-				B1A914132520631C0021E15C /* Controllers */,
 				B1A9140D252062070021E15C /* Model */,
 				B1A9140625205DD30021E15C /* Services */,
 				B1A913EF252056FA0021E15C /* AppDelegate.swift */,
@@ -445,16 +430,6 @@
 				B18349F0256AEC7000D0D096 /* TaskListAssembly.swift */,
 			);
 			path = Assembly;
-			sourceTree = "<group>";
-		};
-		B1A914132520631C0021E15C /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				B16640412544422B007D1AFD /* CalendarPlanViewController */,
-				B1603C562521E1870022BE49 /* ContainerViewController.swift */,
-				B16CDD312546F5F300B9218D /* LeftMenuViewController.swift */,
-			);
-			path = Controllers;
 			sourceTree = "<group>";
 		};
 		B1A914142520633D0021E15C /* Implementations */ = {
@@ -709,7 +684,6 @@
 				B18349F1256AEC7000D0D096 /* TaskListAssembly.swift in Sources */,
 				B1C5F80D2566551E0040EB3C /* CalendarPickerViewModelInputs.swift in Sources */,
 				B1A913FA252056FA0021E15C /* Tasker.xcdatamodeld in Sources */,
-				B166404325444257007D1AFD /* CalendarPlanViewController.swift in Sources */,
 				B1A91419252063C30021E15C /* TaskListDataSource.swift in Sources */,
 				B1294493253469D4002FD1EF /* CalendarButton.swift in Sources */,
 				B15C9B7A25695BB800A809B1 /* DetailTaskViewModel.swift in Sources */,
@@ -724,13 +698,11 @@
 				B15C9B7625695B7E00A809B1 /* DetailTaskViewModelInputs.swift in Sources */,
 				B1D5DEC62523884700124DAD /* MonthModel.swift in Sources */,
 				B1A914292520AB640021E15C /* TaskListView.swift in Sources */,
-				B1603C572521E1870022BE49 /* ContainerViewController.swift in Sources */,
 				B189A9942524803E00EAC6A0 /* TimePickerViewOutputs.swift in Sources */,
 				B15C9B672569156A00A809B1 /* CalendarPickerViewModelOutputs.swift in Sources */,
 				B1D5DEA9252365B300124DAD /* Label.swift in Sources */,
 				B15C9B7425695B6600A809B1 /* DetailTaskViewModelType.swift in Sources */,
 				B18349E9256AEAF300D0D096 /* PresentableController.swift in Sources */,
-				B16CDD322546F5F300B9218D /* LeftMenuViewController.swift in Sources */,
 				B1603C522521C0480022BE49 /* DailyModel.swift in Sources */,
 				B1D5DEAE2523690F00124DAD /* Button.swift in Sources */,
 				B1664045254464C8007D1AFD /* UIBarButtonItem.swift in Sources */,

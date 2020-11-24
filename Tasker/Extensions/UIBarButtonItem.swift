@@ -9,7 +9,6 @@
 import UIKit
 
 extension UIBarButtonItem {
-    
     func getCenterPositionRelativeToGlobalView() -> CGPoint {
         if let barBtnItemView = self.value(forKey: "view") as? UIView {
             let globalView = UIView.globalView
@@ -19,5 +18,10 @@ extension UIBarButtonItem {
         }
         
         return CGPoint.zero
+    }
+    
+    func tintImageWithColor(color: UIColor) {
+        self.image = image?.withRenderingMode(.alwaysTemplate)
+        self.tintColor = color
     }
 }

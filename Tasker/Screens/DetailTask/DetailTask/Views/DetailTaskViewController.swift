@@ -214,6 +214,7 @@ class DetailTaskViewController: UIViewController, PresentableController {
                 
         view.addSubview(titleTextView)
         titleTextView.delegate = self
+        titleTextView.text = viewModel.outputs.title
         setupPlaceholder()
         
         let textViewBottomConstraint = titleTextView.bottomAnchor.constraint(equalTo: accesoryStackView.topAnchor)
@@ -383,8 +384,6 @@ extension DetailTaskViewController {
                 alarmBtn.alarmIsSet = true
             }
         }
-        
-        self.titleTextView.text = viewModel.outputs.title
     }
 }
 

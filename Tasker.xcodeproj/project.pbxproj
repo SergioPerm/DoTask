@@ -59,6 +59,9 @@
 		B1C39D6A256BD5390005C4B6 /* TimePickerAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C39D69256BD5390005C4B6 /* TimePickerAssembly.swift */; };
 		B1C39D6D256BE40E0005C4B6 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C39D6C256BE40E0005C4B6 /* MenuViewController.swift */; };
 		B1C5F80D2566551E0040EB3C /* CalendarPickerViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C5F80C2566551E0040EB3C /* CalendarPickerViewModelInputs.swift */; };
+		B1D4CCE5256D26090085C25C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D4CCE4256D26090085C25C /* SettingsViewController.swift */; };
+		B1D4CCE7256D26700085C25C /* SettingsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D4CCE6256D26700085C25C /* SettingsAssembly.swift */; };
+		B1D4CCE9256D36EA0085C25C /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D4CCE8256D36EA0085C25C /* UIButton.swift */; };
 		B1D5C4BA252AFE8100C4B988 /* NotifyByDateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5C4B9252AFE8100C4B988 /* NotifyByDateModel.swift */; };
 		B1D5C4BE252B540000C4B988 /* NotificationTaskObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5C4BD252B540000C4B988 /* NotificationTaskObserver.swift */; };
 		B1D5C4C0252B674800C4B988 /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5C4BF252B674800C4B988 /* UITableViewCell.swift */; };
@@ -136,6 +139,9 @@
 		B1C39D69256BD5390005C4B6 /* TimePickerAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerAssembly.swift; sourceTree = "<group>"; };
 		B1C39D6C256BE40E0005C4B6 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		B1C5F80C2566551E0040EB3C /* CalendarPickerViewModelInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerViewModelInputs.swift; sourceTree = "<group>"; };
+		B1D4CCE4256D26090085C25C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		B1D4CCE6256D26700085C25C /* SettingsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAssembly.swift; sourceTree = "<group>"; };
+		B1D4CCE8256D36EA0085C25C /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
 		B1D5C4B9252AFE8100C4B988 /* NotifyByDateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotifyByDateModel.swift; sourceTree = "<group>"; };
 		B1D5C4BD252B540000C4B988 /* NotificationTaskObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTaskObserver.swift; sourceTree = "<group>"; };
 		B1D5C4BF252B674800C4B988 /* UITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
@@ -208,6 +214,7 @@
 				B18C91BD2532FA8D004DFB73 /* UIDevice.swift */,
 				B12944962534C7E1002FD1EF /* Angle.swift */,
 				B1664044254464C8007D1AFD /* UIBarButtonItem.swift */,
+				B1D4CCE8256D36EA0085C25C /* UIButton.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -261,6 +268,7 @@
 		B18349EE256AEBD200D0D096 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				B1D4CCDE256D25940085C25C /* Settings */,
 				B1C39D6B256BE3CF0005C4B6 /* SlideMenu */,
 				B189A98A25247E1C00EAC6A0 /* TimePicker */,
 				B1D5DEB0252386E300124DAD /* DatePicker */,
@@ -473,6 +481,55 @@
 			path = SlideMenu;
 			sourceTree = "<group>";
 		};
+		B1D4CCDE256D25940085C25C /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				B1D4CCDF256D25A30085C25C /* Assembly */,
+				B1D4CCE0256D25AB0085C25C /* Protocols */,
+				B1D4CCE1256D25B20085C25C /* Models */,
+				B1D4CCE3256D25BE0085C25C /* ViewModels */,
+				B1D4CCE2256D25B90085C25C /* Views */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		B1D4CCDF256D25A30085C25C /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				B1D4CCE6256D26700085C25C /* SettingsAssembly.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		B1D4CCE0256D25AB0085C25C /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		B1D4CCE1256D25B20085C25C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B1D4CCE2256D25B90085C25C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B1D4CCE4256D26090085C25C /* SettingsViewController.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B1D4CCE3256D25BE0085C25C /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		B1D5C4BB252B53DE00C4B988 /* PushNotifications */ = {
 			isa = PBXGroup;
 			children = (
@@ -515,8 +572,8 @@
 				B1D5DED02523991900124DAD /* Protocols */,
 				B1D5DEBA2523884700124DAD /* Models */,
 				B1D5DEBD2523884700124DAD /* Resources */,
-				B1D5DEC12523884700124DAD /* Views */,
 				B1E065352565374100948AB5 /* ViewModels */,
+				B1D5DEC12523884700124DAD /* Views */,
 			);
 			path = DatePicker;
 			sourceTree = "<group>";
@@ -663,6 +720,7 @@
 				B1D5DEC52523884700124DAD /* CalendarPickerViewController.swift in Sources */,
 				B18349F4256AF49400D0D096 /* DetailTaskAssembly.swift in Sources */,
 				B1D5C4C0252B674800C4B988 /* UITableViewCell.swift in Sources */,
+				B1D4CCE5256D26090085C25C /* SettingsViewController.swift in Sources */,
 				B1603C5A2521EAB70022BE49 /* UIViewController.swift in Sources */,
 				B1A914272520A9250021E15C /* TaskListViewModel.swift in Sources */,
 				B1804BB8255A8CED007FECCF /* StyleGuide.swift in Sources */,
@@ -681,6 +739,7 @@
 				B1D5DEC72523884700124DAD /* DayModel.swift in Sources */,
 				B1D5DECD2523884700124DAD /* CalendarPickerHeaderView.swift in Sources */,
 				B114840025309EA100216541 /* Color.swift in Sources */,
+				B1D4CCE9256D36EA0085C25C /* UIButton.swift in Sources */,
 				B18349F1256AEC7000D0D096 /* TaskListAssembly.swift in Sources */,
 				B1C5F80D2566551E0040EB3C /* CalendarPickerViewModelInputs.swift in Sources */,
 				B1A913FA252056FA0021E15C /* Tasker.xcdatamodeld in Sources */,
@@ -697,6 +756,7 @@
 				B18C91C225334D74004DFB73 /* ImportanceButton.swift in Sources */,
 				B15C9B7625695B7E00A809B1 /* DetailTaskViewModelInputs.swift in Sources */,
 				B1D5DEC62523884700124DAD /* MonthModel.swift in Sources */,
+				B1D4CCE7256D26700085C25C /* SettingsAssembly.swift in Sources */,
 				B1A914292520AB640021E15C /* TaskListView.swift in Sources */,
 				B189A9942524803E00EAC6A0 /* TimePickerViewOutputs.swift in Sources */,
 				B15C9B672569156A00A809B1 /* CalendarPickerViewModelOutputs.swift in Sources */,

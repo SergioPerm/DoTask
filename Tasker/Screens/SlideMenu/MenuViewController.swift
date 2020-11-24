@@ -8,22 +8,34 @@
 
 import UIKit
 
-protocol MenuViewControllerDelegate: UIViewController {
-    func addMenuButton()
-    func someAction()
+protocol SlideMenuHandlers {
+    var openSettingsHandler: (() -> Void)? { get set }
 }
 
-class MenuViewController: UIViewController, PresentableController {
+protocol SlideMenuViewType {
+    var parentController: UIViewController? { get set }
+    
+    func toggleMenu()
+    func presentMenu()
+}
+
+class MenuViewController: UIViewController, PresentableController, SlideMenuHandlers, SlideMenuViewType {
     var presentableControllerViewType: PresentableControllerViewType
     var presenter: PresenterController?
-    
-    weak var delegate: MenuViewControllerDelegate? {
+    weak var parentController: UIViewController? {
         didSet {
-            _ = UINavigationController(rootViewController: self)
             let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
-            delegate?.navigationController?.view.addGestureRecognizer(panGestureRecognizer)
+            parentController?.navigationController?.view.addGestureRecognizer(panGestureRecognizer)
         }
     }
+    
+//    weak var delegate: MenuViewControllerDelegate? {
+//        didSet {
+//            _ = UINavigationController(rootViewController: self)
+//            let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
+//            delegate?.navigationController?.view.addGestureRecognizer(panGestureRecognizer)
+//        }
+//    }
     
     enum SlideOutMenuState {
       case menuCollapsed
@@ -31,18 +43,24 @@ class MenuViewController: UIViewController, PresentableController {
     }
     
     var currentState: SlideOutMenuState = .menuCollapsed
-    var screenHalfQuarterWidth: CGFloat!
-    var offsetToMenuExpand: CGFloat!
+    
+    private lazy var screenHalfQuarterWidth: CGFloat = {
+        return view.bounds.width/8
+    }()
+    private lazy var offsetToMenuExpand: CGFloat = {
+        return screenHalfQuarterWidth*2
+    }()
+    
     var isMove = false
     
     var menuNavigationController: UINavigationController!
     
-    private var testTapHandler: (() -> Void)?
+    var openSettingsHandler: (() -> Void)?
     
     init(presenter: PresenterController?, presentableControllerViewType: PresentableControllerViewType) {
         self.presenter = presenter
         self.presentableControllerViewType = presentableControllerViewType
-        
+                
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -52,27 +70,46 @@ class MenuViewController: UIViewController, PresentableController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        screenHalfQuarterWidth = view.bounds.width/8
-        offsetToMenuExpand = screenHalfQuarterWidth*2
-        
-        view.backgroundColor = UIColor.green
-                
+        setup()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         print("disappear")
     }
+    
+    func toggleMenu() {
+        let notAlreadyExpanded = currentState != .menuExpanded
+        
+        //        if notAlreadyExpanded {
+        //            configureMenuViewController()
+        //        }
+        
+        animateLeftmenu(shouldExpand: notAlreadyExpanded)
+    }
+    
+    func presentMenu() {
+        configureMenuViewController()
+        toggleMenu()
+    }
 
 }
 
 extension MenuViewController {
     private func setup() {
-        screenHalfQuarterWidth = view.bounds.width/8
-        offsetToMenuExpand = screenHalfQuarterWidth*2
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(menuBtnAction(sender:)))
+        view.backgroundColor = UIColor.white
+        
+        let btn = UIButton()
+        btn.tintImageWithColor(color: Color.blueColor.uiColor, image: UIImage(named: "settings"))
+        
+        let globalSafeFrame = UIView.globalSafeAreaFrame
+        
+        btn.frame = CGRect(x: 25, y: globalSafeFrame.origin.y + 10, width: 25, height: 25)
+        view.addSubview(btn)
+        
+        btn.addTarget(self, action: #selector(menuBtnAction(sender:)), for: .touchUpInside)
+    
     }
     
     private func configureMenuViewController() {
@@ -80,22 +117,7 @@ extension MenuViewController {
             presenter?.push(vc: self, completion: nil)
         }
     }
-    
-    @objc func testAction(sender: UIBarButtonItem) {
-        guard let testTapHandler = testTapHandler else { return }
-        testTapHandler()
-    }
-    
-    func toggleMenu() {
-        let notAlreadyExpanded = currentState != .menuExpanded
-        
-        if notAlreadyExpanded {
-            configureMenuViewController()
-        }
-        
-        animateLeftmenu(shouldExpand: notAlreadyExpanded)
-    }
-    
+            
     private func animateLeftmenu(shouldExpand: Bool) {
         
         if shouldExpand {
@@ -122,14 +144,14 @@ extension MenuViewController {
                        initialSpringVelocity: 0,
                        options: .curveEaseInOut,
                        animations: {
-                        self.delegate?.navigationController?.view.frame.origin.x = targetPosition
+                        self.parentController?.navigationController?.view.frame.origin.x = targetPosition
         }, completion: completion)
         
     }
                 
     // MARK: Gesture recognizer
     @objc func handlePanGesture(_ recognizer: UIPanGestureRecognizer) {
-        let gestureIsDraggingFromLeftToRight = recognizer.velocity(in: delegate?.view).x > 0
+        let gestureIsDraggingFromLeftToRight = recognizer.velocity(in: parentController?.view).x > 0
     
         switch recognizer.state {
         case .began:
@@ -173,11 +195,9 @@ extension MenuViewController {
     }
     
     @objc private func menuBtnAction(sender: UIBarButtonItem) {
-        delegate?.someAction()
-    }
-    
-    func presentMenu() {
-        configureMenuViewController()
-        toggleMenu()
+        if let settingsAction = openSettingsHandler {
+            settingsAction()
+        }
     }
 }
+

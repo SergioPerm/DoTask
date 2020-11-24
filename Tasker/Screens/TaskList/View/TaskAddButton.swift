@@ -76,7 +76,7 @@ extension TaskAddButton {
         guard let globalFrame = UIView.globalView?.frame else { return }
         let btnWidth = globalFrame.width/5 * 0.9
         let btnOrigin = CGPoint(x: globalFrame.width - btnWidth - 20, y: globalFrame.height - btnWidth - 20)
-        frame = CGRect(x: btnOrigin.x, y: btnOrigin.y, width: btnWidth, height: btnWidth)
+        frame = CGRect(x: btnOrigin.x, y: btnOrigin.y - self.globalSafeAreaInsets.bottom, width: btnWidth, height: btnWidth)
         
         self.layer.shadowOffset = CGSize(width: 10, height: 10)
         self.layer.shadowRadius = 5

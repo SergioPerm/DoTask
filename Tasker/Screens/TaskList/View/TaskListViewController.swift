@@ -18,10 +18,11 @@ class TaskListViewController: UIViewController, PresentableController {
     
     private var tableView: UITableView!
     
-    private var menuViewController: MenuViewController?
+    private var slideMenu: (SlideMenuViewType & SlideMenuHandlers)?
     private var withSlideMenu: Bool
     
     var editTaskAction: ((_ taskUID: String?) ->  Void)?
+    var openSettingsAction: (() -> Void)?
     
     init(viewModel: TaskListViewModel, presenter: PresenterController?, presentableControllerViewType: PresentableControllerViewType) {
         self.viewModel = viewModel
@@ -86,10 +87,27 @@ extension TaskListViewController {
         }
         
         if withSlideMenu {
-            self.menuViewController = MenuViewController(presenter: presenter, presentableControllerViewType: .menuViewController)
-            self.menuViewController?.delegate = self
+            slideMenu = MenuViewController(presenter: presenter, presentableControllerViewType: .menuViewController)
+            slideMenu?.parentController = self
             
-            self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(tapMenuAction(sender:)))
+            let menuBtn = UIButton()
+            menuBtn.addTarget(self, action: #selector(tapMenuAction(sender:)), for: .touchUpInside)
+            menuBtn.tintImageWithColor(color: Color.blueColor.uiColor, image: UIImage(named: "menu"))
+            
+            let menuBarItem = UIBarButtonItem(customView: menuBtn)
+            let currWidth = menuBarItem.customView?.widthAnchor.constraint(equalToConstant: 25)
+            currWidth?.isActive = true
+            let currHeight = menuBarItem.customView?.heightAnchor.constraint(equalToConstant: 25)
+            currHeight?.isActive = true
+            
+            self.navigationItem.leftBarButtonItem = menuBarItem
+            
+            slideMenu?.openSettingsHandler = { [weak self] in
+                if let openSettingAction = self?.openSettingsAction {
+                    self?.slideMenu?.toggleMenu()
+                    openSettingAction()
+                }
+            }
         }
         
         tableView = UITableView()
@@ -129,7 +147,7 @@ extension TaskListViewController {
     }
     
     @objc private func tapMenuAction(sender: UIBarButtonItem) {
-        menuViewController?.presentMenu()
+        slideMenu?.presentMenu()
     }
 }
 
@@ -155,19 +173,36 @@ extension TaskListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let headerName = viewModel.tableViewItems[section].dailyName else { return UIView() }
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 50))
-        
-        let headerName = viewModel.tableViewItems[section].dailyName
-        
+  
         let label = UILabel()
-        label.frame = CGRect.init(x: 5, y: 5, width: headerView.frame.width-10, height: headerView.frame.height-10)
-        label.text = headerName
+        label.frame = CGRect.init(x: 0, y: 5, width: headerView.frame.width, height: headerView.frame.height-20)
+        label.text = "  \(headerName)"
         label.font = Font.tableHeader.uiFont//UIFont(name: "HelveticaNeue-Bold", size: 35)// my custom font
         
         label.textColor = #colorLiteral(red: 0.2392156863, green: 0.6235294118, blue: 0.9960784314, alpha: 1)
+        label.backgroundColor = UIColor.white
         
-        headerView.backgroundColor = UIColor.white
+        //headerView.backgroundColor = UIColor.white
         headerView.addSubview(label)
+        
+        let mask = CAGradientLayer()
+        mask.startPoint = CGPoint(x: 0.5, y: 0.0)
+        mask.endPoint = CGPoint(x: 0.5, y: 1.0)
+        mask.colors = [UIColor.white.withAlphaComponent(1.0).cgColor,UIColor.white.withAlphaComponent(0.5).cgColor,UIColor.white.withAlphaComponent(0.0).cgColor]
+        mask.locations = [0.0, 0.5, 1.0]
+        mask.frame = CGRect(x: 0, y: 35, width: tableView.frame.width, height: 15)
+        //gradientView.layer.mask = mask
+        headerView.layer.insertSublayer(mask, at: 0)
+        
+        let topLayer = CAShapeLayer()
+        topLayer.backgroundColor = UIColor.white.cgColor
+        topLayer.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 5)
+        
+        headerView.layer.insertSublayer(topLayer, at: 0)
+        
+        //headerView.addSubview(gradientView)
         
         return headerView
     }
@@ -200,18 +235,6 @@ extension TaskListViewController: UITableViewDelegate {
         let configuration = UISwipeActionsConfiguration(actions: [contextItemDelete])
         
         return configuration
-    }
-}
-
-// MARK: MenuViewControllerDelegate
-
-extension TaskListViewController: MenuViewControllerDelegate {
-    func addMenuButton() {
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(tapMenuAction(sender:)))
-    }
-    
-    func someAction() {
-        menuViewController?.toggleMenu()
     }
 }
 

@@ -22,11 +22,21 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
         vc.editTaskAction = { uid in
             self.editTask(taskUID: uid)
         }
+        vc.openSettingsAction = {
+            self.openSettings()
+        }
         presenter?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
         })
     }
             
+    func openSettings() {
+        let vc = SettingsAssembly.createInstance(presenter: presenter)
+        presenter?.push(vc: vc, completion: { [weak self] in
+            self?.parentCoordinator?.childDidFinish(self)
+        })
+    }
+    
     func editTask(taskUID: String?) {
         let child = DetailTaskCoordinator(presenter: presenter, taskUID: taskUID)
         child.parentCoordinator = self

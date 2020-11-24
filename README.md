@@ -19,7 +19,7 @@ unrealized feauters:
 - task diary
 - geo reminder
 - icloud
-- menu settings
+- menu settings -> in progress..
 - task shortcuts
 - speech recognition to quickly add tasks
 

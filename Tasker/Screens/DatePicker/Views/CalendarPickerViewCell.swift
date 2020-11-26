@@ -11,6 +11,13 @@ import UIKit
 class CalendarPickerViewCell: UICollectionViewCell {
     static let reuseIdentifier = String(describing: CalendarPickerViewCell.self)
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        day = nil
+        currentDayLayer.removeFromSuperlayer()
+        selectLayer.removeFromSuperlayer()
+    }
+    
     private lazy var selectLayer: CALayer = {
         let circleLayer = CAShapeLayer()
         let radius: CGFloat = frame.width/2
@@ -35,9 +42,9 @@ class CalendarPickerViewCell: UICollectionViewCell {
     
     @IBOutlet weak var dayLabel: UILabel!
     
-    var day: DayModel! {
+    var day: DayModel? {
         didSet {
-            dayLabel.text = day.number
+            dayLabel.text = day?.number
             dayLabel.font = dayLabel.font.withSize(frame.width/(30/15))
             
             updateVisibleStatus()
@@ -49,32 +56,28 @@ class CalendarPickerViewCell: UICollectionViewCell {
 extension CalendarPickerViewCell {
     
     func updateVisibleStatus() {
+        currentDayLayer.removeFromSuperlayer()
+        selectLayer.removeFromSuperlayer()
+        dayLabel.textColor = .clear
+        
         guard let day = day else { return }
-                
+              
         if !day.isWithinDisplayedMonth {
-            currentDayLayer.removeFromSuperlayer()
-            selectLayer.removeFromSuperlayer()
-            dayLabel.textColor = .clear
             return
         }
         
         dayLabel.textColor = day.isWeekend ? Color.pinkColor.uiColor : Color.blueColor.uiColor
         
         if day.currentDay {
-            if currentDayLayer.superlayer == nil {
-                self.layer.sublayers?.insert(currentDayLayer, at: 0)
-            }
-        } else {
-            currentDayLayer.removeFromSuperlayer()
+            self.layer.sublayers?.insert(currentDayLayer, at: 0)
         }
 
         if day.isSelected {
             dayLabel.textColor = Color.whiteColor.uiColor
-            if selectLayer.superlayer == nil {
-                self.layer.sublayers?.insert(selectLayer, at: 0)
-            }
-        } else {
-            selectLayer.removeFromSuperlayer()
+            layer.sublayers?.insert(selectLayer, at: 0)
+//            if selectLayer.superlayer == nil {
+//                self.layer.sublayers?.insert(selectLayer, at: 0)
+//            }
         }
         
     }

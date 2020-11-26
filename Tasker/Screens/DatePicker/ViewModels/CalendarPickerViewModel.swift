@@ -177,7 +177,7 @@ class CalendarPickerViewModel: CalendarPickerViewModelType, CalendarPickerViewMo
         var isSelected = false
         
         if let selectDate = selectedDate.value {
-            isSelected = calendar.isDate(dayDate, equalTo: selectDate, toGranularity: .day)
+            isSelected = calendar.isDate(dayDate, equalTo: selectDate, toGranularity: .day) && isWithinDisplayedMonth
         }
         
         return DayModel(date: dayDate, number: dateFormatter.string(from: dayDate),

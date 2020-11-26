@@ -78,11 +78,9 @@ class CalendarPickerViewController: UIViewController, PresentableController {
         didSet {
             guard let selectedCell = selectedCell else { return }
             selectedCell.day?.isSelected = true
-            selectedCell.updateVisibleStatus()
             
             guard let oldSelectedCell = oldValue else { return }
             oldSelectedCell.day?.isSelected = false
-            oldSelectedCell.updateVisibleStatus()
         }
     }
             
@@ -113,8 +111,8 @@ class CalendarPickerViewController: UIViewController, PresentableController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bindViewModel()
         viewModel.inputs.calculateDays()
+        bindViewModel()
         setupView()
     }
     

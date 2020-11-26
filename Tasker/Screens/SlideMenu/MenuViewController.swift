@@ -22,38 +22,21 @@ protocol SlideMenuViewType {
 class MenuViewController: UIViewController, PresentableController, SlideMenuHandlers, SlideMenuViewType {
     var presentableControllerViewType: PresentableControllerViewType
     var presenter: PresenterController?
+    
     weak var parentController: UIViewController? {
         didSet {
             let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
             parentController?.navigationController?.view.addGestureRecognizer(panGestureRecognizer)
         }
     }
-    
-//    weak var delegate: MenuViewControllerDelegate? {
-//        didSet {
-//            _ = UINavigationController(rootViewController: self)
-//            let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
-//            delegate?.navigationController?.view.addGestureRecognizer(panGestureRecognizer)
-//        }
-//    }
-    
+        
     enum SlideOutMenuState {
       case menuCollapsed
       case menuExpanded
     }
     
-    var currentState: SlideOutMenuState = .menuCollapsed
-    
-    private lazy var screenHalfQuarterWidth: CGFloat = {
-        return view.bounds.width/8
-    }()
-    private lazy var offsetToMenuExpand: CGFloat = {
-        return screenHalfQuarterWidth*2
-    }()
-    
-    var isMove = false
-    
-    var menuNavigationController: UINavigationController!
+    private var currentState: SlideOutMenuState = .menuCollapsed
+    private var isMove = false
     
     var openSettingsHandler: (() -> Void)?
     
@@ -80,11 +63,6 @@ class MenuViewController: UIViewController, PresentableController, SlideMenuHand
     
     func toggleMenu() {
         let notAlreadyExpanded = currentState != .menuExpanded
-        
-        //        if notAlreadyExpanded {
-        //            configureMenuViewController()
-        //        }
-        
         animateLeftmenu(shouldExpand: notAlreadyExpanded)
     }
     
@@ -92,24 +70,18 @@ class MenuViewController: UIViewController, PresentableController, SlideMenuHand
         configureMenuViewController()
         toggleMenu()
     }
-
 }
 
 extension MenuViewController {
     private func setup() {
+        view.backgroundColor = StyleGuide.SlideMenu.viewBGColor
         
-        view.backgroundColor = UIColor.white
-        
+        //Settings button
         let btn = UIButton()
         btn.tintImageWithColor(color: Color.blueColor.uiColor, image: UIImage(named: "settings"))
-        
-        let globalSafeFrame = UIView.globalSafeAreaFrame
-        
-        btn.frame = CGRect(x: 25, y: globalSafeFrame.origin.y + 10, width: 25, height: 25)
+        btn.frame = StyleGuide.SlideMenu.seetingsButtonFrame
+        btn.addTarget(self, action: #selector(menuSettingsAction(sender:)), for: .touchUpInside)
         view.addSubview(btn)
-        
-        btn.addTarget(self, action: #selector(menuBtnAction(sender:)), for: .touchUpInside)
-    
     }
     
     private func configureMenuViewController() {
@@ -119,10 +91,9 @@ extension MenuViewController {
     }
             
     private func animateLeftmenu(shouldExpand: Bool) {
-        
         if shouldExpand {
             currentState = .menuExpanded
-            animateCenterPanel(targetPosition: screenHalfQuarterWidth*4) { _ in
+            animateCenterPanel(targetPosition: view.frame.width * StyleGuide.SlideMenu.ratioToScreenExpandWidth) { _ in
                 self.isMove = !self.isMove
             }
         } else {
@@ -131,11 +102,9 @@ extension MenuViewController {
                 self.presenter?.pop(vc: self)
             }
         }
-        
     }
     
     private func animateCenterPanel(targetPosition: CGFloat, completion: ((Bool) -> Void)? = nil) {
-        
         let dampingRatio: CGFloat = targetPosition == 0 ? 1 : 0.6
         
         UIView.animate(withDuration: 0.5,
@@ -146,13 +115,14 @@ extension MenuViewController {
                        animations: {
                         self.parentController?.navigationController?.view.frame.origin.x = targetPosition
         }, completion: completion)
-        
     }
                 
     // MARK: Gesture recognizer
-    @objc func handlePanGesture(_ recognizer: UIPanGestureRecognizer) {
+    @objc private func handlePanGesture(_ recognizer: UIPanGestureRecognizer) {
         let gestureIsDraggingFromLeftToRight = recognizer.velocity(in: parentController?.view).x > 0
     
+        let offsetToExpand = view.frame.width * StyleGuide.SlideMenu.ratioToScreenOffsetToExpand
+        
         switch recognizer.state {
         case .began:
             if gestureIsDraggingFromLeftToRight {
@@ -171,7 +141,7 @@ extension MenuViewController {
                     draggingDisctance -= ((currentCenterX + draggingDisctance) - centerX)
                 }
                 
-                if rView.frame.origin.x > offsetToMenuExpand {
+                if rView.frame.origin.x > offsetToExpand {
                     draggingDisctance *= 1.5
                 }
                 
@@ -182,7 +152,7 @@ extension MenuViewController {
             
         case .ended:
             if let rView = recognizer.view {
-                let hasMoveGreaterThanHalfway = rView.frame.origin.x > offsetToMenuExpand
+                let hasMoveGreaterThanHalfway = rView.frame.origin.x > offsetToExpand
                 
                 animateLeftmenu(shouldExpand: hasMoveGreaterThanHalfway)
             }
@@ -194,7 +164,7 @@ extension MenuViewController {
         
     }
     
-    @objc private func menuBtnAction(sender: UIBarButtonItem) {
+    @objc private func menuSettingsAction(sender: UIBarButtonItem) {
         if let settingsAction = openSettingsHandler {
             settingsAction()
         }

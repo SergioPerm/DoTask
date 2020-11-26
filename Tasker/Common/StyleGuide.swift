@@ -30,9 +30,11 @@ struct StyleGuide {
         
         //view
         static let viewCornerRadius: CGFloat = 8.0
+        static let borderWidth: CGFloat = 1.0
         
         //colors
         static let viewBackgroundColor: UIColor = .white
+        static let borderColor: UIColor = #colorLiteral(red: 0.8892104444, green: 0.8892104444, blue: 0.8892104444, alpha: 1)
         
         //animation values
         static let scaleShowAnimationValue: CGFloat = 0.95
@@ -56,5 +58,20 @@ struct StyleGuide {
         //animation values
         static let scaleShowAnimationValue: CGFloat = 0.95
         static let alphaShowAnimationValue: CGFloat = 0.3
+    }
+    
+    enum SlideMenu {
+        //ratio sizes
+        static let ratioToScreenExpandWidth: CGFloat = 0.5
+        static let ratioToScreenOffsetToExpand: CGFloat = 0.25
+        
+        //colors
+        static let viewBGColor: UIColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        
+        //frames
+        static let seetingsButtonFrame: CGRect = {
+            let globalSafeFrame = UIView.globalSafeAreaFrame
+            return CGRect(x: 25, y: globalSafeFrame.origin.y + 10, width: 25, height: 25)
+        }()
     }
 }

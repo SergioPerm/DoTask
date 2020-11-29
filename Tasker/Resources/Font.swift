@@ -19,6 +19,8 @@ enum Font {
     case tableHeader
     case timePickerBtnFont
     case calendarPickerFooterFont
+    case mainMenuCellFont
+    case additionalMenuCellFont
     
     var uiFont : UIFont {
         switch self {
@@ -32,6 +34,8 @@ enum Font {
         case .tableHeader: return UIFont(name: "AvenirNext-Bold", size: 35) ?? UIFont.systemFont(ofSize: 35)
         case .timePickerBtnFont: return UIFont(name: "HelveticaNeue-Bold", size: 17) ?? UIFont.systemFont(ofSize: 17)
         case .calendarPickerFooterFont: return UIFont(name: "HelveticaNeue-Bold", size: 19) ?? UIFont.systemFont(ofSize: 19)
+        case .mainMenuCellFont: return UIFont(name: "HelveticaNeue-Bold", size: 19) ?? UIFont.systemFont(ofSize: 19)
+        case .additionalMenuCellFont: return UIFont(name: "HelveticaNeue-Bold", size: 17) ?? UIFont.systemFont(ofSize: 17)
         }
     }
 }

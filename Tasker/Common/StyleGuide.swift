@@ -14,6 +14,10 @@ struct StyleGuide {
         static let topMargin: CGFloat = 40.0
         static let viewCornerRadius: CGFloat = 16.0
         
+        //chevron
+        static let chevronHeightIos13: CGFloat = 27
+        static let chevronHeightIos11: CGFloat = 20
+                
         //colors
         static let viewBGColor: UIColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     }
@@ -22,11 +26,15 @@ struct StyleGuide {
         //ratio sizes
         static let ratioToScreenWidth: CGFloat = 0.75
         static let ratioPanelToCollection: CGFloat = 0.21
+        static let ratioToViewWidthFont: CGFloat = 0.07
         
         //collection view
         static let cellsInterItemSpacing: CGFloat = 5.0
         static let cellPerRowCount: CGFloat = 7.0
         static let collectionMargins: CGFloat = 20.0
+        
+        //collection view cell
+        static let ratioToScreenWidthCellFont: CGFloat = 0.043
         
         //view
         static let viewCornerRadius: CGFloat = 8.0

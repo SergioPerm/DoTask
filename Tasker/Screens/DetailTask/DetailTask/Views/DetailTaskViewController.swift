@@ -17,34 +17,37 @@ class DetailTaskViewController: UIViewController, PresentableController {
     private var viewModel: DetailTaskViewModelType
     
     // MARK: Coordinates properties
-    var viewOrigin: CGPoint = CGPoint(x: 0, y: 0)
-    var viewWidth: CGFloat = 0.0
-    var viewHeight: CGFloat = 0.0
+    private var viewOrigin: CGPoint = CGPoint(x: 0, y: 0)
+    private var viewWidth: CGFloat = 0.0
+    private var viewHeight: CGFloat = 0.0
             
     // MARK: Handlers
     var onCalendarSelect: ((_ selectedDate: Date?, _ vc: CalendarPickerViewOutputs) -> Void)?
     var onTimeReminderSelect: ((_ selectedTime: Date, _ vc: DetailTaskViewController) -> Void)?
     
     // MARK: View properties
-    let topMargin: CGFloat = StyleGuide.DetailTask.topMargin
+    private let topMargin: CGFloat = StyleGuide.DetailTask.topMargin
         
-    let viewOriginOnStart: CGPoint = {
+    private let viewOriginOnStart: CGPoint = {
         guard let globalFrame = UIView.globalView?.frame else { return CGPoint.zero }
         let origin = CGPoint(x: globalFrame.origin.x, y: globalFrame.height)
 
         return origin
     }()
     
-    let swipeCloseView: UIView = {
+    private let swipeCloseView: UIView = {
         let swipeView = UIView()
         swipeView.translatesAutoresizingMaskIntoConstraints = false
         swipeView.backgroundColor = .clear
 
         var chevron = UIImageView()
+        var chevronHeight: CGFloat = 0.0
         if #available(iOS 13.0, *) {
             chevron = UIImageView(image: UIImage(systemName: "chevron.compact.down"))
+            chevronHeight = StyleGuide.DetailTask.chevronHeightIos13
         } else {
             chevron = UIImageView(image: UIImage(named: "chevron"))
+            chevronHeight = StyleGuide.DetailTask.chevronHeightIos11
         }
         chevron.contentMode = .scaleAspectFit
         chevron.translatesAutoresizingMaskIntoConstraints = false
@@ -56,7 +59,7 @@ class DetailTaskViewController: UIViewController, PresentableController {
             chevron.centerYAnchor.constraint(equalTo: swipeView.centerYAnchor),
             chevron.centerXAnchor.constraint(equalTo: swipeView.centerXAnchor),
             chevron.widthAnchor.constraint(equalTo: chevron.heightAnchor, multiplier: 2),
-            chevron.heightAnchor.constraint(equalToConstant: 27)
+            chevron.heightAnchor.constraint(equalToConstant: chevronHeight)
         ]
         
         NSLayoutConstraint.activate(constraints)
@@ -64,17 +67,17 @@ class DetailTaskViewController: UIViewController, PresentableController {
         return swipeView
     }()
     
-    let dateLabel: UILabel = {
+    private let dateLabel: UILabel = {
         return Label.makeDetailTaskStandartLabel(textColor: .systemGray)
     }()
     
-    let timeLabel: UILabel = {
+    private let timeLabel: UILabel = {
         let label = Label.makeDetailTaskStandartLabel(textColor: .systemGray)
         label.textAlignment = .right
         return label
     }()
     
-    let timeStackView: UIStackView = {
+    private let timeStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .center
@@ -84,9 +87,9 @@ class DetailTaskViewController: UIViewController, PresentableController {
         return stackView
     }()
     
-    let placeholderLabel: UILabel = UILabel()
+    private let placeholderLabel: UILabel = UILabel()
     
-    let titleTextView: UITextView = {
+    private let titleTextView: UITextView = {
         let textView = UITextView()
         textView.font = Font.detailTaskStandartTitle.uiFont
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -94,7 +97,7 @@ class DetailTaskViewController: UIViewController, PresentableController {
         return textView
     }()
         
-    let accesoryStackView: UIStackView = {
+    private let accesoryStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
@@ -104,20 +107,19 @@ class DetailTaskViewController: UIViewController, PresentableController {
         return stackView
     }()
     
-    var accesoryBottomConstraint: NSLayoutConstraint = NSLayoutConstraint()
+    private var accesoryBottomConstraint: NSLayoutConstraint = NSLayoutConstraint()
             
-    var importanceBtn: ImportanceButton?
-    var calendarBtn: CalendarButton?
-    var alarmBtn: AlarmButton?
+    private var importanceBtn: ImportanceButton?
+    private var calendarBtn: CalendarButton?
+    private var alarmBtn: AlarmButton?
     
-    let saveBtn: UIButton = {
+    private let saveBtn: UIButton = {
         return Button.makeStandartButton(image: UIImage(named: "checkmark")!)
     }()
     
     // MARK: Init
         
     init(viewModel: DetailTaskViewModelType, presenter: PresenterController?, presentableControllerViewType: PresentableControllerViewType) {
-        
         self.viewModel = viewModel
         self.presenter = presenter
         self.presentableControllerViewType = presentableControllerViewType
@@ -147,11 +149,11 @@ class DetailTaskViewController: UIViewController, PresentableController {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    @objc func keyboardWillShowNotification(notification: NSNotification) {
+    @objc private func keyboardWillShowNotification(notification: NSNotification) {
         updateBottomLayoutConstraintWithNotification(notification: notification)
     }
     
-    @objc func keyboardWillHideNotification(notification: NSNotification) {
+    @objc private func keyboardWillHideNotification(notification: NSNotification) {
         updateBottomLayoutConstraintWithNotification(notification: notification)
     }
     
@@ -173,7 +175,6 @@ class DetailTaskViewController: UIViewController, PresentableController {
                        animations: {
                         self.view.layoutIfNeeded()
         }, completion: nil)
-        
     }
     
     // MARK: View Life-Cycle
@@ -409,7 +410,7 @@ extension DetailTaskViewController {
     
     // MARK: -Accessory view actions
     
-    @objc func saveTaskAction(sender: UIButton) {
+    @objc private func saveTaskAction(sender: UIButton) {
         if titleTextView.text == "" {
             titleTextView.shake(duration: 1)
             return
@@ -422,14 +423,14 @@ extension DetailTaskViewController {
         }
     }
     
-    func calendarTapAction() {
+    private func calendarTapAction() {
         titleTextView.resignFirstResponder()
         if let calendatAction = onCalendarSelect {
             calendatAction(viewModel.outputs.selectedDate.value, self)
         }
     }
     
-    func reminderTapAction() {
+    private func reminderTapAction() {
         titleTextView.resignFirstResponder()
         
         var normalizeTime = viewModel.outputs.selectedDate.value ?? Date()
@@ -454,14 +455,14 @@ extension DetailTaskViewController {
     
     // MARK: -Close actions
     
-    @objc func tapToCloseAction(_ recognizer: UITapGestureRecognizer) {
+    @objc private func tapToCloseAction(_ recognizer: UITapGestureRecognizer) {
         hideView { [weak self] in
             guard let self = self else { return }
             self.presenter?.pop(vc: self)
         }
     }
     
-    @objc func swipeToCloseAction(_ recognizer: UIPanGestureRecognizer) {
+    @objc private func swipeToCloseAction(_ recognizer: UIPanGestureRecognizer) {
         let gestureIsDraggingFromTopToBottom = recognizer.velocity(in: view).y > 0
         if !gestureIsDraggingFromTopToBottom { return }
         

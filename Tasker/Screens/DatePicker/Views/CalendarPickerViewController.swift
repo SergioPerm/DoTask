@@ -292,15 +292,12 @@ extension CalendarPickerViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let day = viewModel.outputs.days.value[indexPath.section].days[indexPath.row]
-
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarPickerViewCell.reuseIdentifier, for: indexPath) as! CalendarPickerViewCell
 
         cell.day = day
-        
         if cell.day!.isSelected {
             selectedCell = cell
         }
-        
         return cell
     }
 }

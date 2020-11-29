@@ -45,7 +45,7 @@ class CalendarPickerViewCell: UICollectionViewCell {
     var day: DayModel? {
         didSet {
             dayLabel.text = day?.number
-            dayLabel.font = dayLabel.font.withSize(frame.width/(30/15))
+            dayLabel.font = dayLabel.font.withSize(UIView.globalSafeAreaFrame.width * StyleGuide.CalendarDatePicker.ratioToScreenWidthCellFont)
             
             updateVisibleStatus()
         }
@@ -75,10 +75,6 @@ extension CalendarPickerViewCell {
         if day.isSelected {
             dayLabel.textColor = Color.whiteColor.uiColor
             layer.sublayers?.insert(selectLayer, at: 0)
-//            if selectLayer.superlayer == nil {
-//                self.layer.sublayers?.insert(selectLayer, at: 0)
-//            }
         }
-        
     }
 }

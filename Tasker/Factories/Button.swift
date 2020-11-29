@@ -46,4 +46,9 @@ extension UIButton {
         titleLabel?.font = fnt
         return self
     }
+    
+    func textColor(_ ttlColor: UIColor) -> UIButton {
+        setTitleColor(ttlColor, for: .normal)
+        return self
+    }
 }

@@ -113,7 +113,7 @@ extension TaskListViewController {
         tableView = UITableView()
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(TaskListTableViewCell.self, forCellReuseIdentifier: TaskListTableViewCell.reuseIdentifier)
+        tableView.register(TaskListTableViewCell.self, forCellReuseIdentifier: TaskListTableViewCell.className)
         
         view.addSubview(tableView)
         
@@ -129,6 +129,23 @@ extension TaskListViewController {
             }
         }
         view.insertSubview(btn, aboveSubview: tableView)
+        
+//        view.layer.shadowOffset = CGSize(width: -3, height: -1)
+//        view.layer.shadowOpacity = 0.3
+//        view.layer.shadowColor = UIColor.black.cgColor
+//        view.layer.shadowPath = UIBezierPath(roundedRect: view.bounds, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: 10, height: 10)).cgPath
+  
+
+        self.navigationController?.view.layer.masksToBounds = false
+        self.navigationController?.view.layer.shadowColor = Color.blueColor.uiColor.cgColor
+        self.navigationController?.view.layer.shadowOpacity = 0.1
+        self.navigationController?.view.layer.shadowOffset = CGSize(width: -4, height: 2)
+        //self.navigationController?.view.layer.shadowRadius = 4.0
+
+        self.navigationController?.view.layer.shadowPath = UIBezierPath(rect: (self.navigationController?.view.bounds)!).cgPath
+        
+//        view.layer.shouldRasterize = true
+//        view.layer.rasterizationScale = UIScreen.main.scale
     }
     
     private func configureCell(cell: TaskListTableViewCell, taskModel: TaskModel) {
@@ -165,7 +182,7 @@ extension TaskListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: TaskListTableViewCell.reuseIdentifier) as! TaskListTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: TaskListTableViewCell.className) as! TaskListTableViewCell
         let taskModel = viewModel.tableViewItems[indexPath.section].tasks[indexPath.row]
         configureCell(cell: cell, taskModel: taskModel)
         
@@ -236,6 +253,16 @@ extension TaskListViewController: UITableViewDelegate {
         
         return configuration
     }
+    
+    func tableView(_ tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath) {
+        //solve gesture conflicts for slide menu
+        slideMenu?.enabled = false
+    }
+    
+    func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
+        //solve gesture conflicts for slide menu
+        slideMenu?.enabled = true
+    }
 }
 
 // MARK: TaskListView
@@ -281,4 +308,21 @@ extension TaskListViewController: TaskListView {
         tableView.endUpdates()
     }
     
+}
+
+extension TaskListViewController: MenuParentControllerType {
+    func willMenuExpand() {
+        tableView.isUserInteractionEnabled = false
+    }
+    
+    func didMenuCollapse() {
+        tableView.isUserInteractionEnabled = true
+    }
+    
+    func getView() -> UIView {
+        if let navVC = navigationController {
+            return navVC.view
+        }
+        return view
+    }
 }

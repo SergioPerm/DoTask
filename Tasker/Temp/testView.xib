@@ -4,9 +4,60 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <viewController id="sxY-qo-SD3">
+            <view key="view" contentMode="scaleToFill" id="2jS-Nw-iOJ">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="45o-kz-G6t">
+                        <rect key="frame" x="67" y="156" width="156" height="37"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create shortcut" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h3x-X4-vu1">
+                                <rect key="frame" x="10" y="10" width="102" height="17"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="102" id="593-TK-HCF"/>
+                                    <constraint firstAttribute="height" constant="17" id="L7Y-kU-6pG"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CLy-5N-xA1">
+                                <rect key="frame" x="136" y="3.5" width="16" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Ftw-4l-b3k"/>
+                                    <constraint firstAttribute="width" constant="16" id="P15-1y-TtV"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemGrayColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="CLy-5N-xA1" secondAttribute="trailing" constant="4" id="9kS-9s-zz1"/>
+                            <constraint firstItem="CLy-5N-xA1" firstAttribute="centerY" secondItem="45o-kz-G6t" secondAttribute="centerY" id="FsY-oF-REa"/>
+                            <constraint firstItem="h3x-X4-vu1" firstAttribute="leading" secondItem="45o-kz-G6t" secondAttribute="leading" constant="10" id="N58-a4-nCV"/>
+                            <constraint firstItem="h3x-X4-vu1" firstAttribute="centerY" secondItem="45o-kz-G6t" secondAttribute="centerY" id="taR-pg-086"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                <constraints>
+                    <constraint firstItem="45o-kz-G6t" firstAttribute="top" secondItem="h09-JP-qiO" secondAttribute="top" constant="156" id="8lk-Ik-iyU"/>
+                    <constraint firstItem="45o-kz-G6t" firstAttribute="leading" secondItem="h09-JP-qiO" secondAttribute="leading" constant="67" id="fGH-HH-Ent"/>
+                    <constraint firstItem="h09-JP-qiO" firstAttribute="trailing" secondItem="45o-kz-G6t" secondAttribute="trailing" constant="152" id="kwc-55-d5c"/>
+                    <constraint firstItem="h09-JP-qiO" firstAttribute="bottom" secondItem="45o-kz-G6t" secondAttribute="bottom" constant="474" id="zIh-rp-3L1"/>
+                </constraints>
+                <viewLayoutGuide key="safeArea" id="h09-JP-qiO"/>
+            </view>
+            <point key="canvasLocation" x="-642.39999999999998" y="162.3688155922039"/>
+        </viewController>
     </objects>
 </document>

@@ -47,7 +47,7 @@ class ContainerPresenterController: UIViewController, PresenterController {
             add(vc, withDimmedBack: true)
         case .navigationStackController:
             if let presentableControllerNavBar = getNavigationController(from: vc) {
-                presentableControllerNavBar.pushViewController(vc, animated: true)
+                presentableControllerNavBar.pushViewController(vc, animated: false)
                 presentableControllerNavBar.delegate = self
                 add(presentableControllerNavBar)
             } else {

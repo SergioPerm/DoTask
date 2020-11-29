@@ -68,7 +68,7 @@ class CalendarPickerFooterView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let font = Font.calendarPickerFooterFont.uiFont
+        let font = Font.calendarPickerFooterFont.uiFont.withSize(StyleGuide.CalendarDatePicker.ratioToViewWidthFont * frame.width)
         currentDateLabel.font = font
         cancelButton.titleLabel?.font = font
         saveButton.titleLabel?.font = font

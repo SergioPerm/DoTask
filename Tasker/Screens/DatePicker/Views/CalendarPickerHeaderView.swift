@@ -11,9 +11,9 @@ import UIKit
 class CalendarPickerHeaderView: UIView {
 
     let kCONTENT_XIB_NAME = "CalendarPickerHeaderView"
-    var borderBottom: CALayer?
-    let borderWidth: CGFloat = 1
-    let borderColor =  #colorLiteral(red: 0.8892104444, green: 0.8892104444, blue: 0.8892104444, alpha: 1).cgColor
+    var borderBottom: CALayer = CALayer()
+    let borderWidth: CGFloat = StyleGuide.CalendarDatePicker.borderWidth
+    let borderColor = StyleGuide.CalendarDatePicker.borderColor.cgColor
     
     @IBOutlet var contentView: UIView!
     @IBOutlet weak var monthYearLabel: UILabel!
@@ -47,20 +47,17 @@ class CalendarPickerHeaderView: UIView {
     }
     
     func addBorder() {
-        borderBottom = CALayer()
-        borderBottom!.frame = CGRect(x: 0, y: frame.height - borderWidth, width: frame.width, height: borderWidth)
-        borderBottom!.backgroundColor = borderColor
-        layer.addSublayer(borderBottom!)
+        borderBottom.frame = CGRect(x: 0, y: frame.height - borderWidth, width: frame.width, height: borderWidth)
+        borderBottom.backgroundColor = borderColor
+        layer.addSublayer(borderBottom)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        //auto font size 280 / 22
-        monthYearLabel.font = monthYearLabel.font.withSize(frame.width/(280/22))
+        monthYearLabel.font = Font.calendarPickerFooterFont.uiFont.withSize(StyleGuide.CalendarDatePicker.ratioToViewWidthFont * frame.width)
         
-        guard let border = borderBottom else { return }
-        border.frame = CGRect(x: 0, y: frame.height - borderWidth, width: frame.width, height: borderWidth)
+        borderBottom.frame = CGRect(x: 0, y: frame.height - borderWidth, width: frame.width, height: borderWidth)
     }
     
 }

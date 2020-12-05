@@ -102,7 +102,7 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
             do {
                 try context.save()
                 
-                let notifyModel = NotifyByDateModel(with: taskModel)
+                let notifyModel = DateNotifier(with: taskModel)
                 notificationCenter.deleteLocalNotifications(identifiers: [notifyModel.identifier])
                 if taskModel.reminderDate {
                     notificationCenter.addLocalNotification(notifyModel: notifyModel)
@@ -126,7 +126,7 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
             do {
                 try context.save()
                 
-                let notifyModel = NotifyByDateModel(with: taskModel)
+                let notifyModel = DateNotifier(with: taskModel)
                 notificationCenter.deleteLocalNotifications(identifiers: [notifyModel.identifier])
                 if taskModel.reminderDate {
                     notificationCenter.addLocalNotification(notifyModel: notifyModel)
@@ -151,7 +151,7 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
             do {
                 try context.save()
                 
-                let notifyModel = NotifyByDateModel(with: taskModel)
+                let notifyModel = DateNotifier(with: taskModel)
                 notificationCenter.deleteLocalNotifications(identifiers: [notifyModel.identifier])
                 if taskModel.reminderDate {
                     notificationCenter.addLocalNotification(notifyModel: notifyModel)
@@ -162,14 +162,14 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
         }
     }
     
-    var tasksWithSections: [DailyModel] {
+    var tasksWithSections: [Daily] {
         _ = fetchTasks()
         if let sections = fetchedResultsController.sections {
-            var dailyModels = [DailyModel]()
+            var dailyModels = [Daily]()
             
             for section in sections {
                 //Create model
-                var dailyModel = DailyModel()
+                var dailyModel = Daily()
                 dailyModel.dailyName = section.name
                 
                 for task in section.objects! {
@@ -182,7 +182,7 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
             return dailyModels
         }
         
-        return [DailyModel]()
+        return [Daily]()
     }
     
     var tasks: [Task] {
@@ -214,7 +214,7 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
             do {
                 try context.save()
                 if taskModel.reminderDate {
-                    let notifyModel = NotifyByDateModel(with: taskModel)
+                    let notifyModel = DateNotifier(with: taskModel)
                     notificationCenter.addLocalNotification(notifyModel: notifyModel)
                 }
             } catch {

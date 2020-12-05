@@ -14,7 +14,7 @@ class CreateShortcutMenuTableViewCell: UITableViewCell {
     let title1: UILabel = {
        let label = UILabel()
         label.text = "Create shortcut"
-        label.font = UIFont(name: "HelveticaNeue-Bold", size: 14) ?? UIFont.systemFont(ofSize: 14)
+        label.font = Font.mainMenuCellFont.uiFont
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
         label.textColor = .gray
@@ -24,7 +24,7 @@ class CreateShortcutMenuTableViewCell: UITableViewCell {
     let title2: UILabel = {
        let label = UILabel()
         label.text = "+"
-        label.font = UIFont(name: "HelveticaNeue-Bold", size: 22) ?? UIFont.systemFont(ofSize: 22)
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 22) ?? UIFont.systemFont(ofSize: 22, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .right
         label.textColor = .gray
@@ -72,17 +72,20 @@ extension CreateShortcutMenuTableViewCell {
     private func setup() {
         selectionStyle = .none
 
+        let globalWidth = UIView.globalSafeAreaFrame.width
+        title1.font = title1.font.withSize(globalWidth * StyleGuide.SlideMenu.ratioToScreenWidthFontSizeSmallTitle)
+        
         addSubview(title1)
         addSubview(addImageView)
 
         let widthConstraint = title1.widthAnchor.constraint(equalToConstant: 150)
         let constraints = [
-            title1.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            title1.leadingAnchor.constraint(equalTo: leadingAnchor, constant: StyleGuide.SlideMenu.leftMargin),
             title1.centerYAnchor.constraint(equalTo: centerYAnchor),
             title1.heightAnchor.constraint(equalToConstant: 25),
             widthConstraint,
             addImageView.leadingAnchor.constraint(equalTo: title1.trailingAnchor),
-            addImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            addImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -StyleGuide.SlideMenu.leftMargin),
             addImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
             addImageView.heightAnchor.constraint(equalToConstant: 15),
             addImageView.widthAnchor.constraint(equalToConstant: 15)

@@ -9,7 +9,7 @@ import UIKit
 
 protocol TaskListDataSource {
     var tasks: [Task] { get }
-    var tasksWithSections: [DailyModel] { get }
+    var tasksWithSections: [Daily] { get }
     var observer: TaskListDataSourceObserver? { get set }
 
     func setDoneForTask(with identifier: String)

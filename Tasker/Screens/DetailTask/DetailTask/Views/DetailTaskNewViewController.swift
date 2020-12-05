@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DetailTaskViewController: UIViewController, PresentableController {
+class DetailTaskNewViewController: UIViewController, PresentableController {
     
     var presentableControllerViewType: PresentableControllerViewType
     var presenter: PresenterController?
@@ -23,7 +23,7 @@ class DetailTaskViewController: UIViewController, PresentableController {
             
     // MARK: Handlers
     var onCalendarSelect: ((_ selectedDate: Date?, _ vc: CalendarPickerViewOutputs) -> Void)?
-    var onTimeReminderSelect: ((_ selectedTime: Date, _ vc: DetailTaskViewController) -> Void)?
+    var onTimeReminderSelect: ((_ selectedTime: Date, _ vc: DetailTaskNewViewController) -> Void)?
     
     // MARK: View properties
     private let topMargin: CGFloat = StyleGuide.DetailTask.topMargin
@@ -41,17 +41,11 @@ class DetailTaskViewController: UIViewController, PresentableController {
         swipeView.backgroundColor = .clear
 
         var chevron = UIImageView()
-        var chevronHeight: CGFloat = 0.0
-        if #available(iOS 13.0, *) {
-            chevron = UIImageView(image: UIImage(systemName: "chevron.compact.down"))
-            chevronHeight = StyleGuide.DetailTask.chevronHeightIos13
-        } else {
-            chevron = UIImageView(image: UIImage(named: "chevron"))
-            chevronHeight = StyleGuide.DetailTask.chevronHeightIos11
-        }
+         
+        chevron = UIImageView(image: UIImage(named: "chevron"))
         chevron.contentMode = .scaleAspectFit
         chevron.translatesAutoresizingMaskIntoConstraints = false
-        chevron.tintColor = #colorLiteral(red: 0.8901960784, green: 0.8901960784, blue: 0.8901960784, alpha: 1)
+        chevron.tintColor = StyleGuide.DetailTask.chevronTintColor
         
         swipeView.addSubview(chevron)
         
@@ -59,34 +53,14 @@ class DetailTaskViewController: UIViewController, PresentableController {
             chevron.centerYAnchor.constraint(equalTo: swipeView.centerYAnchor),
             chevron.centerXAnchor.constraint(equalTo: swipeView.centerXAnchor),
             chevron.widthAnchor.constraint(equalTo: chevron.heightAnchor, multiplier: 2),
-            chevron.heightAnchor.constraint(equalToConstant: chevronHeight)
+            chevron.heightAnchor.constraint(equalToConstant: StyleGuide.DetailTask.chevronHeight)
         ]
         
         NSLayoutConstraint.activate(constraints)
                         
         return swipeView
     }()
-    
-    private let dateLabel: UILabel = {
-        return Label.makeDetailTaskStandartLabel(textColor: .systemGray)
-    }()
-    
-    private let timeLabel: UILabel = {
-        let label = Label.makeDetailTaskStandartLabel(textColor: .systemGray)
-        label.textAlignment = .right
-        return label
-    }()
-    
-    private let timeStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.distribution = .fill
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         
-        return stackView
-    }()
-    
     private let placeholderLabel: UILabel = UILabel()
     
     private let titleTextView: UITextView = {
@@ -198,24 +172,12 @@ class DetailTaskViewController: UIViewController, PresentableController {
         view.frame = CGRect(origin: viewOriginOnStart, size: CGSize(width: globalFrame.width, height: globalFrame.height - (UIDevice.hasNotch ? 0 : topMargin)))
         
         view.addSubview(swipeCloseView)
-        view.addSubview(dateLabel)
-                      
-        var clockImageView = UIImageView()
-        if #available(iOS 13.0, *) {
-            clockImageView = UIImageView(image: UIImage(systemName: "alarm"))
-        } else {
-            clockImageView = UIImageView(image: UIImage(named: "alarm"))
-        }
-        clockImageView.tintColor = .systemGray
-        clockImageView.contentMode = .scaleAspectFit
-        
-        timeStackView.addArrangedSubview(clockImageView)
-        timeStackView.addArrangedSubview(timeLabel)
-        view.addSubview(timeStackView)
                 
         view.addSubview(titleTextView)
         titleTextView.delegate = self
         titleTextView.text = viewModel.outputs.title
+        titleTextView.backgroundColor = StyleGuide.DetailTask.viewBGColor
+        titleTextView.textColor = .systemGray
         setupPlaceholder()
         
         let textViewBottomConstraint = titleTextView.bottomAnchor.constraint(equalTo: accesoryStackView.topAnchor)
@@ -248,36 +210,22 @@ class DetailTaskViewController: UIViewController, PresentableController {
             swipeCloseView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             swipeCloseView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             swipeCloseView.topAnchor.constraint(equalTo: view.topAnchor),
-            swipeCloseView.heightAnchor.constraint(equalToConstant: 40)
+            swipeCloseView.heightAnchor.constraint(equalToConstant: StyleGuide.DetailTask.swipeCloseViewHeight)
         ]
-        
+                
         constraints.append(contentsOf: [
-            dateLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            dateLabel.topAnchor.constraint(equalTo: swipeCloseView.bottomAnchor, constant: 14),
-            dateLabel.widthAnchor.constraint(equalToConstant: 100)
-        ])
-        
-        constraints.append(contentsOf: [
-            timeStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            timeStackView.topAnchor.constraint(equalTo: swipeCloseView.bottomAnchor, constant: 14),
-            timeStackView.widthAnchor.constraint(equalToConstant: 79),
-            clockImageView.heightAnchor.constraint(equalToConstant: 12),
-            timeLabel.widthAnchor.constraint(equalToConstant: 60)
-        ])
-        
-        constraints.append(contentsOf: [
-            titleTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            titleTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -StyleGuide.DetailTask.contentSidePadding),
             titleTextView.topAnchor.constraint(equalTo: view.topAnchor, constant: 72),
-            titleTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20)
+            titleTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: StyleGuide.DetailTask.contentSidePadding)
         ])
         
         constraints.append(contentsOf: [textViewBottomConstraint])
         
         constraints.append(contentsOf: [
-            accesoryStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            accesoryStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             accesoryBottomConstraint,
-            accesoryStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            accesoryStackView.heightAnchor.constraint(equalToConstant: 45)
+            accesoryStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            accesoryStackView.heightAnchor.constraint(equalToConstant: StyleGuide.DetailTask.accesoryStackViewHeight)
         ])
         
         NSLayoutConstraint.activate(constraints)
@@ -344,42 +292,29 @@ class DetailTaskViewController: UIViewController, PresentableController {
 
 // MARK: Bind viewModel
 
-extension DetailTaskViewController {
+extension DetailTaskNewViewController {
     private func bindViewModel() {
         viewModel.outputs.selectedDate.bind { [weak self] date in
             guard let date = date else {
                 if let calendarBtn = self?.calendarBtn {
                     calendarBtn.day = nil
                 }
-                self?.dateLabel.text = ""
                 return
             }
                          
             if let calendarBtn = self?.calendarBtn {
                 calendarBtn.day = date
             }
-            
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "dd/MM/yyyy"
-            
-            self?.dateLabel.text = dateFormatter.string(from: date)
         }
         
         viewModel.outputs.selectedTime.bind { [weak self] dateTime in
-            guard let dateTime = dateTime else {
-                self?.timeStackView.isHidden = true
+            guard let _ = dateTime else {
+                //self?.timeStackView.isHidden = true
                 if let alarmBtn = self?.alarmBtn {
                     alarmBtn.alarmIsSet = false
                 }
                 return
             }
-            
-            self?.timeStackView.isHidden = false
-            
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "HH:mm"
-            
-            self?.timeLabel.text = dateFormatter.string(from: dateTime)
             
             if let alarmBtn = self?.alarmBtn {
                 alarmBtn.alarmIsSet = true
@@ -390,7 +325,7 @@ extension DetailTaskViewController {
 
 // MARK: UITextViewDelegate
 
-extension DetailTaskViewController: UITextViewDelegate {
+extension DetailTaskNewViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if let updatedTitle = (textView.text as NSString?)?.replacingCharacters(in: range, with: text) {
             viewModel.inputs.setTitle(title: updatedTitle)
@@ -406,7 +341,7 @@ extension DetailTaskViewController: UITextViewDelegate {
 
 // MARK: Actions
 
-extension DetailTaskViewController {
+extension DetailTaskNewViewController {
     
     // MARK: -Accessory view actions
     
@@ -433,23 +368,23 @@ extension DetailTaskViewController {
     private func reminderTapAction() {
         titleTextView.resignFirstResponder()
         
-        var normalizeTime = viewModel.outputs.selectedDate.value ?? Date()
+        var normalizeTimeFromDate = viewModel.outputs.selectedDate.value ?? Date()
         if let taskTime = viewModel.outputs.selectedTime.value {
-            normalizeTime = taskTime
+            normalizeTimeFromDate = taskTime
             let calendar = Calendar.current.taskCalendar
-            let timeComponents = calendar.dateComponents([.hour, .minute], from: normalizeTime)
+            let timeComponents = calendar.dateComponents([.hour, .minute], from: normalizeTimeFromDate)
             
             if let hour = timeComponents.hour, let minute = timeComponents.minute {
-                guard let dateWithTime = Calendar.current.taskCalendar.date(bySettingHour: hour, minute: minute, second: 0, of: normalizeTime) else { return }
-                normalizeTime = dateWithTime
+                guard let dateWithTime = Calendar.current.taskCalendar.date(bySettingHour: hour, minute: minute, second: 0, of: normalizeTimeFromDate) else { return }
+                normalizeTimeFromDate = dateWithTime
             }
-        } else {
-            guard let dateWithTime = Calendar.current.taskCalendar.date(bySettingHour: 8, minute: 00, second: 0, of: normalizeTime) else { return }
-            normalizeTime = dateWithTime
+        } else if !normalizeTimeFromDate.isDayToday() {
+            guard let dateWithTime = Calendar.current.taskCalendar.date(bySettingHour: 8, minute: 00, second: 0, of: normalizeTimeFromDate) else { return }
+            normalizeTimeFromDate = dateWithTime
         }
         
         if let reminderAction = onTimeReminderSelect {
-            reminderAction(normalizeTime, self)
+            reminderAction(normalizeTimeFromDate, self)
         }
     }
     
@@ -513,7 +448,7 @@ extension DetailTaskViewController {
 }
 
 // MARK: CalendarPickerViewOutputs
-extension DetailTaskViewController: CalendarPickerViewOutputs {
+extension DetailTaskNewViewController: CalendarPickerViewOutputs {
     var selectedCalendarDate: Date? {
         get {
             return viewModel.outputs.selectedDate.value
@@ -530,7 +465,7 @@ extension DetailTaskViewController: CalendarPickerViewOutputs {
 }
 
 // MARK: TimePickerViewOutputs
-extension DetailTaskViewController: TimePickerViewOutputs {
+extension DetailTaskNewViewController: TimePickerViewOutputs {
     var selectedReminderTime: Date? {
         get {
             return viewModel.outputs.selectedTime.value

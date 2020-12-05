@@ -69,15 +69,36 @@ class TaskListTableViewCell: UITableViewCell {
     // MARK: View's properties
     
     private let titleLabel: UILabel = {
-        return Label.makeCellMainLabel(textColor: #colorLiteral(red: 0.2369126672, green: 0.6231006994, blue: 1, alpha: 1))
+        let label = UILabel()
+        label.textColor = StyleGuide.TaskList.Colors.cellMainTitle
+        label.font = StyleGuide.TaskList.Fonts.cellMainTitle
+        label.numberOfLines = 1
+        label.lineBreakMode = .byTruncatingTail
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
     }()
     
     private let dateLabel: UILabel = {
-        return Label.makeCellAdditionalLabel(textColor: #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1))
+        let label = UILabel()
+        label.textColor = StyleGuide.TaskList.Colors.cellAdditionalTitle
+        label.font = StyleGuide.TaskList.Fonts.cellAdditionalTitle
+        label.numberOfLines = 1
+        label.lineBreakMode = .byTruncatingTail
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
     }()
     
     private let timeLabel: UILabel = {
-        return Label.makeCellAdditionalLabel(textColor: #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1))
+        let label = UILabel()
+        label.textColor = StyleGuide.TaskList.Colors.cellAdditionalTitle
+        label.font = StyleGuide.TaskList.Fonts.cellAdditionalTitle
+        label.numberOfLines = 1
+        label.lineBreakMode = .byTruncatingTail
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
     }()
     
     private let checkView: UIView = {
@@ -178,7 +199,11 @@ extension TaskListTableViewCell {
             checkView.centerXAnchor.constraint(equalTo: doneView.centerXAnchor)
         ])
         
-        addSubview(doneView)
+        if #available(iOS 14.0, *) {
+            contentView.addSubview(doneView)
+        } else {
+            addSubview(doneView)
+        }
         
         constraints.append(contentsOf: [
             doneView.leadingAnchor.constraint(equalTo: backView.leadingAnchor, constant: 10),

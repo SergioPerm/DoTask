@@ -83,12 +83,19 @@ class TimePickerViewController: UIViewController, PresentableController {
         setupView()
         setUpPickerData()
     }
-            
+                
     override func viewDidAppear(_ animated: Bool) {
+        fixPickerColors()
         showView()
     }
     
     // MARK: Setup VIEW
+    
+    private func fixPickerColors() {
+        if #available(iOS 14.0, *), let frontPickerView = timePicker.subviews.last {
+            frontPickerView.backgroundColor = .clear
+        }
+    }
     
     private func showView() {
         let scale = StyleGuide.TimePicker.scaleShowAnimationValue
@@ -102,7 +109,7 @@ class TimePickerViewController: UIViewController, PresentableController {
                        animations: {
                         self.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
                         self.view.alpha = 1.0
-        }, completion: nil)
+                       }, completion: nil)
     }
     
     private func setupView() {
@@ -193,10 +200,10 @@ class TimePickerViewController: UIViewController, PresentableController {
         selectedDate.hour = hours[0]
         selectedDate.minute = minutes[0]
         
-        guard let indexHour = hours.firstIndex(of: selectedDate.hour), let indexMinute = minutes.firstIndex(of: selectedDate.minute) else { return }
-                
-        timePicker.selectRow(indexHour, inComponent: 0, animated: false)
-        timePicker.selectRow(indexMinute, inComponent: 2, animated: false)
+//        guard let indexHour = hours.firstIndex(of: selectedDate.hour), let indexMinute = minutes.firstIndex(of: selectedDate.minute) else { return }
+//
+//        timePicker.selectRow(indexHour, inComponent: 0, animated: false)
+//        timePicker.selectRow(indexMinute, inComponent: 2, animated: false)
         
         //normalize baseTime
         baseTime = dateFromSelectedDate() ?? baseTime
@@ -310,6 +317,7 @@ extension TimePickerViewController: UIPickerViewDelegate {
         
         pickerLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 50)
         pickerLabel.textAlignment = NSTextAlignment.center
+       
         return pickerLabel
     }
     

@@ -9,15 +9,50 @@
 import UIKit
 
 struct StyleGuide {
+   
+    static let baseScreenWidth: CGFloat = 375
+    
+    struct TaskList {
+        enum Fonts {
+            static let cellMainTitle: UIFont = FontFactory.Regular.of(size: StyleGuide.getFontSizeRelativeToScreen(baseSize: 15))
+            static let cellAdditionalTitle: UIFont = FontFactory.Regular.of(size: StyleGuide.getFontSizeRelativeToScreen(baseSize: 12))
+        }
+        
+        enum Sizes {
+            
+        }
+        
+        enum Colors {
+            static let cellMainTitle: UIColor = #colorLiteral(red: 0.2369126672, green: 0.6231006994, blue: 1, alpha: 1)
+            static let cellAdditionalTitle: UIColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        }
+    }
+    
+    static func getFontSizeRelativeToScreen(baseSize: CGFloat) -> CGFloat {
+        //Current runable device/simulator width find
+        let bounds = UIScreen.main.bounds
+        let width = bounds.size.width
+                
+        // "14" font size is defult font size
+        let fontSize = baseSize * (width / StyleGuide.baseScreenWidth)
+        
+        return fontSize
+    }
+    
     enum DetailTask {
         //view
         static let topMargin: CGFloat = 40.0
         static let viewCornerRadius: CGFloat = 16.0
         
-        //chevron
-        static let chevronHeightIos13: CGFloat = 27
-        static let chevronHeightIos11: CGFloat = 20
+        //Content
+        static let contentSidePadding: CGFloat = 20.0
+        static let chevronHeight: CGFloat = 20
+        static let chevronTintColor: UIColor = #colorLiteral(red: 0.8901960784, green: 0.8901960784, blue: 0.8901960784, alpha: 1)
                 
+        static let swipeCloseViewHeight: CGFloat = 40
+        
+        static let accesoryStackViewHeight: CGFloat = 45
+        
         //colors
         static let viewBGColor: UIColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     }
@@ -31,10 +66,10 @@ struct StyleGuide {
         //collection view
         static let cellsInterItemSpacing: CGFloat = 5.0
         static let cellPerRowCount: CGFloat = 7.0
-        static let collectionMargins: CGFloat = 20.0
+        static let collectionMargins: CGFloat = 10.0
         
         //collection view cell
-        static let ratioToScreenWidthCellFont: CGFloat = 0.043
+        static let ratioToScreenWidthCellFont: CGFloat = 0.049
         
         //view
         static let viewCornerRadius: CGFloat = 8.0
@@ -69,10 +104,16 @@ struct StyleGuide {
     }
     
     enum SlideMenu {
+        //sizes
+        static let leftMargin: CGFloat = 16.0
+
         //ratio sizes
         static let ratioToScreenExpandWidth: CGFloat = 0.5
         static let ratioToScreenOffsetToExpand: CGFloat = 0.25
-        
+        static let ratioToScreenWidthFontSizeBigTitle: CGFloat = 0.05
+        static let ratioToScreenWidthFontSizeMiddleTitle: CGFloat = 0.045
+        static let ratioToScreenWidthFontSizeSmallTitle: CGFloat = 0.04
+
         //colors
         static let viewBGColor: UIColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         

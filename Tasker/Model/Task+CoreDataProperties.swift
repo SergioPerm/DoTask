@@ -26,6 +26,7 @@ extension Task {
     @NSManaged public var isDone: Bool
     @NSManaged public var importanceLevel: Int16
     @NSManaged public var mainTaskListOrder: Int16
+    @NSManaged public var shortcut: Shortcut?
     
     @objc var dailyName: String? {
         guard let taskDate = self.taskDate else {

@@ -30,10 +30,10 @@
 		B15C9B7625695B7E00A809B1 /* DetailTaskViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15C9B7525695B7E00A809B1 /* DetailTaskViewModelInputs.swift */; };
 		B15C9B7825695B9E00A809B1 /* DetailTaskViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15C9B7725695B9E00A809B1 /* DetailTaskViewModelOutputs.swift */; };
 		B15C9B7A25695BB800A809B1 /* DetailTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15C9B7925695BB800A809B1 /* DetailTaskViewModel.swift */; };
-		B1603C522521C0480022BE49 /* DailyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1603C512521C0480022BE49 /* DailyModel.swift */; };
+		B1603C522521C0480022BE49 /* Daily.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1603C512521C0480022BE49 /* Daily.swift */; };
 		B1603C552521C5C20022BE49 /* TaskListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1603C542521C5C20022BE49 /* TaskListTableViewCell.swift */; };
 		B1603C5A2521EAB70022BE49 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1603C592521EAB70022BE49 /* UIViewController.swift */; };
-		B1603C5C2521FC200022BE49 /* DetailTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1603C5B2521FC200022BE49 /* DetailTaskViewController.swift */; };
+		B1603C5C2521FC200022BE49 /* DetailTaskNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1603C5B2521FC200022BE49 /* DetailTaskNewViewController.swift */; };
 		B1664045254464C8007D1AFD /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1664044254464C8007D1AFD /* UIBarButtonItem.swift */; };
 		B1804BB8255A8CED007FECCF /* StyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1804BB7255A8CED007FECCF /* StyleGuide.swift */; };
 		B18349E3256AEA9800D0D096 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18349E2256AEA9800D0D096 /* Coordinator.swift */; };
@@ -69,10 +69,11 @@
 		B1C39D6A256BD5390005C4B6 /* TimePickerAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C39D69256BD5390005C4B6 /* TimePickerAssembly.swift */; };
 		B1C39D6D256BE40E0005C4B6 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C39D6C256BE40E0005C4B6 /* MenuViewController.swift */; };
 		B1C5F80D2566551E0040EB3C /* CalendarPickerViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C5F80C2566551E0040EB3C /* CalendarPickerViewModelInputs.swift */; };
+		B1C9444425791516008DB558 /* SlideMenuAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C9444325791516008DB558 /* SlideMenuAssembly.swift */; };
 		B1D4CCE5256D26090085C25C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D4CCE4256D26090085C25C /* SettingsViewController.swift */; };
 		B1D4CCE7256D26700085C25C /* SettingsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D4CCE6256D26700085C25C /* SettingsAssembly.swift */; };
 		B1D4CCE9256D36EA0085C25C /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D4CCE8256D36EA0085C25C /* UIButton.swift */; };
-		B1D5C4BA252AFE8100C4B988 /* NotifyByDateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5C4B9252AFE8100C4B988 /* NotifyByDateModel.swift */; };
+		B1D5C4BA252AFE8100C4B988 /* DateNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5C4B9252AFE8100C4B988 /* DateNotifier.swift */; };
 		B1D5C4BE252B540000C4B988 /* NotificationTaskObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5C4BD252B540000C4B988 /* NotificationTaskObserver.swift */; };
 		B1D5C4C0252B674800C4B988 /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5C4BF252B674800C4B988 /* UITableViewCell.swift */; };
 		B1D5DEA9252365B300124DAD /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5DEA8252365B300124DAD /* Label.swift */; };
@@ -92,6 +93,8 @@
 		B1E0653025651A8300948AB5 /* CalendarPickerViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E0652F25651A8300948AB5 /* CalendarPickerViewModelType.swift */; };
 		B1E0653225651EC100948AB5 /* CalendarPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E0653125651EC100948AB5 /* CalendarPickerViewModel.swift */; };
 		B1E06534256524EF00948AB5 /* Boxing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E06533256524EF00948AB5 /* Boxing.swift */; };
+		B1E47889257A3E2A0055A0B4 /* Shortcut+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E47885257A3E2A0055A0B4 /* Shortcut+CoreDataClass.swift */; };
+		B1E4788A257A3E2A0055A0B4 /* Shortcut+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E47886257A3E2A0055A0B4 /* Shortcut+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -118,10 +121,10 @@
 		B15C9B7525695B7E00A809B1 /* DetailTaskViewModelInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskViewModelInputs.swift; sourceTree = "<group>"; };
 		B15C9B7725695B9E00A809B1 /* DetailTaskViewModelOutputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskViewModelOutputs.swift; sourceTree = "<group>"; };
 		B15C9B7925695BB800A809B1 /* DetailTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskViewModel.swift; sourceTree = "<group>"; };
-		B1603C512521C0480022BE49 /* DailyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyModel.swift; sourceTree = "<group>"; };
+		B1603C512521C0480022BE49 /* Daily.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Daily.swift; sourceTree = "<group>"; };
 		B1603C542521C5C20022BE49 /* TaskListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListTableViewCell.swift; sourceTree = "<group>"; };
 		B1603C592521EAB70022BE49 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
-		B1603C5B2521FC200022BE49 /* DetailTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskViewController.swift; sourceTree = "<group>"; };
+		B1603C5B2521FC200022BE49 /* DetailTaskNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskNewViewController.swift; sourceTree = "<group>"; };
 		B1664044254464C8007D1AFD /* UIBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
 		B1804BB7255A8CED007FECCF /* StyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleGuide.swift; sourceTree = "<group>"; };
 		B18349E2256AEA9800D0D096 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
@@ -159,10 +162,11 @@
 		B1C39D69256BD5390005C4B6 /* TimePickerAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerAssembly.swift; sourceTree = "<group>"; };
 		B1C39D6C256BE40E0005C4B6 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		B1C5F80C2566551E0040EB3C /* CalendarPickerViewModelInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerViewModelInputs.swift; sourceTree = "<group>"; };
+		B1C9444325791516008DB558 /* SlideMenuAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideMenuAssembly.swift; sourceTree = "<group>"; };
 		B1D4CCE4256D26090085C25C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		B1D4CCE6256D26700085C25C /* SettingsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAssembly.swift; sourceTree = "<group>"; };
 		B1D4CCE8256D36EA0085C25C /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
-		B1D5C4B9252AFE8100C4B988 /* NotifyByDateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotifyByDateModel.swift; sourceTree = "<group>"; };
+		B1D5C4B9252AFE8100C4B988 /* DateNotifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateNotifier.swift; sourceTree = "<group>"; };
 		B1D5C4BD252B540000C4B988 /* NotificationTaskObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTaskObserver.swift; sourceTree = "<group>"; };
 		B1D5C4BF252B674800C4B988 /* UITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
 		B1D5DEA8252365B300124DAD /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
@@ -182,6 +186,8 @@
 		B1E0652F25651A8300948AB5 /* CalendarPickerViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerViewModelType.swift; sourceTree = "<group>"; };
 		B1E0653125651EC100948AB5 /* CalendarPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerViewModel.swift; sourceTree = "<group>"; };
 		B1E06533256524EF00948AB5 /* Boxing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Boxing.swift; sourceTree = "<group>"; };
+		B1E47885257A3E2A0055A0B4 /* Shortcut+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Shortcut+CoreDataClass.swift"; sourceTree = "<group>"; };
+		B1E47886257A3E2A0055A0B4 /* Shortcut+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Shortcut+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -358,10 +364,8 @@
 		B18C91C025334D63004DFB73 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B1603C5B2521FC200022BE49 /* DetailTaskViewController.swift */,
-				B18C91C125334D74004DFB73 /* ImportanceButton.swift */,
-				B1294492253469D4002FD1EF /* CalendarButton.swift */,
-				B12944942534A807002FD1EF /* AlarmButton.swift */,
+				B1E47890257A435D0055A0B4 /* Buttons */,
+				B1603C5B2521FC200022BE49 /* DetailTaskNewViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -415,11 +419,13 @@
 		B1A9140D252062070021E15C /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B1E47885257A3E2A0055A0B4 /* Shortcut+CoreDataClass.swift */,
+				B1E47886257A3E2A0055A0B4 /* Shortcut+CoreDataProperties.swift */,
 				B1A9142225209CC60021E15C /* Task+CoreDataClass.swift */,
 				B1A9142325209CC60021E15C /* Task+CoreDataProperties.swift */,
 				B1A9141C2520775E0021E15C /* TaskModel.swift */,
-				B1603C512521C0480022BE49 /* DailyModel.swift */,
-				B1D5C4B9252AFE8100C4B988 /* NotifyByDateModel.swift */,
+				B1603C512521C0480022BE49 /* Daily.swift */,
+				B1D5C4B9252AFE8100C4B988 /* DateNotifier.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -507,11 +513,20 @@
 		B1C39D6B256BE3CF0005C4B6 /* SlideMenu */ = {
 			isa = PBXGroup;
 			children = (
+				B1C94442257914FA008DB558 /* Assembly */,
 				B1E6987F256FB41C008FB782 /* Models */,
 				B1E6987E256FB412008FB782 /* ViewModels */,
 				B1E6987D256FB40C008FB782 /* Views */,
 			);
 			path = SlideMenu;
+			sourceTree = "<group>";
+		};
+		B1C94442257914FA008DB558 /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				B1C9444325791516008DB558 /* SlideMenuAssembly.swift */,
+			);
+			path = Assembly;
 			sourceTree = "<group>";
 		};
 		B1D4CCDE256D25940085C25C /* Settings */ = {
@@ -650,6 +665,16 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		B1E47890257A435D0055A0B4 /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				B18C91C125334D74004DFB73 /* ImportanceButton.swift */,
+				B1294492253469D4002FD1EF /* CalendarButton.swift */,
+				B12944942534A807002FD1EF /* AlarmButton.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
 		B1E69870256FAD59008FB782 /* CalendarPickerViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -732,7 +757,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1130;
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1220;
 				ORGANIZATIONNAME = itotdel;
 				TargetAttributes = {
 					B1A913EB252056FA0021E15C = {
@@ -783,7 +808,7 @@
 				B1A9142B2520B2AD0021E15C /* TaskListViewController.swift in Sources */,
 				B1D5DECC2523884700124DAD /* CalendarPickerViewCell.swift in Sources */,
 				B18C91BE2532FA8D004DFB73 /* UIDevice.swift in Sources */,
-				B1D5C4BA252AFE8100C4B988 /* NotifyByDateModel.swift in Sources */,
+				B1D5C4BA252AFE8100C4B988 /* DateNotifier.swift in Sources */,
 				B13875EF25715DD2002DA626 /* ShortcutMenuTableViewCell.swift in Sources */,
 				B1D5DEAC2523667500124DAD /* Font.swift in Sources */,
 				B12F7E5C2529F83600B71AAC /* PushNotificationService.swift in Sources */,
@@ -833,7 +858,7 @@
 				B1A9142425209CC60021E15C /* Task+CoreDataClass.swift in Sources */,
 				B13875DC25710057002DA626 /* TopMenuTableViewCell.swift in Sources */,
 				B1C39D64256BC72E0005C4B6 /* DetailTaskCoordinator.swift in Sources */,
-				B1603C5C2521FC200022BE49 /* DetailTaskViewController.swift in Sources */,
+				B1603C5C2521FC200022BE49 /* DetailTaskNewViewController.swift in Sources */,
 				B1A9142525209CC60021E15C /* Task+CoreDataProperties.swift in Sources */,
 				B13875E225714E88002DA626 /* MenuModel.swift in Sources */,
 				B189A9992524D68D00EAC6A0 /* Date.swift in Sources */,
@@ -845,13 +870,16 @@
 				B1D5DEC62523884700124DAD /* MonthModel.swift in Sources */,
 				B13875E0257121E7002DA626 /* NSObject.swift in Sources */,
 				B1D4CCE7256D26700085C25C /* SettingsAssembly.swift in Sources */,
+				B1E47889257A3E2A0055A0B4 /* Shortcut+CoreDataClass.swift in Sources */,
 				B1A914292520AB640021E15C /* TaskListView.swift in Sources */,
 				B189A9942524803E00EAC6A0 /* TimePickerViewOutputs.swift in Sources */,
+				B1E4788A257A3E2A0055A0B4 /* Shortcut+CoreDataProperties.swift in Sources */,
 				B15C9B672569156A00A809B1 /* CalendarPickerViewModelOutputs.swift in Sources */,
 				B1D5DEA9252365B300124DAD /* Label.swift in Sources */,
 				B15C9B7425695B6600A809B1 /* DetailTaskViewModelType.swift in Sources */,
 				B18349E9256AEAF300D0D096 /* PresentableController.swift in Sources */,
-				B1603C522521C0480022BE49 /* DailyModel.swift in Sources */,
+				B1C9444425791516008DB558 /* SlideMenuAssembly.swift in Sources */,
+				B1603C522521C0480022BE49 /* Daily.swift in Sources */,
 				B1D5DEAE2523690F00124DAD /* Button.swift in Sources */,
 				B1664045254464C8007D1AFD /* UIBarButtonItem.swift in Sources */,
 				B1D5DECB2523884700124DAD /* CalendarPickerFooterView.swift in Sources */,
@@ -901,6 +929,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -925,7 +954,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -961,6 +990,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -979,7 +1009,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -996,7 +1026,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DUBTL9M98H;
 				INFOPLIST_FILE = Tasker/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1015,7 +1045,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DUBTL9M98H;
 				INFOPLIST_FILE = Tasker/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

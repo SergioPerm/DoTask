@@ -9,9 +9,9 @@
 import Foundation
 
 class DetailTaskAssembly {
-    static func createInstance(taskUID: String?, presenter: PresenterController?) -> DetailTaskViewController {
+    static func createInstance(taskUID: String?, presenter: PresenterController?) -> DetailTaskNewViewController {
         let dataSource: TaskListDataSource = TaskListDataSourceCoreDataImpl(context: CoreDataService.shared.context)
         let viewModel: DetailTaskViewModel = DetailTaskViewModel(taskUID: taskUID, dataSource: dataSource)
-        return DetailTaskViewController(viewModel: viewModel, presenter: presenter, presentableControllerViewType: .modalViewController)
+        return DetailTaskNewViewController(viewModel: viewModel, presenter: presenter, presentableControllerViewType: .modalViewController)
     }
 }

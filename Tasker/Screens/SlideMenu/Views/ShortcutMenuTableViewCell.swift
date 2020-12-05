@@ -57,15 +57,18 @@ extension ShortcutMenuTableViewCell {
     private func setup() {
         selectionStyle = .none
 
+        let globalWidth = UIView.globalSafeAreaFrame.width
+        title.font = title.font.withSize(globalWidth * StyleGuide.SlideMenu.ratioToScreenWidthFontSizeMiddleTitle)
+        
         addSubview(shapeView)
         shapeView.addSubview(title)
 
         let constraints = [
-            shapeView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            shapeView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            shapeView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: StyleGuide.SlideMenu.leftMargin),
+            shapeView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -StyleGuide.SlideMenu.leftMargin),
             shapeView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            shapeView.heightAnchor.constraint(equalToConstant: 30),
-            title.leadingAnchor.constraint(equalTo: shapeView.leadingAnchor, constant: 10),
+            shapeView.heightAnchor.constraint(equalToConstant: 33),
+            title.leadingAnchor.constraint(equalTo: shapeView.leadingAnchor, constant: 8),
             title.centerYAnchor.constraint(equalTo: shapeView.centerYAnchor),
             title.heightAnchor.constraint(equalToConstant: 25),
             title.widthAnchor.constraint(equalToConstant: 150)

@@ -8,16 +8,11 @@
 
 import UIKit
 
-protocol SlideMenuHandlers: class {
-    var openSettingsHandler: (() -> Void)? { get set }
-}
-
 protocol SlideMenuViewType: class {
     var parentController: MenuParentControllerType? { get set }
     var enabled: Bool { get set }
     
     func toggleMenu()
-    func presentMenu()
 }
 
 protocol MenuParentControllerType: class {
@@ -26,7 +21,7 @@ protocol MenuParentControllerType: class {
     func getView() -> UIView
 }
 
-class MenuViewController: UIViewController, PresentableController, SlideMenuHandlers, SlideMenuViewType {
+class MenuViewController: UIViewController, PresentableController, SlideMenuViewType {
     
     var presentableControllerViewType: PresentableControllerViewType
     var presenter: PresenterController?
@@ -45,8 +40,9 @@ class MenuViewController: UIViewController, PresentableController, SlideMenuHand
     private var tableView: UITableView!
     
     // MARK: SlideMenuHandlers
-    var openSettingsHandler: (() -> Void)?
-        
+    var openSettingsHandler: ((_ menu: SlideMenuViewType?) -> Void)?
+    var openTaskListHandler: ((_ menu: SlideMenuViewType?) -> Void)?
+    
     // MARK: Init
     
     init(presenter: PresenterController?, presentableControllerViewType: PresentableControllerViewType) {
@@ -65,6 +61,12 @@ class MenuViewController: UIViewController, PresentableController, SlideMenuHand
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //start init screen
+        if let taskListAction = openTaskListHandler {
+            taskListAction(self)
+        }
+        
         setup()
     }
     
@@ -96,11 +98,6 @@ class MenuViewController: UIViewController, PresentableController, SlideMenuHand
         let notAlreadyExpanded = currentState != .menuExpanded
         animateLeftmenu(shouldExpand: notAlreadyExpanded)
     }
-    
-    func presentMenu() {
-        configureMenuViewController()
-        toggleMenu()
-    }
 }
 
 // MARK: Setup view
@@ -131,12 +128,6 @@ extension MenuViewController {
 // MARK: Menu confgigure
 
 extension MenuViewController {
-    private func configureMenuViewController() {
-        if currentState == .menuCollapsed {
-            presenter?.push(vc: self, completion: nil)
-        }
-    }
-            
     private func animateLeftmenu(shouldExpand: Bool) {
         if shouldExpand {
             currentState = .menuExpanded
@@ -148,7 +139,6 @@ extension MenuViewController {
             animateCenterPanel(targetPosition: 0) { _ in
                 self.currentState = .menuCollapsed
                 self.parentController?.didMenuCollapse()
-                self.presenter?.pop(vc: self)
             }
         }
     }
@@ -173,16 +163,13 @@ extension MenuViewController {
     
     // MARK: Swipe action
     @objc private func handlePanGesture(_ recognizer: UIPanGestureRecognizer) {
-        let gestureIsDraggingFromLeftToRight = recognizer.velocity(in: parentController?.getView()).x > 0
-    
         let offsetToExpand = view.frame.width * StyleGuide.SlideMenu.ratioToScreenOffsetToExpand
+        let expandWidth = view.frame.width * StyleGuide.SlideMenu.ratioToScreenExpandWidth
+        
+        let draggingVelocityExpand: CGFloat = 1.5
+        let draggingVelocityAfterExpand: CGFloat = 0.3
         
         switch recognizer.state {
-        case .began:
-            if gestureIsDraggingFromLeftToRight {
-                configureMenuViewController()
-            }
-        
         case .changed:
             if let rView = recognizer.view {
                                 
@@ -195,33 +182,29 @@ extension MenuViewController {
                     draggingDisctance -= ((currentCenterX + draggingDisctance) - centerX)
                 }
                 
-                if rView.frame.origin.x > offsetToExpand {
-                    draggingDisctance *= 1.5
+                if rView.frame.origin.x >= expandWidth{
+                    draggingDisctance *= draggingVelocityAfterExpand
+                } else if rView.frame.origin.x > offsetToExpand {
+                    draggingDisctance *= draggingVelocityExpand
                 }
                 
                 rView.center.x = rView.center.x + draggingDisctance
                 recognizer.setTranslation(CGPoint.zero, in: view)
-
             }
-            
         case .ended:
             if let rView = recognizer.view {
                 let hasMoveGreaterThanHalfway = rView.frame.origin.x > offsetToExpand
-                
                 animateLeftmenu(shouldExpand: hasMoveGreaterThanHalfway)
             }
-            
         default:
             break
-            
         }
-        
     }
     
     // MARK: Settings action
     @objc private func menuSettingsAction(sender: UIBarButtonItem) {
         if let settingsAction = openSettingsHandler {
-            settingsAction()
+            settingsAction(self)
         }
     }
 }

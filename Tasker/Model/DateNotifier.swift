@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-struct NotifyByDateModel {
+struct DateNotifier {
     var identifier: String
     var title: String
     var body: String

@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct DailyModel {
+struct Daily {
     var dailyName: String?
     var tasks: [TaskModel]
     

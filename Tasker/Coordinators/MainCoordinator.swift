@@ -18,19 +18,35 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
     }
     
     func start() {
+        let vc = SlideMenuAssembly.createInstance(presenter: presenter)
+        
+        vc.openTaskListHandler = { menu in
+            self.openTaskList(menu: menu)
+        }
+        vc.openSettingsHandler = { menu in
+            self.openSettings(menu: menu)
+        }
+        
+        presenter?.push(vc: vc, completion: nil)
+    }
+            
+    func openTaskList(menu: SlideMenuViewType?) {
         let vc = TaskListAssembly.createInstance(presenter: presenter)
+        vc.slideMenu = menu
+        
         vc.editTaskAction = { uid in
             self.editTask(taskUID: uid)
         }
-        vc.openSettingsAction = {
-            self.openSettings()
-        }
+
         presenter?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
         })
+        
+        menu?.parentController = vc
     }
-            
-    func openSettings() {
+    
+    func openSettings(menu: SlideMenuViewType?) {
+        menu?.toggleMenu()
         let vc = SettingsAssembly.createInstance(presenter: presenter)
         presenter?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)

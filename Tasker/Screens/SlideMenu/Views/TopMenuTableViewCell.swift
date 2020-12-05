@@ -49,10 +49,14 @@ extension TopMenuTableViewCell {
     private func setup() {
         selectionStyle = .none
         
-        addSubview(settingsButton)
+        if #available(iOS 14.0, *) {
+            contentView.addSubview(settingsButton)
+        } else {
+            addSubview(settingsButton)
+        }
         
         let constraints = [
-            settingsButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            settingsButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: StyleGuide.SlideMenu.leftMargin),
             settingsButton.topAnchor.constraint(equalTo: topAnchor, constant: 10),
             settingsButton.heightAnchor.constraint(equalToConstant: 25),
             settingsButton.widthAnchor.constraint(equalToConstant: 25)

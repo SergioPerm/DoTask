@@ -8,6 +8,14 @@
 
 import UIKit
 
+enum FontFactory: String {
+    case Regular = "HelveticaNeue"
+    
+    func of(size: CGFloat) -> UIFont {
+      return UIFont(name: self.rawValue, size: size) ?? UIFont.systemFont(ofSize: size)
+    }
+}
+
 enum Font {
     case detailTaskStandartTitle
     case detailTaskTextView
@@ -21,14 +29,14 @@ enum Font {
     case calendarPickerFooterFont
     case mainMenuCellFont
     case additionalMenuCellFont
-    
+
     var uiFont : UIFont {
         switch self {
-        case .detailTaskStandartTitle: return UIFont(name: "AvenirNext-Bold", size: 15) ?? UIFont.systemFont(ofSize: 10)
+        case .detailTaskStandartTitle: return UIFont(name: "AvenirNext-Bold", size: 15) ?? UIFont.systemFont(ofSize: 15)
         case .detailTaskTextView: return UIFont(name: "AvenirNext", size: 20) ?? UIFont.systemFont(ofSize: 20)
         case .cellAdditionalTitle: return UIFont(name: "HelveticaNeue", size: 12) ?? UIFont.systemFont(ofSize: 12)
         case .cellAdditionalTitleBold: return UIFont(name: "HelveticaNeue-Bold", size: 12) ?? UIFont.systemFont(ofSize: 12)
-        case .cellMainTitle: return UIFont(name: "HelveticaNeue", size: 15) ?? UIFont.systemFont(ofSize: 15)
+        case .cellMainTitle: return FontFactory.Regular.of(size: 15)//return UIFont(name: "HelveticaNeue", size: 15) ?? UIFont.systemFont(ofSize: 15)
         case .mainTitle: return UIFont(name: "AvenirNext-BoldItalic", size: 27) ?? UIFont.systemFont(ofSize: 27)
         case .mainTitle2: return UIFont(name: "AvenirNext-BoldItalic", size: 21) ?? UIFont.systemFont(ofSize: 21)
         case .tableHeader: return UIFont(name: "AvenirNext-Bold", size: 35) ?? UIFont.systemFont(ofSize: 35)

@@ -14,7 +14,7 @@ class TaskListViewModel {
     private var dataSource: TaskListDataSource
 
     // MARK: - Properties
-    var tableViewItems = [DailyModel]()
+    var tableViewItems = [Daily]()
     
     init(dataSource: TaskListDataSource) {
         self.dataSource = dataSource

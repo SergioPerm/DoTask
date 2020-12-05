@@ -37,7 +37,7 @@ class PushNotificationService: NSObject {
         }
     }
     
-    func addLocalNotification(notifyModel: NotifyByDateModel) {
+    func addLocalNotification(notifyModel: DateNotifier) {
         let content = UNMutableNotificationContent()
         
         content.title = notifyModel.title

@@ -19,11 +19,12 @@ class MainMenuTableViewCell: UITableViewCell {
     
     let title: UILabel = {
         let label = UILabel()
-            .color(.gray)
-            .font(Font.mainMenuCellFont.uiFont)
-            .autolayout(true)
-            .alignment(.left)
-        
+        label.textColor = .gray
+        label.textAlignment = .left
+        label.font = Font.mainMenuCellFont.uiFont
+        label.minimumScaleFactor = 0.3
+        label.translatesAutoresizingMaskIntoConstraints = false
+                
         return label
     }()
     
@@ -56,18 +57,21 @@ extension MainMenuTableViewCell {
     private func setup() {
         selectionStyle = .none
         
+        let globalWidth = UIView.globalSafeAreaFrame.width
+        title.font = title.font.withSize(globalWidth * StyleGuide.SlideMenu.ratioToScreenWidthFontSizeBigTitle)
+        
         addSubview(icon)
         addSubview(title)
         
         let constraints = [
-            icon.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            icon.leadingAnchor.constraint(equalTo: leadingAnchor, constant: StyleGuide.SlideMenu.leftMargin),
             icon.centerYAnchor.constraint(equalTo: centerYAnchor),
             icon.widthAnchor.constraint(equalToConstant: 25),
             icon.heightAnchor.constraint(equalToConstant: 25),
-            title.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 20),
+            title.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 10),
             title.centerYAnchor.constraint(equalTo: centerYAnchor),
             title.heightAnchor.constraint(equalToConstant: 25),
-            title.widthAnchor.constraint(equalToConstant: 100)
+            title.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -StyleGuide.SlideMenu.leftMargin)
         ]
         
         backgroundColor = .clear

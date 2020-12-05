@@ -14,15 +14,14 @@ class TaskListViewController: UIViewController, PresentableController {
     var presenter: PresenterController?
     
     // MARK: - Dependencies
-    public let viewModel: TaskListViewModel //= TaskListViewModelAssembler.createInstance()
+    public let viewModel: TaskListViewModel
     
     private var tableView: UITableView!
     
-    private var slideMenu: (SlideMenuViewType & SlideMenuHandlers)?
+    var slideMenu: SlideMenuViewType?
     private var withSlideMenu: Bool
     
     var editTaskAction: ((_ taskUID: String?) ->  Void)?
-    var openSettingsAction: (() -> Void)?
     
     init(viewModel: TaskListViewModel, presenter: PresenterController?, presentableControllerViewType: PresentableControllerViewType) {
         self.viewModel = viewModel
@@ -86,29 +85,18 @@ extension TaskListViewController {
             }
         }
         
-        if withSlideMenu {
-            slideMenu = MenuViewController(presenter: presenter, presentableControllerViewType: .menuViewController)
-            slideMenu?.parentController = self
-            
-            let menuBtn = UIButton()
-            menuBtn.addTarget(self, action: #selector(tapMenuAction(sender:)), for: .touchUpInside)
-            menuBtn.tintImageWithColor(color: Color.blueColor.uiColor, image: UIImage(named: "menu"))
-            
-            let menuBarItem = UIBarButtonItem(customView: menuBtn)
-            let currWidth = menuBarItem.customView?.widthAnchor.constraint(equalToConstant: 25)
-            currWidth?.isActive = true
-            let currHeight = menuBarItem.customView?.heightAnchor.constraint(equalToConstant: 25)
-            currHeight?.isActive = true
-            
-            self.navigationItem.leftBarButtonItem = menuBarItem
-            
-            slideMenu?.openSettingsHandler = { [weak self] in
-                if let openSettingAction = self?.openSettingsAction {
-                    self?.slideMenu?.toggleMenu()
-                    openSettingAction()
-                }
-            }
-        }
+        //Menu btn
+        let menuBtn = UIButton()
+        menuBtn.addTarget(self, action: #selector(tapMenuAction(sender:)), for: .touchUpInside)
+        menuBtn.tintImageWithColor(color: Color.blueColor.uiColor, image: UIImage(named: "menu"))
+        
+        let menuBarItem = UIBarButtonItem(customView: menuBtn)
+        let currWidth = menuBarItem.customView?.widthAnchor.constraint(equalToConstant: 25)
+        currWidth?.isActive = true
+        let currHeight = menuBarItem.customView?.heightAnchor.constraint(equalToConstant: 25)
+        currHeight?.isActive = true
+        
+        self.navigationItem.leftBarButtonItem = menuBarItem
         
         tableView = UITableView()
         tableView.dataSource = self
@@ -130,22 +118,14 @@ extension TaskListViewController {
         }
         view.insertSubview(btn, aboveSubview: tableView)
         
-//        view.layer.shadowOffset = CGSize(width: -3, height: -1)
-//        view.layer.shadowOpacity = 0.3
-//        view.layer.shadowColor = UIColor.black.cgColor
-//        view.layer.shadowPath = UIBezierPath(roundedRect: view.bounds, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: 10, height: 10)).cgPath
-  
 
         self.navigationController?.view.layer.masksToBounds = false
         self.navigationController?.view.layer.shadowColor = Color.blueColor.uiColor.cgColor
         self.navigationController?.view.layer.shadowOpacity = 0.1
         self.navigationController?.view.layer.shadowOffset = CGSize(width: -4, height: 2)
-        //self.navigationController?.view.layer.shadowRadius = 4.0
+ 
 
         self.navigationController?.view.layer.shadowPath = UIBezierPath(rect: (self.navigationController?.view.bounds)!).cgPath
-        
-//        view.layer.shouldRasterize = true
-//        view.layer.rasterizationScale = UIScreen.main.scale
     }
     
     private func configureCell(cell: TaskListTableViewCell, taskModel: TaskModel) {
@@ -164,7 +144,7 @@ extension TaskListViewController {
     }
     
     @objc private func tapMenuAction(sender: UIBarButtonItem) {
-        slideMenu?.presentMenu()
+        slideMenu?.toggleMenu()
     }
 }
 
@@ -309,6 +289,8 @@ extension TaskListViewController: TaskListView {
     }
     
 }
+
+// MARK: MenuParentControllerType
 
 extension TaskListViewController: MenuParentControllerType {
     func willMenuExpand() {

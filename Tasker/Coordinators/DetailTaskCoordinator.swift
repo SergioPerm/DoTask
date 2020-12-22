@@ -21,16 +21,25 @@ class DetailTaskCoordinator: NSObject, Coordinator {
     }
     
     func start() {
-        let vc = DetailTaskAssembly.createInstance(taskUID: taskUID, presenter: presenter)
-        vc.onCalendarSelect = { date, outputs in
-            self.openCalendar(date: date, calendarOutputs: outputs)
-        }
-        vc.onTimeReminderSelect = { date, outputs in
-            self.openReminder(date: date, reminderOutputs: outputs)
-        }
+        
+        let vc = TestScrollViewController.instantiate()
+        vc.presenter = presenter
+        vc.presentableControllerViewType = .modalViewController
+
         presenter?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
         })
+        
+//        let vc = DetailTaskAssembly.createInstance(taskUID: taskUID, presenter: presenter)
+//        vc.onCalendarSelect = { date, outputs in
+//            self.openCalendar(date: date, calendarOutputs: outputs)
+//        }
+//        vc.onTimeReminderSelect = { date, outputs in
+//            self.openReminder(date: date, reminderOutputs: outputs)
+//        }
+//        presenter?.push(vc: vc, completion: { [weak self] in
+//            self?.parentCoordinator?.childDidFinish(self)
+//        })
     }
     
     func openCalendar(date: Date?, calendarOutputs: CalendarPickerViewOutputs) {

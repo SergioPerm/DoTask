@@ -32,6 +32,26 @@ class TimePickerViewController: UIViewController, PresentableController {
     
     // MARK: View's
     
+    private let btnCancel: UIButton = {
+        let btn = UIButton()
+        btn.setTitle("Delete", for: .normal)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.titleLabel?.font = Font.timePickerBtnFont.uiFont
+        btn.setTitleColor(.black, for: .normal)
+        
+        return btn
+    }()
+    
+    private let btnSet: UIButton = {
+        let btn = UIButton()
+        btn.setTitle("Set", for: .normal)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.titleLabel?.font = Font.timePickerBtnFont.uiFont
+        btn.setTitleColor(.black, for: .normal)
+        
+        return btn
+    }()
+    
     private lazy var timePickerView: UIView = {
         let timePickerView = UIView()
         
@@ -141,10 +161,7 @@ class TimePickerViewController: UIViewController, PresentableController {
         let stackViewButtons = UIStackView()
         stackViewButtons.translatesAutoresizingMaskIntoConstraints = false
         
-        let btnCancel = UIButton().title("Delete").autolayout(true).font(Font.timePickerBtnFont.uiFont)
         btnCancel.addTarget(self, action: #selector(deleteAction(sender:)), for: .touchUpInside)
-        
-        let btnSet = UIButton().title("Set").autolayout(true).font(Font.timePickerBtnFont.uiFont)
         btnSet.addTarget(self, action: #selector(setAction(sender:)), for: .touchUpInside)
         
         stackViewButtons.addArrangedSubview(btnCancel)

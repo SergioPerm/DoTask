@@ -3,24 +3,16 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "TaskListViewController.tableView(_:cellForRowAt:):TaskListViewController.swift">
+         contextName = "DetailTaskViewController.updateBottomLayoutConstraintWithNotification(notification:):DetailTaskViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "viewModel.tableViewItems">
+               value = "convertedKeyboardEndFrame.minY">
             </PersistentString>
             <PersistentString
-               value = "indexPath.row">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "DetailTaskViewController.setupView():DetailTaskViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "UIScreen.main.bounds">
+               value = "view.bounds.maxY">
             </PersistentString>
             <PersistentString
-               value = "accesoryBottomConstraint.constant">
+               value = "textViewBottomConstraint.constant">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -28,27 +20,30 @@
          contextName = "DetailTaskViewController.init(taskModel:saveTaskHandler:):DetailTaskViewController.swift">
       </ContextState>
       <ContextState
-         contextName = "TaskListViewController.numberOfSections(in:):TaskListViewController.swift">
+         contextName = "closure #1 in variable initialization expression of DetailTaskViewController.swipeCloseView:DetailTaskViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "viewModel.tableViewItems">
+               value = "swipeView.clipsToBounds">
+            </PersistentString>
+            <PersistentString
+               value = "chevron.contentMode">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "TaskListViewModel.tasksWillChange():TaskListViewModel.swift">
+         contextName = "TaskListViewModel.tasksDidChange():TaskListViewModel.swift">
       </ContextState>
       <ContextState
          contextName = "TaskListDataSourceCoreDataImpl.controller(_:didChange:at:for:newIndexPath:):TaskListDataSourceCoreDataImpl.swift">
          <PersistentStrings>
             <PersistentString
-               value = "indexPath!.row">
-            </PersistentString>
-            <PersistentString
                value = "indexPath.section">
             </PersistentString>
             <PersistentString
                value = "newIndexPath!.row">
+            </PersistentString>
+            <PersistentString
+               value = "indexPath!.row">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -64,21 +59,78 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "TaskListViewController.tableView(_:numberOfRowsInSection:):TaskListViewController.swift">
+         contextName = "TaskListDataSourceCoreDataImpl.addTask(from:):TaskListDataSourceCoreDataImpl.swift">
+      </ContextState>
+      <ContextState
+         contextName = "TestScrollViewController.textViewDidChange(_:):TestScrollViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "TaskTitleTextView.updateParentScrollViewOffset():TaskTitleTextView.swift">
+      </ContextState>
+      <ContextState
+         contextName = "DetailTaskNewViewController.setupView():DetailTaskNewViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "dailyModel.tasks.count">
+               value = "scrollView.keyboardDismissMode">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "closure #1 in variable initialization expression of DetailTaskViewController.swipeCloseView:DetailTaskViewController.swift">
+         contextName = "TaskListDataSourceCoreDataImpl.tasksWithSections.getter:TaskListDataSourceCoreDataImpl.swift">
          <PersistentStrings>
             <PersistentString
-               value = "swipeView.clipsToBounds">
+               value = "task.title">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "TaskListViewController.tableView(_:cellForRowAt:):TaskListViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "viewModel.tableViewItems">
             </PersistentString>
             <PersistentString
-               value = "chevron.contentMode">
+               value = "indexPath.row">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "TestScrollViewController.viewDidLoad():TestScrollViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "scrollView.bounces">
+            </PersistentString>
+            <PersistentString
+               value = "scrollView.showsVerticalScrollIndicator">
+            </PersistentString>
+            <PersistentString
+               value = "scrollView.isDirectionalLockEnabled">
+            </PersistentString>
+            <PersistentString
+               value = "scrollView.showsHorizontalScrollIndicator">
+            </PersistentString>
+            <PersistentString
+               value = "scrollView.bouncesZoom ">
+            </PersistentString>
+            <PersistentString
+               value = "scrollView.isScrollEnabled ">
+            </PersistentString>
+            <PersistentString
+               value = "scrollView.isPagingEnabled">
+            </PersistentString>
+            <PersistentString
+               value = "scrollView.keyboardDismissMode">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "DetailTaskViewController.setupView():DetailTaskViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "UIScreen.main.bounds">
+            </PersistentString>
+            <PersistentString
+               value = "accesoryBottomConstraint.constant">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -91,16 +143,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "DetailTaskViewController.updateBottomLayoutConstraintWithNotification(notification:):DetailTaskViewController.swift">
+         contextName = "TaskListViewController.tableView(_:numberOfRowsInSection:):TaskListViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "convertedKeyboardEndFrame.minY">
-            </PersistentString>
-            <PersistentString
-               value = "view.bounds.maxY">
-            </PersistentString>
-            <PersistentString
-               value = "textViewBottomConstraint.constant">
+               value = "dailyModel.tasks.count">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -116,33 +162,30 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "TaskListDataSourceCoreDataImpl.addTask(from:):TaskListDataSourceCoreDataImpl.swift">
+         contextName = "TaskModel.init(with:):TaskModel.swift">
       </ContextState>
       <ContextState
-         contextName = "TaskListViewModel.tasksDidChange():TaskListViewModel.swift">
+         contextName = "TaskListViewModel.tasksWillChange():TaskListViewModel.swift">
       </ContextState>
       <ContextState
-         contextName = "TaskListDataSourceCoreDataImpl.tasksWithSections.getter:TaskListDataSourceCoreDataImpl.swift">
+         contextName = "TaskListViewController.numberOfSections(in:):TaskListViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "task.title">
+               value = "viewModel.tableViewItems">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "TaskModel.init(with:):TaskModel.swift">
       </ContextState>
       <ContextState
          contextName = "DetailTaskViewController.swipeToCloseAction(_:):DetailTaskViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "rView.frame.origin">
-            </PersistentString>
-            <PersistentString
                value = "viewOrigin">
             </PersistentString>
             <PersistentString
                value = "translation.x">
+            </PersistentString>
+            <PersistentString
+               value = "rView.frame.origin">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

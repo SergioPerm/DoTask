@@ -1,14 +1,14 @@
 //
-//  DetailTaskViewController.swift
+//  DetailTaskEditViewController.swift
 //  Tasker
 //
-//  Created by kluv on 28/09/2020.
+//  Created by KLuV on 09.12.2020.
 //  Copyright © 2020 itotdel. All rights reserved.
 //
 
 import UIKit
 
-class DetailTaskNewViewController: UIViewController, DetailTaskViewType,  PresentableController {
+class DetailTaskEditViewController: UIViewController, DetailTaskViewType,  PresentableController {
     
     var presentableControllerViewType: PresentableControllerViewType
     var presenter: PresenterController?
@@ -33,6 +33,16 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType,  Presen
         let origin = CGPoint(x: globalFrame.origin.x, y: globalFrame.height)
 
         return origin
+    }()
+    
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.backgroundColor = .clear
+        scrollView.isScrollEnabled = false
+        scrollView.clipsToBounds = true
+        
+        return scrollView
     }()
     
     private let swipeCloseView: UIView = {
@@ -61,37 +71,17 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType,  Presen
         return swipeView
     }()
         
-    //private let placeholderLabel: UILabel = UILabel()
+    private let placeholderLabel: UILabel = UILabel()
     
     private let titleTextView: TaskTitleTextView = {
         let textView = TaskTitleTextView()
         textView.font = Font.detailTaskStandartTitle.uiFont
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.isScrollEnabled = false
-        textView.backgroundColor = StyleGuide.DetailTask.Colors.viewBGColor
-        textView.textColor = .systemGray
-        
+
         return textView
     }()
         
-    private let scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.bounces = false
-        scrollView.showsHorizontalScrollIndicator = false
-        scrollView.isScrollEnabled = false
-        scrollView.isPagingEnabled = false
-        
-        return scrollView
-    }()
-    
-    private let scrollContentView: UIView = {
-        let contentView = UIView()
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return contentView
-    }()
-    
     private let accesoryStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -147,25 +137,14 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType,  Presen
     }
     
     @objc private func keyboardWillShowNotification(notification: NSNotification) {
-        updateTextViewLowerLimit(notification: notification)
-        updateBottomLayoutConstraintWithNotification(notification: notification, keyboardShow: true)
+        updateBottomLayoutConstraintWithNotification(notification: notification)
     }
     
     @objc private func keyboardWillHideNotification(notification: NSNotification) {
-        updateTextViewLowerLimit(notification: notification)
-        updateBottomLayoutConstraintWithNotification(notification: notification, keyboardShow: false)
+        updateBottomLayoutConstraintWithNotification(notification: notification)
     }
     
-    private func updateTextViewLowerLimit(notification: NSNotification) {
-        if let userInfo = notification.userInfo {
-            let keyboardEndFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-                        
-            titleTextView.lowerLimitToScroll = keyboardEndFrame.origin.y - accesoryStackView.frame.height - 20
-            titleTextView.updateParentScrollViewOffset()
-        }
-    }
-    
-    private func updateBottomLayoutConstraintWithNotification(notification: NSNotification, keyboardShow: Bool) {
+    private func updateBottomLayoutConstraintWithNotification(notification: NSNotification) {
         let userInfo = notification.userInfo!
         
         let animationDuration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
@@ -184,7 +163,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType,  Presen
                         self.view.layoutIfNeeded()
         }, completion: nil)
     }
-    
+        
     // MARK: View Life-Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -200,26 +179,28 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType,  Presen
     // MARK: View SETUP
     
     private func setupView() {
+        titleTextView.delegate = self
+        
         let globalFrame = UIView.globalSafeAreaFrame
         view.frame = CGRect(origin: viewOriginOnStart, size: CGSize(width: globalFrame.width, height: globalFrame.height - (UIDevice.hasNotch ? 0 : topMargin)))
         
         view.addSubview(scrollView)
-        scrollView.addSubview(scrollContentView)
         
-        scrollContentView.addSubview(swipeCloseView)
-        
+        scrollView.addSubview(swipeCloseView)
+                
+        scrollView.addSubview(titleTextView)
         titleTextView.delegate = self
         titleTextView.text = viewModel.outputs.title
-        titleTextView.parentScrollView = scrollView
+        titleTextView.backgroundColor = .green//StyleGuide.DetailTask.viewBGColor
+        titleTextView.textColor = .systemGray
         
-        scrollContentView.addSubview(titleTextView)
-                      
-        let subTaskView = UIView()
-        subTaskView.backgroundColor = .yellow
-        subTaskView.translatesAutoresizingMaskIntoConstraints = false
+        setupPlaceholder()
         
-        scrollContentView.addSubview(subTaskView)
+        let textViewBottomConstraint = titleTextView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+        textViewBottomConstraint.priority = UILayoutPriority(rawValue: 250)
         
+        accesoryBottomConstraint = accesoryStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -view.globalSafeAreaInsets.bottom)
+                
         importanceBtn = ImportanceButton(onTapAction: { [weak self] in
             self?.viewModel.inputs.increaseImportance()
             }, importanceLevel: viewModel.outputs.importanceLevel)
@@ -237,67 +218,43 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType,  Presen
         accesoryStackView.addArrangedSubview(importanceBtn!)
         accesoryStackView.addArrangedSubview(saveBtn)
         
-        let accessoryView = UIView()
-        accessoryView.translatesAutoresizingMaskIntoConstraints = false
-        accessoryView.backgroundColor = .white
-        accessoryView.layer.borderColor = StyleGuide.TaskList.Colors.cellMainTitle.cgColor
-        accessoryView.layer.borderWidth = 1.0
-        
-        accessoryView.addSubview(accesoryStackView)
-        
         saveBtn.addTarget(self, action: #selector(saveTaskAction(sender:)), for: .touchUpInside)
         
-        view.insertSubview(accessoryView, aboveSubview: scrollView)
-          
+        view.addSubview(accesoryStackView)
+        
         var constraints = [
-            scrollView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: accesoryStackView.topAnchor)
+        ]
+        
+        constraints.append(contentsOf: [
             swipeCloseView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             swipeCloseView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             swipeCloseView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             swipeCloseView.heightAnchor.constraint(equalToConstant: StyleGuide.DetailTask.Sizes.swipeCloseViewHeight)
-        ]
-          
-        let heightTextViewConstraint = titleTextView.heightAnchor.constraint(equalToConstant: 30)
-        heightTextViewConstraint.priority = UILayoutPriority(250)
-        
-        let bottomConstraintConstant = UIView.globalView!.frame.height/2 < 350 ? 350 : UIView.globalView!.frame.height/2
-        let bottomTextViewConstraint = titleTextView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -bottomConstraintConstant)
-        
+        ])
+                
         constraints.append(contentsOf: [
-            heightTextViewConstraint,
             titleTextView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -StyleGuide.DetailTask.Sizes.contentSidePadding),
-            titleTextView.topAnchor.constraint(equalTo: swipeCloseView.bottomAnchor),
-            titleTextView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: StyleGuide.DetailTask.Sizes.contentSidePadding),
-            bottomTextViewConstraint,
-            titleTextView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor)
-        ])
-                        
-        constraints.append(contentsOf: [
-            subTaskView.topAnchor.constraint(equalTo: titleTextView.bottomAnchor, constant: 20),
-            subTaskView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: StyleGuide.DetailTask.Sizes.contentSidePadding),
-            subTaskView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -StyleGuide.DetailTask.Sizes.contentSidePadding),
-            subTaskView.heightAnchor.constraint(equalToConstant: 60)
+            titleTextView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 72),
+            titleTextView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: StyleGuide.DetailTask.Sizes.contentSidePadding)
         ])
         
-        accesoryBottomConstraint = accessoryView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -view.globalSafeAreaInsets.bottom)
+        constraints.append(contentsOf: [textViewBottomConstraint])
         
         constraints.append(contentsOf: [
-            accesoryStackView.topAnchor.constraint(equalTo: accessoryView.topAnchor),
-            accesoryStackView.leadingAnchor.constraint(equalTo: accessoryView.leadingAnchor),
-            accesoryStackView.trailingAnchor.constraint(equalTo: accessoryView.trailingAnchor),
-            accesoryStackView.bottomAnchor.constraint(equalTo: accessoryView.bottomAnchor),
-            accessoryView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            accesoryStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             accesoryBottomConstraint,
-            accessoryView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            accessoryView.heightAnchor.constraint(equalToConstant: StyleGuide.DetailTask.Sizes.accesoryStackViewHeight)
+            accesoryStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            accesoryStackView.heightAnchor.constraint(equalToConstant: StyleGuide.DetailTask.Sizes.accesoryStackViewHeight)
         ])
         
         NSLayoutConstraint.activate(constraints)
         
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(swipeToCloseAction(_:)))
-        panGestureRecognizer.delegate = self
-        scrollView.addGestureRecognizer(panGestureRecognizer)
+        view.addGestureRecognizer(panGestureRecognizer)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapToCloseAction(_:)))
         swipeCloseView.addGestureRecognizer(tap)
@@ -310,7 +267,6 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType,  Presen
         mask.path = UIBezierPath(roundedRect: view.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: cornerRadius, height: cornerRadius)).cgPath
         
         view.layer.mask = mask
-    
     }
         
     // MARK: View animations
@@ -326,7 +282,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType,  Presen
                        animations: {
                         self.view.frame.origin = self.viewOrigin
         }, completion: { (finished) in
-            self.titleTextView.becomeFirstResponder()
+            //self.titleTextView.becomeFirstResponder()
         })
     }
     
@@ -342,11 +298,23 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType,  Presen
             completion()
         })
     }
+    
+    // MARK: TextView config
+    
+    private func setupPlaceholder() {
+        placeholderLabel.text = "Task description"
+        placeholderLabel.font = Font.detailTaskStandartTitle.uiFont
+        placeholderLabel.sizeToFit()
+        titleTextView.addSubview(placeholderLabel)
+        placeholderLabel.frame.origin = CGPoint(x: 5, y: (titleTextView.font?.pointSize)! / 2)
+        placeholderLabel.textColor = UIColor.lightGray
+        placeholderLabel.isHidden = !titleTextView.text.isEmpty
+    }
 }
 
 // MARK: Bind viewModel
 
-extension DetailTaskNewViewController {
+extension DetailTaskEditViewController {
     private func bindViewModel() {
         viewModel.outputs.selectedDate.bind { [weak self] date in
             guard let date = date else {
@@ -363,6 +331,7 @@ extension DetailTaskNewViewController {
         
         viewModel.outputs.selectedTime.bind { [weak self] dateTime in
             guard let _ = dateTime else {
+                //self?.timeStackView.isHidden = true
                 if let alarmBtn = self?.alarmBtn {
                     alarmBtn.alarmIsSet = false
                 }
@@ -378,7 +347,7 @@ extension DetailTaskNewViewController {
 
 // MARK: UITextViewDelegate
 
-extension DetailTaskNewViewController: UITextViewDelegate {
+extension DetailTaskEditViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if let updatedTitle = (textView.text as NSString?)?.replacingCharacters(in: range, with: text) {
             viewModel.inputs.setTitle(title: updatedTitle)
@@ -386,11 +355,15 @@ extension DetailTaskNewViewController: UITextViewDelegate {
         
         return true
     }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        placeholderLabel.isHidden = !textView.text.isEmpty
+    }
 }
 
 // MARK: Actions
 
-extension DetailTaskNewViewController {
+extension DetailTaskEditViewController {
     
     // MARK: -Accessory view actions
     
@@ -448,66 +421,56 @@ extension DetailTaskNewViewController {
     
     @objc private func swipeToCloseAction(_ recognizer: UIPanGestureRecognizer) {
         let gestureIsDraggingFromTopToBottom = recognizer.velocity(in: view).y > 0
-        
-        if !gestureIsDraggingFromTopToBottom && recognizer.state != .ended {
-            return
-        }
+        if !gestureIsDraggingFromTopToBottom { return }
         
         switch recognizer.state {
         case .changed:
-            if view.frame.origin.y < viewOrigin.y {
-                view.frame.origin = viewOrigin
-            }
-            
-            var draggingDistance = recognizer.translation(in: view).y
-            
-            draggingDistance *= 0.2
-            
-            let swipePositionY = view.frame.origin.y + draggingDistance
-            
-            if swipePositionY > viewOrigin.y {
-                view.frame.origin.y = view.frame.origin.y + draggingDistance
-                recognizer.setTranslation(CGPoint.zero, in: view)
-            }
-            
-            if view.frame.origin.y >= viewOrigin.y + 45 {
-                hideView { [weak self] in
-                    guard let self = self else { return }
-                    self.presenter?.pop(vc: self)
+            if let rView = recognizer.view {
+                
+                if rView.frame.origin.y < viewOrigin.y {
+                    rView.frame.origin = viewOrigin
+                }
+                                
+                var draggingDistance = recognizer.translation(in: view).y
+
+                draggingDistance *= 0.2
+
+                let swipePositionY = rView.frame.origin.y + draggingDistance
+
+                if swipePositionY > viewOrigin.y {
+                    rView.frame.origin.y = rView.frame.origin.y + draggingDistance
+                    recognizer.setTranslation(CGPoint.zero, in: view)
+                }
+
+                if rView.frame.origin.y > viewOrigin.y + 45 {
+                    hideView { [weak self] in
+                        guard let self = self else { return }
+                        self.presenter?.pop(vc: self)
+                    }
                 }
             }
         case .ended:
-            if view.frame.origin.y < viewOrigin.y + 45 {
-                UIView.animate(withDuration: 0.3) {
-                    self.view.frame.origin.y = self.viewOrigin.y
-                }
-            } else {
-                hideView { [weak self] in
-                    guard let self = self else { return }
-                    self.presenter?.pop(vc: self)
+            if let rView = recognizer.view {
+                if rView.frame.origin.y <= viewOrigin.y + 45 {
+                    UIView.animate(withDuration: 0.3) {
+                        self.view.frame.origin.y = self.viewOrigin.y
+                    }
+                } else {
+                    hideView { [weak self] in
+                        guard let self = self else { return }
+                        self.presenter?.pop(vc: self)
+                    }
                 }
             }
         default:
             break
         }
     }
-}
-
-// MARK: UIGestureRecognizerDelegate
-extension DetailTaskNewViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        if let panGesture = gestureRecognizer as? UIPanGestureRecognizer {
-            if panGesture.velocity(in: view).y < 0 {
-                return false
-            }
-        }
-        
-        return scrollView.contentOffset.y <= 0
-    }
+    
 }
 
 // MARK: CalendarPickerViewOutputs
-extension DetailTaskNewViewController: CalendarPickerViewOutputs {
+extension DetailTaskEditViewController: CalendarPickerViewOutputs {
     var selectedCalendarDate: Date? {
         get {
             return viewModel.outputs.selectedDate.value
@@ -524,7 +487,7 @@ extension DetailTaskNewViewController: CalendarPickerViewOutputs {
 }
 
 // MARK: TimePickerViewOutputs
-extension DetailTaskNewViewController: TimePickerViewOutputs {
+extension DetailTaskEditViewController: TimePickerViewOutputs {
     var selectedReminderTime: Date? {
         get {
             return viewModel.outputs.selectedTime.value

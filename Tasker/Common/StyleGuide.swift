@@ -40,21 +40,26 @@ struct StyleGuide {
     }
     
     enum DetailTask {
-        //view
-        static let topMargin: CGFloat = 40.0
-        static let viewCornerRadius: CGFloat = 16.0
         
-        //Content
-        static let contentSidePadding: CGFloat = 20.0
-        static let chevronHeight: CGFloat = 20
-        static let chevronTintColor: UIColor = #colorLiteral(red: 0.8901960784, green: 0.8901960784, blue: 0.8901960784, alpha: 1)
-                
-        static let swipeCloseViewHeight: CGFloat = 40
+        enum Sizes {
+            //view
+            static let topMargin: CGFloat = 40.0
+            static let viewCornerRadius: CGFloat = 16.0
+            
+            //Content
+            static let contentSidePadding: CGFloat = 20.0
+            static let chevronHeight: CGFloat = 20
+            static let swipeCloseViewHeight: CGFloat = 40
+            static let accesoryStackViewHeight: CGFloat = 45
+        }
         
-        static let accesoryStackViewHeight: CGFloat = 45
+        enum Colors {
+            //colors
+            static let chevronTintColor: UIColor = #colorLiteral(red: 0.8901960784, green: 0.8901960784, blue: 0.8901960784, alpha: 1)
+            static let viewBGColor: UIColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        }
         
-        //colors
-        static let viewBGColor: UIColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+
     }
     
     enum CalendarDatePicker {

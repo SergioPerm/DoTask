@@ -368,7 +368,7 @@ extension CalendarPickerViewController: UICollectionViewDelegate {
 
             if (snapToIndex >= 0) {
                 // Damping equal 1 => no oscillations => decay animation:
-                UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity.y < 0 ? velocity.y * -1 : velocity.y, options: .allowUserInteraction, animations: {
+                UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity.y < 0 ? velocity.y * -1 : velocity.y, options: .allowUserInteraction, animations: {
                     self.collectionView.contentOffset = CGPoint(x: 0, y: toValue)
                     self.collectionView.layoutIfNeeded()
                 }, completion: { finished in

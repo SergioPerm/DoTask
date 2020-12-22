@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct Subtask {
+struct SubtaskModel {
     var text: String
 }
 
@@ -29,7 +29,7 @@ class TestScrollViewController: UIViewController, Storyboarded, PresentableContr
     var textViewLineHeight: CGFloat = 0
     var previousTextViewRect: CGRect = .zero
     
-    var subtasks: [Subtask] = []
+    var subtasks: [SubtaskModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +43,7 @@ class TestScrollViewController: UIViewController, Storyboarded, PresentableContr
         
         tableView.dataSource = self
         
-        subtasks.append(Subtask(text: ""))
+        subtasks.append(SubtaskModel(text: ""))
         
         
         let footer = UIView()
@@ -147,7 +147,7 @@ extension TestScrollViewController: UITableViewDelegate {
         let newIndexPath = IndexPath(row: subtasks.count, section: 0)
         tableView.insertRows(at: [newIndexPath], with: .top)
         
-        subtasks.append(Subtask(text: ""))
+        subtasks.append(SubtaskModel(text: ""))
         
         tableView.endUpdates()
         updateTableViewSize()

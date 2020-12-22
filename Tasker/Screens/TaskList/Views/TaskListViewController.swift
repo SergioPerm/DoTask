@@ -128,7 +128,7 @@ extension TaskListViewController {
         self.navigationController?.view.layer.shadowPath = UIBezierPath(rect: (self.navigationController?.view.bounds)!).cgPath
     }
     
-    private func configureCell(cell: TaskListTableViewCell, taskModel: TaskModel) {
+    private func configureCell(cell: TaskListTableViewCell, taskModel: Task) {
         cell.doneHandler = doneCellAction(_:)
         cell.taskModel = taskModel
     }
@@ -248,7 +248,7 @@ extension TaskListViewController: UITableViewDelegate {
 // MARK: TaskListView
 
 extension TaskListViewController: TaskListView {
-    func editTask(taskModel: TaskModel) {
+    func editTask(taskModel: Task) {
         if let editAction = editTaskAction {
             editAction(taskModel.uid)
         }

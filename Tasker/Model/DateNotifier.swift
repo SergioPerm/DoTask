@@ -15,7 +15,7 @@ struct DateNotifier {
     var body: String
     var dateTrigger: DateComponents
         
-    init(with taskModel: TaskModel) {
+    init(with taskModel: Task) {
         self.identifier = "calendar_\(taskModel.uid)"
         self.title = "New task!"
         self.body = taskModel.title

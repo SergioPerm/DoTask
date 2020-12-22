@@ -10,14 +10,14 @@ import Foundation
 
 class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, DetailTaskViewModelOutputs {
     
-    private var taskModel: TaskModel
+    private var taskModel: Task
     private var dataSource: TaskListDataSource
     
     var inputs: DetailTaskViewModelInputs { return self }
     var outputs: DetailTaskViewModelOutputs { return self }
     
     init(taskUID: String?, dataSource: TaskListDataSource) {
-        self.taskModel = dataSource.taskModelByIdentifier(identifier: taskUID) ?? TaskModel()
+        self.taskModel = dataSource.taskModelByIdentifier(identifier: taskUID) ?? Task()
         self.dataSource = dataSource
         
         self.selectedDate = Boxing(taskModel.taskDate)

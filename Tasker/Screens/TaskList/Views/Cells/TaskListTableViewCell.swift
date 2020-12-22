@@ -12,7 +12,7 @@ class TaskListTableViewCell: UITableViewCell {
     
     // MARK: External propperies
     
-    public var taskModel: TaskModel? {
+    public var taskModel: Task? {
         didSet {
             guard let taskModel = taskModel else {
                 titleLabel.text = ""

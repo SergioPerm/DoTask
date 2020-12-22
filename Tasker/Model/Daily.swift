@@ -10,7 +10,7 @@ import Foundation
 
 struct Daily {
     var dailyName: String?
-    var tasks: [TaskModel]
+    var tasks: [Task]
     
     init() {
         self.dailyName = ""

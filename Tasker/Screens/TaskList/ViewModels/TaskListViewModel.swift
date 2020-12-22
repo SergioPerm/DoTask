@@ -46,15 +46,15 @@ extension TaskListViewModel {
         view?.editTask(taskModel: taskModel)
     }
     
-    func taskModelForIndexPath(indexPath: IndexPath) -> TaskModel {
+    func taskModelForIndexPath(indexPath: IndexPath) -> Task {
         return dataSource.taskModelForIndexPath(indexPath: indexPath)
     }
     
-    func addTask(from taskModel: TaskModel) {
+    func addTask(from taskModel: Task) {
         dataSource.addTask(from: taskModel)
     }
     
-    func updateTask(from taskModel: TaskModel) {
+    func updateTask(from taskModel: Task) {
         dataSource.updateTask(from: taskModel)
     }
     
@@ -104,7 +104,7 @@ extension TaskListViewModel: TaskListDataSourceObserver {
 extension TaskListViewModel: NotificationTaskObserver {
     func onTapNotification(with id: String) {
         if let task = dataSource.taskByIdentifier(identifier: id) {
-            let taskModel = TaskModel(with: task)
+            let taskModel = Task(with: task)
             view?.editTask(taskModel: taskModel)
         }
     }

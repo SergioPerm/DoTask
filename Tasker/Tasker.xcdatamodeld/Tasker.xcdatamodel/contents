@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="20B50" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Shortcut" representedClassName="Shortcut" syncable="YES">
-        <attribute name="color" optional="YES" attributeType="String"/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="20C69" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="ShortcutManaged" representedClassName="ShortcutManaged" syncable="YES">
+        <attribute name="color" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
-        <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Task" inverseName="shortcut" inverseEntity="Task"/>
+        <relationship name="tasks" toMany="YES" deletionRule="Nullify" destinationEntity="TaskManaged" inverseName="shortcut" inverseEntity="TaskManaged"/>
     </entity>
-    <entity name="Task" representedClassName="Task" syncable="YES">
+    <entity name="SubtaskManaged" representedClassName="SubtaskManaged" syncable="YES">
+        <attribute name="isDone" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="priority" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="title" attributeType="String"/>
+        <relationship name="task" maxCount="1" deletionRule="Nullify" destinationEntity="TaskManaged" inverseName="subtasks" inverseEntity="TaskManaged"/>
+    </entity>
+    <entity name="TaskManaged" representedClassName="TaskManaged" syncable="YES">
         <attribute name="dailyName" transient="YES" attributeType="String" defaultValueString="Later"/>
         <attribute name="identificator" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="importanceLevel" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -17,10 +23,12 @@
         <attribute name="reminderGeo" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="taskDate" optional="YES" attributeType="Date" defaultDateTimeInterval="2429883720" usesScalarValueType="NO"/>
         <attribute name="title" optional="YES" attributeType="String"/>
-        <relationship name="shortcut" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Shortcut" inverseName="tasks" inverseEntity="Shortcut"/>
+        <relationship name="shortcut" maxCount="1" deletionRule="Nullify" destinationEntity="ShortcutManaged" inverseName="tasks" inverseEntity="ShortcutManaged"/>
+        <relationship name="subtasks" toMany="YES" deletionRule="Nullify" destinationEntity="SubtaskManaged" inverseName="task" inverseEntity="SubtaskManaged"/>
     </entity>
     <elements>
-        <element name="Shortcut" positionX="-12793.16424560547" positionY="-10803.66607666016" width="128" height="88"/>
-        <element name="Task" positionX="-12509.11651611328" positionY="-11059.72003173828" width="128" height="223"/>
+        <element name="ShortcutManaged" positionX="-12567.94696044922" positionY="-11168.12240600586" width="128" height="88"/>
+        <element name="TaskManaged" positionX="-12870.70611572265" positionY="-11403.08305358887" width="128" height="238"/>
+        <element name="SubtaskManaged" positionX="-13171.48327636719" positionY="-11359.78015136719" width="128" height="103"/>
     </elements>
 </model>

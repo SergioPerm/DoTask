@@ -11,26 +11,26 @@ import Foundation
 import CoreData
 
 
-extension Shortcut {
+extension ShortcutManaged {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<Shortcut> {
-        return NSFetchRequest<Shortcut>(entityName: "Shortcut")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<ShortcutManaged> {
+        return NSFetchRequest<ShortcutManaged>(entityName: "ShortcutManaged")
     }
 
-    @NSManaged public var color: String?
-    @NSManaged public var name: String?
-    @NSManaged public var tasks: NSSet?
+    @NSManaged public var color: String
+    @NSManaged public var name: String
+    @NSManaged public var tasks: NSSet
 
 }
 
 // MARK: Generated accessors for tasks
-extension Shortcut {
+extension ShortcutManaged {
 
     @objc(addTasksObject:)
-    @NSManaged public func addToTasks(_ value: Task)
+    @NSManaged public func addToTasks(_ value: TaskManaged)
 
     @objc(removeTasksObject:)
-    @NSManaged public func removeFromTasks(_ value: Task)
+    @NSManaged public func removeFromTasks(_ value: TaskManaged)
 
     @objc(addTasks:)
     @NSManaged public func addToTasks(_ values: NSSet)

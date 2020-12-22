@@ -8,17 +8,17 @@
 import UIKit
 
 protocol TaskListDataSource {
-    var tasks: [Task] { get }
+    var tasks: [TaskManaged] { get }
     var tasksWithSections: [Daily] { get }
     var observer: TaskListDataSourceObserver? { get set }
 
     func setDoneForTask(with identifier: String)
-    func taskByIdentifier(identifier: String) -> Task?
-    func taskModelByIdentifier(identifier: String?) -> TaskModel?
-    func taskModelForIndexPath(indexPath: IndexPath) -> TaskModel
-    func taskForTaskModel(taskModel: TaskModel) -> Task?
-    func addTask(from taskModel: TaskModel)
-    func deleteTask(from taskModel: TaskModel)
-    func updateTask(from taskModel: TaskModel)
+    func taskByIdentifier(identifier: String) -> TaskManaged?
+    func taskModelByIdentifier(identifier: String?) -> Task?
+    func taskModelForIndexPath(indexPath: IndexPath) -> Task
+    func taskForTaskModel(taskModel: Task) -> TaskManaged?
+    func addTask(from taskModel: Task)
+    func deleteTask(from taskModel: Task)
+    func updateTask(from taskModel: Task)
     func clearData()
 }

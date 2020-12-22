@@ -11,6 +11,6 @@ import Foundation
 import CoreData
 
 @objc(Shortcut)
-public class Shortcut: NSManagedObject {
+public class ShortcutManaged: NSManagedObject {
 
 }

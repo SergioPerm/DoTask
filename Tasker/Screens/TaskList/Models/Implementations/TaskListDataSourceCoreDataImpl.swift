@@ -14,14 +14,14 @@ class TaskListDataSourceCoreDataImpl: NSObject {
     
     // MARK: - Properites
     weak var observer: TaskListDataSourceObserver?
-    private let fetchedResultsController: NSFetchedResultsController<Task>
+    private let fetchedResultsController: NSFetchedResultsController<TaskManaged>
     private let notificationCenter = PushNotificationService.shared
     
     init(context: NSManagedObjectContext) {
         self.context = context
             
         // Setting up fetchedResultsController
-        let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
+        let fetchRequest: NSFetchRequest<TaskManaged> = TaskManaged.fetchRequest()
         
         let sortDescriptor = NSSortDescriptor(key: "mainTaskListOrder", ascending: true)
         let sortDescriptor2 = NSSortDescriptor(key: "taskDate", ascending: true)
@@ -33,7 +33,7 @@ class TaskListDataSourceCoreDataImpl: NSObject {
         fetchRequest.predicate = predicate
         fetchRequest.fetchBatchSize = 20
         // Initialize Fetched Results Controller
-        self.fetchedResultsController = NSFetchedResultsController<Task>(fetchRequest: fetchRequest, managedObjectContext: self.context, sectionNameKeyPath: "dailyName", cacheName: nil)
+        self.fetchedResultsController = NSFetchedResultsController<TaskManaged>(fetchRequest: fetchRequest, managedObjectContext: self.context, sectionNameKeyPath: "dailyName", cacheName: nil)
         
         super.init()
         
@@ -43,15 +43,15 @@ class TaskListDataSourceCoreDataImpl: NSObject {
 
 // MARK: TaskListDataSource
 extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
-    func taskModelForIndexPath(indexPath: IndexPath) -> TaskModel {
+    func taskModelForIndexPath(indexPath: IndexPath) -> Task {
         let task = fetchedResultsController.object(at: indexPath)
-        return TaskModel(with: task)
+        return Task(with: task)
     }
     
-    func taskModelByIdentifier(identifier: String?) -> TaskModel? {
+    func taskModelByIdentifier(identifier: String?) -> Task? {
         guard let identifier = identifier else { return nil }
         if let uuid = UUID(uuidString: identifier) {
-            let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
+            let fetchRequest: NSFetchRequest<TaskManaged> = TaskManaged.fetchRequest()
             let predicate = NSPredicate(format: "identificator == %@", uuid as NSUUID)
             
             fetchRequest.predicate = predicate
@@ -63,7 +63,7 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
                     return nil
                 }
                 
-                return TaskModel(with: tasks[0])
+                return Task(with: tasks[0])
             } catch {
                 fatalError()
             }
@@ -72,9 +72,9 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
         return nil
     }
     
-    func taskByIdentifier(identifier: String) -> Task? {
+    func taskByIdentifier(identifier: String) -> TaskManaged? {
         if let uuid = UUID(uuidString: identifier) {
-            let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
+            let fetchRequest: NSFetchRequest<TaskManaged> = TaskManaged.fetchRequest()
             let predicate = NSPredicate(format: "identificator == %@", uuid as NSUUID)
             
             fetchRequest.predicate = predicate
@@ -97,7 +97,7 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
     
     func setDoneForTask(with identifier: String) {
         if let task = taskByIdentifier(identifier: identifier) {
-            let taskModel = TaskModel(with: task)
+            let taskModel = Task(with: task)
             task.isDone = true
             do {
                 try context.save()
@@ -113,14 +113,14 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
         }
     }
     
-    func taskForTaskModel(taskModel: TaskModel) -> Task? {
+    func taskForTaskModel(taskModel: Task) -> TaskManaged? {
         if let uuidFilter: UUID = UUID(uuidString: taskModel.uid) {
             return taskByIdentifier(identifier: uuidFilter.uuidString)
         }
         return nil
     }
     
-    func deleteTask(from taskModel: TaskModel) {
+    func deleteTask(from taskModel: Task) {
         if let task = taskForTaskModel(taskModel: taskModel) {
             context.delete(task)
             do {
@@ -137,7 +137,7 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
         }
     }
         
-    func updateTask(from taskModel: TaskModel) {
+    func updateTask(from taskModel: Task) {
         if let task = taskForTaskModel(taskModel: taskModel) {
             task.title = taskModel.title
             task.taskDate = taskModel.taskDate
@@ -173,7 +173,7 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
                 dailyModel.dailyName = section.name
                 
                 for task in section.objects! {
-                    dailyModel.tasks.append(TaskModel(with: task as! Task))
+                    dailyModel.tasks.append(Task(with: task as! TaskManaged))
                 }
                 
                 dailyModels.append(dailyModel)
@@ -185,7 +185,7 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
         return [Daily]()
     }
     
-    var tasks: [Task] {
+    var tasks: [TaskManaged] {
         if let fetchedTasks = fetchedResultsController.fetchedObjects {
             return fetchedTasks
         } else {
@@ -193,8 +193,8 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
         }
     }
     
-    func addTask(from taskModel: TaskModel) {
-        let newTask = Task(context: context)
+    func addTask(from taskModel: Task) {
+        let newTask = TaskManaged(context: context)
         
         if let uuid: UUID = UUID(uuidString: taskModel.uid) {
             
@@ -225,7 +225,7 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
     }
     
     func clearData() {
-        let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
+        let fetchRequest: NSFetchRequest<TaskManaged> = TaskManaged.fetchRequest()
 
         do {
             let tasksForDelete = try context.fetch(fetchRequest)
@@ -302,7 +302,7 @@ extension TaskListDataSourceCoreDataImpl: NSFetchedResultsControllerDelegate {
 
 // MARK: Util
 extension TaskListDataSourceCoreDataImpl {
-    func fetchTasks() -> [Task] {
+    func fetchTasks() -> [TaskManaged] {
         do {
             try fetchedResultsController.performFetch()
             return fetchedResultsController.fetchedObjects ?? []

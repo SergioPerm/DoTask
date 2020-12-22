@@ -19,5 +19,5 @@ protocol TaskListView: class {
     func tableViewSectionDelete(at indexSet: IndexSet)
     func tableViewEndUpdates()
     
-    func editTask(taskModel: TaskModel)
+    func editTask(taskModel: Task)
 }

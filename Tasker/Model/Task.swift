@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-struct TaskModel {
+struct Task {
     var uid: String
     var title: String
     var taskDate: Date?
@@ -27,6 +27,8 @@ struct TaskModel {
     }
     var mainTaskListOrder: Int16
     
+    var subtasks: [Subtask]
+    
     init() {
         self.uid = UUID().uuidString
         self.title = ""
@@ -36,9 +38,10 @@ struct TaskModel {
         self.isNew = true
         self.importanceLevel = 0
         self.mainTaskListOrder = self.taskDate == nil ? 1 : 0
+        self.subtasks = []
     }
     
-    init(with task: Task) {
+    init(with task: TaskManaged) {
         self.uid = task.identificator.uuidString
         self.title = task.title!
         self.taskDate = task.taskDate
@@ -48,6 +51,14 @@ struct TaskModel {
         self.lon = task.lon
         self.importanceLevel = task.importanceLevel
         self.mainTaskListOrder = task.mainTaskListOrder
+        
+        let subtasks = task.subtasks as! Set<SubtaskManaged>
+        
+        self.subtasks = subtasks.map {
+            return Subtask(with: $0)
+        }.sorted {
+            $0.priority < $1.priority
+        }
     }
     
 }

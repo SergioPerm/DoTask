@@ -10,10 +10,10 @@
 import Foundation
 import CoreData
 
-extension Task {
+extension TaskManaged {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<Task> {
-        return NSFetchRequest<Task>(entityName: "Task")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<TaskManaged> {
+        return NSFetchRequest<TaskManaged>(entityName: "TaskManaged")
     }
 
     @NSManaged public var identificator: UUID
@@ -26,7 +26,8 @@ extension Task {
     @NSManaged public var isDone: Bool
     @NSManaged public var importanceLevel: Int16
     @NSManaged public var mainTaskListOrder: Int16
-    @NSManaged public var shortcut: Shortcut?
+    @NSManaged public var shortcut: ShortcutManaged
+    @NSManaged public var subtasks: NSSet
     
     @objc var dailyName: String? {
         guard let taskDate = self.taskDate else {
@@ -36,4 +37,21 @@ extension Task {
         return taskDate.dailyNameForTask()
     }
     
+}
+
+// MARK: Generated accessors for subtasks
+extension TaskManaged {
+
+    @objc(addSubtasksObject:)
+    @NSManaged public func addToSubtasks(_ value: SubtaskManaged)
+
+    @objc(removeSubtasksObject:)
+    @NSManaged public func removeFromSubtasks(_ value: SubtaskManaged)
+
+    @objc(addSubtasks:)
+    @NSManaged public func addToSubtasks(_ values: NSSet)
+
+    @objc(removeSubtasks:)
+    @NSManaged public func removeFromSubtasks(_ values: NSSet)
+
 }

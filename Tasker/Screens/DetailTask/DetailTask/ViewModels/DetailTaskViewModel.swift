@@ -9,53 +9,65 @@
 import Foundation
 
 class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, DetailTaskViewModelOutputs {
-    
-    private var taskModel: Task
+      
+    private var task: Task
     private var dataSource: TaskListDataSource
     
     var inputs: DetailTaskViewModelInputs { return self }
     var outputs: DetailTaskViewModelOutputs { return self }
     
     init(taskUID: String?, dataSource: TaskListDataSource) {
-        self.taskModel = dataSource.taskModelByIdentifier(identifier: taskUID) ?? Task()
+        self.task = dataSource.taskModelByIdentifier(identifier: taskUID) ?? Task()
         self.dataSource = dataSource
         
-        self.selectedDate = Boxing(taskModel.taskDate)
-        self.selectedTime = Boxing(taskModel.reminderDate ? taskModel.taskDate : nil)
-        self.importanceLevel = Int(taskModel.importanceLevel)
+        self.selectedDate = Boxing(task.taskDate)
+        self.selectedTime = Boxing(task.reminderDate ? task.taskDate : nil)
+        self.importanceLevel = Int(task.importanceLevel)
     }
     
     // MARK: INPUTS
     
     func setTaskDate(date: Date?) {
-        taskModel.taskDate = date
+        task.taskDate = date
         selectedDate.value = date
     }
     
     func setReminder(date: Date?) {
         if let date = date {
-            taskModel.reminderDate = true
-            taskModel.taskDate = date
+            task.reminderDate = true
+            task.taskDate = date
         } else {
-            taskModel.reminderDate = false
+            task.reminderDate = false
         }
         selectedTime.value = date
     }
     
     func setTitle(title: String) {
-        taskModel.title = title
+        task.title = title
     }
     
     func increaseImportance() {
-        taskModel.importanceLevel += 1
-        importanceLevel = Int(taskModel.importanceLevel)
+        task.importanceLevel += 1
+        importanceLevel = Int(task.importanceLevel)
+    }
+    
+    func changeSubtasks(subtasks: [SubtaskViewModelType]) {
+        task.subtasks.removeAll()
+        subtasks.forEach {
+            var subtask = Subtask()
+            subtask.isDone = $0.outputs.isDone
+            subtask.title = $0.outputs.title
+            subtask.priority = $0.outputs.priority
+            
+            task.subtasks.append(subtask)
+        }
     }
     
     func saveTask() {
-        if taskModel.isNew {
-            dataSource.addTask(from: taskModel)
+        if task.isNew {
+            dataSource.addTask(from: task)
         } else {
-            dataSource.updateTask(from: taskModel)
+            dataSource.updateTask(from: task)
         }
     }
     
@@ -66,7 +78,13 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
     var importanceLevel: Int
     
     var title: String {
-        return taskModel.title
+        return task.title
+    }
+    
+    var subtasks: [SubtaskViewModelType] {
+        return task.subtasks.map {
+            return SubtaskViewModel(subtask: $0, detailTaskViewModel: self)
+        }
     }
 
 }

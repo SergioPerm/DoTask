@@ -13,5 +13,6 @@ protocol DetailTaskViewModelInputs {
     func setReminder(date: Date?)
     func setTitle(title: String)
     func increaseImportance()
+    func changeSubtasks(subtasks: [SubtaskViewModelType])
     func saveTask()
 }

@@ -13,4 +13,5 @@ protocol DetailTaskViewModelOutputs {
     var selectedTime: Boxing<Date?> { get }
     var importanceLevel: Int { get }
     var title: String { get }
+    var subtasks: [SubtaskViewModelType] { get }
 }

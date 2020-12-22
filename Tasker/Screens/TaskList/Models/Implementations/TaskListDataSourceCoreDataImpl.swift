@@ -136,32 +136,7 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
             }
         }
     }
-        
-    func updateTask(from taskModel: Task) {
-        if let task = taskForTaskModel(taskModel: taskModel) {
-            task.title = taskModel.title
-            task.taskDate = taskModel.taskDate
-            task.reminderDate = taskModel.reminderDate
-            task.reminderGeo = taskModel.reminderGeo
-            task.lat = taskModel.lat!
-            task.lon = taskModel.lon!
-            task.importanceLevel = taskModel.importanceLevel
-            task.mainTaskListOrder = taskModel.taskDate == nil ? 1 : 0
             
-            do {
-                try context.save()
-                
-                let notifyModel = DateNotifier(with: taskModel)
-                notificationCenter.deleteLocalNotifications(identifiers: [notifyModel.identifier])
-                if taskModel.reminderDate {
-                    notificationCenter.addLocalNotification(notifyModel: notifyModel)
-                }
-            } catch {
-                fatalError()
-            }
-        }
-    }
-    
     var tasksWithSections: [Daily] {
         _ = fetchTasks()
         if let sections = fetchedResultsController.sections {
@@ -193,34 +168,79 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
         }
     }
     
-    func addTask(from taskModel: Task) {
+    func addTask(from task: Task) {
         let newTask = TaskManaged(context: context)
         
-        if let uuid: UUID = UUID(uuidString: taskModel.uid) {
+        if let uuid: UUID = UUID(uuidString: task.uid) {
             
             newTask.identificator = uuid
-            newTask.title = taskModel.title
-            newTask.taskDate = taskModel.taskDate
-            newTask.reminderDate = taskModel.reminderDate
-            newTask.reminderGeo = taskModel.reminderGeo
-            newTask.importanceLevel = taskModel.importanceLevel
-            newTask.mainTaskListOrder = taskModel.taskDate == nil ? 1 : 0
+            newTask.title = task.title
+            newTask.taskDate = task.taskDate
+            newTask.reminderDate = task.reminderDate
+            newTask.reminderGeo = task.reminderGeo
+            newTask.importanceLevel = task.importanceLevel
+            newTask.mainTaskListOrder = task.taskDate == nil ? 1 : 0
             
-            if let lat = taskModel.lat, let lon = taskModel.lon {
+            if let lat = task.lat, let lon = task.lon {
                 newTask.lat = lat
                 newTask.lon = lon
             }
             
+            task.subtasks.forEach {
+                let newSubtask = SubtaskManaged(context: context)
+                newSubtask.isDone = $0.isDone
+                newSubtask.title = $0.title
+                newSubtask.priority = $0.priority
+                newSubtask.task = newTask
+            }
+            
             do {
                 try context.save()
-                if taskModel.reminderDate {
-                    let notifyModel = DateNotifier(with: taskModel)
+                if task.reminderDate {
+                    let notifyModel = DateNotifier(with: task)
                     notificationCenter.addLocalNotification(notifyModel: notifyModel)
                 }
             } catch {
                 fatalError()
             }
             
+        }
+    }
+    
+    func updateTask(from task: Task) {
+        if let taskManaged = taskForTaskModel(taskModel: task) {
+            taskManaged.title = task.title
+            taskManaged.taskDate = task.taskDate
+            taskManaged.reminderDate = task.reminderDate
+            taskManaged.reminderGeo = task.reminderGeo
+            taskManaged.lat = task.lat!
+            taskManaged.lon = task.lon!
+            taskManaged.importanceLevel = task.importanceLevel
+            taskManaged.mainTaskListOrder = task.taskDate == nil ? 1 : 0
+            
+            taskManaged.subtasks.forEach {
+                context.delete($0 as! NSManagedObject)
+            }
+            
+            task.subtasks.forEach {
+                let newSubtask = SubtaskManaged(context: context)
+                newSubtask.isDone = $0.isDone
+                newSubtask.title = $0.title
+                newSubtask.priority = $0.priority
+                newSubtask.task = taskManaged
+            }
+            
+            do {
+                try context.save()
+                
+                let notifyModel = DateNotifier(with: task)
+                notificationCenter.deleteLocalNotifications(identifiers: [notifyModel.identifier])
+                if task.reminderDate {
+                    notificationCenter.addLocalNotification(notifyModel: notifyModel)
+                }
+            } catch {
+                fatalError()
+            }
         }
     }
     

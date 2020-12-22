@@ -1,0 +1,51 @@
+//
+//  SubtaskViewModel.swift
+//  Tasker
+//
+//  Created by KLuV on 22.12.2020.
+//  Copyright © 2020 itotdel. All rights reserved.
+//
+
+import Foundation
+
+class SubtaskViewModel: SubtaskViewModelType, SubtaskViewModelInputs, SubtaskViewModelOutputs {
+    
+    private var subtask: Subtask
+    private var detailTaskViewModel: DetailTaskViewModelType
+    
+    var inputs: SubtaskViewModelInputs { return self }
+    var outputs: SubtaskViewModelOutputs { return self }
+    
+    init(subtask: Subtask, detailTaskViewModel: DetailTaskViewModelType) {
+        self.subtask = subtask
+        self.detailTaskViewModel = detailTaskViewModel
+    }
+        
+    // MARK: INPUTS
+    
+    func setDone(done: Bool) {
+        subtask.isDone = done
+    }
+    
+    func setTitle(title: String) {
+        subtask.title = title
+    }
+    
+    func setPriority(priority: Int16) {
+        subtask.priority = priority
+    }
+    
+    // MARK: OUTPUTS
+    
+    var isDone: Bool {
+        return subtask.isDone
+    }
+    
+    var title: String {
+        return subtask.title
+    }
+    
+    var priority: Int16 {
+        return subtask.priority
+    }
+}

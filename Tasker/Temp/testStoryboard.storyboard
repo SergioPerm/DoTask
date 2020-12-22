@@ -24,7 +24,7 @@
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bgg-ub-mIV">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="524"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Na0-zd-UxL">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Na0-zd-UxL" userLabel="contentView">
                                                 <rect key="frame" x="0.0" y="0.0" width="343" height="576.5"/>
                                                 <subviews>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Test" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="BTF-1k-XdR" customClass="TaskTitleTextView" customModule="Tasker" customModuleProvider="target">
@@ -38,7 +38,7 @@
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                     </textView>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="colorCube" translatesAutoresizingMaskIntoConstraints="NO" id="5gS-Pa-ah9">
-                                                        <rect key="frame" x="99" y="20" width="145" height="26"/>
+                                                        <rect key="frame" x="155.5" y="20" width="32" height="26"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="26" id="VXL-km-TIe"/>
                                                         </constraints>
@@ -102,7 +102,6 @@
                                                     <constraint firstItem="BTF-1k-XdR" firstAttribute="leading" secondItem="Na0-zd-UxL" secondAttribute="leading" constant="20" id="Vg0-Sx-klx"/>
                                                     <constraint firstAttribute="trailing" secondItem="BTF-1k-XdR" secondAttribute="trailing" constant="20" id="W5c-cm-GAh"/>
                                                     <constraint firstItem="oe4-fS-eIX" firstAttribute="leading" secondItem="Na0-zd-UxL" secondAttribute="leading" constant="20" symbolic="YES" id="Yd9-gL-Zk6"/>
-                                                    <constraint firstItem="5gS-Pa-ah9" firstAttribute="leading" secondItem="Na0-zd-UxL" secondAttribute="leading" constant="99" id="fvQ-bK-A6Z"/>
                                                     <constraint firstItem="BTF-1k-XdR" firstAttribute="centerX" secondItem="Na0-zd-UxL" secondAttribute="centerX" id="hVB-Ca-cmJ"/>
                                                     <constraint firstItem="BTF-1k-XdR" firstAttribute="top" secondItem="5gS-Pa-ah9" secondAttribute="bottom" constant="20" id="os9-Od-fWa"/>
                                                 </constraints>

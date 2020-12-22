@@ -25,6 +25,7 @@
 		B13875EB2571503D002DA626 /* MenuViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13875EA2571503D002DA626 /* MenuViewModelOutputs.swift */; };
 		B13875ED257159CF002DA626 /* CreateShortcutMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13875EC257159CF002DA626 /* CreateShortcutMenuTableViewCell.swift */; };
 		B13875EF25715DD2002DA626 /* ShortcutMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13875EE25715DD2002DA626 /* ShortcutMenuTableViewCell.swift */; };
+		B1391FE8259214C60087D0E9 /* SubtaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1391FE7259214C60087D0E9 /* SubtaskTableViewCell.swift */; };
 		B139A75B258224B5000BAE55 /* Storyboarded.swift in Sources */ = {isa = PBXBuildFile; fileRef = B139A75A258224B5000BAE55 /* Storyboarded.swift */; };
 		B139A76025822527000BAE55 /* testStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B139A75F25822527000BAE55 /* testStoryboard.storyboard */; };
 		B139A76325822555000BAE55 /* TestScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B139A76225822555000BAE55 /* TestScrollViewController.swift */; };
@@ -121,6 +122,7 @@
 		B13875EA2571503D002DA626 /* MenuViewModelOutputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewModelOutputs.swift; sourceTree = "<group>"; };
 		B13875EC257159CF002DA626 /* CreateShortcutMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateShortcutMenuTableViewCell.swift; sourceTree = "<group>"; };
 		B13875EE25715DD2002DA626 /* ShortcutMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutMenuTableViewCell.swift; sourceTree = "<group>"; };
+		B1391FE7259214C60087D0E9 /* SubtaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtaskTableViewCell.swift; sourceTree = "<group>"; };
 		B139A75A258224B5000BAE55 /* Storyboarded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storyboarded.swift; sourceTree = "<group>"; };
 		B139A75F25822527000BAE55 /* testStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = testStoryboard.storyboard; sourceTree = "<group>"; };
 		B139A76225822555000BAE55 /* TestScrollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestScrollViewController.swift; sourceTree = "<group>"; };
@@ -399,6 +401,7 @@
 				B1FB9BD22588B41E00E54E1B /* TaskTitleTextView.swift */,
 				B1603C5B2521FC200022BE49 /* DetailTaskNewViewController.swift */,
 				B182306E25811D40009ABCE1 /* DetailTaskEditViewController.swift */,
+				B1391FE7259214C60087D0E9 /* SubtaskTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -883,6 +886,7 @@
 				B15C9B7A25695BB800A809B1 /* DetailTaskViewModel.swift in Sources */,
 				B182306A258119DD009ABCE1 /* DetailTaskViewType.swift in Sources */,
 				B1A9142425209CC60021E15C /* Task+CoreDataClass.swift in Sources */,
+				B1391FE8259214C60087D0E9 /* SubtaskTableViewCell.swift in Sources */,
 				B13875DC25710057002DA626 /* TopMenuTableViewCell.swift in Sources */,
 				B1C39D64256BC72E0005C4B6 /* DetailTaskCoordinator.swift in Sources */,
 				B1603C5C2521FC200022BE49 /* DetailTaskNewViewController.swift in Sources */,

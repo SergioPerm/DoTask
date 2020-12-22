@@ -60,9 +60,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType,  Presen
                         
         return swipeView
     }()
-        
-    //private let placeholderLabel: UILabel = UILabel()
-    
+            
     private let titleTextView: TaskTitleTextView = {
         let textView = TaskTitleTextView()
         textView.font = Font.detailTaskStandartTitle.uiFont
@@ -74,6 +72,13 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType,  Presen
         return textView
     }()
         
+    private let subtaskTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return tableView
+    }()
+    
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -211,6 +216,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType,  Presen
         titleTextView.delegate = self
         titleTextView.text = viewModel.outputs.title
         titleTextView.parentScrollView = scrollView
+        titleTextView.placeholderText = "Task title"
         
         scrollContentView.addSubview(titleTextView)
                       
@@ -248,36 +254,48 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType,  Presen
         saveBtn.addTarget(self, action: #selector(saveTaskAction(sender:)), for: .touchUpInside)
         
         view.insertSubview(accessoryView, aboveSubview: scrollView)
-          
+                  
         var constraints = [
-            scrollView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            
-            swipeCloseView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            swipeCloseView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            swipeCloseView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -StyleGuide.DetailTask.Sizes.accesoryStackViewHeight),
+            scrollContentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            scrollContentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            scrollContentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            scrollContentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            scrollContentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            scrollContentView.heightAnchor.constraint(equalTo: scrollView.heightAnchor, multiplier: 1.1),
+            swipeCloseView.centerXAnchor.constraint(equalTo: scrollContentView.centerXAnchor),
+            swipeCloseView.topAnchor.constraint(equalTo: scrollContentView.topAnchor),
             swipeCloseView.heightAnchor.constraint(equalToConstant: StyleGuide.DetailTask.Sizes.swipeCloseViewHeight)
         ]
           
         let heightTextViewConstraint = titleTextView.heightAnchor.constraint(equalToConstant: 30)
         heightTextViewConstraint.priority = UILayoutPriority(250)
         
-        let bottomConstraintConstant = UIView.globalView!.frame.height/2 < 350 ? 350 : UIView.globalView!.frame.height/2
-        let bottomTextViewConstraint = titleTextView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -bottomConstraintConstant)
+        //let bottomConstraintConstant = UIView.globalView!.frame.height/2 < 350 ? 350 : UIView.globalView!.frame.height/2
+        //let bottomTextViewConstraint = titleTextView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -bottomConstraintConstant)
         
         constraints.append(contentsOf: [
+            titleTextView.centerXAnchor.constraint(equalTo: scrollContentView.centerXAnchor),
+            titleTextView.leadingAnchor.constraint(equalTo: scrollContentView.leadingAnchor, constant: StyleGuide.DetailTask.Sizes.contentSidePadding),
+            titleTextView.trailingAnchor.constraint(equalTo: scrollContentView.trailingAnchor, constant: -StyleGuide.DetailTask.Sizes.contentSidePadding),
             heightTextViewConstraint,
-            titleTextView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -StyleGuide.DetailTask.Sizes.contentSidePadding),
-            titleTextView.topAnchor.constraint(equalTo: swipeCloseView.bottomAnchor),
-            titleTextView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: StyleGuide.DetailTask.Sizes.contentSidePadding),
-            bottomTextViewConstraint,
-            titleTextView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor)
+            titleTextView.topAnchor.constraint(equalTo: swipeCloseView.bottomAnchor)
+//            heightTextViewConstraint,
+//            titleTextView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -StyleGuide.DetailTask.Sizes.contentSidePadding),
+//            titleTextView.topAnchor.constraint(equalTo: swipeCloseView.bottomAnchor),
+//            titleTextView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: StyleGuide.DetailTask.Sizes.contentSidePadding),
+//            bottomTextViewConstraint,
+//            titleTextView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor)
         ])
                         
         constraints.append(contentsOf: [
             subTaskView.topAnchor.constraint(equalTo: titleTextView.bottomAnchor, constant: 20),
             subTaskView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: StyleGuide.DetailTask.Sizes.contentSidePadding),
             subTaskView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -StyleGuide.DetailTask.Sizes.contentSidePadding),
-            subTaskView.heightAnchor.constraint(equalToConstant: 60)
+            subTaskView.heightAnchor.constraint(equalToConstant: 66)
         ])
         
         accesoryBottomConstraint = accessoryView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -view.globalSafeAreaInsets.bottom)

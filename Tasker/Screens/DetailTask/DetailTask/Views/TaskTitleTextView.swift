@@ -119,7 +119,6 @@ extension TaskTitleTextView {
             parentScrollView.setContentOffset(scrollViewContentOffset, animated: false)
             parentScrollView.contentSize = CGSize(width: parentScrollView.contentSize.width, height: parentScrollView.contentSize.height + scrollViewContentOffset.y)
         }
-        print("content size \(parentScrollView.contentSize.height)")
     }
     
     private func addObservers() {

@@ -23,4 +23,3 @@ unrealized feauters:
 - task shortcuts
 - speech recognition to quickly add tasks
 
-![Interface](https://media.giphy.com/media/iGYg4fRwZRLnvAPWAQ/giphy.gif)

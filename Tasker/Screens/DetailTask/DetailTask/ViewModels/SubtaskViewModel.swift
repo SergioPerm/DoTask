@@ -8,23 +8,24 @@
 
 import Foundation
 
-class SubtaskViewModel: SubtaskViewModelType, SubtaskViewModelInputs, SubtaskViewModelOutputs {
-    
+class SubtaskViewModel: NSObject, SubtaskViewModelType, SubtaskViewModelInputs, SubtaskViewModelOutputs {
+  
     private var subtask: Subtask
-    private var detailTaskViewModel: DetailTaskViewModelType
+    //private weak var detailTaskViewModel: DetailTaskViewModelType?
     
     var inputs: SubtaskViewModelInputs { return self }
     var outputs: SubtaskViewModelOutputs { return self }
     
-    init(subtask: Subtask, detailTaskViewModel: DetailTaskViewModelType) {
+    init(subtask: Subtask) {
         self.subtask = subtask
-        self.detailTaskViewModel = detailTaskViewModel
+        //self.detailTaskViewModel = detailTaskViewModel
     }
         
     // MARK: INPUTS
     
     func setDone(done: Bool) {
         subtask.isDone = done
+        //detailTaskViewModel.inputs.setDoneForSubtask(subtask: self)
     }
     
     func setTitle(title: String) {
@@ -34,7 +35,7 @@ class SubtaskViewModel: SubtaskViewModelType, SubtaskViewModelInputs, SubtaskVie
     func setPriority(priority: Int16) {
         subtask.priority = priority
     }
-    
+        
     // MARK: OUTPUTS
     
     var isDone: Bool {

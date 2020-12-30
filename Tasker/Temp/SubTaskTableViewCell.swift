@@ -40,6 +40,7 @@ class SubTaskTableViewCell: UITableViewCell {
 
     override func prepareForReuse() {
         heightConstraint.constant = 33
+        layoutIfNeeded()
     }
     
 }

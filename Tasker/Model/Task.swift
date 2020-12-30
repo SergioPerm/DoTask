@@ -52,7 +52,11 @@ struct Task {
         self.importanceLevel = task.importanceLevel
         self.mainTaskListOrder = task.mainTaskListOrder
         
-        let subtasks = task.subtasks as! Set<SubtaskManaged>
+        var subtasks = task.subtasks.allObjects as! [SubtaskManaged]
+        
+        subtasks.sort {
+            $0.priority > $1.priority
+        }
         
         self.subtasks = subtasks.map {
             return Subtask(with: $0)

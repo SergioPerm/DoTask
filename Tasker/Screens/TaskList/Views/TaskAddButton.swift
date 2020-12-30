@@ -65,7 +65,7 @@ class TaskAddButton: UIView {
         
         cross.frame = bounds
         cross.cornerRadius = bounds.width / 2.0
-        
+    
         
     }
         
@@ -89,7 +89,6 @@ extension TaskAddButton {
     }
     
     @objc private func tapAction(sender: UIView) {
-        
         CATransaction.begin()
         CATransaction.setCompletionBlock {
             self.onTapActionHandler()
@@ -103,7 +102,6 @@ extension TaskAddButton {
         layer.add(animationIn, forKey: "pulse")
         
         CATransaction.commit()
-
     }
 }
 

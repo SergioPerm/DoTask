@@ -23,12 +23,12 @@
         <attribute name="reminderGeo" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="taskDate" optional="YES" attributeType="Date" defaultDateTimeInterval="2429883720" usesScalarValueType="NO"/>
         <attribute name="title" optional="YES" attributeType="String"/>
-        <relationship name="shortcut" maxCount="1" deletionRule="Nullify" destinationEntity="ShortcutManaged" inverseName="tasks" inverseEntity="ShortcutManaged"/>
+        <relationship name="shortcut" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ShortcutManaged" inverseName="tasks" inverseEntity="ShortcutManaged"/>
         <relationship name="subtasks" toMany="YES" deletionRule="Nullify" destinationEntity="SubtaskManaged" inverseName="task" inverseEntity="SubtaskManaged"/>
     </entity>
     <elements>
         <element name="ShortcutManaged" positionX="-12567.94696044922" positionY="-11168.12240600586" width="128" height="88"/>
-        <element name="TaskManaged" positionX="-12870.70611572265" positionY="-11403.08305358887" width="128" height="238"/>
         <element name="SubtaskManaged" positionX="-13171.48327636719" positionY="-11359.78015136719" width="128" height="103"/>
+        <element name="TaskManaged" positionX="-12870.70611572265" positionY="-11403.08305358887" width="128" height="238"/>
     </elements>
 </model>

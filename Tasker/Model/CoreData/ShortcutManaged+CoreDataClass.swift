@@ -10,7 +10,7 @@
 import Foundation
 import CoreData
 
-@objc(Shortcut)
+@objc(ShortcutManaged)
 public class ShortcutManaged: NSManagedObject {
 
 }

@@ -55,6 +55,7 @@ struct StyleGuide {
         
         enum Colors {
             //colors
+            static let addSubtaskbtnColor: UIColor = #colorLiteral(red: 0.3027490342, green: 0.7100013522, blue: 1, alpha: 1)
             static let chevronTintColor: UIColor = #colorLiteral(red: 0.8901960784, green: 0.8901960784, blue: 0.8901960784, alpha: 1)
             static let viewBGColor: UIColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         }

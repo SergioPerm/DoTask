@@ -26,7 +26,7 @@ extension TaskManaged {
     @NSManaged public var isDone: Bool
     @NSManaged public var importanceLevel: Int16
     @NSManaged public var mainTaskListOrder: Int16
-    @NSManaged public var shortcut: ShortcutManaged
+    @NSManaged public var shortcut: ShortcutManaged?
     @NSManaged public var subtasks: NSSet
     
     @objc var dailyName: String? {

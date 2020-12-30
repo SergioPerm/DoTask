@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol SubtaskViewModelType {
+protocol SubtaskViewModelType: NSObject {
     var inputs: SubtaskViewModelInputs { get }
     var outputs: SubtaskViewModelOutputs { get }
 }

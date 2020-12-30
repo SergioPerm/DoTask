@@ -13,9 +13,9 @@ class DetailTaskAssembly {
         let dataSource: TaskListDataSource = TaskListDataSourceCoreDataImpl(context: CoreDataService.shared.context)
         let viewModel: DetailTaskViewModel = DetailTaskViewModel(taskUID: taskUID, dataSource: dataSource)
 
-        if let _ = taskUID {
-            return DetailTaskEditViewController(viewModel: viewModel, presenter: presenter, presentableControllerViewType: .modalViewController)
-        }
+//        if let _ = taskUID {
+//            return DetailTaskEditViewController(viewModel: viewModel, presenter: presenter, presentableControllerViewType: .modalViewController)
+//        }
         
         return DetailTaskNewViewController(viewModel: viewModel, presenter: presenter, presentableControllerViewType: .modalViewController)
     }

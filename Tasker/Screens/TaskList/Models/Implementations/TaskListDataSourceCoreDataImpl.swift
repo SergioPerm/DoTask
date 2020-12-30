@@ -63,6 +63,11 @@ extension TaskListDataSourceCoreDataImpl: TaskListDataSource {
                     return nil
                 }
                 
+//                let task = tasks[0]
+//                task.subtasks.allObjects.sort({
+//                    $0.priority > $1.priority
+//                })
+                
                 return Task(with: tasks[0])
             } catch {
                 fatalError()

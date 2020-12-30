@@ -9,26 +9,30 @@
 import UIKit
 
 class TaskTitleTextView: UITextView {
-    var parentScrollView: UIScrollView = UIScrollView()
-    var lowerLimitToScroll: CGFloat = 0
     
-    var placeholderText: String? {
+    weak var parentScrollView: DetailTaskScrollView?
+
+    var placeholderText: String = ""
+    var titleFont: UIFont?
+    
+    var strikeTroughText: Bool = false {
         didSet {
-            setupPlaceholder()
+            updateStrikeTroughText()
         }
     }
     
     private let placeholderLabel: UILabel = UILabel()
-    private var previousTextViewRect: CGRect = .zero
+    private var previousCaretRect: CGRect = .zero
+    private var previousTextViewFrame: CGRect = .zero
     
     init() {
         super.init(frame: .zero, textContainer: nil)
-        commonInit()
+        addObservers()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        commonInit()
+        addObservers()
     }
         
     deinit {
@@ -37,26 +41,66 @@ class TaskTitleTextView: UITextView {
     
     override func willMove(toSuperview newSuperview: UIView?) {
         super.willMove(toSuperview: newSuperview)
-        setupPlaceholder()
+        setup()
+    }
+        
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        updateFramesAndVisible()
     }
 }
 
 extension TaskTitleTextView {
-    private func commonInit() {
-        addObservers()
+
+    private func updateStrikeTroughText() {
+        //Main striketrough text
+        let attributeString = NSMutableAttributedString(attributedString: attributedText)
+                
+        if strikeTroughText {
+            attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 2, range: NSMakeRange(0, attributeString.length))
+        } else {
+            attributeString.removeAttribute(NSAttributedString.Key.strikethroughStyle, range: NSMakeRange(0, attributeString.length))
+        }
+        
+        attributedText = attributeString
+        
+        //Placeholder striketrough text
+        guard let attributedPlaceholderText = placeholderLabel.attributedText else { return }
+        
+        let attributePlaceHolderString = NSMutableAttributedString(attributedString: attributedPlaceholderText)
+        
+        if strikeTroughText {
+            attributePlaceHolderString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 2, range: NSMakeRange(0, attributePlaceHolderString.length))
+        } else {
+            attributePlaceHolderString.removeAttribute(NSAttributedString.Key.strikethroughStyle, range: NSMakeRange(0, attributePlaceHolderString.length))
+        }
+        
+        placeholderLabel.attributedText = attributePlaceHolderString
     }
     
-    private func setupPlaceholder() {
-        guard let placeholderText = placeholderText else { return }
-        placeholderLabel.text = placeholderText
-        placeholderLabel.font = Font.detailTaskStandartTitle.uiFont
-        placeholderLabel.sizeToFit()
-        addSubview(placeholderLabel)
-        placeholderLabel.frame.origin = CGPoint(x: 5, y: (font?.pointSize)! / 2)
-        placeholderLabel.textColor = UIColor.lightGray
+    private func updateFramesAndVisible() {
+        placeholderLabel.frame = CGRect(x: 0, y: 5, width: placeholderLabel.frame.width, height: frame.height * 0.8)
         placeholderLabel.isHidden = !text.isEmpty
     }
     
+    private func setup() {
+        
+        textContainerInset.left = 0
+        textContainer.lineFragmentPadding = 0
+        
+        font = titleFont ?? Font.detailTaskStandartTitle.uiFont
+        
+        isScrollEnabled = false
+        bounces = false
+        
+        placeholderLabel.text = placeholderText
+        placeholderLabel.font = titleFont ?? Font.detailTaskStandartTitle.uiFont
+        placeholderLabel.sizeToFit()
+        addSubview(placeholderLabel)
+        placeholderLabel.textColor = UIColor.lightGray
+        placeholderLabel.isHidden = !text.isEmpty
+    }
+        
     private func resize() {
         var newFrame = frame
         let width = newFrame.size.width
@@ -71,53 +115,26 @@ extension TaskTitleTextView {
     }
     
     func updateParentScrollViewOffset() {
-        
         placeholderLabel.isHidden = !text.isEmpty
         
         //resize to content
         resize()
-                         
-        //calculate delete or add content
-        let endPosition = endOfDocument
-        let endTextViewRect = caretRect(for: endPosition)
-                
-        previousTextViewRect = previousTextViewRect == .zero ? endTextViewRect : previousTextViewRect
-        
-        var deleteLineHeight: CGFloat = 0.0
-        if endTextViewRect.origin.y < previousTextViewRect.origin.y {
-            deleteLineHeight = previousTextViewRect.origin.y - endTextViewRect.origin.y
-        }
-        previousTextViewRect = endTextViewRect
-        //
-        
+                           
+        guard let parentScrollView = parentScrollView else { return }
         guard let currentTextPosition = selectedTextRange?.end else { return }
         let currentTextViewRect = caretRect(for: currentTextPosition)
         let currentTextViewRectAtMainView = convert(currentTextViewRect, to: window)
         
         var scrollViewContentOffset = parentScrollView.contentOffset
  
-        if currentTextViewRectAtMainView.maxY > lowerLimitToScroll {
+        if currentTextViewRectAtMainView.maxY > parentScrollView.lowerLimitToScroll {
             //change offset when caret behind keyboard
             parentScrollView.isScrollEnabled = true
-            scrollViewContentOffset.y += currentTextViewRectAtMainView.maxY - lowerLimitToScroll
-        } else if parentScrollView.isScrollEnabled && parentScrollView.contentOffset.y > 0 && deleteLineHeight > 0 {
-            //change offset when delete lines
-            scrollViewContentOffset.y -= lowerLimitToScroll - currentTextViewRectAtMainView.maxY
-        } else if parentScrollView.isScrollEnabled && parentScrollView.contentOffset.y <= 0 {
-            //resume
-            parentScrollView.isScrollEnabled = false
-            scrollViewContentOffset = .zero
+            scrollViewContentOffset.y += currentTextViewRectAtMainView.maxY - parentScrollView.lowerLimitToScroll
         }
-        
-        if scrollViewContentOffset.y <= 0 && deleteLineHeight > 0 {
-            //correct resume
-            parentScrollView.isScrollEnabled = false
-            scrollViewContentOffset = .zero
-        }
-        
+                
         if parentScrollView.contentOffset != scrollViewContentOffset {
             parentScrollView.setContentOffset(scrollViewContentOffset, animated: false)
-            parentScrollView.contentSize = CGSize(width: parentScrollView.contentSize.width, height: parentScrollView.contentSize.height + scrollViewContentOffset.y)
         }
     }
     

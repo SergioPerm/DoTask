@@ -172,22 +172,22 @@ extension TaskListTableViewCell {
         
         selectionStyle = .none
         
-        addSubview(shadowLayer)
+        contentView.addSubview(shadowLayer)
                 
         var constraints = [
-            shadowLayer.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
-            shadowLayer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            shadowLayer.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -2),
-            shadowLayer.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.8)
+            shadowLayer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            shadowLayer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            shadowLayer.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -2),
+            shadowLayer.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.8)
         ]
         
-        addSubview(backView)
+        contentView.addSubview(backView)
         
         constraints.append(contentsOf: [
-            backView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
-            backView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            backView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -2),
-            backView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.8)
+            backView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            backView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            backView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -2),
+            backView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.8)
         ])
         
         doneView.addSubview(checkView)
@@ -199,11 +199,7 @@ extension TaskListTableViewCell {
             checkView.centerXAnchor.constraint(equalTo: doneView.centerXAnchor)
         ])
         
-        if #available(iOS 14.0, *) {
-            contentView.addSubview(doneView)
-        } else {
-            addSubview(doneView)
-        }
+        contentView.addSubview(doneView)
         
         constraints.append(contentsOf: [
             doneView.leadingAnchor.constraint(equalTo: backView.leadingAnchor, constant: 10),
@@ -243,7 +239,7 @@ extension TaskListTableViewCell {
             importanceView.widthAnchor.constraint(equalToConstant: 20)
         ])
                         
-        backgroundColor = .clear
+        contentView.backgroundColor = .clear
         
         NSLayoutConstraint.activate(constraints)
         

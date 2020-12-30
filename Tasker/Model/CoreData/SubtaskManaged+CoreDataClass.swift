@@ -10,7 +10,7 @@
 import Foundation
 import CoreData
 
-@objc(Subtask)
+@objc(SubtaskManaged)
 public class SubtaskManaged: NSManagedObject {
 
 }

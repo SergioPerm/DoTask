@@ -10,7 +10,7 @@ import UIKit
 
 class TaskTitleTextView: UITextView {
     
-    weak var parentScrollView: DetailTaskScrollView?
+    weak var parentScrollView: DetailTaskScrollViewType?
 
     var placeholderText: String = ""
     var titleFont: UIFont?
@@ -120,17 +120,17 @@ extension TaskTitleTextView {
         //resize to content
         resize()
                            
-        guard let parentScrollView = parentScrollView else { return }
-        guard let currentTextPosition = selectedTextRange?.end else { return }
+        guard let parentScrollView = parentScrollView, let currentTextPosition = selectedTextRange?.end else { return }
+
         let currentTextViewRect = caretRect(for: currentTextPosition)
         let currentTextViewRectAtMainView = convert(currentTextViewRect, to: window)
         
         var scrollViewContentOffset = parentScrollView.contentOffset
  
-        if currentTextViewRectAtMainView.maxY > parentScrollView.lowerLimitToScroll {
+        if currentTextViewRectAtMainView.maxY > parentScrollView.limitToScroll {
             //change offset when caret behind keyboard
             parentScrollView.isScrollEnabled = true
-            scrollViewContentOffset.y += currentTextViewRectAtMainView.maxY - parentScrollView.lowerLimitToScroll
+            scrollViewContentOffset.y += currentTextViewRectAtMainView.maxY - parentScrollView.limitToScroll
         }
                 
         if parentScrollView.contentOffset != scrollViewContentOffset {

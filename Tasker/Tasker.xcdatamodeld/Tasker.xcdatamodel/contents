@@ -24,7 +24,7 @@
         <attribute name="taskDate" optional="YES" attributeType="Date" defaultDateTimeInterval="2429883720" usesScalarValueType="NO"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <relationship name="shortcut" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ShortcutManaged" inverseName="tasks" inverseEntity="ShortcutManaged"/>
-        <relationship name="subtasks" toMany="YES" deletionRule="Nullify" destinationEntity="SubtaskManaged" inverseName="task" inverseEntity="SubtaskManaged"/>
+        <relationship name="subtasks" toMany="YES" deletionRule="Cascade" destinationEntity="SubtaskManaged" inverseName="task" inverseEntity="SubtaskManaged"/>
     </entity>
     <elements>
         <element name="ShortcutManaged" positionX="-12567.94696044922" positionY="-11168.12240600586" width="128" height="88"/>

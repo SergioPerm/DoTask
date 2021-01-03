@@ -144,6 +144,10 @@ class CalendarPickerViewController: UIViewController, PresentableController {
     }
     
     @objc func clearDateAction(sender: UIButton) {
+        if var selectedDay = selectedCell?.day {
+            selectedDay.isSelected = false
+            selectedCell?.day = selectedDay
+        }
         viewModel.inputs.clearSelectedDay()
         if let changeDateAction = selectedDateChangedHandler {
             changeDateAction(viewModel.outputs.selectedDate.value)

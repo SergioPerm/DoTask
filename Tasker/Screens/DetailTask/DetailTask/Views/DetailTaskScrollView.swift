@@ -8,6 +8,17 @@
 
 import UIKit
 
+protocol DetailTaskScrollViewType: UIScrollView {
+    var limitToScroll: CGFloat { get set }
+    func updateSizes()
+    func setCloseHandler(handler: (() -> Void)?)
+    func becomeTextInputResponder()
+    func resignTextInputResponders()
+    func addNewSubtask()
+    var currentTitle: String { get }
+    func shakeTitle()
+}
+
 class DetailTaskScrollView: UIScrollView {
 
     private let scrollContentView: UIView = {
@@ -43,7 +54,7 @@ class DetailTaskScrollView: UIScrollView {
         return swipeView
     }()
     
-    let titleTextView: TaskTitleTextView = {
+    private let titleTextView: TaskTitleTextView = {
         let textView = TaskTitleTextView()
         textView.font = Font.detailTaskStandartTitle.uiFont
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -64,14 +75,16 @@ class DetailTaskScrollView: UIScrollView {
     }()
     
     private var subtaskTableViewHeightConstraint: NSLayoutConstraint = NSLayoutConstraint()
-    private var parentView = UIView()
+    private weak var parentView: UIView?
     
-    var lowerLimitToScroll: CGFloat = 0.0
+    private var lowerLimitToScroll: CGFloat = 0.0
     
-    private var viewModel: DetailTaskViewModelType
+    private weak var viewModel: DetailTaskViewModelType?
     
-    var tapToCloseHandler: (() -> Void)?
-    var swipeToCloseHandler: ((_ recognizer: UIPanGestureRecognizer) -> Void)?
+    private var tapToCloseHandler: (() -> Void)?
+    
+    private var pastActiveInput: TaskTitleTextView?
+    private var subtaskTextInputs: [TaskTitleTextView?] = []
     
     init(viewModel: DetailTaskViewModelType) {
         self.viewModel = viewModel
@@ -90,13 +103,12 @@ class DetailTaskScrollView: UIScrollView {
 
 extension DetailTaskScrollView {
     private func setup() {
-        
         translatesAutoresizingMaskIntoConstraints = false
         bounces = false
         showsHorizontalScrollIndicator = false
         isPagingEnabled = false
         
-        guard let superview = superview else { return }
+        guard let superview = superview, let viewModel = viewModel else { return }
         
         parentView = superview
         
@@ -117,8 +129,6 @@ extension DetailTaskScrollView {
     }
     
     private func setupConstraints() {
-        //let globalFrame = UIView.globalSafeAreaFrame
-        
         var constraints = [
             scrollContentView.widthAnchor.constraint(equalTo: widthAnchor),
             scrollContentView.trailingAnchor.constraint(equalTo: contentLayoutGuide.trailingAnchor),
@@ -189,7 +199,9 @@ extension DetailTaskScrollView {
 
 extension DetailTaskScrollView {
                 
-    func updateScrollSizeAfterChangeSubtasks(addRowHeight: CGFloat) {
+    private func updateScrollSizeAfterChangeSubtasks(addRowHeight: CGFloat) {
+        guard let parentView = parentView else { return }
+        
         let currentTableViewFrameAtMainView = subtaskTableView.convert(subtaskTableView.bounds, to: parentView.window)
         
         if contentOffset.y > 0 && addRowHeight < 0 {
@@ -221,7 +233,7 @@ extension DetailTaskScrollView {
         }
     }
     
-    func updateTableViewSize() {
+    private func updateTableViewSize() {
         subtaskTableView.layoutIfNeeded()
         if subtaskTableView.contentSize.height != subtaskTableViewHeightConstraint.constant {
             //add 1pt for system cell animation
@@ -232,7 +244,10 @@ extension DetailTaskScrollView {
     }
     
     //what todo about it?
-    func addSubtask() {
+    private func addSubtask() {
+        
+        guard let viewModel = viewModel else { return }
+        
         CATransaction.begin()
         
         subtaskTableView.beginUpdates()
@@ -262,13 +277,20 @@ extension DetailTaskScrollView {
 
 extension DetailTaskScrollView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.outputs.subtasks.count
+        return viewModel?.outputs.subtasks.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = subtaskTableView.dequeueReusableCell(withIdentifier: SubtaskTableViewCell.className) as! SubtaskTableViewCell
 
-        cell.subtaskViewModel = viewModel.outputs.subtasks[indexPath.row]
+        if let viewModel = viewModel {
+            cell.subtaskViewModel = viewModel.outputs.subtasks[indexPath.row]
+        }
+        
+        var textViews = subtaskTextInputs.compactMap { $0 }
+        textViews.append(cell.titleTextView)
+        subtaskTextInputs = textViews
+        
         cell.parentScrollView = self
         cell.cellDelegate = self
 
@@ -306,6 +328,9 @@ extension DetailTaskScrollView: SubtaskTableViewCellDelegate {
     }
     
     func reorderCell(_ cell: SubtaskTableViewCell, gestureRecognizer: UILongPressGestureRecognizer) {
+        
+        guard let parentView = parentView else { return }
+        
         let state = gestureRecognizer.state
         let locationInView = gestureRecognizer.location(in: parentView)
         let locationInTableView = gestureRecognizer.location(in: subtaskTableView)
@@ -364,7 +389,7 @@ extension DetailTaskScrollView: SubtaskTableViewCellDelegate {
                 center.y = locationInView.y
                 snapshot.center = center
                 if indexPath != Path.initialIndexPath {
-                    viewModel.inputs.moveSubtask(from: Path.initialIndexPath.row, to: indexPath.row)
+                    viewModel?.inputs.moveSubtask(from: Path.initialIndexPath.row, to: indexPath.row)
                     subtaskTableView.moveRow(at: Path.initialIndexPath, to: indexPath)
                     Path.initialIndexPath = indexPath
                 }
@@ -405,10 +430,15 @@ extension DetailTaskScrollView: SubtaskTableViewCellDelegate {
     }
     
     func deleteSubtask(_ subtaskViewModel: SubtaskViewModelType, cell: SubtaskTableViewCell) {
+        
+        guard let viewModel = viewModel else {
+            return
+        }
+        
         if let indexPath = subtaskTableView.indexPath(for: cell) {
             CATransaction.begin()
             
-            if (self.viewModel.outputs.subtasks.count - 1) > 0 {
+            if (viewModel.outputs.subtasks.count - 1) > 0 {
                 let activeCellIndex = indexPath.row == 0 ? 1 : indexPath.row - 1
                 let activeCellIndexPath = IndexPath(row: activeCellIndex, section: 0)
                 let activeCell = self.subtaskTableView.cellForRow(at: activeCellIndexPath) as! SubtaskTableViewCell
@@ -441,9 +471,73 @@ extension DetailTaskScrollView: SubtaskTableViewCellDelegate {
 extension DetailTaskScrollView: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if let updatedTitle = (textView.text as NSString?)?.replacingCharacters(in: range, with: text) {
-            viewModel.inputs.setTitle(title: updatedTitle)
+            viewModel?.inputs.setTitle(title: updatedTitle)
         }
         
         return true
+    }
+}
+
+// MARK: DetailTaskScrollViewType
+extension DetailTaskScrollView: DetailTaskScrollViewType {
+    func becomeTextInputResponder() {
+        if let pastActiveInput = pastActiveInput {
+            pastActiveInput.becomeFirstResponder()
+        } else {
+            titleTextView.becomeFirstResponder()
+        }
+    }
+    
+    func resignTextInputResponders() {
+        if titleTextView.isFirstResponder {
+            pastActiveInput = titleTextView
+            titleTextView.resignFirstResponder()
+        } else {
+            subtaskTextInputs.compactMap { $0 }.forEach {
+                if $0.isFirstResponder {
+                    pastActiveInput = $0
+                    $0.resignFirstResponder()
+                }
+            }
+        }
+    }
+    
+    var limitToScroll: CGFloat {
+        get {
+            return lowerLimitToScroll
+        }
+        set {
+            lowerLimitToScroll = newValue
+        }
+    }
+    
+    func addNewSubtask() {
+        addSubtask()
+    }
+    
+    func updateSizes() {
+        updateTableViewSize()
+    }
+    
+    func setCloseHandler(handler: (() -> Void)?) {
+        tapToCloseHandler = handler
+    }
+    
+//    func activateMainTitle() {
+//        titleTextView.becomeFirstResponder()
+//    }
+//
+//    func deactivateMainTitle() {
+//        titleTextView.resignFirstResponder()
+//    }
+    
+    var currentTitle: String {
+        get {
+            return titleTextView.text
+        }
+    }
+    
+    func shakeTitle() {
+        titleTextView.shake(duration: 1)
     }
 }

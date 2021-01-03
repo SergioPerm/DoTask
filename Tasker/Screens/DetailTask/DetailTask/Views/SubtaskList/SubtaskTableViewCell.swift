@@ -24,7 +24,7 @@ class SubtaskTableViewCell: UITableViewCell {
     
     weak var cellDelegate: SubtaskTableViewCellDelegate?
         
-    var parentScrollView: DetailTaskScrollView? {
+    weak var parentScrollView: DetailTaskScrollView? {
         didSet {
             guard let parentScrollView = parentScrollView else {
                 return
@@ -61,7 +61,7 @@ class SubtaskTableViewCell: UITableViewCell {
         return tapView
     }()
     
-    private let titleTextView: TaskTitleTextView = {
+    let titleTextView: TaskTitleTextView = {
         let textView = TaskTitleTextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
         

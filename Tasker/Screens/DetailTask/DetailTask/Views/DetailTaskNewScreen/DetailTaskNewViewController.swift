@@ -35,10 +35,8 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType,  Presen
 
         return origin
     }()
-            
-    private var footer: UIView = UIView()
-    
-    private var scrollView: DetailTaskScrollView?
+                
+    private var scrollView: DetailTaskScrollViewType?
         
     private let accessoryView: UIView = {
         let accessoryView = UIView()
@@ -113,15 +111,11 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType,  Presen
     
     @objc private func keyboardWillShowNotification(notification: NSNotification) {
         updateTextViewLowerLimit(notification: notification)
-        //temp hide, if some troubles - unhide!
-        //scrollView?.titleTextView.updateParentScrollViewOffset()
         updateBottomLayoutConstraintWithNotification(notification: notification, keyboardShow: true)
     }
     
     @objc private func keyboardWillHideNotification(notification: NSNotification) {
         updateTextViewLowerLimit(notification: notification)
-        //temp hide, if some troubles - unhide!
-        //scrollView?.titleTextView.updateParentScrollViewOffset()
         updateBottomLayoutConstraintWithNotification(notification: notification, keyboardShow: false)
     }
     
@@ -131,7 +125,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType,  Presen
                         
             let lowerLimitToScroll = keyboardEndFrame.origin.y - accesoryStackView.frame.height - 50
             
-            scrollView?.lowerLimitToScroll = lowerLimitToScroll
+            scrollView?.limitToScroll = lowerLimitToScroll
         }
     }
     
@@ -160,7 +154,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType,  Presen
         super.viewDidLoad()
         setupView()
         bindViewModel()
-        scrollView?.updateTableViewSize()
+        scrollView?.updateSizes()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -183,16 +177,11 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType,  Presen
         view.layer.mask = mask
         
         scrollView = DetailTaskScrollView(viewModel: viewModel)
-        
-        scrollView?.swipeToCloseHandler = { recognizer in
-            self.swipeToCloseAction(recognizer)
-        }
-        
-        scrollView?.tapToCloseHandler = {
-            self.tapToCloseAction()
-        }
-        
         guard let scrollView = scrollView else { return }
+        
+        scrollView.setCloseHandler(handler: { [weak self] in
+            self?.tapToCloseAction()
+        })
         
         view.addSubview(scrollView)
                 
@@ -217,8 +206,9 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType,  Presen
                 
         accessoryView.addSubview(accesoryStackView)
 
-        view.insertSubview(accessoryView, aboveSubview: scrollView)
-                  
+        //view.insertSubview(accessoryView, aboveSubview: scrollView)
+        view.insertSubview(accessoryView, at: view.subviews.count)
+        
         setupConstraints()
         setupActions()
     }
@@ -238,7 +228,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType,  Presen
     // MARK: Constraints setup
     private func setupConstraints() {
         let globalFrame = UIView.globalSafeAreaFrame
-        
+                
         guard let scrollView = scrollView else { return }
         
         var constraints = [
@@ -283,13 +273,13 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType,  Presen
                        animations: {
                         self.view.frame.origin = self.viewOrigin
         }, completion: { [weak self] finished in
-            self?.scrollView?.updateTableViewSize()
-            self?.scrollView?.titleTextView.becomeFirstResponder()
+            self?.scrollView?.updateSizes()
+            self?.scrollView?.becomeTextInputResponder()
         })
     }
     
     private func hideView(completion: @escaping ()->()) {
-        scrollView?.titleTextView.resignFirstResponder()
+        scrollView?.resignTextInputResponders()
         
         UIView.animate(withDuration: 0.3,
                        delay: 0,
@@ -337,13 +327,13 @@ extension DetailTaskNewViewController {
 extension DetailTaskNewViewController {
     
     @objc private func subtasksAddAction(sender: UITapGestureRecognizer) {
-        scrollView?.addSubtask()
+        scrollView?.addNewSubtask()
     }
     
     // MARK: -Accessory view actions
     @objc private func saveTaskAction(sender: UIButton) {
-        if scrollView?.titleTextView.text == "" {
-            scrollView?.titleTextView.shake(duration: 1)
+        if scrollView?.currentTitle == "" {
+            scrollView?.shakeTitle()
             return
         }
         
@@ -355,14 +345,15 @@ extension DetailTaskNewViewController {
     }
     
     private func calendarTapAction() {
-        scrollView?.titleTextView.resignFirstResponder()
+        scrollView?.resignTextInputResponders()
+        
         if let calendatAction = onCalendarSelect {
             calendatAction(viewModel.outputs.selectedDate.value, self)
         }
     }
     
     private func reminderTapAction() {
-        scrollView?.titleTextView.resignFirstResponder()
+        scrollView?.resignTextInputResponders()
         
         var normalizeTimeFromDate = viewModel.outputs.selectedDate.value ?? Date()
         if let taskTime = viewModel.outputs.selectedTime.value {
@@ -440,7 +431,7 @@ extension DetailTaskNewViewController {
     }
 }
 
-//// MARK: UIGestureRecognizerDelegate
+// MARK: UIGestureRecognizerDelegate
 extension DetailTaskNewViewController: UIGestureRecognizerDelegate {
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
 
@@ -467,7 +458,7 @@ extension DetailTaskNewViewController: CalendarPickerViewOutputs {
     }
     
     func comletionAfterCloseCalendar() {
-        scrollView?.titleTextView.becomeFirstResponder()
+        scrollView?.becomeTextInputResponder()
     }
 }
 
@@ -483,6 +474,6 @@ extension DetailTaskNewViewController: TimePickerViewOutputs {
     }
 
     func completionAfterCloseTimePicker() {
-        scrollView?.titleTextView.becomeFirstResponder()
+        scrollView?.becomeTextInputResponder()
     }
 }

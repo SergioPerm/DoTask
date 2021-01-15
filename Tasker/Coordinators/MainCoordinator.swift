@@ -19,17 +19,26 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
     
     func start() {
         let vc = SlideMenuAssembly.createInstance(presenter: presenter)
-        
+
         vc.openTaskListHandler = { menu in
             self.openTaskList(menu: menu)
         }
         vc.openSettingsHandler = { menu in
             self.openSettings(menu: menu)
         }
+        vc.openDetailShortcutHandler = { shortcutUID in
+            self.editShortcut(shortcutUID: shortcutUID)
+        }
         
         presenter?.push(vc: vc, completion: nil)
     }
             
+    func editShortcut(shortcutUID: String?) {
+        let vc = DetailShortcutAssembly.createInstance(shortcutUID: shortcutUID, presenter: presenter)
+        
+        presenter?.push(vc: vc, completion: nil)
+    }
+    
     func openTaskList(menu: SlideMenuViewType?) {
         let vc = TaskListAssembly.createInstance(presenter: presenter)
         vc.slideMenu = menu

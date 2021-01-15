@@ -17,6 +17,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "ColorSelectionView.selectedColor.didset:ColorSelectionView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "presetColors[1]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "DetailTaskViewController.init(taskModel:saveTaskHandler:):DetailTaskViewController.swift">
       </ContextState>
       <ContextState
@@ -37,15 +45,18 @@
          contextName = "TaskListDataSourceCoreDataImpl.controller(_:didChange:at:for:newIndexPath:):TaskListDataSourceCoreDataImpl.swift">
          <PersistentStrings>
             <PersistentString
-               value = "indexPath.section">
-            </PersistentString>
-            <PersistentString
                value = "newIndexPath!.row">
             </PersistentString>
             <PersistentString
                value = "indexPath!.row">
             </PersistentString>
+            <PersistentString
+               value = "indexPath.section">
+            </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "TestScrollViewController.textViewDidChange(_:):TestScrollViewController.swift">
       </ContextState>
       <ContextState
          contextName = "ContainerViewController.viewDidLoad():ContainerViewController.swift">
@@ -60,9 +71,6 @@
       </ContextState>
       <ContextState
          contextName = "TaskListDataSourceCoreDataImpl.addTask(from:):TaskListDataSourceCoreDataImpl.swift">
-      </ContextState>
-      <ContextState
-         contextName = "TestScrollViewController.textViewDidChange(_:):TestScrollViewController.swift">
       </ContextState>
       <ContextState
          contextName = "TaskTitleTextView.updateParentScrollViewOffset():TaskTitleTextView.swift">
@@ -82,6 +90,9 @@
                value = "task.title">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ShortcutListDataSourceCoreData.shortcutByIdentifier(identifier:):ShortcutListDataSourceCoreData.swift">
       </ContextState>
       <ContextState
          contextName = "TaskListViewController.tableView(_:cellForRowAt:):TaskListViewController.swift">
@@ -110,10 +121,10 @@
                value = "scrollView.showsHorizontalScrollIndicator">
             </PersistentString>
             <PersistentString
-               value = "scrollView.bouncesZoom ">
+               value = "scrollView.isScrollEnabled ">
             </PersistentString>
             <PersistentString
-               value = "scrollView.isScrollEnabled ">
+               value = "scrollView.bouncesZoom ">
             </PersistentString>
             <PersistentString
                value = "scrollView.isPagingEnabled">
@@ -122,6 +133,9 @@
                value = "scrollView.keyboardDismissMode">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "DetailShortcutViewModel.init(shortcutUID:dataSource:):DetailShortcutViewModel.swift">
       </ContextState>
       <ContextState
          contextName = "DetailTaskViewController.setupView():DetailTaskViewController.swift">
@@ -165,6 +179,9 @@
          contextName = "TaskModel.init(with:):TaskModel.swift">
       </ContextState>
       <ContextState
+         contextName = "Shortcut.init(with:):Shortcut.swift">
+      </ContextState>
+      <ContextState
          contextName = "TaskListViewModel.tasksWillChange():TaskListViewModel.swift">
       </ContextState>
       <ContextState
@@ -179,13 +196,13 @@
          contextName = "DetailTaskViewController.swipeToCloseAction(_:):DetailTaskViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "viewOrigin">
-            </PersistentString>
-            <PersistentString
                value = "translation.x">
             </PersistentString>
             <PersistentString
                value = "rView.frame.origin">
+            </PersistentString>
+            <PersistentString
+               value = "viewOrigin">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

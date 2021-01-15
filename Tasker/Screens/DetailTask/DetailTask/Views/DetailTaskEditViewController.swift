@@ -1,20 +1,21 @@
 //
-//  DetailTaskEditViewController.swift
+//  DetailTaskViewController.swift
 //  Tasker
 //
-//  Created by KLuV on 09.12.2020.
+//  Created by kluv on 28/09/2020.
 //  Copyright © 2020 itotdel. All rights reserved.
 //
 
 import UIKit
 
-class DetailTaskEditViewController: UIViewController, DetailTaskViewType,  PresentableController {
-    
+class DetailTaskEditViewController: UIViewController, DetailTaskViewType, PresentableController {
+
     var presentableControllerViewType: PresentableControllerViewType
     var presenter: PresenterController?
 
     // MARK: ViewModel
     private var viewModel: DetailTaskViewModelType
+    private var subtasks: [SubtaskViewModelType]
     
     // MARK: Coordinates properties
     private var viewOrigin: CGPoint = CGPoint(x: 0, y: 0)
@@ -24,6 +25,7 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType,  Prese
     // MARK: Handlers
     var onCalendarSelect: ((_ selectedDate: Date?, _ vc: CalendarPickerViewOutputs) -> Void)?
     var onTimeReminderSelect: ((_ selectedTime: Date, _ vc: TimePickerViewOutputs) -> Void)?
+    var onShortcutSelect: ((String?, ShortcutListViewOutputs) -> Void)?
     
     // MARK: View properties
     private let topMargin: CGFloat = StyleGuide.DetailTask.Sizes.topMargin
@@ -34,54 +36,15 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType,  Prese
 
         return origin
     }()
-    
-    private let scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.backgroundColor = .clear
-        scrollView.isScrollEnabled = false
-        scrollView.clipsToBounds = true
+                
+    private var scrollView: DetailTaskScrollViewType?
         
-        return scrollView
+    private let accessoryView: DetailAccessoryView = {
+        let accessoryView = DetailAccessoryView()
+                
+        return accessoryView
     }()
     
-    private let swipeCloseView: UIView = {
-        let swipeView = UIView()
-        swipeView.translatesAutoresizingMaskIntoConstraints = false
-        swipeView.backgroundColor = .clear
-
-        var chevron = UIImageView()
-         
-        chevron = UIImageView(image: UIImage(named: "chevron"))
-        chevron.contentMode = .scaleAspectFit
-        chevron.translatesAutoresizingMaskIntoConstraints = false
-        chevron.tintColor = StyleGuide.DetailTask.Colors.chevronTintColor
-        
-        swipeView.addSubview(chevron)
-        
-        let constraints = [
-            chevron.centerYAnchor.constraint(equalTo: swipeView.centerYAnchor),
-            chevron.centerXAnchor.constraint(equalTo: swipeView.centerXAnchor),
-            chevron.widthAnchor.constraint(equalTo: chevron.heightAnchor, multiplier: 2),
-            chevron.heightAnchor.constraint(equalToConstant: StyleGuide.DetailTask.Sizes.chevronHeight)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
-                        
-        return swipeView
-    }()
-        
-    private let placeholderLabel: UILabel = UILabel()
-    
-    private let titleTextView: TaskTitleTextView = {
-        let textView = TaskTitleTextView()
-        textView.font = Font.detailTaskStandartTitle.uiFont
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.isScrollEnabled = false
-
-        return textView
-    }()
-        
     private let accesoryStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -92,8 +55,33 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType,  Prese
         return stackView
     }()
     
-    private var accesoryBottomConstraint: NSLayoutConstraint = NSLayoutConstraint()
+    private let addSubtaskButton: AddSubtaskButton = {
+        let addSubtaskBtn = AddSubtaskButton()
+        addSubtaskBtn.translatesAutoresizingMaskIntoConstraints = false
+
             
+        return addSubtaskBtn
+    }()
+    
+    private let shortcutButton: ShortcutButton = {
+        let shortcutBtn = ShortcutButton()
+        shortcutBtn.translatesAutoresizingMaskIntoConstraints = false
+        
+        return shortcutBtn
+    }()
+    
+    private let hideKeyboardButton: HideKeyboardButton = {
+        let hideKeyboardBtn = HideKeyboardButton()
+        hideKeyboardBtn.translatesAutoresizingMaskIntoConstraints = false
+        
+        return hideKeyboardBtn
+    }()
+    
+    private var accesoryBottomConstraint: NSLayoutConstraint = NSLayoutConstraint()
+    private var accesoryLeadingConstraint: NSLayoutConstraint = NSLayoutConstraint()
+    private var accesoryTrailingConstraint: NSLayoutConstraint = NSLayoutConstraint()
+    private var addSubtaskBtnTrailingConstraint: NSLayoutConstraint = NSLayoutConstraint()
+    
     private var importanceBtn: ImportanceButton?
     private var calendarBtn: CalendarButton?
     private var alarmBtn: AlarmButton?
@@ -105,9 +93,9 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType,  Prese
     }()
     
     // MARK: Init
-        
     init(viewModel: DetailTaskViewModelType, presenter: PresenterController?, presentableControllerViewType: PresentableControllerViewType) {
         self.viewModel = viewModel
+        self.subtasks = viewModel.outputs.subtasks
         self.presenter = presenter
         self.presentableControllerViewType = presentableControllerViewType
                 
@@ -137,14 +125,26 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType,  Prese
     }
     
     @objc private func keyboardWillShowNotification(notification: NSNotification) {
-        updateBottomLayoutConstraintWithNotification(notification: notification)
+        updateTextViewLowerLimit(notification: notification)
+        updateBottomLayoutConstraintWithNotification(notification: notification, keyboardShow: true)
     }
     
     @objc private func keyboardWillHideNotification(notification: NSNotification) {
-        updateBottomLayoutConstraintWithNotification(notification: notification)
+        updateTextViewLowerLimit(notification: notification)
+        updateBottomLayoutConstraintWithNotification(notification: notification, keyboardShow: false)
     }
     
-    private func updateBottomLayoutConstraintWithNotification(notification: NSNotification) {
+    private func updateTextViewLowerLimit(notification: NSNotification) {
+        if let userInfo = notification.userInfo {
+            let keyboardEndFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+                        
+            let lowerLimitToScroll = keyboardEndFrame.origin.y - accesoryStackView.frame.height - 50
+            
+            scrollView?.limitToScroll = lowerLimitToScroll
+        }
+    }
+    
+    private func updateBottomLayoutConstraintWithNotification(notification: NSNotification, keyboardShow: Bool) {
         let userInfo = notification.userInfo!
         
         let animationDuration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
@@ -154,21 +154,36 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType,  Prese
         let animationCurve = UIView.AnimationOptions.init(rawValue: UInt(rawAnimationCurve))
         
         let correctionSpaceForBottomSafeArea = notification.name == UIResponder.keyboardWillHideNotification ? view.globalSafeAreaInsets.bottom : 0
-        accesoryBottomConstraint.constant = convertedKeyboardEndFrame.minY - view.bounds.maxY - correctionSpaceForBottomSafeArea
+        
+        if keyboardShow {
+            accesoryBottomConstraint.constant = convertedKeyboardEndFrame.minY - view.bounds.maxY - correctionSpaceForBottomSafeArea
+        } else {
+            accesoryBottomConstraint.constant = -view.globalSafeAreaInsets.bottom - 10
+        }
+        
+        accesoryTrailingConstraint.constant = keyboardShow ? 0 : -10
+        accesoryLeadingConstraint.constant = keyboardShow ? 0 : 10
+        
+        let globalFrame = UIView.globalSafeAreaFrame
+        addSubtaskBtnTrailingConstraint.constant = keyboardShow ? -((globalFrame.width * 0.2) + 20) : -10
         
         UIView.animate(withDuration: animationDuration,
                        delay: 0.0,
                        options: [.beginFromCurrentState, animationCurve],
                        animations: {
                         self.view.layoutIfNeeded()
+                        self.accessoryView.layer.cornerRadius = keyboardShow ? 0 : 6
+                        self.accessoryView.layoutIfNeeded()
+                        self.hideKeyboardButton.isHidden = !keyboardShow
         }, completion: nil)
     }
-        
+    
     // MARK: View Life-Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         bindViewModel()
+        scrollView?.updateSizes()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -176,31 +191,38 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType,  Prese
         showView()
     }
         
-    // MARK: View SETUP
-    
+    // MARK: View setup
     private func setupView() {
-        titleTextView.delegate = self
-        
         let globalFrame = UIView.globalSafeAreaFrame
         view.frame = CGRect(origin: viewOriginOnStart, size: CGSize(width: globalFrame.width, height: globalFrame.height - (UIDevice.hasNotch ? 0 : topMargin)))
         
+        view.clipsToBounds = true
+        view.backgroundColor = StyleGuide.DetailTask.Colors.viewBGColor
+        let mask = CAShapeLayer()
+        
+        let cornerRadius = StyleGuide.DetailTask.Sizes.viewCornerRadius
+        mask.path = UIBezierPath(roundedRect: view.bounds, byRoundingCorners: [.allCorners], cornerRadii: CGSize(width: cornerRadius, height: cornerRadius)).cgPath
+        
+        view.layer.mask = mask
+        
+        scrollView = DetailTaskScrollView(viewModel: viewModel)
+        guard let scrollView = scrollView else { return }
+        
+        scrollView.setCloseHandler(handler: { [weak self] in
+            self?.tapToCloseAction()
+        })
+        
         view.addSubview(scrollView)
-        
-        scrollView.addSubview(swipeCloseView)
                 
-        scrollView.addSubview(titleTextView)
-        titleTextView.delegate = self
-        titleTextView.text = viewModel.outputs.title
-        titleTextView.backgroundColor = .green//StyleGuide.DetailTask.viewBGColor
-        titleTextView.textColor = .systemGray
-        
-        setupPlaceholder()
-        
-        let textViewBottomConstraint = titleTextView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
-        textViewBottomConstraint.priority = UILayoutPriority(rawValue: 250)
-        
-        accesoryBottomConstraint = accesoryStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -view.globalSafeAreaInsets.bottom)
+        hideKeyboardButton.isHidden = true
                 
+        view.insertSubview(addSubtaskButton, aboveSubview: scrollView)
+        view.insertSubview(hideKeyboardButton, aboveSubview: scrollView)
+        
+        view.insertSubview(shortcutButton, aboveSubview: scrollView)
+        
+        shortcutButton.shortcutBtnData = viewModel.outputs.selectedShortcut.value
+        
         importanceBtn = ImportanceButton(onTapAction: { [weak self] in
             self?.viewModel.inputs.increaseImportance()
             }, importanceLevel: viewModel.outputs.importanceLevel)
@@ -217,60 +239,92 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType,  Prese
         accesoryStackView.addArrangedSubview(alarmBtn!)
         accesoryStackView.addArrangedSubview(importanceBtn!)
         accesoryStackView.addArrangedSubview(saveBtn)
+                
+        accessoryView.addSubview(accesoryStackView)
+
+        //accessoryView.layer.cornerRadius = 6
         
+        //view.insertSubview(accessoryView, aboveSubview: scrollView)
+        view.insertSubview(accessoryView, at: view.subviews.count)
+        
+        setupConstraints()
+        setupActions()
+    }
+        
+    // MARK: Actions setup
+    private func setupActions() {
         saveBtn.addTarget(self, action: #selector(saveTaskAction(sender:)), for: .touchUpInside)
         
-        view.addSubview(accesoryStackView)
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(swipeToCloseAction(_:)))
+        panGestureRecognizer.delegate = self
+        scrollView?.addGestureRecognizer(panGestureRecognizer)
+
+        let addSubtaskTap = UITapGestureRecognizer(target: self, action: #selector(subtasksAddAction(sender:)))
+        addSubtaskButton.addGestureRecognizer(addSubtaskTap)
+        
+        let hideKeyboardTap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboardAction(sender:)))
+        hideKeyboardButton.addGestureRecognizer(hideKeyboardTap)
+        
+        let selectShortcutTap = UITapGestureRecognizer(target: self, action: #selector(selectShortcutTapAction(sender:)))
+        shortcutButton.addGestureRecognizer(selectShortcutTap)
+    }
+    
+    // MARK: Constraints setup
+    private func setupConstraints() {
+        let globalFrame = UIView.globalSafeAreaFrame
+                
+        guard let scrollView = scrollView else { return }
         
         var constraints = [
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: accesoryStackView.topAnchor)
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: accessoryView.topAnchor, constant: 0),
         ]
+         
+        accesoryBottomConstraint = accessoryView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -view.globalSafeAreaInsets.bottom - 10)
+        accesoryLeadingConstraint = accessoryView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10)
+        accesoryTrailingConstraint = accessoryView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
+        
+        addSubtaskBtnTrailingConstraint = addSubtaskButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
         
         constraints.append(contentsOf: [
-            swipeCloseView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            swipeCloseView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            swipeCloseView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            swipeCloseView.heightAnchor.constraint(equalToConstant: StyleGuide.DetailTask.Sizes.swipeCloseViewHeight)
-        ])
-                
-        constraints.append(contentsOf: [
-            titleTextView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -StyleGuide.DetailTask.Sizes.contentSidePadding),
-            titleTextView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 72),
-            titleTextView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: StyleGuide.DetailTask.Sizes.contentSidePadding)
-        ])
-        
-        constraints.append(contentsOf: [textViewBottomConstraint])
-        
-        constraints.append(contentsOf: [
-            accesoryStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            accesoryStackView.topAnchor.constraint(equalTo: accessoryView.topAnchor),
+            accesoryStackView.leadingAnchor.constraint(equalTo: accessoryView.leadingAnchor),
+            accesoryStackView.trailingAnchor.constraint(equalTo: accessoryView.trailingAnchor),
+            accesoryStackView.bottomAnchor.constraint(equalTo: accessoryView.bottomAnchor),
+            accesoryLeadingConstraint,
             accesoryBottomConstraint,
-            accesoryStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            accesoryStackView.heightAnchor.constraint(equalToConstant: StyleGuide.DetailTask.Sizes.accesoryStackViewHeight)
+            accesoryTrailingConstraint,
+            accessoryView.heightAnchor.constraint(equalToConstant: StyleGuide.DetailTask.Sizes.accesoryStackViewHeight)
+        ])
+        
+        constraints.append(contentsOf: [
+            hideKeyboardButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            hideKeyboardButton.heightAnchor.constraint(equalToConstant: 30),
+            hideKeyboardButton.bottomAnchor.constraint(equalTo: accessoryView.topAnchor, constant: -10),
+            hideKeyboardButton.widthAnchor.constraint(equalToConstant: globalFrame.width * 0.2),
+            addSubtaskButton.heightAnchor.constraint(equalToConstant: 30),
+            addSubtaskBtnTrailingConstraint,
+            addSubtaskButton.bottomAnchor.constraint(equalTo: accessoryView.topAnchor, constant: -10),
+            addSubtaskButton.widthAnchor.constraint(equalToConstant: globalFrame.width * 0.4)
+        ])
+        
+        let shortcutWidthConstraint = shortcutButton.widthAnchor.constraint(equalToConstant: 10)
+        shortcutWidthConstraint.priority = UILayoutPriority(250)
+        
+        constraints.append(contentsOf: [
+            shortcutButton.heightAnchor.constraint(equalToConstant: 30),
+            shortcutButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            shortcutButton.bottomAnchor.constraint(equalTo: accessoryView.topAnchor, constant: -10),
+            shortcutWidthConstraint
         ])
         
         NSLayoutConstraint.activate(constraints)
         
-        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(swipeToCloseAction(_:)))
-        view.addGestureRecognizer(panGestureRecognizer)
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(tapToCloseAction(_:)))
-        swipeCloseView.addGestureRecognizer(tap)
-        
-        view.clipsToBounds = true
-        view.backgroundColor = StyleGuide.DetailTask.Colors.viewBGColor
-        let mask = CAShapeLayer()
-        
-        let cornerRadius = StyleGuide.DetailTask.Sizes.viewCornerRadius
-        mask.path = UIBezierPath(roundedRect: view.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: cornerRadius, height: cornerRadius)).cgPath
-        
-        view.layer.mask = mask
     }
-        
-    // MARK: View animations
     
+    // MARK: View animations
     private func showView() {
         let safeAreaFrame = UIView.globalSafeAreaFrame
         
@@ -281,13 +335,13 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType,  Prese
                        options: .curveEaseOut,
                        animations: {
                         self.view.frame.origin = self.viewOrigin
-        }, completion: { (finished) in
-            //self.titleTextView.becomeFirstResponder()
+        }, completion: { [weak self] finished in
+            self?.scrollView?.updateSizes()
         })
     }
     
     private func hideView(completion: @escaping ()->()) {
-        titleTextView.resignFirstResponder()
+        scrollView?.resignTextInputResponders()
         
         UIView.animate(withDuration: 0.3,
                        delay: 0,
@@ -298,22 +352,9 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType,  Prese
             completion()
         })
     }
-    
-    // MARK: TextView config
-    
-    private func setupPlaceholder() {
-        placeholderLabel.text = "Task description"
-        placeholderLabel.font = Font.detailTaskStandartTitle.uiFont
-        placeholderLabel.sizeToFit()
-        titleTextView.addSubview(placeholderLabel)
-        placeholderLabel.frame.origin = CGPoint(x: 5, y: (titleTextView.font?.pointSize)! / 2)
-        placeholderLabel.textColor = UIColor.lightGray
-        placeholderLabel.isHidden = !titleTextView.text.isEmpty
-    }
 }
 
 // MARK: Bind viewModel
-
 extension DetailTaskEditViewController {
     private func bindViewModel() {
         viewModel.outputs.selectedDate.bind { [weak self] date in
@@ -331,7 +372,6 @@ extension DetailTaskEditViewController {
         
         viewModel.outputs.selectedTime.bind { [weak self] dateTime in
             guard let _ = dateTime else {
-                //self?.timeStackView.isHidden = true
                 if let alarmBtn = self?.alarmBtn {
                     alarmBtn.alarmIsSet = false
                 }
@@ -342,34 +382,28 @@ extension DetailTaskEditViewController {
                 alarmBtn.alarmIsSet = true
             }
         }
-    }
-}
-
-// MARK: UITextViewDelegate
-
-extension DetailTaskEditViewController: UITextViewDelegate {
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        if let updatedTitle = (textView.text as NSString?)?.replacingCharacters(in: range, with: text) {
-            viewModel.inputs.setTitle(title: updatedTitle)
-        }
         
-        return true
-    }
-    
-    func textViewDidChange(_ textView: UITextView) {
-        placeholderLabel.isHidden = !textView.text.isEmpty
+        viewModel.outputs.selectedShortcut.bind { [weak self] shortcutData in
+            self?.shortcutButton.shortcutBtnData = shortcutData
+        }
     }
 }
 
 // MARK: Actions
-
 extension DetailTaskEditViewController {
     
-    // MARK: -Accessory view actions
+    @objc private func subtasksAddAction(sender: UITapGestureRecognizer) {
+        scrollView?.addNewSubtask()
+    }
     
+    @objc private func hideKeyboardAction(sender: UITapGestureRecognizer) {
+        scrollView?.resignTextInputResponders()
+    }
+    
+    // MARK: -Accessory view actions
     @objc private func saveTaskAction(sender: UIButton) {
-        if titleTextView.text == "" {
-            titleTextView.shake(duration: 1)
+        if scrollView?.currentTitle == "" {
+            scrollView?.shakeTitle()
             return
         }
         
@@ -381,14 +415,15 @@ extension DetailTaskEditViewController {
     }
     
     private func calendarTapAction() {
-        titleTextView.resignFirstResponder()
+        scrollView?.resignTextInputResponders()
+        
         if let calendatAction = onCalendarSelect {
             calendatAction(viewModel.outputs.selectedDate.value, self)
         }
     }
     
     private func reminderTapAction() {
-        titleTextView.resignFirstResponder()
+        scrollView?.resignTextInputResponders()
         
         var normalizeTimeFromDate = viewModel.outputs.selectedDate.value ?? Date()
         if let taskTime = viewModel.outputs.selectedTime.value {
@@ -410,9 +445,15 @@ extension DetailTaskEditViewController {
         }
     }
     
+    @objc private func selectShortcutTapAction(sender: UITapGestureRecognizer) {
+        if let shortcutAction = onShortcutSelect {
+            shortcutAction(viewModel.outputs.shortcutUID, self)
+        }
+    }
+    
     // MARK: -Close actions
     
-    @objc private func tapToCloseAction(_ recognizer: UITapGestureRecognizer) {
+    private func tapToCloseAction() {
         hideView { [weak self] in
             guard let self = self else { return }
             self.presenter?.pop(vc: self)
@@ -421,52 +462,63 @@ extension DetailTaskEditViewController {
     
     @objc private func swipeToCloseAction(_ recognizer: UIPanGestureRecognizer) {
         let gestureIsDraggingFromTopToBottom = recognizer.velocity(in: view).y > 0
-        if !gestureIsDraggingFromTopToBottom { return }
+        
+        if !gestureIsDraggingFromTopToBottom && recognizer.state != .ended {
+            return
+        }
         
         switch recognizer.state {
         case .changed:
-            if let rView = recognizer.view {
-                
-                if rView.frame.origin.y < viewOrigin.y {
-                    rView.frame.origin = viewOrigin
-                }
-                                
-                var draggingDistance = recognizer.translation(in: view).y
-
-                draggingDistance *= 0.2
-
-                let swipePositionY = rView.frame.origin.y + draggingDistance
-
-                if swipePositionY > viewOrigin.y {
-                    rView.frame.origin.y = rView.frame.origin.y + draggingDistance
-                    recognizer.setTranslation(CGPoint.zero, in: view)
-                }
-
-                if rView.frame.origin.y > viewOrigin.y + 45 {
-                    hideView { [weak self] in
-                        guard let self = self else { return }
-                        self.presenter?.pop(vc: self)
-                    }
+            if view.frame.origin.y < viewOrigin.y {
+                view.frame.origin = viewOrigin
+            }
+            
+            var draggingDistance = recognizer.translation(in: view).y
+            
+            draggingDistance *= 0.2
+            
+            let swipePositionY = view.frame.origin.y + draggingDistance
+            
+            if swipePositionY > viewOrigin.y {
+                view.frame.origin.y = view.frame.origin.y + draggingDistance
+                recognizer.setTranslation(CGPoint.zero, in: view)
+            }
+            
+            if view.frame.origin.y >= viewOrigin.y + 45 {
+                hideView { [weak self] in
+                    guard let self = self else { return }
+                    self.presenter?.pop(vc: self)
                 }
             }
         case .ended:
-            if let rView = recognizer.view {
-                if rView.frame.origin.y <= viewOrigin.y + 45 {
-                    UIView.animate(withDuration: 0.3) {
-                        self.view.frame.origin.y = self.viewOrigin.y
-                    }
-                } else {
-                    hideView { [weak self] in
-                        guard let self = self else { return }
-                        self.presenter?.pop(vc: self)
-                    }
+            if view.frame.origin.y < viewOrigin.y + 45 {
+                UIView.animate(withDuration: 0.3) {
+                    self.view.frame.origin.y = self.viewOrigin.y
+                }
+            } else {
+                hideView { [weak self] in
+                    guard let self = self else { return }
+                    self.presenter?.pop(vc: self)
                 }
             }
         default:
             break
         }
     }
-    
+}
+
+// MARK: UIGestureRecognizerDelegate
+extension DetailTaskEditViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+
+        if let panGesture = gestureRecognizer as? UIPanGestureRecognizer {
+            if panGesture.velocity(in: view).y < 0 {
+                return false
+            }
+        }
+
+        return scrollView?.contentOffset.y ?? 0 <= 0
+    }
 }
 
 // MARK: CalendarPickerViewOutputs
@@ -482,7 +534,7 @@ extension DetailTaskEditViewController: CalendarPickerViewOutputs {
     }
     
     func comletionAfterCloseCalendar() {
-        titleTextView.becomeFirstResponder()
+        
     }
 }
 
@@ -498,6 +550,18 @@ extension DetailTaskEditViewController: TimePickerViewOutputs {
     }
 
     func completionAfterCloseTimePicker() {
-        titleTextView.becomeFirstResponder()
+        
+    }
+}
+
+// MARK: ShortcutListViewOutputs
+extension DetailTaskEditViewController: ShortcutListViewOutputs {
+    var selectedShortcutUID: String? {
+        get {
+            return viewModel.outputs.shortcutUID
+        }
+        set {
+            viewModel.inputs.setShortcut(shortcutUID: newValue)
+        }
     }
 }

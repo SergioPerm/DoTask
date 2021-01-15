@@ -28,6 +28,8 @@ class ContainerPresenterController: UIViewController, PresenterController {
             if let presentableControllerNavBar = getNavigationController(from: vc) {
                 presentableControllerNavBar.popViewController(animated: true)
             }
+        case .systemModalController:
+            vc.dismiss(animated: true, completion: nil)
         }
         
         runCompletion(for: vc)
@@ -56,6 +58,9 @@ class ContainerPresenterController: UIViewController, PresenterController {
                 navigationController.delegate = self
                 add(navigationController)
             }
+        case .systemModalController:
+            //vc.modalPresentationStyle = .overFullScreen
+            present(vc, animated: true, completion: nil)
         }
     }
 }

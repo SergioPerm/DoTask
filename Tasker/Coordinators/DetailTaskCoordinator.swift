@@ -21,15 +21,6 @@ class DetailTaskCoordinator: NSObject, Coordinator {
     }
     
     func start() {
-        
-//        let vc = TestScrollViewController.instantiate()
-//        vc.presenter = presenter
-//        vc.presentableControllerViewType = .modalViewController
-//
-//        presenter?.push(vc: vc, completion: { [weak self] in
-//            self?.parentCoordinator?.childDidFinish(self)
-//        })
-        
         let vc = DetailTaskAssembly.createInstance(taskUID: taskUID, presenter: presenter)
         vc.onCalendarSelect = { date, outputs in
             self.openCalendar(date: date, calendarOutputs: outputs)
@@ -37,6 +28,21 @@ class DetailTaskCoordinator: NSObject, Coordinator {
         vc.onTimeReminderSelect = { date, outputs in
             self.openReminder(date: date, reminderOutputs: outputs)
         }
+        vc.onShortcutSelect = { shortcutUID, outputs in
+            self.selectShortcut(shortcutUID: shortcutUID, shortcutListOutputs: outputs)
+        }
+        presenter?.push(vc: vc, completion: { [weak self] in
+            self?.parentCoordinator?.childDidFinish(self)
+        })
+    }
+    
+    func selectShortcut(shortcutUID: String?, shortcutListOutputs: ShortcutListViewOutputs) {
+        let vc = ShortcutListAssembly.createInstance(presenter: presenter)
+        
+        vc.selectShortcutHandler = { [weak shortcutListOutputs] uid in
+            shortcutListOutputs?.selectedShortcutUID = uid
+        }
+        
         presenter?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
         })

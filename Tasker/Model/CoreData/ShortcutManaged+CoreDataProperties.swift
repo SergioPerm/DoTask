@@ -17,10 +17,11 @@ extension ShortcutManaged {
         return NSFetchRequest<ShortcutManaged>(entityName: "ShortcutManaged")
     }
 
+    @NSManaged public var identificator: UUID
     @NSManaged public var color: String
     @NSManaged public var name: String
     @NSManaged public var tasks: NSSet
-
+    @NSManaged public var showInMainList: Bool
 }
 
 // MARK: Generated accessors for tasks

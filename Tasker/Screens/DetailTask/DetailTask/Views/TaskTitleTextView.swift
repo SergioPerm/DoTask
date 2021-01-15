@@ -111,7 +111,13 @@ extension TaskTitleTextView {
     }
             
     @objc private func textDidChange(notification: NSNotification) {
-        updateParentScrollViewOffset()
+        if notification.name == UITextView.textDidBeginEditingNotification {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.updateParentScrollViewOffset()
+            }
+        } else {
+            updateParentScrollViewOffset()
+        }
     }
     
     func updateParentScrollViewOffset() {
@@ -134,15 +140,19 @@ extension TaskTitleTextView {
         }
                 
         if parentScrollView.contentOffset != scrollViewContentOffset {
-            parentScrollView.setContentOffset(scrollViewContentOffset, animated: false)
+            parentScrollView.setContentOffset(scrollViewContentOffset, animated: true)
         }
     }
     
     private func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(textDidChange(notification:)), name: UITextView.textDidChangeNotification, object: self)
+        NotificationCenter.default.addObserver(self, selector: #selector(textDidChange(notification:)), name: UITextView.textDidBeginEditingNotification, object: self)
+        
+        
     }
     
     private func deleteObservers() {
         NotificationCenter.default.removeObserver(self, name: UITextView.textDidChangeNotification, object: self)
+        NotificationCenter.default.removeObserver(self, name: UITextView.textDidBeginEditingNotification, object: self)
     }
 }

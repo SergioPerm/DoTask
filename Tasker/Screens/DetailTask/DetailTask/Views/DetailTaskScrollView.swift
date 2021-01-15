@@ -522,15 +522,7 @@ extension DetailTaskScrollView: DetailTaskScrollViewType {
     func setCloseHandler(handler: (() -> Void)?) {
         tapToCloseHandler = handler
     }
-    
-//    func activateMainTitle() {
-//        titleTextView.becomeFirstResponder()
-//    }
-//
-//    func deactivateMainTitle() {
-//        titleTextView.resignFirstResponder()
-//    }
-    
+        
     var currentTitle: String {
         get {
             return titleTextView.text

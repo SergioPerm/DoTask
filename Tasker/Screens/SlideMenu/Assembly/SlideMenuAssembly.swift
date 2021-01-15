@@ -9,7 +9,10 @@
 import Foundation
 
 class SlideMenuAssembly {
-    static func createInstance(presenter: PresenterController?) -> MenuViewController {
-        return MenuViewController.init(presenter: presenter, presentableControllerViewType: .menuViewController)
+    static func createInstance(presenter: PresenterController?) -> SlideMenuViewType {
+        let dataSource: ShortcutListDataSource = ShortcutListDataSourceCoreData(context: CoreDataService.shared.context)
+        let viewModel = MenuViewModel(dataSource: dataSource)
+        let vc = MenuViewController(viewModel: viewModel, presenter: presenter, presentableControllerViewType: .menuViewController)
+        return vc
     }
 }

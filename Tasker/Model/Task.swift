@@ -18,6 +18,7 @@ struct Task {
     var lat: Double?
     var lon: Double?
     var isNew: Bool = false
+    
     var importanceLevel: Int16 {
         didSet {
             if importanceLevel > 3 {
@@ -25,9 +26,10 @@ struct Task {
             }
         }
     }
-    var mainTaskListOrder: Int16
     
+    var mainTaskListOrder: Int16
     var subtasks: [Subtask]
+    var shortcut: Shortcut?
     
     init() {
         self.uid = UUID().uuidString
@@ -63,7 +65,10 @@ struct Task {
         }.sorted {
             $0.priority < $1.priority
         }
+        
+        if let shortcutManaged = task.shortcut {
+            self.shortcut = Shortcut(with: shortcutManaged)
+        }
     }
-    
 }
 

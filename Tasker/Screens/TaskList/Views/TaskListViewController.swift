@@ -98,7 +98,7 @@ extension TaskListViewController {
         
         self.navigationItem.leftBarButtonItem = menuBarItem
         
-        tableView = UITableView()
+        tableView = UITableView(frame: .zero, style: .grouped)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(TaskListTableViewCell.self, forCellReuseIdentifier: TaskListTableViewCell.className)
@@ -110,6 +110,7 @@ extension TaskListViewController {
         tableView.separatorStyle = .none
         tableView.rowHeight = 75
         tableView.backgroundColor = .white
+        tableView.showsVerticalScrollIndicator = false
         
         let btn = TaskAddButton {
             if let editAction = self.editTaskAction {

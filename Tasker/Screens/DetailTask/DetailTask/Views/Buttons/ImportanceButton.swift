@@ -40,40 +40,7 @@ class ImportanceButton: UIView {
         
     private var marksShape: CAShapeLayer = CAShapeLayer()
     
-    private lazy var warningShape: CAShapeLayer = {
-        //Setup shape size
-        let diagonal: CGFloat = frame.height * diagonalAttitudeToHeightFrame
-        let sideByDiagonal: CGFloat = diagonal / sqrt(2)
-        let inset = (frame.height - sideByDiagonal)/2
-        let backInset = frame.width/2 - frame.height/2
-        
-        //Draw
-        let rectPath = UIBezierPath(roundedRect: CGRect(x: backInset + inset, y: inset, width: sideByDiagonal, height: sideByDiagonal), cornerRadius: 2)
-                
-        let bounds: CGRect = rectPath.cgPath.boundingBox
-        let center = CGPoint(x: bounds.midX, y: bounds.midY)
-        
-        let degree: CGFloat = 45.0
-        let radians = degree / 180.0 * .pi
-        var transform: CGAffineTransform = .identity
-        transform = transform.translatedBy(x: center.x, y: center.y)
-        transform = transform.rotated(by: radians)
-        transform = transform.translatedBy(x: -center.x, y: -center.y)
-        rectPath.apply(transform)
-
-        //Shape
-        let shapeLayer = CAShapeLayer()
-        
-        shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.strokeColor = #colorLiteral(red: 0.8865944131, green: 0.8865944131, blue: 0.8865944131, alpha: 1).cgColor
-        shapeLayer.lineWidth = 1
-        shapeLayer.lineCap = .round
-        shapeLayer.path = rectPath.cgPath
-        
-        layer.addSublayer(shapeLayer)
-        
-        return shapeLayer
-    }()
+    private var warningShape: CAShapeLayer = CAShapeLayer()
         
     init(onTapAction: @escaping () -> Void, importanceLevel: Int) {
         self.onTapActionHandler = onTapAction
@@ -101,6 +68,7 @@ extension ImportanceButton {
     
     private func updateFramesInShapes() {
         warningShape.frame = bounds
+        drawWarningShape()
         drawMarks(marksFrame: bounds)
     }
     
@@ -120,6 +88,40 @@ extension ImportanceButton {
             }
         }
         onTapActionHandler()
+    }
+    
+    private func drawWarningShape() {
+        warningShape.removeFromSuperlayer()
+        
+        let diagonal: CGFloat = frame.height * diagonalAttitudeToHeightFrame
+        let sideByDiagonal: CGFloat = diagonal / sqrt(2)
+        let inset = (frame.height - sideByDiagonal)/2
+        let backInset = frame.width/2 - frame.height/2
+        
+        //Draw
+        let rectPath = UIBezierPath(roundedRect: CGRect(x: backInset + inset, y: inset, width: sideByDiagonal, height: sideByDiagonal), cornerRadius: 2)
+                
+        let bounds: CGRect = rectPath.cgPath.boundingBox
+        let center = CGPoint(x: bounds.midX, y: bounds.midY)
+        
+        let degree: CGFloat = 45.0
+        let radians = degree / 180.0 * .pi
+        var transform: CGAffineTransform = .identity
+        transform = transform.translatedBy(x: center.x, y: center.y)
+        transform = transform.rotated(by: radians)
+        transform = transform.translatedBy(x: -center.x, y: -center.y)
+        rectPath.apply(transform)
+
+        //Shape
+        warningShape = CAShapeLayer()
+        
+        warningShape.fillColor = UIColor.clear.cgColor
+        warningShape.strokeColor = #colorLiteral(red: 0.8865944131, green: 0.8865944131, blue: 0.8865944131, alpha: 1).cgColor
+        warningShape.lineWidth = 1
+        warningShape.lineCap = .round
+        warningShape.path = rectPath.cgPath
+        
+        layer.addSublayer(warningShape)
     }
     
     private func drawMarks(marksFrame: CGRect) {

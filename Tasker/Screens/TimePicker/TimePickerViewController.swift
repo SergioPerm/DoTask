@@ -317,7 +317,7 @@ extension TimePickerViewController: UIPickerViewDelegate {
         case .separator:
             return ":"
         case .minute:
-            guard let textComponent = numberFormatter.string(from: NSNumber(value: minutes[row % hours.count])) else { return "" }
+            guard let textComponent = numberFormatter.string(from: NSNumber(value: minutes[row % minutes.count])) else { return "" }
             return "\(textComponent)"
         default:
             return ""

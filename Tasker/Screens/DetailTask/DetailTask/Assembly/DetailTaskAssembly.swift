@@ -10,12 +10,12 @@ import Foundation
 
 class DetailTaskAssembly {
     static func createInstance(taskUID: String?, presenter: PresenterController?) -> DetailTaskViewType {
-        let dataSource: TaskListDataSource = TaskListDataSourceCoreDataImpl(context: CoreDataService.shared.context)
+        let dataSource: TaskListDataSource = TaskListDataSourceCoreData(context: CoreDataService.shared.context)
         let viewModel: DetailTaskViewModel = DetailTaskViewModel(taskUID: taskUID, dataSource: dataSource)
 
-//        if let _ = taskUID {
-//            return DetailTaskEditViewController(viewModel: viewModel, presenter: presenter, presentableControllerViewType: .modalViewController)
-//        }
+        if let _ = taskUID {
+            return DetailTaskEditViewController(viewModel: viewModel, presenter: presenter, presentableControllerViewType: .modalViewController)
+        }
         
         return DetailTaskNewViewController(viewModel: viewModel, presenter: presenter, presentableControllerViewType: .modalViewController)
     }

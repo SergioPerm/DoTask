@@ -12,6 +12,7 @@ enum PresentableControllerViewType {
     case menuViewController
     case modalViewController
     case navigationStackController
+    case systemModalController
 }
 
 protocol PresentableController: UIViewController {

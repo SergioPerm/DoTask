@@ -38,46 +38,7 @@ class CalendarButton: UIView {
         }
     }
     
-    private lazy var calendarShape: CAShapeLayer = {
-        
-        //Setup calendar size
-        let scaleForHeight: CGFloat = 0.8
-        
-        let sideWidth = frame.height * calendarWidthAttitudeToHeightFrame
-        let hingeLenght: CGFloat = sideWidth/5
-        let inset = (frame.height - sideWidth)/2
-        
-        let backInset = frame.width/2 - frame.height/2
-        let sideHeight: CGFloat = sideWidth * scaleForHeight
-        
-        let calendarOrigin = CGPoint(x: backInset + inset, y: inset + (sideWidth-(sideHeight))/2)
-        let calendarSize = CGSize(width: sideWidth, height: sideHeight)
-                
-        //Draw
-        let rectPath = UIBezierPath(roundedRect: CGRect(origin: calendarOrigin, size: calendarSize), cornerRadius: 2)
-        
-        var hingeBrush = CGPoint(x: calendarOrigin.x + sideWidth/3, y: calendarOrigin.y - hingeLenght/2)
-        rectPath.move(to: hingeBrush)
-        hingeBrush = CGPoint(x: hingeBrush.x, y: hingeBrush.y + hingeLenght)
-        rectPath.addLine(to: hingeBrush)
-        hingeBrush = CGPoint(x: hingeBrush.x + sideWidth/3, y: calendarOrigin.y - hingeLenght/2)
-        rectPath.move(to: hingeBrush)
-        hingeBrush = CGPoint(x: hingeBrush.x, y: hingeBrush.y + hingeLenght)
-        rectPath.addLine(to: hingeBrush)
-        
-        //Shape
-        let shapeLayer = CAShapeLayer()
-        
-        shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.strokeColor = Color.blueColor.uiColor.cgColor
-        shapeLayer.lineWidth = 1
-        shapeLayer.lineCap = .round
-        shapeLayer.path = rectPath.cgPath
-                    
-        layer.addSublayer(shapeLayer)
-        
-        return shapeLayer
-    }()
+    private var calendarShape: CAShapeLayer = CAShapeLayer()
     
     init(onTapAction: @escaping () -> Void, day: Date?) {
         self.day = day
@@ -105,11 +66,52 @@ class CalendarButton: UIView {
         super.layoutSubviews()
         
         calendarShape.frame = bounds
+        drawCalendar()
     }
     
 }
 
 extension CalendarButton {
+    
+    private func drawCalendar() {
+        calendarShape.removeFromSuperlayer()
+        
+        //Setup calendar size
+        let scaleForHeight: CGFloat = 0.8
+
+        let sideWidth = frame.height * calendarWidthAttitudeToHeightFrame
+        let hingeLenght: CGFloat = sideWidth/5
+        let inset = (frame.height - sideWidth)/2
+
+        let backInset = frame.width/2 - frame.height/2
+        let sideHeight: CGFloat = sideWidth * scaleForHeight
+
+        let calendarOrigin = CGPoint(x: backInset + inset, y: inset + (sideWidth-(sideHeight))/2)
+        let calendarSize = CGSize(width: sideWidth, height: sideHeight)
+
+        //Draw
+        let rectPath = UIBezierPath(roundedRect: CGRect(origin: calendarOrigin, size: calendarSize), cornerRadius: 2)
+
+        var hingeBrush = CGPoint(x: calendarOrigin.x + sideWidth/3, y: calendarOrigin.y - hingeLenght/2)
+        rectPath.move(to: hingeBrush)
+        hingeBrush = CGPoint(x: hingeBrush.x, y: hingeBrush.y + hingeLenght)
+        rectPath.addLine(to: hingeBrush)
+        hingeBrush = CGPoint(x: hingeBrush.x + sideWidth/3, y: calendarOrigin.y - hingeLenght/2)
+        rectPath.move(to: hingeBrush)
+        hingeBrush = CGPoint(x: hingeBrush.x, y: hingeBrush.y + hingeLenght)
+        rectPath.addLine(to: hingeBrush)
+
+        //Shape
+        calendarShape = CAShapeLayer()
+
+        calendarShape.fillColor = UIColor.clear.cgColor
+        calendarShape.strokeColor = Color.blueColor.uiColor.cgColor
+        calendarShape.lineWidth = 1
+        calendarShape.lineCap = .round
+        calendarShape.path = rectPath.cgPath
+
+        layer.addSublayer(calendarShape)
+    }
     
     private func setup() {
         addSubview(dayLabel)

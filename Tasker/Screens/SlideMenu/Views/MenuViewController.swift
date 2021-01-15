@@ -8,23 +8,44 @@
 
 import UIKit
 
-protocol SlideMenuViewType: class {
-    var parentController: MenuParentControllerType? { get set }
-    var enabled: Bool { get set }
-    
-    func toggleMenu()
-}
-
 protocol MenuParentControllerType: class {
     func willMenuExpand()
     func didMenuCollapse()
     func getView() -> UIView
 }
 
+// MARK: Static menu items
+
+enum MenuTableSections: Int, CaseIterable {
+    case Settings
+    case Items
+    case Shortcuts
+}
+
+enum MenuTableSettingsRows: Int, CaseIterable {
+    case TopSettings
+}
+
+enum MenuTableItemsRows: Int, CaseIterable {
+    case TaskList
+    case TaskDiary
+}
+
+enum MenuTableShortcutRows: Int, CaseIterable {
+    case ShortcutCreate
+}
+
 class MenuViewController: UIViewController, PresentableController, SlideMenuViewType {
-    
+
     var presentableControllerViewType: PresentableControllerViewType
     var presenter: PresenterController?
+    
+    private var viewModel: MenuViewModelType
+    private var menuCellFactory: MenuCellFactoryType? {
+        didSet {
+            menuCellFactory?.cellTypes.forEach({ $0.register(tableView)})
+        }
+    }
     
     // MARK: Menu properties
     private var swipeRecognizer: UIPanGestureRecognizer?
@@ -39,13 +60,19 @@ class MenuViewController: UIViewController, PresentableController, SlideMenuView
     
     private var tableView: UITableView!
     
+    
+    
+    private var selectedCell: UITableViewCell?
+    
     // MARK: SlideMenuHandlers
-    var openSettingsHandler: ((_ menu: SlideMenuViewType?) -> Void)?
-    var openTaskListHandler: ((_ menu: SlideMenuViewType?) -> Void)?
+    var openSettingsHandler: ((SlideMenuViewType?) -> Void)?
+    var openTaskListHandler: ((SlideMenuViewType?) -> Void)?
+    var openDetailShortcutHandler: ((String?) -> Void)?
     
     // MARK: Init
     
-    init(presenter: PresenterController?, presentableControllerViewType: PresentableControllerViewType) {
+    init(viewModel: MenuViewModel, presenter: PresenterController?, presentableControllerViewType: PresentableControllerViewType) {
+        self.viewModel = viewModel
         self.presenter = presenter
         self.presentableControllerViewType = presentableControllerViewType
         self.enabled = true
@@ -68,6 +95,11 @@ class MenuViewController: UIViewController, PresentableController, SlideMenuView
         }
         
         setup()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.inputs.shortcutTableView = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -105,16 +137,17 @@ class MenuViewController: UIViewController, PresentableController, SlideMenuView
 extension MenuViewController {
     private func setup() {
         view.backgroundColor = StyleGuide.SlideMenu.viewBGColor
-        
+                
         tableView = UITableView()
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(TopMenuTableViewCell.self, forCellReuseIdentifier: TopMenuTableViewCell.className)
-        tableView.register(MainMenuTableViewCell.self, forCellReuseIdentifier: MainMenuTableViewCell.className)
-        tableView.register(CreateShortcutMenuTableViewCell.self, forCellReuseIdentifier: CreateShortcutMenuTableViewCell.className)
-        tableView.register(ShortcutMenuTableViewCell.self, forCellReuseIdentifier: ShortcutMenuTableViewCell.className)
         
-        
+        menuCellFactory = MenuCellFactory()
+        viewModel.inputs.createShortcutHandler = {
+            if let openDetailShortcutAction = self.openDetailShortcutHandler {
+                openDetailShortcutAction(nil)
+            }
+        }
         view.addSubview(tableView)
         
         tableView.frame = CGRect(origin: view.frame.origin, size: CGSize(width: view.frame.width * StyleGuide.SlideMenu.ratioToScreenExpandWidth, height: view.frame.height))
@@ -207,17 +240,18 @@ extension MenuViewController {
             settingsAction(self)
         }
     }
+    
 }
 
 // MARK: UIGestureRecognizerDelegate
 extension MenuViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         //solve gesture conflicts for edit tableviewcell
         let panGesture = gestureRecognizer as! UIPanGestureRecognizer
         let gestureIsDraggingFromRightToLeft = panGesture.velocity(in: parentController?.getView()).x < 0
         
         if gestureIsDraggingFromRightToLeft && currentState == .menuCollapsed {
+            
             return true
         }
 
@@ -229,99 +263,109 @@ extension MenuViewController: UIGestureRecognizerDelegate {
 
 extension MenuViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return 1
-        } else if section == 1 {
-            return 2
-        } else {
-            return 7
-        }
+        return viewModel.outputs.tableSections[section].tableCells.count
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return viewModel.outputs.tableSections.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: TopMenuTableViewCell.className, for: indexPath) as! TopMenuTableViewCell
-            
-            return cell
-        } else if indexPath.section == 1 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: MainMenuTableViewCell.className, for: indexPath) as! MainMenuTableViewCell
-            
-            if indexPath.row == 0 {
-                cell.icon.image = UIImage(named: "colorFlat")
-                cell.title.text = "Task list"
-            } else {
-                cell.icon.image = UIImage(named: "diary")
-                cell.title.text = "Task diary"
-            }
-            
-            return cell
-        } else {
-            if indexPath.row == 0 {
-                let cell = tableView.dequeueReusableCell(withIdentifier: CreateShortcutMenuTableViewCell.className, for: indexPath) as! CreateShortcutMenuTableViewCell
-                
-                return cell
-            } else {
-                let cell = tableView.dequeueReusableCell(withIdentifier: ShortcutMenuTableViewCell.className, for: indexPath) as! ShortcutMenuTableViewCell
-                
-                if indexPath.row == 1 {
-                    cell.shapeView.backgroundColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
-                    cell.title.text = "Work"
-                } else if indexPath.row == 2 {
-                    cell.shapeView.backgroundColor = #colorLiteral(red: 0.5725490451, green: 0, blue: 0.2313725501, alpha: 1)
-                    cell.title.text = "Travel"
-                } else if indexPath.row == 3 {
-                    cell.shapeView.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
-                    cell.title.text = "Common"
-                } else if indexPath.row == 4 {
-                    cell.shapeView.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.751592625, blue: 0.02233285838, alpha: 1)
-                    cell.title.text = "Relationships"
-                } else if indexPath.row == 5 {
-                    cell.shapeView.backgroundColor = #colorLiteral(red: 0.9501484036, green: 0.3136262298, blue: 0.3514909744, alpha: 1)
-                    cell.title.text = "Sport"
-                } else if indexPath.row == 6 {
-                    cell.shapeView.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
-                    cell.title.text = "Health"
-                }
-                
-                return cell
-            }
+        guard let cellFactory = menuCellFactory else {
+            return UITableViewCell()
         }
+        
+        let cellViewModel = viewModel.outputs.tableSections[indexPath.section].tableCells[indexPath.row]
+        
+        return cellFactory.generateCell(viewModel: cellViewModel, tableView: tableView, for: indexPath)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if section == 1 {
-            let view = UIView()
-            view.frame = CGRect(x: 0, y: 0, width: 0, height: 30)
-            return view
-        } else if section == 2 {
-            let view = UIView()
-            view.frame = CGRect(x: 0, y: 0, width: 0, height: 10)
-            return view
-        } else {
-            return nil
+        let headerHeight = CGFloat(viewModel.outputs.tableSections[section].sectionHeight)
+        
+        let headerView = UIView()
+        headerView.frame = CGRect(x: 0, y: 0, width: 0, height: headerHeight)
+        
+        return headerView
+    }
+}
+
+// MARK: UITableViewDelegate
+
+extension MenuViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return CGFloat(viewModel.outputs.tableSections[indexPath.section].tableCells[indexPath.row].rowHeight)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return CGFloat(viewModel.outputs.tableSections[section].sectionHeight)
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        if let shortcutViewModel = viewModel.outputs.tableSections[indexPath.section].tableCells[indexPath.row] as? ShortcutMenuItemViewModel {
+            
+            let shortcutUID = shortcutViewModel.shortcut.uid
+            
+            let contextEditShortcut = UIContextualAction(style: .normal, title: nil, handler: { (contextualAction, view, completion) in
+                if let opendetailShoartcutAction = self.openDetailShortcutHandler {
+                    opendetailShoartcutAction(shortcutUID)
+                }
+            })
+            
+            contextEditShortcut.image = UIGraphicsImageRenderer(size: CGSize(width: 23, height: 23)).image { _ in
+                UIImage(named: "edit")?.draw(in: CGRect(x: 0, y: 0, width: 23, height: 23))
+            }
+            contextEditShortcut.backgroundColor = .white
+            
+            let configuration = UISwipeActionsConfiguration(actions: [contextEditShortcut])
+            configuration.performsFirstActionWithFullSwipe = false
+            
+            return configuration
+        }
+        
+        return nil
+    }
+}
+
+extension MenuViewController: ShortcutListTableViewType {
+    func tableViewReload() {
+        tableView.reloadData()
+    }
+    
+    func tableViewBeginUpdates() {
+        tableView.beginUpdates()
+    }
+    
+    func tableViewEndUpdates() {
+        tableView.endUpdates()
+    }
+    
+    func tableViewInsertRow(at newIndexPath: IndexPath) {
+        tableView.insertRows(at: [newIndexPath], with: .top)
+    }
+    
+    func tableViewDeleteRow(at indexPath: IndexPath) {
+        tableView.deleteRows(at: [indexPath], with: .bottom)
+    }
+    
+    func tableViewUpdateRow(at indexPath: IndexPath) {
+        if let cellViewModel = viewModel.outputs.tableSections[indexPath.section].tableCells[indexPath.row] as? ShortcutMenuItemViewModel {
+            let cell = tableView.cellForRow(at: indexPath) as! ShortcutMenuTableViewCell
+            cell.viewModel = cellViewModel
         }
     }
 }
 
-extension MenuViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 1{
-            return 50
-        }
-        return 40
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 1 {
-            return 30
-        } else if section == 2 {
-            return 10
-        } else {
-            return CGFloat.leastNormalMagnitude
+// MARK: CreateShortcutMenuTableViewCellDelegate
+extension MenuViewController: CreateShortcutMenuTableViewCellDelegate {
+    func createShortcutAction() {
+        if let openDetailShortcutAction = openDetailShortcutHandler {
+            openDetailShortcutAction(nil)
         }
     }
 }

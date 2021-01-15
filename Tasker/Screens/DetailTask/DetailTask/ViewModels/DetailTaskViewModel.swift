@@ -12,7 +12,7 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
 
     private var task: Task
     private var dataSource: TaskListDataSource
-        
+    
     var subtasks: [SubtaskViewModelType] = []
     
     var inputs: DetailTaskViewModelInputs { return self }
@@ -25,6 +25,13 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
         
         self.selectedDate = Boxing(task.taskDate)
         self.selectedTime = Boxing(task.reminderDate ? task.taskDate : nil)
+        
+        if let shortcut =  self.task.shortcut {
+            self.selectedShortcut = Boxing(ShortcutData(title: shortcut.name, colorHex: shortcut.color))
+        } else {
+            self.selectedShortcut = Boxing(ShortcutData(title: nil, colorHex: nil))
+        }
+
         self.importanceLevel = Int(task.importanceLevel)
         
         self.subtasks = self.task.subtasks.map {
@@ -35,7 +42,14 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
     // MARK: INPUTS
     
     func setTaskDate(date: Date?) {
-        task.taskDate = date
+        if task.reminderDate, let taskDate = task.taskDate, let newDate = date {
+            //set time for selected date
+            let hour = Calendar.current.taskCalendar.component(.hour, from: taskDate)
+            let minute = Calendar.current.taskCalendar.component(.minute, from: taskDate)
+            task.taskDate = Calendar.current.taskCalendar.date(bySettingHour: hour, minute: minute, second: 0, of: newDate)
+        } else {
+            task.taskDate = date
+        }
         selectedDate.value = date
     }
     
@@ -95,6 +109,15 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
         }
     }
     
+    func setShortcut(shortcutUID: String?) {
+        guard let shortcutUID = shortcutUID else { return }
+        
+        if let shortcut = dataSource.shortcutModelByIdentifier(identifier: shortcutUID) {
+            task.shortcut = shortcut
+            selectedShortcut.value = ShortcutData(title: shortcut.name, colorHex: shortcut.color)
+        }
+    }
+    
     // MARK: OUTPUTS
     
     var selectedDate: Boxing<Date?>
@@ -103,5 +126,15 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
     
     var title: String {
         return task.title
+    }
+    
+    var selectedShortcut: Boxing<ShortcutData>
+    
+    var shortcutUID: String? {
+        if let shortcut = task.shortcut {
+            return shortcut.uid
+        }
+        
+        return nil
     }
 }

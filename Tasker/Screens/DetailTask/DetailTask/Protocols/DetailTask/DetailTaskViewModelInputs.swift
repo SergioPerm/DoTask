@@ -12,6 +12,7 @@ protocol DetailTaskViewModelInputs {
     func setTaskDate(date: Date?)
     func setReminder(date: Date?)
     func setTitle(title: String)
+    func setShortcut(shortcutUID: String?)
     func increaseImportance()
     func addSubtask() -> Int
     func deleteSubtask(subtask: SubtaskViewModelType)

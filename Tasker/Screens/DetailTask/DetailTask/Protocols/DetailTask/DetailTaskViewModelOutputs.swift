@@ -6,11 +6,15 @@
 //  Copyright © 2020 itotdel. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+typealias ShortcutData = (title: String?, colorHex: String?)
 
 protocol DetailTaskViewModelOutputs {
     var selectedDate: Boxing<Date?> { get }
     var selectedTime: Boxing<Date?> { get }
+    var selectedShortcut: Boxing<ShortcutData> { get }
+    var shortcutUID: String? { get }
     var importanceLevel: Int { get }
     var title: String { get }
     var subtasks: [SubtaskViewModelType] { get }

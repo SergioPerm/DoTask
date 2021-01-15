@@ -19,9 +19,19 @@ class AddSubtaskButton: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        updateShadow()
+    }
+    
 }
 
 extension AddSubtaskButton {
+    
+    private func updateShadow() {
+        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: 10).cgPath
+    }
+    
     private func setup() {
         
         layer.cornerRadius = 10
@@ -39,6 +49,12 @@ extension AddSubtaskButton {
             label.centerXAnchor.constraint(equalTo: centerXAnchor),
             label.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.8)
         ])
+        
+        clipsToBounds = false
+        layer.shadowColor = #colorLiteral(red: 0.5, green: 0.5, blue: 0.5, alpha: 1).cgColor
+        layer.shadowOpacity = 0.7
+        layer.shadowOffset = CGSize(width: 5.0, height: 5.0)
+        layer.shadowRadius = 10
         
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapAction(sender:)))
         tapRecognizer.delegate = self

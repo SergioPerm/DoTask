@@ -9,5 +9,10 @@
 import UIKit
 
 extension UITableViewCell {
-    static let reuseIdentifier = String(describing: UITableViewCell.self)
+    //static let reuseIdentifier = String(describing: UITableViewCell.self)
+    
+    
+    static var reuseIdentifier: String {
+        String(describing: self)
+    }
 }

@@ -31,6 +31,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = presenter
         window?.makeKeyAndVisible()
         
+        let path = FileManager
+            .default
+            .urls(for: .applicationSupportDirectory, in: .userDomainMask)
+            .last?
+            .absoluteString
+            .replacingOccurrences(of: "file://", with: "")
+            .removingPercentEncoding
+
+        print(path ?? "Not found")
+        
         return true
     }
 }

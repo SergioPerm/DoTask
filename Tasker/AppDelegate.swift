@@ -18,8 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         PushNotificationService.shared.checkAuthorization()
 
-        let presenter = ContainerPresenterController()
-        coordinator = MainCoordinator(presenter: presenter)
+        let router = Router(rootViewController: UIViewController())
+        coordinator = MainCoordinator(presenter: router)
         coordinator?.start()
         
         window = UIWindow(frame: UIScreen.main.bounds)
@@ -28,18 +28,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             window?.overrideUserInterfaceStyle = .light
         }
         
-        window?.rootViewController = presenter
+        window?.rootViewController = router.rootViewController
         window?.makeKeyAndVisible()
         
-        let path = FileManager
-            .default
-            .urls(for: .applicationSupportDirectory, in: .userDomainMask)
-            .last?
-            .absoluteString
-            .replacingOccurrences(of: "file://", with: "")
-            .removingPercentEncoding
-
-        print(path ?? "Not found")
+//        let path = FileManager
+//            .default
+//            .urls(for: .applicationSupportDirectory, in: .userDomainMask)
+//            .last?
+//            .absoluteString
+//            .replacingOccurrences(of: "file://", with: "")
+//            .removingPercentEncoding
+//
+//        print(path ?? "Not found")
         
         return true
     }

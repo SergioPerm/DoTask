@@ -11,7 +11,7 @@ import UIKit
 class TaskListViewController: UIViewController, PresentableController {
     
     var presentableControllerViewType: PresentableControllerViewType
-    var presenter: PresenterController?
+    var router: RouterType?
     
     // MARK: - Dependencies
     public let viewModel: TaskListViewModel
@@ -23,9 +23,9 @@ class TaskListViewController: UIViewController, PresentableController {
     
     var editTaskAction: ((_ taskUID: String?) ->  Void)?
     
-    init(viewModel: TaskListViewModel, presenter: PresenterController?, presentableControllerViewType: PresentableControllerViewType) {
+    init(viewModel: TaskListViewModel, presenter: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
         self.viewModel = viewModel
-        self.presenter = presenter
+        self.router = presenter
         self.presentableControllerViewType = presentableControllerViewType
         self.withSlideMenu = true
         
@@ -225,9 +225,13 @@ extension TaskListViewController: UITableViewDelegate {
         let contextItemDelete = UIContextualAction(style: .destructive, title: "") { [weak self] (contextualAction, view, completion) in
             self?.viewModel.deleteTask(at: indexPath)
         }
-        contextItemDelete.backgroundColor = Color.whiteColor.uiColor
-        contextItemDelete.image = UIGraphicsImageRenderer(size: CGSize(width: 30, height: 30)).image { _ in
-            UIImage(named: "recycle")?.draw(in: CGRect(x: 0, y: 0, width: 30, height: 30))
+        contextItemDelete.backgroundColor = .white
+//        contextItemDelete.image = UIGraphicsImageRenderer(size: CGSize(width: 30, height: 30)).image { _ in
+//            UIImage(named: "recycle")?.draw(in: CGRect(x: 0, y: 0, width: 30, height: 30))
+//        }
+        
+        if let removeImage =  UIImage(named: "recycle")?.cgImage {
+            contextItemDelete.image = ImageWithoutRender(cgImage: removeImage, scale: UIScreen.main.nativeScale, orientation: .up)
         }
         
         let configuration = UISwipeActionsConfiguration(actions: [contextItemDelete])
@@ -260,7 +264,7 @@ extension TaskListViewController: TaskListView {
     }
     
     func tableViewSectionDelete(at indexSet: IndexSet) {
-        tableView.deleteSections(indexSet, with: .right)
+        tableView.deleteSections(indexSet, with: .left)
     }
     
     func tableViewReload() {

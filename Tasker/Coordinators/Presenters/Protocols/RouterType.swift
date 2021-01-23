@@ -8,8 +8,11 @@
 
 import UIKit
 
-protocol PresenterController: UIViewController {
+protocol RouterType: class {
     var presentableControllers: [PresentableController?] { get set }
+    var rootViewController: UIViewController { get set }
+//    var transition: UIViewControllerAnimatedTransitioning? { get set }
+//    var interactionController: UIPercentDrivenInteractiveTransition? { get set }
     
     func push(vc: PresentableController, completion: (() -> Void)?)
     func pop(vc: PresentableController)

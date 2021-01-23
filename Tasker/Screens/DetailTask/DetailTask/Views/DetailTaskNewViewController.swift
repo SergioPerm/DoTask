@@ -11,7 +11,7 @@ import UIKit
 class DetailTaskNewViewController: UIViewController, DetailTaskViewType, PresentableController {
     
     var presentableControllerViewType: PresentableControllerViewType
-    var presenter: PresenterController?
+    var router: RouterType?
 
     // MARK: ViewModel
     private var viewModel: DetailTaskViewModelType
@@ -86,10 +86,10 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
     }()
     
     // MARK: Init
-    init(viewModel: DetailTaskViewModelType, presenter: PresenterController?, presentableControllerViewType: PresentableControllerViewType) {
+    init(viewModel: DetailTaskViewModelType, presenter: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
         self.viewModel = viewModel
         self.subtasks = viewModel.outputs.subtasks
-        self.presenter = presenter
+        self.router = presenter
         self.presentableControllerViewType = presentableControllerViewType
                 
         super.init(nibName: nil, bundle: nil)
@@ -98,7 +98,6 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
     }
     
     deinit {
-        print("detail task de init")
         deleteNotifications()
     }
     
@@ -367,7 +366,7 @@ extension DetailTaskNewViewController {
         hideView { [weak self] in
             guard let self = self else { return }
             self.viewModel.inputs.saveTask()
-            self.presenter?.pop(vc: self)
+            self.router?.pop(vc: self)
         }
     }
     
@@ -413,7 +412,7 @@ extension DetailTaskNewViewController {
     private func tapToCloseAction() {
         hideView { [weak self] in
             guard let self = self else { return }
-            self.presenter?.pop(vc: self)
+            self.router?.pop(vc: self)
         }
     }
     
@@ -444,7 +443,7 @@ extension DetailTaskNewViewController {
             if view.frame.origin.y >= viewOrigin.y + 45 {
                 hideView { [weak self] in
                     guard let self = self else { return }
-                    self.presenter?.pop(vc: self)
+                    self.router?.pop(vc: self)
                 }
             }
         case .ended:
@@ -455,7 +454,7 @@ extension DetailTaskNewViewController {
             } else {
                 hideView { [weak self] in
                     guard let self = self else { return }
-                    self.presenter?.pop(vc: self)
+                    self.router?.pop(vc: self)
                 }
             }
         default:

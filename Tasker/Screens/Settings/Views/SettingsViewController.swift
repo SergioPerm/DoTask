@@ -11,10 +11,10 @@ import UIKit
 class SettingsViewController: UIViewController, PresentableController {
     
     var presentableControllerViewType: PresentableControllerViewType
-    var presenter: PresenterController?
+    var router: RouterType?
     
-    init(presenter: PresenterController?, presentableControllerViewType: PresentableControllerViewType) {
-        self.presenter = presenter
+    init(presenter: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
+        self.router = presenter
         self.presentableControllerViewType = presentableControllerViewType
         super.init(nibName: nil, bundle: nil)
     }

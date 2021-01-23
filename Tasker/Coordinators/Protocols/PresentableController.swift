@@ -9,15 +9,16 @@
 import UIKit
 
 enum PresentableControllerViewType {
-    case menuViewController
-    case modalViewController
-    case navigationStackController
-    case systemModalController
+    case slideMenu
+    case containerChild
+    case navigationStack
+    case systemPopoverModal
+    case presentWithTransition
 }
 
 protocol PresentableController: UIViewController {
     var presentableControllerViewType: PresentableControllerViewType { get set }
-    var presenter: PresenterController? { get set }
+    var router: RouterType? { get set }
 }
 
 extension PresentableController where Self: UIViewController {

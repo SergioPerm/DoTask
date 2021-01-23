@@ -11,12 +11,15 @@ import UIKit
 class DetailShortcutViewController: UIViewController, PresentableController {
     
     var presentableControllerViewType: PresentableControllerViewType
-    var presenter: PresenterController?
+    var router: RouterType?
     
     // MARK: ViewModel
     private var viewModel: DetailShortcutViewModelType
     
     // MARK: View's properties
+    private var interactionController: UIPercentDrivenInteractiveTransition?
+    private let transitionController = DetailShortcutTransitionController()
+    
     private let placeholderLabel: UILabel = UILabel()
     
     private let labelView: UIView = {
@@ -43,18 +46,23 @@ class DetailShortcutViewController: UIViewController, PresentableController {
     
     // MARK: Initializers
     
-    init(viewModel: DetailShortcutViewModelType, presenter: PresenterController?, presentableControllerViewType: PresentableControllerViewType) {
+    init(viewModel: DetailShortcutViewModelType, presenter: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
         self.viewModel = viewModel
-        self.presenter = presenter
+        self.router = presenter
         self.presentableControllerViewType = presentableControllerViewType
         
         super.init(nibName: nil, bundle: nil)
         
         setupNotifications()
+        transitioningDelegate = transitionController
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        deleteNotifications()
     }
     
     // MARK: View's life-cycle
@@ -65,11 +73,6 @@ class DetailShortcutViewController: UIViewController, PresentableController {
         setupPlaceholder()
         setupConstraints()
         bindViewModel()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        presenter?.pop(vc: self)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -101,16 +104,18 @@ extension DetailShortcutViewController {
         
         deleteShortcutBtn.isHidden = viewModel.outputs.isNew
         
-        showInMainListView.toggleShowInMainListHandler = {
+        showInMainListView.toggleShowInMainListHandler = { [unowned self] in
             self.viewModel.inputs.toggleshowInMainListSetting()
         }
         
         nameTextField.text = viewModel.outputs.title
+        nameTextField.addTarget(self, action: #selector(textFieldEditAction(sender:)), for: .editingChanged)
+        
         showInMainListView.showInMainList = viewModel.outputs.showInMainListSetting
         
-        colorSelectionView.colorSelectionHandler = { color in
+        colorSelectionView.colorSelectionHandler = { [weak self] color in
             if let selectColor = color {
-                self.viewModel.inputs.setColor(color: selectColor)
+                self?.viewModel.inputs.setColor(color: selectColor)
             }
         }
         
@@ -120,13 +125,20 @@ extension DetailShortcutViewController {
         let deleteShortcutTap = UITapGestureRecognizer(target: self, action: #selector(deleteShortcutAction(sender:)))
         deleteShortcutBtn.addGestureRecognizer(deleteShortcutTap)
         
-        nameTextField.delegate = self
-        nameTextField.becomeFirstResponder()
         
+        let swipeGesture = UIPanGestureRecognizer(target: self, action: #selector(swipeCloseAction(sender:)))
+        view.addGestureRecognizer(swipeGesture)
+        
+        nameTextField.delegate = self
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+            self?.nameTextField.becomeFirstResponder()
+        }
+                
         colorSelectionView.presetColors = viewModel.outputs.getAllColors()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            self.colorSelectionView.selectedColor = self.viewModel.outputs.selectedColor.value
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+            self?.colorSelectionView.selectedColor = self?.viewModel.outputs.selectedColor.value
         }
     }
             
@@ -195,9 +207,9 @@ extension DetailShortcutViewController {
 
 extension DetailShortcutViewController {
     private func bindViewModel() {
-        viewModel.outputs.selectedColor.bind { color in
+        viewModel.outputs.selectedColor.bind { [weak self] color in
             guard let color = color else { return }
-            self.colorDotView.currentColor = color
+            self?.colorDotView.currentColor = color
         }
     }
 }
@@ -211,12 +223,37 @@ extension DetailShortcutViewController {
             return
         }
         viewModel.inputs.save()
-        presenter?.pop(vc: self)
+        router?.pop(vc: self)
     }
     
     @objc private func deleteShortcutAction(sender: UITapGestureRecognizer) {
         viewModel.inputs.delete()
-        presenter?.pop(vc: self)
+        router?.pop(vc: self)
+    }
+    
+    @objc private func swipeCloseAction(sender: UIPanGestureRecognizer) {
+        let translate = sender.translation(in: sender.view)
+        let percent   = translate.y / sender.view!.bounds.size.height
+
+        if sender.state == .began {
+            interactionController = UIPercentDrivenInteractiveTransition()
+            transitionController.interactionController = interactionController
+
+            dismiss(animated: true, completion: nil)
+        } else if sender.state == .changed {
+            interactionController?.update(percent)
+        } else if sender.state == .ended {
+            let velocity = sender.velocity(in: sender.view)
+            print("\(velocity)")
+            if percent > 0.5 || velocity.y >= 2000 {
+                router?.pop(vc: self)
+                interactionController?.finish()
+            } else {
+                interactionController?.completionSpeed = percent
+                interactionController?.cancel()
+            }
+            interactionController = nil
+        }
     }
 }
 
@@ -243,6 +280,7 @@ extension DetailShortcutViewController {
     }
     
     private func updateBottomLayoutConstraintWithNotification(notification: NSNotification, keyboardShow: Bool) {
+                
         let userInfo = notification.userInfo!
         
         let animationDuration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
@@ -270,8 +308,15 @@ extension DetailShortcutViewController {
 // MARK: UITextFieldDelegate
 
 extension DetailShortcutViewController: UITextFieldDelegate {
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-        placeholderLabel.isHidden = !textField.text!.isEmpty
-        viewModel.inputs.setTitle(title: textField.text!)
+//    func textFieldDidChangeSelection(_ textField: UITextField) {
+//        placeholderLabel.isHidden = !textField.text!.isEmpty
+//        viewModel.inputs.setTitle(title: textField.text!)
+//    }
+        
+    @objc private func textFieldEditAction(sender: Any?) {
+        placeholderLabel.isHidden = !nameTextField.text!.isEmpty
+        viewModel.inputs.setTitle(title: nameTextField.text!)
     }
 }
+
+

@@ -13,11 +13,13 @@ class ShortcutListViewController: UIViewController, PresentableController, Short
     var selectShortcutHandler: ((String) -> Void)?
     
     var presentableControllerViewType: PresentableControllerViewType
-    var presenter: PresenterController?
+    var router: RouterType?
     
     private let viewModel: ShortcutListViewModelType
     
     private let tableView: UITableView = UITableView()
+    
+    private var tableBottomConstraint: NSLayoutConstraint = NSLayoutConstraint()
     
     private let searchView: UIView = {
         let view = UIView()
@@ -41,24 +43,30 @@ class ShortcutListViewController: UIViewController, PresentableController, Short
         return textField
     }()
     
-    init(viewModel: ShortcutListViewModelType, presenter: PresenterController?, presentableControllerViewType: PresentableControllerViewType) {
+    init(viewModel: ShortcutListViewModelType, presenter: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
         self.viewModel = viewModel
-        self.presenter = presenter
+        self.router = presenter
         self.presentableControllerViewType = presentableControllerViewType
         
         super.init(nibName: nil, bundle: nil)
+        setupNotifications()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        deleteNotifications()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        
         setup()
-        // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        router?.pop(vc: self)
     }
     
 }
@@ -87,6 +95,8 @@ extension ShortcutListViewController {
         view.addSubview(searchView)
         view.addSubview(tableView)
         
+        tableBottomConstraint = tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
+        
         let constraints = [
             searchImage.leadingAnchor.constraint(equalTo: searchView.leadingAnchor),
             searchImage.widthAnchor.constraint(equalToConstant: 50),
@@ -104,10 +114,56 @@ extension ShortcutListViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             tableView.topAnchor.constraint(equalTo: searchView.bottomAnchor, constant: 10),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
+            tableBottomConstraint
         ]
         
         NSLayoutConstraint.activate(constraints)
+    }
+}
+
+// MARK: Notifications
+
+extension ShortcutListViewController {
+    private func setupNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    private func deleteNotifications() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc private func keyboardWillShowNotification(notification: NSNotification) {
+        updateBottomLayoutConstraintWithNotification(notification: notification, keyboardShow: true)
+    }
+    
+    @objc private func keyboardWillHideNotification(notification: NSNotification) {
+        updateBottomLayoutConstraintWithNotification(notification: notification, keyboardShow: false)
+    }
+    
+    private func updateBottomLayoutConstraintWithNotification(notification: NSNotification, keyboardShow: Bool) {
+                
+        let userInfo = notification.userInfo!
+        
+        let animationDuration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
+        let keyboardEndFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let convertedKeyboardEndFrame = view.convert(keyboardEndFrame, from: view.window)
+        let rawAnimationCurve = (notification.userInfo![UIResponder.keyboardAnimationCurveUserInfoKey] as! NSNumber).uint32Value << 16
+        let animationCurve = UIView.AnimationOptions.init(rawValue: UInt(rawAnimationCurve))
+                
+        if keyboardShow {
+            tableBottomConstraint.constant = convertedKeyboardEndFrame.minY - view.bounds.maxY
+        } else {
+            tableBottomConstraint.constant = -view.globalSafeAreaInsets.bottom
+        }
+                
+        UIView.animate(withDuration: animationDuration,
+                       delay: 0.0,
+                       options: [.beginFromCurrentState, animationCurve],
+                       animations: {
+                        self.view.layoutIfNeeded()
+        }, completion: nil)
     }
 }
 
@@ -137,7 +193,7 @@ extension ShortcutListViewController: UITableViewDelegate {
         
         if let selectShortcutAction = selectShortcutHandler {
             selectShortcutAction(cellViewModel.outputs.uid)
-            presenter?.pop(vc: self)
+            router?.pop(vc: self)
         }
     }
 }

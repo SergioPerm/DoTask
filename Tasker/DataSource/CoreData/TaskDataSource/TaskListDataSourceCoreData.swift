@@ -175,9 +175,6 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
                 
                 let notifyModel = DateNotifier(with: taskModel)
                 notificationCenter.deleteLocalNotifications(identifiers: [notifyModel.identifier])
-                if taskModel.reminderDate {
-                    notificationCenter.addLocalNotification(notifyModel: notifyModel)
-                }
             } catch {
                 fatalError()
             }

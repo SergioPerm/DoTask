@@ -28,7 +28,7 @@ enum TimeComponent: Int {
 class TimePickerViewController: UIViewController, PresentableController {
     
     var presentableControllerViewType: PresentableControllerViewType
-    var presenter: PresenterController?
+    var router: RouterType?
     
     // MARK: View's
     
@@ -78,9 +78,9 @@ class TimePickerViewController: UIViewController, PresentableController {
     
     // MARK: Initializers
     
-    init(baseTime: Date?, presenter: PresenterController?, presentableControllerViewType: PresentableControllerViewType) {
+    init(baseTime: Date?, presenter: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
         
-        self.presenter = presenter
+        self.router = presenter
         self.presentableControllerViewType = presentableControllerViewType
         
         self.baseTime = baseTime ?? Date()
@@ -263,14 +263,14 @@ class TimePickerViewController: UIViewController, PresentableController {
         if let deleteReminderAction = deleteReminderHandler {
             deleteReminderAction()
         }
-        presenter?.pop(vc: self)
+        router?.pop(vc: self)
     }
     
     @objc func setAction(sender: UIButton) {
         if let setAction = setReminderHandler {
             setAction(baseTime)
         }
-        presenter?.pop(vc: self)
+        router?.pop(vc: self)
     }
     
 }

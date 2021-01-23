@@ -12,16 +12,16 @@ class DetailTaskCoordinator: NSObject, Coordinator {
     var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     
-    var presenter: PresenterController?
+    var router: RouterType?
     private var taskUID: String?
     
-    init(presenter: PresenterController?, taskUID: String?) {
-        self.presenter = presenter
+    init(presenter: RouterType?, taskUID: String?) {
+        self.router = presenter
         self.taskUID = taskUID
     }
     
     func start() {
-        let vc = DetailTaskAssembly.createInstance(taskUID: taskUID, presenter: presenter)
+        let vc = DetailTaskAssembly.createInstance(taskUID: taskUID, presenter: router)
         vc.onCalendarSelect = { date, outputs in
             self.openCalendar(date: date, calendarOutputs: outputs)
         }
@@ -31,25 +31,25 @@ class DetailTaskCoordinator: NSObject, Coordinator {
         vc.onShortcutSelect = { shortcutUID, outputs in
             self.selectShortcut(shortcutUID: shortcutUID, shortcutListOutputs: outputs)
         }
-        presenter?.push(vc: vc, completion: { [weak self] in
+        router?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
         })
     }
     
     func selectShortcut(shortcutUID: String?, shortcutListOutputs: ShortcutListViewOutputs) {
-        let vc = ShortcutListAssembly.createInstance(presenter: presenter)
+        let vc = ShortcutListAssembly.createInstance(presenter: router)
         
         vc.selectShortcutHandler = { [weak shortcutListOutputs] uid in
             shortcutListOutputs?.selectedShortcutUID = uid
         }
         
-        presenter?.push(vc: vc, completion: { [weak self] in
+        router?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
         })
     }
     
     func openCalendar(date: Date?, calendarOutputs: CalendarPickerViewOutputs) {
-        let vc = CalendarPickerAssembly.createInstance(date: date, presenter: presenter)
+        let vc = CalendarPickerAssembly.createInstance(date: date, presenter: router)
         vc.saveDatePickerHandler = { [weak calendarOutputs] in
             calendarOutputs?.comletionAfterCloseCalendar()
         }
@@ -61,13 +61,13 @@ class DetailTaskCoordinator: NSObject, Coordinator {
             calendarOutputs?.selectedCalendarDate = date
         }
         
-        presenter?.push(vc: vc, completion: { [weak self] in
+        router?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
         })
     }
     
     func openReminder(date: Date?, reminderOutputs: TimePickerViewOutputs) {
-        let vc = TimePickerAssembly.createInstance(date: date, presenter: presenter)
+        let vc = TimePickerAssembly.createInstance(date: date, presenter: router)
         vc.deleteReminderHandler = { [weak reminderOutputs] in
             reminderOutputs?.selectedReminderTime = nil
             reminderOutputs?.completionAfterCloseTimePicker()
@@ -77,7 +77,7 @@ class DetailTaskCoordinator: NSObject, Coordinator {
             reminderOutputs?.completionAfterCloseTimePicker()
         }
         
-        presenter?.push(vc: vc, completion: { [weak self] in
+        router?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
         })
     }

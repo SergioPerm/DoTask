@@ -9,14 +9,14 @@
 import Foundation
 
 class DetailTaskAssembly {
-    static func createInstance(taskUID: String?, presenter: PresenterController?) -> DetailTaskViewType {
+    static func createInstance(taskUID: String?, presenter: RouterType?) -> DetailTaskViewType {
         let dataSource: TaskListDataSource = TaskListDataSourceCoreData(context: CoreDataService.shared.context)
         let viewModel: DetailTaskViewModel = DetailTaskViewModel(taskUID: taskUID, dataSource: dataSource)
 
         if let _ = taskUID {
-            return DetailTaskEditViewController(viewModel: viewModel, presenter: presenter, presentableControllerViewType: .modalViewController)
+            return DetailTaskEditViewController(viewModel: viewModel, presenter: presenter, presentableControllerViewType: .containerChild)
         }
         
-        return DetailTaskNewViewController(viewModel: viewModel, presenter: presenter, presentableControllerViewType: .modalViewController)
+        return DetailTaskNewViewController(viewModel: viewModel, presenter: presenter, presentableControllerViewType: .containerChild)
     }
 }

@@ -9,10 +9,12 @@
 import UIKit
 
 class DetailShortcutAssembly {
-    static func createInstance(shortcutUID: String?, presenter: PresenterController?) -> DetailShortcutViewController {
+    static func createInstance(shortcutUID: String?, presenter: RouterType?) -> DetailShortcutViewController {
         let dataSource: ShortcutListDataSource = ShortcutListDataSourceCoreData(context: CoreDataService.shared.context)
         let viewModel = DetailShortcutViewModel(shortcutUID: shortcutUID, dataSource: dataSource)
         
-        return DetailShortcutViewController(viewModel: viewModel, presenter: presenter, presentableControllerViewType: .systemModalController)
+        let vc = DetailShortcutViewController(viewModel: viewModel, presenter: presenter, presentableControllerViewType: .presentWithTransition)
+                
+        return vc
     }
 }

@@ -9,7 +9,7 @@
 import Foundation
 
 class SettingsAssembly {
-    static func createInstance(presenter: PresenterController?) -> SettingsViewController {
-        return SettingsViewController(presenter: presenter, presentableControllerViewType: .navigationStackController)
+    static func createInstance(presenter: RouterType?) -> SettingsViewController {
+        return SettingsViewController(presenter: presenter, presentableControllerViewType: .navigationStack)
     }
 }

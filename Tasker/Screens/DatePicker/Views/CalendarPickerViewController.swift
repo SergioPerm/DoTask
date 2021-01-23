@@ -11,7 +11,7 @@ import UIKit
 class CalendarPickerViewController: UIViewController, PresentableController {
     
     var presentableControllerViewType: PresentableControllerViewType
-    var presenter: PresenterController?
+    var router: RouterType?
     
     // MARK: ViewModel
     
@@ -94,8 +94,8 @@ class CalendarPickerViewController: UIViewController, PresentableController {
     
     // MARK: Initializers
     
-    init(selectedDate: Date?, viewModel: CalendarPickerViewModelType, presenter: PresenterController?, presentableControllerViewType: PresentableControllerViewType) {
-        self.presenter = presenter
+    init(selectedDate: Date?, viewModel: CalendarPickerViewModelType, presenter: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
+        self.router = presenter
         self.presentableControllerViewType = presentableControllerViewType
         self.selectedDate = selectedDate
         self.viewModel = viewModel
@@ -133,14 +133,14 @@ class CalendarPickerViewController: UIViewController, PresentableController {
         if let cancelAction = cancelDatePickerHandler {
             cancelAction()
         }
-        presenter?.pop(vc: self)
+        router?.pop(vc: self)
     }
     
     @objc func saveAction(sender: UIButton) {
         if let saveAction = saveDatePickerHandler {
             saveAction()
         }
-        presenter?.pop(vc: self)
+        router?.pop(vc: self)
     }
     
     @objc func clearDateAction(sender: UIButton) {

@@ -11,14 +11,14 @@ import UIKit
 class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
     var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
-    var presenter: PresenterController?
+    var router: RouterType?
     
-    init(presenter: PresenterController) {
-        self.presenter = presenter
+    init(presenter: RouterType) {
+        self.router = presenter
     }
     
     func start() {
-        let vc = SlideMenuAssembly.createInstance(presenter: presenter)
+        let vc = SlideMenuAssembly.createInstance(router: router)
 
         vc.openTaskListHandler = { menu in
             self.openTaskList(menu: menu)
@@ -30,24 +30,27 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
             self.editShortcut(shortcutUID: shortcutUID)
         }
         
-        presenter?.push(vc: vc, completion: nil)
+        router?.push(vc: vc, completion: nil)
     }
             
     func editShortcut(shortcutUID: String?) {
-        let vc = DetailShortcutAssembly.createInstance(shortcutUID: shortcutUID, presenter: presenter)
+        let vc = DetailShortcutAssembly.createInstance(shortcutUID: shortcutUID, presenter: router)
         
-        presenter?.push(vc: vc, completion: nil)
+        router?.push(vc: vc, completion: { [weak self] in
+            self?.parentCoordinator?.childDidFinish(self)
+        })
+        
     }
     
     func openTaskList(menu: SlideMenuViewType?) {
-        let vc = TaskListAssembly.createInstance(presenter: presenter)
+        let vc = TaskListAssembly.createInstance(presenter: router)
         vc.slideMenu = menu
         
         vc.editTaskAction = { uid in
             self.editTask(taskUID: uid)
         }
 
-        presenter?.push(vc: vc, completion: { [weak self] in
+        router?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
         })
         
@@ -56,14 +59,14 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
     
     func openSettings(menu: SlideMenuViewType?) {
         menu?.toggleMenu()
-        let vc = SettingsAssembly.createInstance(presenter: presenter)
-        presenter?.push(vc: vc, completion: { [weak self] in
+        let vc = SettingsAssembly.createInstance(presenter: router)
+        router?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
         })
     }
     
     func editTask(taskUID: String?) {
-        let child = DetailTaskCoordinator(presenter: presenter, taskUID: taskUID)
+        let child = DetailTaskCoordinator(presenter: router, taskUID: taskUID)
         child.parentCoordinator = self
         childCoordinators.append(child)
         child.start()

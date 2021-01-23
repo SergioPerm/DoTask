@@ -38,7 +38,7 @@ enum MenuTableShortcutRows: Int, CaseIterable {
 class MenuViewController: UIViewController, PresentableController, SlideMenuViewType {
 
     var presentableControllerViewType: PresentableControllerViewType
-    var presenter: PresenterController?
+    var router: RouterType?
     
     private var viewModel: MenuViewModelType
     private var menuCellFactory: MenuCellFactoryType? {
@@ -71,9 +71,9 @@ class MenuViewController: UIViewController, PresentableController, SlideMenuView
     
     // MARK: Init
     
-    init(viewModel: MenuViewModel, presenter: PresenterController?, presentableControllerViewType: PresentableControllerViewType) {
+    init(viewModel: MenuViewModel, presenter: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
         self.viewModel = viewModel
-        self.presenter = presenter
+        self.router = presenter
         self.presentableControllerViewType = presentableControllerViewType
         self.enabled = true
         
@@ -104,7 +104,6 @@ class MenuViewController: UIViewController, PresentableController, SlideMenuView
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        print("disappear")
     }
     
     // MARK: SlideMenuViewType
@@ -245,18 +244,29 @@ extension MenuViewController {
 
 // MARK: UIGestureRecognizerDelegate
 extension MenuViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        //solve gesture conflicts for edit tableviewcell
-        let panGesture = gestureRecognizer as! UIPanGestureRecognizer
-        let gestureIsDraggingFromRightToLeft = panGesture.velocity(in: parentController?.getView()).x < 0
-        
-        if gestureIsDraggingFromRightToLeft && currentState == .menuCollapsed {
-            
-            return true
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if otherGestureRecognizer.view is UITableView {
+            if let otherPan = otherGestureRecognizer as? UIPanGestureRecognizer {
+                let translation = otherPan.translation(in: otherGestureRecognizer.view)
+                return translation.x < 0
+            }
         }
-
+        
         return false
     }
+//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//        //solve gesture conflicts for edit tableviewcell
+//        let panGesture = gestureRecognizer as! UIPanGestureRecognizer
+//        let gestureIsDraggingFromRightToLeft = panGesture.velocity(in: parentController?.getView()).x < 0
+//
+//        if (gestureIsDraggingFromRightToLeft && currentState == .menuCollapsed) {
+//            return true
+//        } else if otherGestureRecognizer.view is UITableView && !gestureIsDraggingFromRightToLeft {
+//            return true
+//        }
+//
+//        return false
+//    }
 }
 
 // MARK: UITableViewDataSource
@@ -317,9 +327,10 @@ extension MenuViewController: UITableViewDelegate {
                 }
             })
             
-            contextEditShortcut.image = UIGraphicsImageRenderer(size: CGSize(width: 23, height: 23)).image { _ in
-                UIImage(named: "edit")?.draw(in: CGRect(x: 0, y: 0, width: 23, height: 23))
+            if let editImage =  UIImage(named: "edit")?.cgImage {
+                contextEditShortcut.image = ImageWithoutRender(cgImage: editImage, scale: 1.2, orientation: .up)
             }
+            
             contextEditShortcut.backgroundColor = .white
             
             let configuration = UISwipeActionsConfiguration(actions: [contextEditShortcut])

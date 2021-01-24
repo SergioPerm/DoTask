@@ -14,8 +14,12 @@ class ShortcutListViewController: UIViewController, PresentableController, Short
     
     var presentableControllerViewType: PresentableControllerViewType
     var router: RouterType?
+    var persistentType: PersistentViewControllerType?
     
     private let viewModel: ShortcutListViewModelType
+    
+//    private var interactionController: UIPercentDrivenInteractiveTransition?
+//    private let transitionController = CardModalTransitionController()
     
     private let tableView: UITableView = UITableView()
     
@@ -50,6 +54,7 @@ class ShortcutListViewController: UIViewController, PresentableController, Short
         
         super.init(nibName: nil, bundle: nil)
         setupNotifications()
+        //transitioningDelegate = transitionController
     }
     
     required init?(coder: NSCoder) {
@@ -64,11 +69,6 @@ class ShortcutListViewController: UIViewController, PresentableController, Short
         super.viewDidLoad()
         setup()
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        router?.pop(vc: self)
-    }
-    
 }
 
 extension ShortcutListViewController {

@@ -29,6 +29,7 @@ class TimePickerViewController: UIViewController, PresentableController {
     
     var presentableControllerViewType: PresentableControllerViewType
     var router: RouterType?
+    var persistentType: PersistentViewControllerType?
     
     // MARK: View's
     
@@ -105,6 +106,7 @@ class TimePickerViewController: UIViewController, PresentableController {
     }
                 
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         fixPickerColors()
         showView()
     }

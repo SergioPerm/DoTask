@@ -12,6 +12,7 @@ class CalendarPickerViewController: UIViewController, PresentableController {
     
     var presentableControllerViewType: PresentableControllerViewType
     var router: RouterType?
+    var persistentType: PersistentViewControllerType?
     
     // MARK: ViewModel
     
@@ -117,6 +118,7 @@ class CalendarPickerViewController: UIViewController, PresentableController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         showView()
         
         ///Scroll to selected month

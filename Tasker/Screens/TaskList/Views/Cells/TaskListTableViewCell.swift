@@ -157,6 +157,7 @@ class TaskListTableViewCell: UITableViewCell {
     }
     
     override func prepareForReuse() {
+        super.prepareForReuse()
         shapeLayer.removeFromSuperlayer()
     }
     

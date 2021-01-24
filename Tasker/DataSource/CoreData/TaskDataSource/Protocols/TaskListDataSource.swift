@@ -22,4 +22,6 @@ protocol TaskListDataSource {
     func deleteTask(from taskModel: Task)
     func updateTask(from taskModel: Task)
     func clearData()
+    
+    func applyShortcutFilter(shortcutFilter: String?)
 }

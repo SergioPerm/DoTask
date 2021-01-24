@@ -164,8 +164,8 @@
 		B1EF666525A4D8BA0050FF1C /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EF666425A4D8BA0050FF1C /* UIColor.swift */; };
 		B1F0198725A8BECC00A284B5 /* MenuItemViewModelSelectableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F0198625A8BECC00A284B5 /* MenuItemViewModelSelectableType.swift */; };
 		B1F0198A25A8C06400A284B5 /* MainMenuItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F0198925A8C06400A284B5 /* MainMenuItemViewModel.swift */; };
-		B1F9B4DC25B8487F0049FE58 /* SwipeableModalAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F9B4DB25B8487F0049FE58 /* SwipeableModalAnimationController.swift */; };
-		B1F9B4DF25B849B00049FE58 /* DetailShortcutTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F9B4DE25B849B00049FE58 /* DetailShortcutTransitionController.swift */; };
+		B1F9B4DC25B8487F0049FE58 /* CardModalAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F9B4DB25B8487F0049FE58 /* CardModalAnimationController.swift */; };
+		B1F9B4DF25B849B00049FE58 /* CardModalTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F9B4DE25B849B00049FE58 /* CardModalTransitionController.swift */; };
 		B1FB9BD32588B41E00E54E1B /* TaskTitleTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FB9BD22588B41E00E54E1B /* TaskTitleTextView.swift */; };
 /* End PBXBuildFile section */
 
@@ -329,8 +329,8 @@
 		B1EF666425A4D8BA0050FF1C /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		B1F0198625A8BECC00A284B5 /* MenuItemViewModelSelectableType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemViewModelSelectableType.swift; sourceTree = "<group>"; };
 		B1F0198925A8C06400A284B5 /* MainMenuItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuItemViewModel.swift; sourceTree = "<group>"; };
-		B1F9B4DB25B8487F0049FE58 /* SwipeableModalAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeableModalAnimationController.swift; sourceTree = "<group>"; };
-		B1F9B4DE25B849B00049FE58 /* DetailShortcutTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailShortcutTransitionController.swift; sourceTree = "<group>"; };
+		B1F9B4DB25B8487F0049FE58 /* CardModalAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardModalAnimationController.swift; sourceTree = "<group>"; };
+		B1F9B4DE25B849B00049FE58 /* CardModalTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardModalTransitionController.swift; sourceTree = "<group>"; };
 		B1FB9BD22588B41E00E54E1B /* TaskTitleTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTitleTextView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -845,6 +845,15 @@
 			path = Assembly;
 			sourceTree = "<group>";
 		};
+		B1CB2A0325BD663F009EFABB /* CardModalTransition */ = {
+			isa = PBXGroup;
+			children = (
+				B1F9B4DE25B849B00049FE58 /* CardModalTransitionController.swift */,
+				B1F9B4DB25B8487F0049FE58 /* CardModalAnimationController.swift */,
+			);
+			path = CardModalTransition;
+			sourceTree = "<group>";
+		};
 		B1D4CCDE256D25940085C25C /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -1098,7 +1107,7 @@
 		B1E79E7C25B5AC6800C443CA /* TransitionAnimators */ = {
 			isa = PBXGroup;
 			children = (
-				B1F9B4DB25B8487F0049FE58 /* SwipeableModalAnimationController.swift */,
+				B1CB2A0325BD663F009EFABB /* CardModalTransition */,
 			);
 			path = TransitionAnimators;
 			sourceTree = "<group>";
@@ -1143,7 +1152,6 @@
 		B1EF663625A488F00050FF1C /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B1F9B4E425B8807F0049FE58 /* Transitions */,
 				B1EF663A25A489B50050FF1C /* DetailShortcutViewController.swift */,
 				B1EF664225A4B1DD0050FF1C /* ColorDotView.swift */,
 				B1EF664525A4BB9C0050FF1C /* ShowInMainListView.swift */,
@@ -1200,14 +1208,6 @@
 				B13E079125A9CBBB00020F5E /* MenuItemViewModelCreateShortcutType.swift */,
 			);
 			path = Protocols;
-			sourceTree = "<group>";
-		};
-		B1F9B4E425B8807F0049FE58 /* Transitions */ = {
-			isa = PBXGroup;
-			children = (
-				B1F9B4DE25B849B00049FE58 /* DetailShortcutTransitionController.swift */,
-			);
-			path = Transitions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1292,7 +1292,7 @@
 				B13E077425A9922100020F5E /* MenuCellFactoryType.swift in Sources */,
 				B1391FFB259218AA0087D0E9 /* SubtaskManaged+CoreDataProperties.swift in Sources */,
 				B13E076F25A9915600020F5E /* MenuCellType.swift in Sources */,
-				B1F9B4DF25B849B00049FE58 /* DetailShortcutTransitionController.swift in Sources */,
+				B1F9B4DF25B849B00049FE58 /* CardModalTransitionController.swift in Sources */,
 				B1D5DECC2523884700124DAD /* CalendarPickerViewCell.swift in Sources */,
 				B12B0AE725ADC6560078315C /* ShortcutListViewController.swift in Sources */,
 				B1C237E125A7164300111037 /* ShortcutListDataSourceCoreData.swift in Sources */,
@@ -1359,7 +1359,7 @@
 				B15C9B7825695B9E00A809B1 /* DetailTaskViewModelOutputs.swift in Sources */,
 				B1E30EE425A6FBEE0036979D /* MenuViewModelInputs.swift in Sources */,
 				B1A9141B252063FA0021E15C /* TaskListDataSourceObserver.swift in Sources */,
-				B1F9B4DC25B8487F0049FE58 /* SwipeableModalAnimationController.swift in Sources */,
+				B1F9B4DC25B8487F0049FE58 /* CardModalAnimationController.swift in Sources */,
 				B18C570D252E168B009D4D03 /* TaskAddButton.swift in Sources */,
 				B13875ED257159CF002DA626 /* CreateShortcutMenuTableViewCell.swift in Sources */,
 				B1D5DEC72523884700124DAD /* DayModel.swift in Sources */,
@@ -1575,6 +1575,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DUBTL9M98H;
 				INFOPLIST_FILE = Tasker/Info.plist;
@@ -1585,6 +1586,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = tasker.Tasker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1594,6 +1596,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DUBTL9M98H;
 				INFOPLIST_FILE = Tasker/Info.plist;
@@ -1604,6 +1607,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = tasker.Tasker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

@@ -73,11 +73,6 @@ class ShortcutListTableViewCell: UITableViewCell {
         drawDot()
     }
     
-//    override func didMoveToSuperview() {
-//        super.didMoveToSuperview()
-//        drawDot()
-//    }
-
 }
 
 extension ShortcutListTableViewCell {

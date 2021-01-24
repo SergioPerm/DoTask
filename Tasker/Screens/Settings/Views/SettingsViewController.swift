@@ -12,6 +12,7 @@ class SettingsViewController: UIViewController, PresentableController {
     
     var presentableControllerViewType: PresentableControllerViewType
     var router: RouterType?
+    var persistentType: PersistentViewControllerType?
     
     init(presenter: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
         self.router = presenter
@@ -28,16 +29,5 @@ class SettingsViewController: UIViewController, PresentableController {
 
         view.backgroundColor = UIColor.purple
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

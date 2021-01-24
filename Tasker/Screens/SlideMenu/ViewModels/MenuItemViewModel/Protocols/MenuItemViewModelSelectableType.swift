@@ -9,5 +9,5 @@
 import Foundation
 
 protocol MenuItemViewModelSelectableType {
-    var selectedItem: Bool { get set }
+    var selectedItem: Boxing<Bool> { get set }
 }

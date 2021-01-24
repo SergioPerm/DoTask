@@ -33,7 +33,7 @@ class DetailTaskCoordinator: NSObject, Coordinator {
         }
         router?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
-        })
+        }, transition: nil)
     }
     
     func selectShortcut(shortcutUID: String?, shortcutListOutputs: ShortcutListViewOutputs) {
@@ -45,7 +45,7 @@ class DetailTaskCoordinator: NSObject, Coordinator {
         
         router?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
-        })
+        }, transition: CardModalTransitionController(viewController: vc, router: router))
     }
     
     func openCalendar(date: Date?, calendarOutputs: CalendarPickerViewOutputs) {
@@ -63,7 +63,7 @@ class DetailTaskCoordinator: NSObject, Coordinator {
         
         router?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
-        })
+        }, transition: nil)
     }
     
     func openReminder(date: Date?, reminderOutputs: TimePickerViewOutputs) {
@@ -79,7 +79,7 @@ class DetailTaskCoordinator: NSObject, Coordinator {
         
         router?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
-        })
+        }, transition: nil)
     }
     
 }

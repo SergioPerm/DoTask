@@ -9,15 +9,14 @@
 import UIKit
 
 class Router: NSObject, RouterType {
-    
-    var rootViewController: UIViewController
-    weak var transition: UIViewControllerAnimatedTransitioning?
-    weak var interactionController: UIPercentDrivenInteractiveTransition?
-    
+
     var presentableControllers: [PresentableController?] = []
-    var completions: [UIViewController: () -> Void] = [:]
+    var rootViewController: UIViewController
     
-    let customTransitioningDelegate = DetailShortcutTransitionController()
+    private var completions: [UIViewController: () -> Void] = [:]
+    private var transitions: [UIViewController: UIViewControllerTransitioningDelegate] = [:]
+    
+    private var persistentViewControllers: [PersistentViewControllerType: UIViewController] = [:]
     
     init(rootViewController: UIViewController) {
         self.rootViewController = rootViewController
@@ -43,15 +42,27 @@ class Router: NSObject, RouterType {
         }
         
         runCompletion(for: vc)
+        transitions.removeValue(forKey: vc)
     }
     
-    func push(vc: PresentableController, completion: (() -> Void)? = nil) {
+    func push(vc: PresentableController, completion: (() -> Void)? = nil, transition: UIViewControllerTransitioningDelegate? = nil) {
+        
+        if let persistentType = vc.persistentType {
+            if vc == persistentViewControllers[persistentType] {
+                return
+            }
+        }
+        
         presentableControllers.append(vc)
         
         if let completion = completion {
             completions[vc] = completion
         }
         
+        if let transition = transition {
+            transitions[vc] = transition
+        }
+                        
         switch vc.presentableControllerViewType {
         case .slideMenu:
             rootViewController.add(vc, atIndex: 0)
@@ -70,12 +81,25 @@ class Router: NSObject, RouterType {
             }
         case .presentWithTransition:
             vc.modalPresentationStyle = .custom
+            
+            if let transitionDelegate = transitions[vc] {
+                vc.transitioningDelegate = transitionDelegate
+            }
+            
             rootViewController.present(vc, animated: true, completion: nil)
         case .systemPopoverModal:
             rootViewController.modalTransitionStyle   = .crossDissolve
             rootViewController.modalPresentationStyle = .popover
             rootViewController.present(vc, animated: true, completion: nil)
         }
+        
+        if let persistentType = vc.persistentType {
+            persistentViewControllers[persistentType] = vc
+        }
+    }
+    
+    func getPersistentViewController(persistentType: PersistentViewControllerType) -> UIViewController? {
+        return persistentViewControllers[persistentType]
     }
 }
 
@@ -104,28 +128,3 @@ extension Router: UINavigationControllerDelegate {
         }
     }
 }
-
-//extension Router: UIViewControllerTransitioningDelegate {
-//
-//    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//
-//        let animator = SwipeableModalPopoverTransitionAnimator(type: .present, firstViewController: presenting, secondViewController: presented)
-//
-//        return animator
-//    }
-//
-//    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        let animator = SwipeableModalPopoverTransitionAnimator(type: .dismiss, firstViewController: rootViewController, secondViewController: dismissed)
-//
-//        return animator
-//    }
-//
-//    func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-//        return interactionController
-//    }
-//
-//    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-//        return interactionController
-//    }
-//
-//}

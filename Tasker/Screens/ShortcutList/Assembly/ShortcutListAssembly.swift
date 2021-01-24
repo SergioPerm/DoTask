@@ -13,6 +13,6 @@ class ShortcutListAssembly {
         let dataSource = ShortcutListDataSourceCoreData(context: CoreDataService.shared.context)
         let viewModel = ShortcutListViewModel(dataSource: dataSource)
         
-        return ShortcutListViewController(viewModel: viewModel, presenter: presenter, presentableControllerViewType: .systemPopoverModal)
+        return ShortcutListViewController(viewModel: viewModel, presenter: presenter, presentableControllerViewType: .presentWithTransition)
     }
 }

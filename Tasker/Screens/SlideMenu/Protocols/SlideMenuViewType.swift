@@ -10,7 +10,7 @@ import Foundation
 
 protocol SlideMenuViewType: PresentableController {
     var openSettingsHandler: ((_ menu: SlideMenuViewType?) -> Void)? { get set }
-    var openTaskListHandler: ((_ menu: SlideMenuViewType?) -> Void)? { get set }
+    var openTaskListHandler: ((_ menu: SlideMenuViewType?, _ shortcutFilter: String?) -> Void)? { get set }
     var openDetailShortcutHandler: ((_ shortcutUID: String?) -> Void)? { get set }
     func toggleMenu()
     var parentController: MenuParentControllerType? { get set }

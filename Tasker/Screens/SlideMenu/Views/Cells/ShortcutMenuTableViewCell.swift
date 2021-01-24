@@ -63,6 +63,11 @@ class ShortcutMenuTableViewCell: UITableViewCell, MenuCellType {
 }
 
 extension ShortcutMenuTableViewCell {
+    
+    func updateCell() {
+        bindViewModel()
+    }
+    
     private func bindViewModel() {
         guard let viewModel = viewModel else {
             title.text = ""
@@ -72,6 +77,14 @@ extension ShortcutMenuTableViewCell {
         
         title.text = viewModel.shortcut.name
         shapeView.backgroundColor = UIColor(hexString: viewModel.shortcut.color)
+        
+        viewModel.selectedItem.bind { [weak self] selected in
+            if selected {
+                self?.backgroundColor = #colorLiteral(red: 0.7875365811, green: 0.9482855393, blue: 1, alpha: 0.71)
+            } else {
+                self?.backgroundColor = .white
+            }
+        }
     }
     
     private func setup() {

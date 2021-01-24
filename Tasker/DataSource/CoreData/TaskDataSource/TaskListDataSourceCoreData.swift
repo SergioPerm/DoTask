@@ -14,35 +14,23 @@ class TaskListDataSourceCoreData: NSObject {
     
     // MARK: - Properites
     weak var observer: TaskListDataSourceObserver?
-    private let fetchedResultsController: NSFetchedResultsController<TaskManaged>
+    private var fetchedResultsController: NSFetchedResultsController<TaskManaged> = NSFetchedResultsController()
     private let notificationCenter = PushNotificationService.shared
     
-    init(context: NSManagedObjectContext) {
+    init(context: NSManagedObjectContext, shortcutFilter: String?) {
         self.context = context
-            
-        // Setting up fetchedResultsController
-        let fetchRequest: NSFetchRequest<TaskManaged> = TaskManaged.fetchRequest()
-        
-        let sortDescriptor = NSSortDescriptor(key: "mainTaskListOrder", ascending: true)
-        let sortDescriptor2 = NSSortDescriptor(key: "taskDate", ascending: true)
-        let sortDescriptor3 = NSSortDescriptor(key: "title", ascending: true)
-        
-        let predicate = NSPredicate(format: "isDone == %@", false)
-        
-        fetchRequest.sortDescriptors = [sortDescriptor, sortDescriptor2, sortDescriptor3]
-        fetchRequest.predicate = predicate
-        fetchRequest.fetchBatchSize = 20
-        // Initialize Fetched Results Controller
-        self.fetchedResultsController = NSFetchedResultsController<TaskManaged>(fetchRequest: fetchRequest, managedObjectContext: self.context, sectionNameKeyPath: "dailyName", cacheName: nil)
         
         super.init()
         
-        fetchedResultsController.delegate = self
+        setupFetchResultsController(shortcutFilter: shortcutFilter)
     }
 }
 
 // MARK: TaskListDataSource
 extension TaskListDataSourceCoreData: TaskListDataSource {
+    func applyShortcutFilter(shortcutFilter: String?) {
+        setupFetchResultsController(shortcutFilter: shortcutFilter)
+    }
     
     func taskModelForIndexPath(indexPath: IndexPath) -> Task {
         let task = fetchedResultsController.object(at: indexPath)
@@ -372,8 +360,34 @@ extension TaskListDataSourceCoreData: NSFetchedResultsControllerDelegate {
     
 }
 
-// MARK: Util
+// MARK: FRC
 extension TaskListDataSourceCoreData {
+    
+    private func setupFetchResultsController(shortcutFilter: String?) {
+        // Setting up fetchedResultsController
+        let fetchRequest: NSFetchRequest<TaskManaged> = TaskManaged.fetchRequest()
+        
+        let sortDescriptor = NSSortDescriptor(key: "mainTaskListOrder", ascending: true)
+        let sortDescriptor2 = NSSortDescriptor(key: "taskDate", ascending: true)
+        let sortDescriptor3 = NSSortDescriptor(key: "title", ascending: true)
+        
+        var predicate = NSPredicate()
+        if let shortcutFilter = shortcutFilter {
+            guard let shortcutManaged = shortcutByIdentifier(identifier: shortcutFilter) else { return }
+            predicate = NSPredicate(format: "isDone == %@ AND shortcut == %@", false, shortcutManaged)
+        } else {
+            predicate = NSPredicate(format: "isDone == %@", false)
+        }
+        
+        fetchRequest.sortDescriptors = [sortDescriptor, sortDescriptor2, sortDescriptor3]
+        fetchRequest.predicate = predicate
+        fetchRequest.fetchBatchSize = 20
+        // Initialize Fetched Results Controller
+        self.fetchedResultsController = NSFetchedResultsController<TaskManaged>(fetchRequest: fetchRequest, managedObjectContext: self.context, sectionNameKeyPath: "dailyName", cacheName: nil)
+        
+        fetchedResultsController.delegate = self
+    }
+    
     private func fetchTasks() -> [TaskManaged] {
         do {
             try fetchedResultsController.performFetch()

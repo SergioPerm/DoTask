@@ -20,8 +20,8 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
     func start() {
         let vc = SlideMenuAssembly.createInstance(router: router)
 
-        vc.openTaskListHandler = { menu in
-            self.openTaskList(menu: menu)
+        vc.openTaskListHandler = { menu, shortcutFilter in
+            self.openTaskList(menu: menu, shortcutFilter: shortcutFilter)
         }
         vc.openSettingsHandler = { menu in
             self.openSettings(menu: menu)
@@ -30,20 +30,26 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
             self.editShortcut(shortcutUID: shortcutUID)
         }
         
-        router?.push(vc: vc, completion: nil)
+        router?.push(vc: vc, completion: nil, transition: nil)
     }
             
     func editShortcut(shortcutUID: String?) {
-        let vc = DetailShortcutAssembly.createInstance(shortcutUID: shortcutUID, presenter: router)
-        
+        let vc = DetailShortcutAssembly.createInstance(shortcutUID: shortcutUID, router: router)
+                
         router?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
-        })
-        
+        }, transition: CardModalTransitionController(viewController: vc, router: router))
     }
     
-    func openTaskList(menu: SlideMenuViewType?) {
-        let vc = TaskListAssembly.createInstance(presenter: router)
+    func openTaskList(menu: SlideMenuViewType?, shortcutFilter: String? = nil) {
+        
+        if let menu = menu {
+            if menu.enabled {
+                menu.toggleMenu()
+            }
+        }
+        
+        let vc = TaskListAssembly.createInstance(router: router, shortcutFilter: shortcutFilter)
         vc.slideMenu = menu
         
         vc.editTaskAction = { uid in
@@ -52,7 +58,7 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
 
         router?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
-        })
+        }, transition: nil)
         
         menu?.parentController = vc
     }
@@ -62,7 +68,7 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
         let vc = SettingsAssembly.createInstance(presenter: router)
         router?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
-        })
+        }, transition: nil)
     }
     
     func editTask(taskUID: String?) {

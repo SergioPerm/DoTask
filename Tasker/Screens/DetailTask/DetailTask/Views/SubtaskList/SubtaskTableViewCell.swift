@@ -96,6 +96,7 @@ class SubtaskTableViewCell: UITableViewCell {
     }
     
     override func prepareForReuse() {
+        super.prepareForReuse()
         heightConstraint?.constant = 33
         layoutIfNeeded()
     }

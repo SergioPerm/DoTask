@@ -12,13 +12,14 @@ class DetailShortcutViewController: UIViewController, PresentableController {
     
     var presentableControllerViewType: PresentableControllerViewType
     var router: RouterType?
+    var persistentType: PersistentViewControllerType?
     
     // MARK: ViewModel
     private var viewModel: DetailShortcutViewModelType
     
     // MARK: View's properties
-    private var interactionController: UIPercentDrivenInteractiveTransition?
-    private let transitionController = DetailShortcutTransitionController()
+//    private var interactionController: UIPercentDrivenInteractiveTransition?
+//    private let transitionController = CardModalTransitionController()
     
     private let placeholderLabel: UILabel = UILabel()
     
@@ -46,15 +47,14 @@ class DetailShortcutViewController: UIViewController, PresentableController {
     
     // MARK: Initializers
     
-    init(viewModel: DetailShortcutViewModelType, presenter: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
+    init(viewModel: DetailShortcutViewModelType, router: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
         self.viewModel = viewModel
-        self.router = presenter
+        self.router = router
         self.presentableControllerViewType = presentableControllerViewType
         
         super.init(nibName: nil, bundle: nil)
         
         setupNotifications()
-        transitioningDelegate = transitionController
     }
     
     required init?(coder: NSCoder) {
@@ -126,8 +126,8 @@ extension DetailShortcutViewController {
         deleteShortcutBtn.addGestureRecognizer(deleteShortcutTap)
         
         
-        let swipeGesture = UIPanGestureRecognizer(target: self, action: #selector(swipeCloseAction(sender:)))
-        view.addGestureRecognizer(swipeGesture)
+//        let swipeGesture = UIPanGestureRecognizer(target: self, action: #selector(swipeCloseAction(sender:)))
+//        view.addGestureRecognizer(swipeGesture)
         
         nameTextField.delegate = self
         
@@ -232,28 +232,28 @@ extension DetailShortcutViewController {
     }
     
     @objc private func swipeCloseAction(sender: UIPanGestureRecognizer) {
-        let translate = sender.translation(in: sender.view)
-        let percent   = translate.y / sender.view!.bounds.size.height
-
-        if sender.state == .began {
-            interactionController = UIPercentDrivenInteractiveTransition()
-            transitionController.interactionController = interactionController
-
-            dismiss(animated: true, completion: nil)
-        } else if sender.state == .changed {
-            interactionController?.update(percent)
-        } else if sender.state == .ended {
-            let velocity = sender.velocity(in: sender.view)
-            print("\(velocity)")
-            if percent > 0.5 || velocity.y >= 2000 {
-                router?.pop(vc: self)
-                interactionController?.finish()
-            } else {
-                interactionController?.completionSpeed = percent
-                interactionController?.cancel()
-            }
-            interactionController = nil
-        }
+//        let translate = sender.translation(in: sender.view)
+//        let percent   = translate.y / sender.view!.bounds.size.height
+//
+//        if sender.state == .began {
+//            interactionController = UIPercentDrivenInteractiveTransition()
+//            transitionController.interactionController = interactionController
+//
+//            dismiss(animated: true, completion: nil)
+//        } else if sender.state == .changed {
+//            interactionController?.update(percent)
+//        } else if sender.state == .ended {
+//            let velocity = sender.velocity(in: sender.view)
+//            print("\(velocity)")
+//            if percent > 0.5 || velocity.y >= 2000 {
+//                router?.pop(vc: self)
+//                interactionController?.finish()
+//            } else {
+//                interactionController?.completionSpeed = percent
+//                interactionController?.cancel()
+//            }
+//            interactionController = nil
+//        }
     }
 }
 

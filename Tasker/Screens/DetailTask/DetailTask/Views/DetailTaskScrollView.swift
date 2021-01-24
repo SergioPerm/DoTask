@@ -184,6 +184,7 @@ extension DetailTaskScrollView {
                 
         subtaskTableView.dataSource = self
         subtaskTableView.estimatedRowHeight = 33
+        subtaskTableView.rowHeight = UITableView.automaticDimension
     }
     
     // MARK: Actions
@@ -233,13 +234,16 @@ extension DetailTaskScrollView {
         }
     }
     
-    private func updateTableViewSize() {
-        subtaskTableView.layoutIfNeeded()
-        if subtaskTableView.contentSize.height != subtaskTableViewHeightConstraint.constant {
-            //add 1pt for system cell animation
-            let addSizeForAnimation: CGFloat = 1.0
-            let addSize = subtaskTableView.contentSize.height - subtaskTableViewHeightConstraint.constant + addSizeForAnimation
-            self.subtaskTableViewHeightConstraint.constant += addSize
+    private func updateTableViewSize(addRowHeight: CGFloat? = nil) {
+        if let addRowHeight = addRowHeight {
+            subtaskTableViewHeightConstraint.constant += addRowHeight
+        } else {
+            //for remove
+            if subtaskTableView.contentSize.height != subtaskTableViewHeightConstraint.constant {
+                subtaskTableView.layoutIfNeeded()
+                let addSize = subtaskTableView.contentSize.height - subtaskTableViewHeightConstraint.constant
+                subtaskTableViewHeightConstraint.constant += addSize
+            }
         }
     }
     
@@ -248,28 +252,23 @@ extension DetailTaskScrollView {
         
         guard let viewModel = viewModel else { return }
         
-        CATransaction.begin()
-        
-        subtaskTableView.beginUpdates()
-        
-        let newIndex = viewModel.inputs.addSubtask()
-        
-        let newIndexPath = IndexPath(row: newIndex, section: 0)
-        subtaskTableView.insertRows(at: [newIndexPath], with: .top)
-    
-        subtaskTableView.endUpdates()
-        
-        updateTableViewSize()
-        CATransaction.setCompletionBlock {
+        var newIndexPath: IndexPath = IndexPath()
+ 
+        updateTableViewSize(addRowHeight: subtaskTableView.estimatedRowHeight)
+        subtaskTableView.performBatchUpdates {
+            let newIndex = viewModel.inputs.addSubtask()
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                let activeCell = self.subtaskTableView.cellForRow(at: newIndexPath) as! SubtaskTableViewCell
-                activeCell.setActive()
-                self.updateScrollSizeAfterChangeSubtasks(addRowHeight: activeCell.frame.height)
-            }
+            newIndexPath = IndexPath(row: newIndex, section: 0)
+            subtaskTableView.insertRows(at: [newIndexPath], with: .top)
+            
+            subtaskTableView.endUpdates()
+
+        } completion: { (finished) in
+            let activeCell = self.subtaskTableView.cellForRow(at: newIndexPath) as! SubtaskTableViewCell
+            activeCell.setActive()
+            self.updateScrollSizeAfterChangeSubtasks(addRowHeight: activeCell.frame.height)
         }
-        
-        CATransaction.commit()
+
     }
 }
 
@@ -436,7 +435,6 @@ extension DetailTaskScrollView: SubtaskTableViewCellDelegate {
         }
         
         if let indexPath = subtaskTableView.indexPath(for: cell) {
-            CATransaction.begin()
             
             if (viewModel.outputs.subtasks.count - 1) > 0 {
                 let activeCellIndex = indexPath.row == 0 ? 1 : indexPath.row - 1
@@ -447,21 +445,19 @@ extension DetailTaskScrollView: SubtaskTableViewCellDelegate {
                 self.titleTextView.becomeFirstResponder()
             }
             
-            guard let cellHeight = subtaskTableView.cellForRow(at: indexPath)?.frame.height else { return }
+            guard let cellHeight = self.subtaskTableView.cellForRow(at: indexPath)?.frame.height else { return }
             
-            subtaskTableView.beginUpdates()
-            subtaskTableView.deleteRows(at: [indexPath], with: .top)
-            viewModel.inputs.deleteSubtask(subtask: subtaskViewModel)
-            subtaskTableView.endUpdates()
-                        
-            CATransaction.setCompletionBlock {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            subtaskTableView.performBatchUpdates {
+                subtaskTableView.beginUpdates()
+                viewModel.inputs.deleteSubtask(subtask: subtaskViewModel)
+                subtaskTableView.deleteRows(at: [indexPath], with: .top)
+                subtaskTableView.endUpdates()
+            } completion: { (finished) in
+                if finished {
                     self.updateScrollSizeAfterChangeSubtasks(addRowHeight: -cellHeight)
                     self.updateTableViewSize()
                 }
             }
-            
-            CATransaction.commit()
         }
     }
 }

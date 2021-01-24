@@ -69,11 +69,14 @@ extension MainMenuTableViewCell {
         title.text = viewModel.title
         icon.image = UIImage(named: viewModel.imageName)
         
-        if viewModel.selectedItem {
-            backgroundColor = #colorLiteral(red: 0.7875365811, green: 0.9482855393, blue: 1, alpha: 0.71)
-        } else {
-            backgroundColor = .white
+        viewModel.selectedItem.bind { [weak self] selected in
+            if selected {
+                self?.backgroundColor = #colorLiteral(red: 0.7875365811, green: 0.9482855393, blue: 1, alpha: 0.71)
+            } else {
+                self?.backgroundColor = .white
+            }
         }
+        
     }
     
     private func setup() {

@@ -13,7 +13,7 @@ class MenuViewModel: MenuViewModelType, MenuViewModelInputs, MenuViewModelOutput
     private var dataSource: ShortcutListDataSource
 
     private let createShortcutViewModel: CreateShortcutMenuItemViewModel = CreateShortcutMenuItemViewModel()
-    private var selectedViewModel: MenuItemViewModelType?
+    private var selectedViewModel: MenuItemViewModelSelectableType?
     
     var inputs: MenuViewModelInputs { return self }
     var outputs: MenuViewModelOutputs { return self }
@@ -40,6 +40,14 @@ class MenuViewModel: MenuViewModelType, MenuViewModelInputs, MenuViewModelOutput
         dataSource.deleteShortcut(for: shortcut)
     }
     
+    func selectShortcut(for indexPath: IndexPath) {
+        if let shortcutViewModel = tableSections[indexPath.section].tableCells[indexPath.row] as? MenuItemViewModelSelectableType {
+            selectedViewModel?.selectedItem.value = false
+            selectedViewModel = shortcutViewModel
+            selectedViewModel?.selectedItem.value = true
+        }
+    }
+    
     // MARK: Outputs
     
     var shortcuts: [Shortcut] {
@@ -54,8 +62,11 @@ extension MenuViewModel {
     private func setupSections() {
         let settingsSection = MenuItemSectionViewModel(cells: [SettingsMenuItemViewModel()], sectionHeight: Double.leastNormalMagnitude)
 
+        let selectedCellViewModel = MainMenuItemViewModel(title: "Task list", imageName: "colorFlat", selected: true)
+        selectedViewModel = selectedCellViewModel
+                
         let mainItemsSection = MenuItemSectionViewModel(cells: [
-            MainMenuItemViewModel(title: "Task list", imageName: "colorFlat", selected: true),
+            selectedCellViewModel,
             MainMenuItemViewModel(title: "Task diary", imageName: "diary")
         ], sectionHeight: 30)
         
@@ -69,7 +80,7 @@ extension MenuViewModel {
         tableSections.append(mainItemsSection)
         tableSections.append(shortcutSection)
     }
-    
+        
     private func adjustShortcutIndexPath(indexPath: IndexPath) -> IndexPath {
         // +1 - CreateShortcutCell, 2 - index of shortcut section
         return IndexPath(row: indexPath.row + 1, section: 2)
@@ -85,9 +96,12 @@ extension MenuViewModel {
         tableSections[2].tableCells.remove(at: correctIndexPath.row)
     }
     
-    private func updateShortcutInTable(indexPath: IndexPath) {
+    private func updateShortcutViewModel(indexPath: IndexPath) {
         let correctIndexPath = adjustShortcutIndexPath(indexPath: indexPath)
-        tableSections[2].tableCells[correctIndexPath.row] = ShortcutMenuItemViewModel(shortcut: dataSource.shortcuts[indexPath.row])
+        
+        if let shortcutViewModel = tableSections[2].tableCells[correctIndexPath.row] as? MenuItemViewModelShortcutType {
+            shortcutViewModel.reuse(for: dataSource.shortcuts[indexPath.row])
+        }
     }
 }
 
@@ -111,7 +125,7 @@ extension MenuViewModel: ShortcutListDataSourceObserver {
     }
     
     func shortcutUpdated(at indexPath: IndexPath) {
-        updateShortcutInTable(indexPath: indexPath)
+        updateShortcutViewModel(indexPath: indexPath)
         shortcutTableView?.tableViewUpdateRow(at: adjustShortcutIndexPath(indexPath: indexPath))
     }
 }

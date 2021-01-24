@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SwipeableModalAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
+class CardModalAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
 
     enum ViewControlerScale {
         case modelPresentationScale

@@ -54,6 +54,7 @@ class SubtaskFooterTableViewCell: UITableViewCell {
     }
     
     override func prepareForReuse() {
+        super.prepareForReuse()
         showCellLater()
         heightConstraint.constant = 33
         layoutIfNeeded()

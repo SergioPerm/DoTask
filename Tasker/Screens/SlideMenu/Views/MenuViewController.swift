@@ -39,6 +39,7 @@ class MenuViewController: UIViewController, PresentableController, SlideMenuView
 
     var presentableControllerViewType: PresentableControllerViewType
     var router: RouterType?
+    var persistentType: PersistentViewControllerType?
     
     private var viewModel: MenuViewModelType
     private var menuCellFactory: MenuCellFactoryType? {
@@ -60,13 +61,11 @@ class MenuViewController: UIViewController, PresentableController, SlideMenuView
     
     private var tableView: UITableView!
     
-    
-    
     private var selectedCell: UITableViewCell?
     
     // MARK: SlideMenuHandlers
     var openSettingsHandler: ((SlideMenuViewType?) -> Void)?
-    var openTaskListHandler: ((SlideMenuViewType?) -> Void)?
+    var openTaskListHandler: ((SlideMenuViewType?, String?) -> Void)?
     var openDetailShortcutHandler: ((String?) -> Void)?
     
     // MARK: Init
@@ -91,7 +90,7 @@ class MenuViewController: UIViewController, PresentableController, SlideMenuView
         
         //start init screen
         if let taskListAction = openTaskListHandler {
-            taskListAction(self)
+            taskListAction(self, nil)
         }
         
         setup()
@@ -152,6 +151,7 @@ extension MenuViewController {
         tableView.frame = CGRect(origin: view.frame.origin, size: CGSize(width: view.frame.width * StyleGuide.SlideMenu.ratioToScreenExpandWidth, height: view.frame.height))
          
         tableView.separatorStyle = .none
+        tableView.showsVerticalScrollIndicator = false
         tableView.rowHeight = 40
         tableView.backgroundColor = .white
     }
@@ -254,19 +254,6 @@ extension MenuViewController: UIGestureRecognizerDelegate {
         
         return false
     }
-//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-//        //solve gesture conflicts for edit tableviewcell
-//        let panGesture = gestureRecognizer as! UIPanGestureRecognizer
-//        let gestureIsDraggingFromRightToLeft = panGesture.velocity(in: parentController?.getView()).x < 0
-//
-//        if (gestureIsDraggingFromRightToLeft && currentState == .menuCollapsed) {
-//            return true
-//        } else if otherGestureRecognizer.view is UITableView && !gestureIsDraggingFromRightToLeft {
-//            return true
-//        }
-//
-//        return false
-//    }
 }
 
 // MARK: UITableViewDataSource
@@ -312,7 +299,14 @@ extension MenuViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel.inputs.selectShortcut(for: indexPath)
         
+        if let shortcutViewModel = viewModel.outputs.tableSections[indexPath.section].tableCells[indexPath.row] as? ShortcutMenuItemViewModel {
+            
+            if let taskListAction = openTaskListHandler {
+                taskListAction(self, shortcutViewModel.shortcut.uid)
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -365,10 +359,8 @@ extension MenuViewController: ShortcutListTableViewType {
     }
     
     func tableViewUpdateRow(at indexPath: IndexPath) {
-        if let cellViewModel = viewModel.outputs.tableSections[indexPath.section].tableCells[indexPath.row] as? ShortcutMenuItemViewModel {
-            let cell = tableView.cellForRow(at: indexPath) as! ShortcutMenuTableViewCell
-            cell.viewModel = cellViewModel
-        }
+        let cell = tableView.cellForRow(at: indexPath) as! ShortcutMenuTableViewCell
+        cell.updateCell()
     }
 }
 

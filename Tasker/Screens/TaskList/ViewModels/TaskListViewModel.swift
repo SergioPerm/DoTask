@@ -14,7 +14,7 @@ class TaskListViewModel {
     private var dataSource: TaskListDataSource
 
     // MARK: - Properties
-    var tableViewItems = [Daily]()
+    var tableViewItems: [Daily] = [Daily]()
     
     init(dataSource: TaskListDataSource) {
         self.dataSource = dataSource
@@ -39,6 +39,10 @@ extension TaskListViewModel {
 
     func clearData() {
         dataSource.clearData()
+    }
+    
+    func applyShortcutFilter(shortcutFilter: String?) {
+        dataSource.applyShortcutFilter(shortcutFilter: shortcutFilter)
     }
 
     func tableViewDidSelectRow(at indexPath: IndexPath) {
@@ -65,6 +69,11 @@ extension TaskListViewModel {
     
     func setDoneForTask(with taskIdentifier: String) {
         dataSource.setDoneForTask(with: taskIdentifier)
+    }
+    
+    func reloadData() {
+        tableViewItems = dataSource.tasksWithSections
+        view?.tableViewReload()
     }
 }
 

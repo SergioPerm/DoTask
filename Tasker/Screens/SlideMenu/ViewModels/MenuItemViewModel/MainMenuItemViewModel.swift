@@ -9,9 +9,10 @@
 import Foundation
 
 class MainMenuItemViewModel: MenuItemViewModelType, MenuItemViewModelMainType, MenuItemViewModelSelectableType {
-    
+   
+    var selectedItem: Boxing<Bool>
     var rowHeight: Double = 50
-    var selectedItem: Bool
+
     
     var title: String
     var imageName: String
@@ -19,7 +20,7 @@ class MainMenuItemViewModel: MenuItemViewModelType, MenuItemViewModelMainType, M
     init(title: String, imageName: String, selected: Bool = false) {
         self.title = title
         self.imageName = imageName
-        self.selectedItem = selected
+        self.selectedItem = Boxing(selected)
     }
     
 }

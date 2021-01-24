@@ -9,9 +9,17 @@
 import Foundation
 
 class TaskListAssembly {
-    static func createInstance(presenter: RouterType?) -> TaskListViewController {
-        let dataSource: TaskListDataSource = TaskListDataSourceCoreData(context: CoreDataService.shared.context)
+    static func createInstance(router: RouterType?, shortcutFilter: String?) -> TaskListViewController {
+        
+        if let persistentVC = router?.getPersistentViewController(persistentType: .taskList) as? TaskListViewController {
+            if let shortcutFilter = shortcutFilter {
+                persistentVC.shortcutFilter = shortcutFilter
+            }
+            return persistentVC
+        }
+        
+        let dataSource: TaskListDataSource = TaskListDataSourceCoreData(context: CoreDataService.shared.context, shortcutFilter: shortcutFilter)
         let viewModel: TaskListViewModel = TaskListViewModel(dataSource: dataSource)
-        return TaskListViewController(viewModel: viewModel, presenter: presenter, presentableControllerViewType: .navigationStack)
+        return TaskListViewController(viewModel: viewModel, router: router, presentableControllerViewType: .navigationStack, persistentType: .taskList)
     }
 }

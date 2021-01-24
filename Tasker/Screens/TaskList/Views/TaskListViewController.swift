@@ -12,6 +12,7 @@ class TaskListViewController: UIViewController, PresentableController {
     
     var presentableControllerViewType: PresentableControllerViewType
     var router: RouterType?
+    var persistentType: PersistentViewControllerType?
     
     // MARK: - Dependencies
     public let viewModel: TaskListViewModel
@@ -23,11 +24,18 @@ class TaskListViewController: UIViewController, PresentableController {
     
     var editTaskAction: ((_ taskUID: String?) ->  Void)?
     
-    init(viewModel: TaskListViewModel, presenter: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
+    var shortcutFilter: String? {
+        didSet {
+            applyShortcutFilter()
+        }
+    }
+    
+    init(viewModel: TaskListViewModel, router: RouterType?, presentableControllerViewType: PresentableControllerViewType, persistentType: PersistentViewControllerType? = nil) {
         self.viewModel = viewModel
-        self.router = presenter
+        self.router = router
         self.presentableControllerViewType = presentableControllerViewType
         self.withSlideMenu = true
+        self.persistentType = persistentType
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -129,6 +137,10 @@ extension TaskListViewController {
         self.navigationController?.view.layer.shadowPath = UIBezierPath(rect: (self.navigationController?.view.bounds)!).cgPath
     }
     
+    private func updateViewForShortcutFilter() {
+        
+    }
+    
     private func configureCell(cell: TaskListTableViewCell, taskModel: Task) {
         cell.doneHandler = doneCellAction(_:)
         cell.taskModel = taskModel
@@ -136,6 +148,13 @@ extension TaskListViewController {
     
     private func doneCellAction(_ taskIdentifier: String) {
         viewModel.setDoneForTask(with: taskIdentifier)
+    }
+    
+    private func applyShortcutFilter() {
+        viewModel.applyShortcutFilter(shortcutFilter: shortcutFilter)
+        viewModel.reloadData()
+        
+        updateViewForShortcutFilter()
     }
     
     // MARK: Actions
@@ -224,11 +243,9 @@ extension TaskListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let contextItemDelete = UIContextualAction(style: .destructive, title: "") { [weak self] (contextualAction, view, completion) in
             self?.viewModel.deleteTask(at: indexPath)
+            completion(true)
         }
         contextItemDelete.backgroundColor = .white
-//        contextItemDelete.image = UIGraphicsImageRenderer(size: CGSize(width: 30, height: 30)).image { _ in
-//            UIImage(named: "recycle")?.draw(in: CGRect(x: 0, y: 0, width: 30, height: 30))
-//        }
         
         if let removeImage =  UIImage(named: "recycle")?.cgImage {
             contextItemDelete.image = ImageWithoutRender(cgImage: removeImage, scale: UIScreen.main.nativeScale, orientation: .up)

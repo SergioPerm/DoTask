@@ -10,4 +10,5 @@ import Foundation
 
 protocol MenuItemViewModelShortcutType {
     var shortcut: Shortcut { get }
+    func reuse(for shortcut: Shortcut)
 }

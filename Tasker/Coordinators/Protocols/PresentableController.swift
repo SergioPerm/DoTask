@@ -8,6 +8,10 @@
 
 import UIKit
 
+enum PersistentViewControllerType {
+    case taskList
+}
+
 enum PresentableControllerViewType {
     case slideMenu
     case containerChild
@@ -19,6 +23,7 @@ enum PresentableControllerViewType {
 protocol PresentableController: UIViewController {
     var presentableControllerViewType: PresentableControllerViewType { get set }
     var router: RouterType? { get set }
+    var persistentType: PersistentViewControllerType? { get set }
 }
 
 extension PresentableController where Self: UIViewController {

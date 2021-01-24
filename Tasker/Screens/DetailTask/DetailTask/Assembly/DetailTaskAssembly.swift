@@ -10,7 +10,7 @@ import Foundation
 
 class DetailTaskAssembly {
     static func createInstance(taskUID: String?, presenter: RouterType?) -> DetailTaskViewType {
-        let dataSource: TaskListDataSource = TaskListDataSourceCoreData(context: CoreDataService.shared.context)
+        let dataSource: TaskListDataSource = TaskListDataSourceCoreData(context: CoreDataService.shared.context, shortcutFilter: nil)
         let viewModel: DetailTaskViewModel = DetailTaskViewModel(taskUID: taskUID, dataSource: dataSource)
 
         if let _ = taskUID {

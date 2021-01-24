@@ -12,7 +12,8 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
 
     var presentableControllerViewType: PresentableControllerViewType
     var router: RouterType?
-
+    var persistentType: PersistentViewControllerType?
+    
     // MARK: ViewModel
     private var viewModel: DetailTaskViewModelType
     private var subtasks: [SubtaskViewModelType]

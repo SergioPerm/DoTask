@@ -61,7 +61,6 @@ class ShortcutListViewController: UIViewController, PresentableController, Short
         
         super.init(nibName: nil, bundle: nil)
         setupNotifications()
-        //transitioningDelegate = transitionController
     }
     
     required init?(coder: NSCoder) {

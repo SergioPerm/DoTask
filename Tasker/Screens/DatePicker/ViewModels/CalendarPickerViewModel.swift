@@ -82,7 +82,6 @@ class CalendarPickerViewModel: CalendarPickerViewModelType, CalendarPickerViewMo
             for month in monthNumber...12 {
                 let currentMonthDate = calendar.date(from: DateComponents(year: yearNum, month: month, day: 1))!
                 allMonths.append(generateMonth(for: currentMonthDate))
-                //allMonths.append(generateDaysInMonth(for: currentMonthDate))
             }
             
         }

@@ -218,12 +218,7 @@ class TimePickerViewController: UIViewController, PresentableController {
         selectedDate.day = Calendar.current.startOfDay(for: baseTime)
         selectedDate.hour = hours[0]
         selectedDate.minute = minutes[0]
-        
-//        guard let indexHour = hours.firstIndex(of: selectedDate.hour), let indexMinute = minutes.firstIndex(of: selectedDate.minute) else { return }
-//
-//        timePicker.selectRow(indexHour, inComponent: 0, animated: false)
-//        timePicker.selectRow(indexMinute, inComponent: 2, animated: false)
-        
+                
         //normalize baseTime
         baseTime = dateFromSelectedDate() ?? baseTime
     }

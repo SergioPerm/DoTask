@@ -242,9 +242,6 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
                 
         accessoryView.addSubview(accesoryStackView)
 
-        //accessoryView.layer.cornerRadius = 6
-        
-        //view.insertSubview(accessoryView, aboveSubview: scrollView)
         view.insertSubview(accessoryView, at: view.subviews.count)
         
         setupConstraints()

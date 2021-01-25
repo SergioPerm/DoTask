@@ -85,8 +85,6 @@ extension ShortcutListTableViewCell {
         let circlePath = UIBezierPath(arcCenter: CGPoint(x: diametr/2, y: diametr/2), radius: diametr/5, startAngle: 0.0, endAngle: CGFloat(Double.pi * 2), clockwise: true)
         dotShape.path = circlePath.cgPath
         dotShape.fillColor = color.cgColor
-//        dotShape.strokeColor = color.cgColor
-//        dotShape.lineWidth = 1.0
         
         colorDotView.layer.addSublayer(dotShape)
     }
@@ -99,8 +97,6 @@ extension ShortcutListTableViewCell {
         
         contentView.addSubview(colorDotView)
         contentView.addSubview(titleLabel)
-        
-        
         
         let constraints = [
             colorDotView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),

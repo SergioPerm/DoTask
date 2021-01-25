@@ -244,16 +244,6 @@ extension SubtaskTableViewCell: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         subtaskViewModel?.inputs.setTitle(title: textView.text)
-          
         updateHeightOfRow()
-//        let newSize = textView.sizeThatFits(CGSize(width: textView.frame.width,
-//                                                    height: CGFloat.greatestFiniteMagnitude))
-//
-//        if heightConstraint?.constant != newSize.height {
-//            heightConstraint?.constant = newSize.height
-//            if let delegate = cellDelegate {
-//                delegate.updateHeightOfRow()
-//            }
-//        }
     }
 }

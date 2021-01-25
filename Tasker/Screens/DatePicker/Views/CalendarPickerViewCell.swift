@@ -9,7 +9,6 @@
 import UIKit
 
 class CalendarPickerViewCell: UICollectionViewCell {
-    //static let reuseIdentifier = String(describing: CalendarPickerViewCell.self)
 
     override func prepareForReuse() {
         super.prepareForReuse()

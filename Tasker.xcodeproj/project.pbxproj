@@ -69,7 +69,6 @@
 		B1603C5A2521EAB70022BE49 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1603C592521EAB70022BE49 /* UIViewController.swift */; };
 		B1603C5C2521FC200022BE49 /* DetailTaskNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1603C5B2521FC200022BE49 /* DetailTaskNewViewController.swift */; };
 		B1664045254464C8007D1AFD /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1664044254464C8007D1AFD /* UIBarButtonItem.swift */; };
-		B170D47F2594E1DE00218823 /* SubtaskFooterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B170D47E2594E1DE00218823 /* SubtaskFooterTableViewCell.swift */; };
 		B17ED83D25BAEFB8009B51CB /* ImageWithoutRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17ED83C25BAEFB8009B51CB /* ImageWithoutRender.swift */; };
 		B17F3E1225A5ADC400C4D5A1 /* UICollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17F3E1125A5ADC400C4D5A1 /* UICollectionViewCell.swift */; };
 		B1804BB8255A8CED007FECCF /* StyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1804BB7255A8CED007FECCF /* StyleGuide.swift */; };
@@ -107,9 +106,6 @@
 		B1A914272520A9250021E15C /* TaskListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A914262520A9250021E15C /* TaskListViewModel.swift */; };
 		B1A914292520AB640021E15C /* TaskListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A914282520AB640021E15C /* TaskListView.swift */; };
 		B1A9142B2520B2AD0021E15C /* TaskListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A9142A2520B2AD0021E15C /* TaskListViewController.swift */; };
-		B1AC73F6259330C4009029C9 /* SubtasksTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1AC73F5259330C4009029C9 /* SubtasksTableViewDataSource.swift */; };
-		B1AC73F92593315E009029C9 /* SubtasksTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1AC73F82593315E009029C9 /* SubtasksTableViewDelegate.swift */; };
-		B1AC73FD259351DA009029C9 /* SubtasksFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1AC73FC259351DA009029C9 /* SubtasksFooterView.swift */; };
 		B1C237E125A7164300111037 /* ShortcutListDataSourceCoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C237E025A7164300111037 /* ShortcutListDataSourceCoreData.swift */; };
 		B1C237E725A7770200111037 /* ShorcutListTableViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C237E625A7770200111037 /* ShorcutListTableViewType.swift */; };
 		B1C39D64256BC72E0005C4B6 /* DetailTaskCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C39D63256BC72E0005C4B6 /* DetailTaskCoordinator.swift */; };
@@ -232,7 +228,6 @@
 		B1603C592521EAB70022BE49 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		B1603C5B2521FC200022BE49 /* DetailTaskNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskNewViewController.swift; sourceTree = "<group>"; };
 		B1664044254464C8007D1AFD /* UIBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
-		B170D47E2594E1DE00218823 /* SubtaskFooterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtaskFooterTableViewCell.swift; sourceTree = "<group>"; };
 		B17ED83C25BAEFB8009B51CB /* ImageWithoutRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWithoutRender.swift; sourceTree = "<group>"; };
 		B17F3E1125A5ADC400C4D5A1 /* UICollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewCell.swift; sourceTree = "<group>"; };
 		B1804BB7255A8CED007FECCF /* StyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleGuide.swift; sourceTree = "<group>"; };
@@ -272,9 +267,6 @@
 		B1A914262520A9250021E15C /* TaskListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListViewModel.swift; sourceTree = "<group>"; };
 		B1A914282520AB640021E15C /* TaskListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListView.swift; sourceTree = "<group>"; };
 		B1A9142A2520B2AD0021E15C /* TaskListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListViewController.swift; sourceTree = "<group>"; };
-		B1AC73F5259330C4009029C9 /* SubtasksTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtasksTableViewDataSource.swift; sourceTree = "<group>"; };
-		B1AC73F82593315E009029C9 /* SubtasksTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtasksTableViewDelegate.swift; sourceTree = "<group>"; };
-		B1AC73FC259351DA009029C9 /* SubtasksFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtasksFooterView.swift; sourceTree = "<group>"; };
 		B1C237E025A7164300111037 /* ShortcutListDataSourceCoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutListDataSourceCoreData.swift; sourceTree = "<group>"; };
 		B1C237E625A7770200111037 /* ShorcutListTableViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShorcutListTableViewType.swift; sourceTree = "<group>"; };
 		B1C39D63256BC72E0005C4B6 /* DetailTaskCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskCoordinator.swift; sourceTree = "<group>"; };
@@ -378,7 +370,6 @@
 		B12B0AE525ADC63C0078315C /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B16D81CC25B88C9600869F07 /* Transitions */,
 				B12B0B0725ADE37E0078315C /* ShortcutListTableViewCell.swift */,
 				B12B0AE625ADC6560078315C /* ShortcutListViewController.swift */,
 			);
@@ -534,13 +525,6 @@
 				B17F3E1125A5ADC400C4D5A1 /* UICollectionViewCell.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		B16D81CC25B88C9600869F07 /* Transitions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Transitions;
 			sourceTree = "<group>";
 		};
 		B1804BB6255A8CC9007FECCF /* Common */ = {
@@ -786,10 +770,6 @@
 			isa = PBXGroup;
 			children = (
 				B1391FE7259214C60087D0E9 /* SubtaskTableViewCell.swift */,
-				B170D47E2594E1DE00218823 /* SubtaskFooterTableViewCell.swift */,
-				B1AC73F5259330C4009029C9 /* SubtasksTableViewDataSource.swift */,
-				B1AC73F82593315E009029C9 /* SubtasksTableViewDelegate.swift */,
-				B1AC73FC259351DA009029C9 /* SubtasksFooterView.swift */,
 			);
 			path = SubtaskList;
 			sourceTree = "<group>";
@@ -1374,13 +1354,11 @@
 				B1294493253469D4002FD1EF /* CalendarButton.swift in Sources */,
 				B1EF665925A4CFEE0050FF1C /* DetailShortcutViewModelOutputs.swift in Sources */,
 				B15BFA18259877F2003959B8 /* CheckCellButton.swift in Sources */,
-				B1AC73F92593315E009029C9 /* SubtasksTableViewDelegate.swift in Sources */,
 				B15C9B7A25695BB800A809B1 /* DetailTaskViewModel.swift in Sources */,
 				B182306A258119DD009ABCE1 /* DetailTaskViewType.swift in Sources */,
 				B17F3E1225A5ADC400C4D5A1 /* UICollectionViewCell.swift in Sources */,
 				B139200F259223040087D0E9 /* Subtask.swift in Sources */,
 				B1A9142425209CC60021E15C /* TaskManaged+CoreDataClass.swift in Sources */,
-				B170D47F2594E1DE00218823 /* SubtaskFooterTableViewCell.swift in Sources */,
 				B1391FE8259214C60087D0E9 /* SubtaskTableViewCell.swift in Sources */,
 				B13875DC25710057002DA626 /* SettingsMenuTableViewCell.swift in Sources */,
 				B1C39D64256BC72E0005C4B6 /* DetailTaskCoordinator.swift in Sources */,
@@ -1403,11 +1381,9 @@
 				B1EF663F25A48D2E0050FF1C /* SlideMenuViewType.swift in Sources */,
 				B13E079225A9CBBB00020F5E /* MenuItemViewModelCreateShortcutType.swift in Sources */,
 				B1391FFA259218AA0087D0E9 /* SubtaskManaged+CoreDataClass.swift in Sources */,
-				B1AC73FD259351DA009029C9 /* SubtasksFooterView.swift in Sources */,
 				B1D5DEC62523884700124DAD /* MonthModel.swift in Sources */,
 				B13E076B25A9905100020F5E /* MenuItemSectionViewModelType.swift in Sources */,
 				B13875E0257121E7002DA626 /* NSObject.swift in Sources */,
-				B1AC73F6259330C4009029C9 /* SubtasksTableViewDataSource.swift in Sources */,
 				B182306F25811D40009ABCE1 /* DetailTaskEditViewController.swift in Sources */,
 				B13E077F25A995B300020F5E /* CreateShortcutMenuItemViewModel.swift in Sources */,
 				B1D4CCE7256D26700085C25C /* SettingsAssembly.swift in Sources */,

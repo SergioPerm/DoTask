@@ -35,8 +35,6 @@ extension DetailAccessoryView {
     private func setup() {
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .white
-        //layer.borderColor = UIColor.gray.cgColor
-        //layer.borderWidth = 2.0
         layer.cornerRadius = 10
         
         clipsToBounds = false

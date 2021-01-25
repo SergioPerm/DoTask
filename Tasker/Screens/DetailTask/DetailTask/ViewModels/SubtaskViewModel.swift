@@ -18,14 +18,12 @@ class SubtaskViewModel: NSObject, SubtaskViewModelType, SubtaskViewModelInputs, 
     
     init(subtask: Subtask) {
         self.subtask = subtask
-        //self.detailTaskViewModel = detailTaskViewModel
     }
         
     // MARK: INPUTS
     
     func setDone(done: Bool) {
         subtask.isDone = done
-        //detailTaskViewModel.inputs.setDoneForSubtask(subtask: self)
     }
     
     func setTitle(title: String) {

@@ -184,7 +184,6 @@ extension DetailTaskScrollView {
                 
         subtaskTableView.dataSource = self
         subtaskTableView.estimatedRowHeight = 33
-        //subtaskTableView.rowHeight = UITableView.automaticDimension
     }
     
     // MARK: Actions

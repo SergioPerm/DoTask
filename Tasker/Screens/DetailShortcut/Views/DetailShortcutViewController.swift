@@ -18,9 +18,6 @@ class DetailShortcutViewController: UIViewController, PresentableController {
     private var viewModel: DetailShortcutViewModelType
     
     // MARK: View's properties
-//    private var interactionController: UIPercentDrivenInteractiveTransition?
-//    private let transitionController = CardModalTransitionController()
-    
     private let placeholderLabel: UILabel = UILabel()
     
     private let labelView: UIView = {
@@ -125,10 +122,6 @@ extension DetailShortcutViewController {
         let deleteShortcutTap = UITapGestureRecognizer(target: self, action: #selector(deleteShortcutAction(sender:)))
         deleteShortcutBtn.addGestureRecognizer(deleteShortcutTap)
         
-        
-//        let swipeGesture = UIPanGestureRecognizer(target: self, action: #selector(swipeCloseAction(sender:)))
-//        view.addGestureRecognizer(swipeGesture)
-        
         nameTextField.delegate = self
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
@@ -230,31 +223,6 @@ extension DetailShortcutViewController {
         viewModel.inputs.delete()
         router?.pop(vc: self)
     }
-    
-    @objc private func swipeCloseAction(sender: UIPanGestureRecognizer) {
-//        let translate = sender.translation(in: sender.view)
-//        let percent   = translate.y / sender.view!.bounds.size.height
-//
-//        if sender.state == .began {
-//            interactionController = UIPercentDrivenInteractiveTransition()
-//            transitionController.interactionController = interactionController
-//
-//            dismiss(animated: true, completion: nil)
-//        } else if sender.state == .changed {
-//            interactionController?.update(percent)
-//        } else if sender.state == .ended {
-//            let velocity = sender.velocity(in: sender.view)
-//            print("\(velocity)")
-//            if percent > 0.5 || velocity.y >= 2000 {
-//                router?.pop(vc: self)
-//                interactionController?.finish()
-//            } else {
-//                interactionController?.completionSpeed = percent
-//                interactionController?.cancel()
-//            }
-//            interactionController = nil
-//        }
-    }
 }
 
 // MARK: Notifications
@@ -308,11 +276,6 @@ extension DetailShortcutViewController {
 // MARK: UITextFieldDelegate
 
 extension DetailShortcutViewController: UITextFieldDelegate {
-//    func textFieldDidChangeSelection(_ textField: UITextField) {
-//        placeholderLabel.isHidden = !textField.text!.isEmpty
-//        viewModel.inputs.setTitle(title: textField.text!)
-//    }
-        
     @objc private func textFieldEditAction(sender: Any?) {
         placeholderLabel.isHidden = !nameTextField.text!.isEmpty
         viewModel.inputs.setTitle(title: nameTextField.text!)

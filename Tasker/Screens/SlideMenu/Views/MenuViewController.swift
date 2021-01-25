@@ -299,12 +299,22 @@ extension MenuViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        guard let taskListAction = openTaskListHandler else { return }
+        
         viewModel.inputs.selectShortcut(for: indexPath)
         
         if let shortcutViewModel = viewModel.outputs.tableSections[indexPath.section].tableCells[indexPath.row] as? ShortcutMenuItemViewModel {
             
-            if let taskListAction = openTaskListHandler {
-                taskListAction(self, shortcutViewModel.shortcut.uid)
+            taskListAction(self, shortcutViewModel.shortcut.uid)
+            
+        } else if let mainMenuViewModel = viewModel.outputs.tableSections[indexPath.section].tableCells[indexPath.row] as? MainMenuItemViewModel {
+            
+            switch mainMenuViewModel.menuType {
+            case .mainList:
+                taskListAction(self, nil)
+            case .diaryList:
+                break
             }
         }
     }
@@ -319,6 +329,7 @@ extension MenuViewController: UITableViewDelegate {
                 if let opendetailShoartcutAction = self.openDetailShortcutHandler {
                     opendetailShoartcutAction(shortcutUID)
                 }
+                completion(true)
             })
             
             if let editImage =  UIImage(named: "edit")?.cgImage {

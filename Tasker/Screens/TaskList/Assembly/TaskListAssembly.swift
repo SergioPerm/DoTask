@@ -12,6 +12,7 @@ class TaskListAssembly {
     static func createInstance(router: RouterType?, shortcutFilter: String?) -> TaskListViewController {
         
         if let persistentVC = router?.getPersistentViewController(persistentType: .taskList) as? TaskListViewController {
+            persistentVC.shortcutFilter = nil
             if let shortcutFilter = shortcutFilter {
                 persistentVC.shortcutFilter = shortcutFilter
             }

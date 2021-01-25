@@ -100,6 +100,16 @@ class SubtaskTableViewCell: UITableViewCell {
         heightConstraint?.constant = 33
         layoutIfNeeded()
     }
+    
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+
+        if !titleTextView.text.isEmpty {
+            layoutIfNeeded()
+            updateHeightOfRow()
+        }
+    }
+
 }
 
 extension SubtaskTableViewCell {
@@ -110,9 +120,7 @@ extension SubtaskTableViewCell {
         titleTextView.delegate = self
         
         selectionStyle = .none
-        
-        //setupCheckView()
-        
+                
         titleTextView.placeholderText = "Subtask title"
         titleTextView.titleFont = FontFactory.TypeWriting.of(size: 15)
         
@@ -222,16 +230,30 @@ extension SubtaskTableViewCell: UITextViewDelegate {
         reorderButton.isHidden = false
     }
     
-    func textViewDidChange(_ textView: UITextView) {
+    private func updateHeightOfRow() {
+        let newSize = titleTextView.sizeThatFits(CGSize(width: titleTextView.frame.width,
+                                                    height: CGFloat.greatestFiniteMagnitude))
         
-        subtaskViewModel?.inputs.setTitle(title: textView.text)
-        
-        let newSize = textView.sizeThatFits(CGSize(width: textView.frame.width,
-                                                   height: CGFloat.greatestFiniteMagnitude))
-
-        heightConstraint?.constant = newSize.height
-        if let delegate = cellDelegate {
-            delegate.updateHeightOfRow()
+        if heightConstraint?.constant != newSize.height {
+            heightConstraint?.constant = newSize.height
+            if let delegate = cellDelegate {
+                delegate.updateHeightOfRow()
+            }
         }
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        subtaskViewModel?.inputs.setTitle(title: textView.text)
+          
+        updateHeightOfRow()
+//        let newSize = textView.sizeThatFits(CGSize(width: textView.frame.width,
+//                                                    height: CGFloat.greatestFiniteMagnitude))
+//
+//        if heightConstraint?.constant != newSize.height {
+//            heightConstraint?.constant = newSize.height
+//            if let delegate = cellDelegate {
+//                delegate.updateHeightOfRow()
+//            }
+//        }
     }
 }

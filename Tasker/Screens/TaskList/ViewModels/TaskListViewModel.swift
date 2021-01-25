@@ -75,6 +75,10 @@ extension TaskListViewModel {
         tableViewItems = dataSource.tasksWithSections
         view?.tableViewReload()
     }
+    
+    func getShortcut(shortcutUID: String) -> Shortcut? {
+         return dataSource.shortcutModelByIdentifier(identifier: shortcutUID)
+    }
 }
 
 extension TaskListViewModel: TaskListDataSourceObserver {

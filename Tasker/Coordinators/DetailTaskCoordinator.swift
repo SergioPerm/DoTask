@@ -14,14 +14,16 @@ class DetailTaskCoordinator: NSObject, Coordinator {
     
     var router: RouterType?
     private var taskUID: String?
+    private var shortcutUID: String?
     
-    init(presenter: RouterType?, taskUID: String?) {
+    init(presenter: RouterType?, taskUID: String?, shortcutUID: String?) {
         self.router = presenter
         self.taskUID = taskUID
+        self.shortcutUID = shortcutUID
     }
     
     func start() {
-        let vc = DetailTaskAssembly.createInstance(taskUID: taskUID, presenter: router)
+        let vc = DetailTaskAssembly.createInstance(taskUID: taskUID, shortcutUID: shortcutUID, presenter: router)
         vc.onCalendarSelect = { date, outputs in
             self.openCalendar(date: date, calendarOutputs: outputs)
         }

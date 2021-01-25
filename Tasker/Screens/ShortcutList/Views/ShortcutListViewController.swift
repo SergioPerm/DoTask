@@ -17,11 +17,18 @@ class ShortcutListViewController: UIViewController, PresentableController, Short
     var persistentType: PersistentViewControllerType?
     
     private let viewModel: ShortcutListViewModelType
-    
-//    private var interactionController: UIPercentDrivenInteractiveTransition?
-//    private let transitionController = CardModalTransitionController()
-    
-    private let tableView: UITableView = UITableView()
+        
+    private let tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.bounces = false
+        tableView.separatorStyle = .none
+        tableView.rowHeight = 50
+        
+        tableView.backgroundColor = .white
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return tableView
+    }()
     
     private var tableBottomConstraint: NSLayoutConstraint = NSLayoutConstraint()
     
@@ -78,11 +85,6 @@ extension ShortcutListViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.separatorStyle = .none
-        tableView.rowHeight = 50
-        
-        tableView.backgroundColor = .white
-        tableView.translatesAutoresizingMaskIntoConstraints = false
         
         tableView.register(ShortcutListTableViewCell.self, forCellReuseIdentifier: ShortcutListTableViewCell.className)
         

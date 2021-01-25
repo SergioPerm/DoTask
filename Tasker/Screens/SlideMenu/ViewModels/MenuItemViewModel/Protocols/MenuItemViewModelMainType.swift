@@ -8,7 +8,13 @@
 
 import Foundation
 
+enum MainMenuType {
+    case mainList
+    case diaryList
+}
+
 protocol MenuItemViewModelMainType {
     var title: String { get }
     var imageName: String { get }
+    var menuType: MainMenuType { get }
 }

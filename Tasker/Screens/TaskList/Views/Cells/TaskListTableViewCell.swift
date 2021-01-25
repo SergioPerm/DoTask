@@ -52,6 +52,17 @@ class TaskListTableViewCell: UITableViewCell {
                 importanceView.backgroundColor = #colorLiteral(red: 0.9372549057, green: 0.1278472226, blue: 0.1422514355, alpha: 1)
             }
 
+            if let shortcut = taskModel.shortcut {
+                let shortcutColor = UIColor(hexString: shortcut.color)
+                shadowLayer.layer.shadowColor = shortcutColor.cgColor
+                checkView.layer.borderColor = shortcutColor.cgColor
+                checkView.layer.backgroundColor = shortcutColor.withAlphaComponent(0.11).cgColor
+            } else {
+                shadowLayer.layer.shadowColor = UIColor.black.cgColor
+                checkView.layer.borderColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.8470588235).cgColor
+                checkView.layer.backgroundColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.1099601066)
+            }
+            
             taskIdentifier = taskModel.uid
         }
     }
@@ -105,9 +116,10 @@ class TaskListTableViewCell: UITableViewCell {
         let checkView = UIView()
         
         checkView.translatesAutoresizingMaskIntoConstraints = false
-        checkView.layer.borderWidth = 2
-        checkView.layer.borderColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.8470588235)
-        checkView.layer.cornerRadius = 3
+        checkView.layer.borderWidth = 2.5
+        checkView.layer.borderColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.8470588235).cgColor
+        checkView.layer.cornerRadius = 4
+        checkView.layer.backgroundColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.1099601066)
     
         return checkView
     }()

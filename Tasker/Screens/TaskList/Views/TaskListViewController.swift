@@ -22,7 +22,7 @@ class TaskListViewController: UIViewController, PresentableController {
     var slideMenu: SlideMenuViewType?
     private var withSlideMenu: Bool
     
-    var editTaskAction: ((_ taskUID: String?) ->  Void)?
+    var editTaskAction: ((_ taskUID: String?, _ shortcutUID: String?) ->  Void)?
     
     var shortcutFilter: String? {
         didSet {
@@ -65,17 +65,6 @@ class TaskListViewController: UIViewController, PresentableController {
 
 extension TaskListViewController {
     private func setupView() {
-        let navLabel = UILabel()
-        let navTitle = NSMutableAttributedString(string: "Task", attributes:[
-            NSAttributedString.Key.foregroundColor: Color.blueColor.uiColor,
-            NSAttributedString.Key.font: Font.mainTitle.uiFont])
-        
-        navTitle.append(NSMutableAttributedString(string: "er", attributes:[
-            NSAttributedString.Key.font: Font.mainTitle2.uiFont,
-            NSAttributedString.Key.foregroundColor: Color.pinkColor.uiColor]))
-        
-        navLabel.attributedText = navTitle
-        self.navigationItem.titleView = navLabel
         
         if let navBar = self.navigationController?.navigationBar {
             if #available(iOS 13.0, *) {
@@ -92,6 +81,8 @@ extension TaskListViewController {
                 navBar.layoutIfNeeded()
             }
         }
+        
+        setupNavigationBarTitle()
         
         //Menu btn
         let menuBtn = UIButton()
@@ -122,7 +113,7 @@ extension TaskListViewController {
         
         let btn = TaskAddButton {
             if let editAction = self.editTaskAction {
-                editAction(nil)
+                editAction(nil, self.shortcutFilter)
             }
         }
         view.insertSubview(btn, aboveSubview: tableView)
@@ -137,8 +128,39 @@ extension TaskListViewController {
         self.navigationController?.view.layer.shadowPath = UIBezierPath(rect: (self.navigationController?.view.bounds)!).cgPath
     }
     
-    private func updateViewForShortcutFilter() {
+    private func setupNavigationBarTitle() {
         
+        var isMainTaskList = false
+        if let shortcutFilter = shortcutFilter {
+            isMainTaskList = shortcutFilter.isEmpty
+        } else {
+            isMainTaskList = true
+        }
+        
+        let navLabel = UILabel()
+        
+        if isMainTaskList {
+            let navTitle = NSMutableAttributedString(string: "Task", attributes:[
+                                                        NSAttributedString.Key.foregroundColor: Color.blueColor.uiColor,
+                                                        NSAttributedString.Key.font: Font.mainTitle.uiFont])
+            
+            navTitle.append(NSMutableAttributedString(string: "er", attributes:[
+                                                        NSAttributedString.Key.font: Font.mainTitle2.uiFont,
+                                                        NSAttributedString.Key.foregroundColor: Color.pinkColor.uiColor]))
+            
+            navLabel.attributedText = navTitle
+        } else {
+            guard let shortcutFilter = shortcutFilter else { return }
+            guard let shortcut = viewModel.getShortcut(shortcutUID: shortcutFilter) else { return }
+            
+            let navTitle = NSMutableAttributedString(string: shortcut.name, attributes:[
+                                                        NSAttributedString.Key.foregroundColor: UIColor(hexString: shortcut.color),
+                                                        NSAttributedString.Key.font: UIFont(name: "AvenirNext-Bold", size: 21) ?? UIFont.systemFont(ofSize: 21)])
+            
+            navLabel.attributedText = navTitle
+        }
+        
+        self.navigationItem.titleView = navLabel
     }
     
     private func configureCell(cell: TaskListTableViewCell, taskModel: Task) {
@@ -153,8 +175,7 @@ extension TaskListViewController {
     private func applyShortcutFilter() {
         viewModel.applyShortcutFilter(shortcutFilter: shortcutFilter)
         viewModel.reloadData()
-        
-        updateViewForShortcutFilter()
+        setupNavigationBarTitle()
     }
     
     // MARK: Actions
@@ -272,7 +293,7 @@ extension TaskListViewController: UITableViewDelegate {
 extension TaskListViewController: TaskListView {
     func editTask(taskModel: Task) {
         if let editAction = editTaskAction {
-            editAction(taskModel.uid)
+            editAction(taskModel.uid, nil)
         }
     }
     

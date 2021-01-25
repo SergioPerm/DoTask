@@ -184,7 +184,7 @@ extension DetailTaskScrollView {
                 
         subtaskTableView.dataSource = self
         subtaskTableView.estimatedRowHeight = 33
-        subtaskTableView.rowHeight = UITableView.automaticDimension
+        //subtaskTableView.rowHeight = UITableView.automaticDimension
     }
     
     // MARK: Actions
@@ -236,20 +236,18 @@ extension DetailTaskScrollView {
     
     private func updateTableViewSize(addRowHeight: CGFloat? = nil) {
         if let addRowHeight = addRowHeight {
+            subtaskTableView.layoutIfNeeded()
             subtaskTableViewHeightConstraint.constant += addRowHeight
         } else {
-            //for remove
+            subtaskTableView.layoutIfNeeded()
             if subtaskTableView.contentSize.height != subtaskTableViewHeightConstraint.constant {
-                subtaskTableView.layoutIfNeeded()
                 let addSize = subtaskTableView.contentSize.height - subtaskTableViewHeightConstraint.constant
                 subtaskTableViewHeightConstraint.constant += addSize
             }
         }
     }
     
-    //what todo about it?
     private func addSubtask() {
-        
         guard let viewModel = viewModel else { return }
         
         var newIndexPath: IndexPath = IndexPath()
@@ -260,15 +258,11 @@ extension DetailTaskScrollView {
             
             newIndexPath = IndexPath(row: newIndex, section: 0)
             subtaskTableView.insertRows(at: [newIndexPath], with: .top)
-            
-            subtaskTableView.endUpdates()
-
         } completion: { (finished) in
             let activeCell = self.subtaskTableView.cellForRow(at: newIndexPath) as! SubtaskTableViewCell
             activeCell.setActive()
             self.updateScrollSizeAfterChangeSubtasks(addRowHeight: activeCell.frame.height)
         }
-
     }
 }
 
@@ -451,7 +445,6 @@ extension DetailTaskScrollView: SubtaskTableViewCellDelegate {
                 subtaskTableView.beginUpdates()
                 viewModel.inputs.deleteSubtask(subtask: subtaskViewModel)
                 subtaskTableView.deleteRows(at: [indexPath], with: .top)
-                subtaskTableView.endUpdates()
             } completion: { (finished) in
                 if finished {
                     self.updateScrollSizeAfterChangeSubtasks(addRowHeight: -cellHeight)

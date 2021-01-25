@@ -52,8 +52,8 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
         let vc = TaskListAssembly.createInstance(router: router, shortcutFilter: shortcutFilter)
         vc.slideMenu = menu
         
-        vc.editTaskAction = { uid in
-            self.editTask(taskUID: uid)
+        vc.editTaskAction = { uid, shortcutUID in
+            self.editTask(taskUID: uid, shortcutUID: shortcutUID)
         }
 
         router?.push(vc: vc, completion: { [weak self] in
@@ -71,8 +71,8 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
         }, transition: nil)
     }
     
-    func editTask(taskUID: String?) {
-        let child = DetailTaskCoordinator(presenter: router, taskUID: taskUID)
+    func editTask(taskUID: String?, shortcutUID: String?) {
+        let child = DetailTaskCoordinator(presenter: router, taskUID: taskUID, shortcutUID: shortcutUID)
         child.parentCoordinator = self
         childCoordinators.append(child)
         child.start()

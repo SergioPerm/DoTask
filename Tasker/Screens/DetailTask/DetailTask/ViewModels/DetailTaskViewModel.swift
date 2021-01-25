@@ -18,7 +18,7 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
     var inputs: DetailTaskViewModelInputs { return self }
     var outputs: DetailTaskViewModelOutputs { return self }
     
-    init(taskUID: String?, dataSource: TaskListDataSource) {
+    init(taskUID: String?, shortcutUID: String?, dataSource: TaskListDataSource) {
                 
         self.task = dataSource.taskModelByIdentifier(identifier: taskUID) ?? Task()
         self.dataSource = dataSource
@@ -37,6 +37,8 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
         self.subtasks = self.task.subtasks.map {
             return SubtaskViewModel(subtask: $0)
         }
+        
+        setShortcut(shortcutUID: shortcutUID)
     }
     
     // MARK: INPUTS

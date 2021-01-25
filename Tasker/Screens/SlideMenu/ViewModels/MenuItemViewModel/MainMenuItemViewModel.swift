@@ -9,7 +9,9 @@
 import Foundation
 
 class MainMenuItemViewModel: MenuItemViewModelType, MenuItemViewModelMainType, MenuItemViewModelSelectableType {
-   
+    
+    var menuType: MainMenuType
+    
     var selectedItem: Boxing<Bool>
     var rowHeight: Double = 50
 
@@ -17,10 +19,11 @@ class MainMenuItemViewModel: MenuItemViewModelType, MenuItemViewModelMainType, M
     var title: String
     var imageName: String
     
-    init(title: String, imageName: String, selected: Bool = false) {
+    init(title: String, imageName: String, selected: Bool = false, menuType: MainMenuType) {
         self.title = title
         self.imageName = imageName
         self.selectedItem = Boxing(selected)
+        self.menuType = menuType
     }
     
 }

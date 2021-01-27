@@ -14,27 +14,6 @@ protocol MenuParentControllerType: class {
     func getView() -> UIView
 }
 
-// MARK: Static menu items
-
-enum MenuTableSections: Int, CaseIterable {
-    case Settings
-    case Items
-    case Shortcuts
-}
-
-enum MenuTableSettingsRows: Int, CaseIterable {
-    case TopSettings
-}
-
-enum MenuTableItemsRows: Int, CaseIterable {
-    case TaskList
-    case TaskDiary
-}
-
-enum MenuTableShortcutRows: Int, CaseIterable {
-    case ShortcutCreate
-}
-
 class MenuViewController: UIViewController, PresentableController, SlideMenuViewType {
 
     var presentableControllerViewType: PresentableControllerViewType

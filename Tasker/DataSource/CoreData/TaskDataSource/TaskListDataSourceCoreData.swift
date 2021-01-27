@@ -169,15 +169,15 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
         }
     }
             
-    var tasksWithSections: [Daily] {
+    var tasksWithSections: [TaskTimePeriod] {
         _ = fetchTasks()
         if let sections = fetchedResultsController.sections {
-            var dailyModels = [Daily]()
+            var dailyModels = [TaskTimePeriod]()
             
             for section in sections {
                 //Create model
-                var dailyModel = Daily()
-                dailyModel.dailyName = section.name
+                var dailyModel = TaskTimePeriod()
+                dailyModel.name = section.name
                 
                 for task in section.objects! {
                     dailyModel.tasks.append(Task(with: task as! TaskManaged))
@@ -189,7 +189,7 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
             return dailyModels
         }
         
-        return [Daily]()
+        return [TaskTimePeriod]()
     }
     
     var tasks: [TaskManaged] {

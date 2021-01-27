@@ -8,12 +8,12 @@
 
 import Foundation
 
-struct Daily {
-    var dailyName: String?
+struct TaskTimePeriod {
+    var name: String
     var tasks: [Task]
     
     init() {
-        self.dailyName = ""
+        self.name = ""
         self.tasks = []
     }
 }

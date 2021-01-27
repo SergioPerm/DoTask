@@ -14,10 +14,20 @@ class TaskListViewController: UIViewController, PresentableController {
     var router: RouterType?
     var persistentType: PersistentViewControllerType?
     
-    // MARK: - Dependencies
-    public let viewModel: TaskListViewModel
+    // MARK: ViewModel
+    private var viewModel: TaskListViewModel {
+        didSet {
+            bindViewModel()
+        }
+    }
     
-    private var tableView: UITableView!
+    // MARK: Properties
+    
+    private var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .grouped)
+        
+        return tableView
+    }()
     
     var slideMenu: SlideMenuViewType?
     private var withSlideMenu: Bool
@@ -30,6 +40,8 @@ class TaskListViewController: UIViewController, PresentableController {
         }
     }
     
+    // MARK: Initializers
+    
     init(viewModel: TaskListViewModel, router: RouterType?, presentableControllerViewType: PresentableControllerViewType, persistentType: PersistentViewControllerType? = nil) {
         self.viewModel = viewModel
         self.router = router
@@ -38,6 +50,9 @@ class TaskListViewController: UIViewController, PresentableController {
         self.persistentType = persistentType
         
         super.init(nibName: nil, bundle: nil)
+        
+        self.viewModel.view = self
+        bindViewModel()
     }
     
     required init?(coder: NSCoder) {
@@ -48,22 +63,20 @@ class TaskListViewController: UIViewController, PresentableController {
         super.viewDidLoad()
         setupView()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        viewModel.viewWillAppear(view: self)
-        
-        //viewModel.clearData()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        viewModel.viewWillDisappear()
-    }
-    
 }
 
 extension TaskListViewController {
+    
+    // MARK: Bind ViewModel
+    
+    private func bindViewModel() {
+        viewModel.outputs.shortcutFilter.bind { shortcutData in
+            self.setupNavigationBarTitle(shortcutData: shortcutData)
+        }
+    }
+    
+    // MARK: Setup
+    
     private func setupView() {
         
         if let navBar = self.navigationController?.navigationBar {
@@ -97,7 +110,6 @@ extension TaskListViewController {
         
         self.navigationItem.leftBarButtonItem = menuBarItem
         
-        tableView = UITableView(frame: .zero, style: .grouped)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(TaskListTableViewCell.self, forCellReuseIdentifier: TaskListTableViewCell.className)
@@ -116,19 +128,17 @@ extension TaskListViewController {
                 editAction(nil, self.shortcutFilter)
             }
         }
+        
         view.insertSubview(btn, aboveSubview: tableView)
         
-
         self.navigationController?.view.layer.masksToBounds = false
         self.navigationController?.view.layer.shadowColor = Color.blueColor.uiColor.cgColor
         self.navigationController?.view.layer.shadowOpacity = 0.1
         self.navigationController?.view.layer.shadowOffset = CGSize(width: -4, height: 2)
- 
-
         self.navigationController?.view.layer.shadowPath = UIBezierPath(rect: (self.navigationController?.view.bounds)!).cgPath
     }
     
-    private func setupNavigationBarTitle() {
+    private func setupNavigationBarTitle(shortcutData: ShortcutData? = nil) {
         
         var isMainTaskList = false
         if let shortcutFilter = shortcutFilter {
@@ -150,11 +160,14 @@ extension TaskListViewController {
             
             navLabel.attributedText = navTitle
         } else {
-            guard let shortcutFilter = shortcutFilter else { return }
-            guard let shortcut = viewModel.getShortcut(shortcutUID: shortcutFilter) else { return }
             
-            let navTitle = NSMutableAttributedString(string: shortcut.name, attributes:[
-                                                        NSAttributedString.Key.foregroundColor: UIColor(hexString: shortcut.color),
+            guard let shortcutData = shortcutData else { return }
+            guard let hexColor = shortcutData.colorHex, let shortcutTitle = shortcutData.title else { return }
+            
+            let shortcutColor = UIColor(hexString: hexColor)
+            
+            let navTitle = NSMutableAttributedString(string: shortcutTitle, attributes:[
+                                                        NSAttributedString.Key.foregroundColor: shortcutColor,
                                                         NSAttributedString.Key.font: UIFont(name: "AvenirNext-Bold", size: 21) ?? UIFont.systemFont(ofSize: 21)])
             
             navLabel.attributedText = navTitle
@@ -162,28 +175,14 @@ extension TaskListViewController {
         
         self.navigationItem.titleView = navLabel
     }
-    
-    private func configureCell(cell: TaskListTableViewCell, taskModel: Task) {
-        cell.doneHandler = doneCellAction(_:)
-        cell.taskModel = taskModel
-    }
-    
-    private func doneCellAction(_ taskIdentifier: String) {
-        viewModel.setDoneForTask(with: taskIdentifier)
-    }
-    
+            
     private func applyShortcutFilter() {
-        viewModel.applyShortcutFilter(shortcutFilter: shortcutFilter)
-        viewModel.reloadData()
-        setupNavigationBarTitle()
+        viewModel.inputs.setShortcutFilter(shortcutUID: shortcutFilter)
+        tableView.reloadData()
     }
     
     // MARK: Actions
-    
-    @objc private func addTaskAction(sender: UIView) {
         
-    }
-    
     @objc private func tapMenuAction(sender: UIBarButtonItem) {
         slideMenu?.toggleMenu()
     }
@@ -194,54 +193,34 @@ extension TaskListViewController {
 extension TaskListViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        viewModel.tableViewItems.count
+        viewModel.outputs.periodItems.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let dailyModel = viewModel.tableViewItems[section]
-        return dailyModel.tasks.count
+        viewModel.outputs.periodItems[section].tasks.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TaskListTableViewCell.className) as! TaskListTableViewCell
-        let taskModel = viewModel.tableViewItems[indexPath.section].tasks[indexPath.row]
-        configureCell(cell: cell, taskModel: taskModel)
+        cell.viewModel = viewModel.periodItems[indexPath.section].tasks[indexPath.row]
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let headerName = viewModel.tableViewItems[section].dailyName else { return UIView() }
+        let headerName = viewModel.periodItems[section].title
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 50))
   
         let label = UILabel()
         label.frame = CGRect.init(x: 0, y: 5, width: headerView.frame.width, height: headerView.frame.height-20)
         label.text = "  \(headerName)"
-        label.font = Font.tableHeader.uiFont//UIFont(name: "HelveticaNeue-Bold", size: 35)// my custom font
+        label.font = Font.tableHeader.uiFont
         
         label.textColor = #colorLiteral(red: 0.2392156863, green: 0.6235294118, blue: 0.9960784314, alpha: 1)
         label.backgroundColor = UIColor.white
         
-        //headerView.backgroundColor = UIColor.white
         headerView.addSubview(label)
-        
-        let mask = CAGradientLayer()
-        mask.startPoint = CGPoint(x: 0.5, y: 0.0)
-        mask.endPoint = CGPoint(x: 0.5, y: 1.0)
-        mask.colors = [UIColor.white.withAlphaComponent(1.0).cgColor,UIColor.white.withAlphaComponent(0.5).cgColor,UIColor.white.withAlphaComponent(0.0).cgColor]
-        mask.locations = [0.0, 0.5, 1.0]
-        mask.frame = CGRect(x: 0, y: 35, width: tableView.frame.width, height: 15)
-        //gradientView.layer.mask = mask
-        headerView.layer.insertSublayer(mask, at: 0)
-        
-        let topLayer = CAShapeLayer()
-        topLayer.backgroundColor = UIColor.white.cgColor
-        topLayer.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 5)
-        
-        headerView.layer.insertSublayer(topLayer, at: 0)
-        
-        //headerView.addSubview(gradientView)
-        
+                        
         return headerView
     }
     
@@ -257,26 +236,10 @@ extension TaskListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! TaskListTableViewCell
         cell.animateSelection {
-            self.viewModel.tableViewDidSelectRow(at: indexPath)
+            self.viewModel.inputs.editTask(indexPath: indexPath)
         }
     }
-    
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let contextItemDelete = UIContextualAction(style: .destructive, title: "") { [weak self] (contextualAction, view, completion) in
-            self?.viewModel.deleteTask(at: indexPath)
-            completion(true)
-        }
-        contextItemDelete.backgroundColor = .white
         
-        if let removeImage =  UIImage(named: "recycle")?.cgImage {
-            contextItemDelete.image = ImageWithoutRender(cgImage: removeImage, scale: UIScreen.main.nativeScale, orientation: .up)
-        }
-        
-        let configuration = UISwipeActionsConfiguration(actions: [contextItemDelete])
-        
-        return configuration
-    }
-    
     func tableView(_ tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath) {
         //solve gesture conflicts for slide menu
         slideMenu?.enabled = false
@@ -291,9 +254,9 @@ extension TaskListViewController: UITableViewDelegate {
 // MARK: TaskListView
 
 extension TaskListViewController: TaskListView {
-    func editTask(taskModel: Task) {
+    func editTask(taskUID: String) {
         if let editAction = editTaskAction {
-            editAction(taskModel.uid, nil)
+            editAction(taskUID, nil)
         }
     }
     
@@ -320,13 +283,7 @@ extension TaskListViewController: TaskListView {
     func tableViewDeleteRow(at indexPath: IndexPath) {
         tableView.deleteRows(at: [indexPath], with: .left)
     }
-    
-    func tableViewUpdateRow(at indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as! TaskListTableViewCell
-        let taskModel = viewModel.taskModelForIndexPath(indexPath: indexPath)
-        configureCell(cell: cell, taskModel: taskModel)
-    }
-    
+        
     func tableViewEndUpdates() {
         tableView.endUpdates()
     }

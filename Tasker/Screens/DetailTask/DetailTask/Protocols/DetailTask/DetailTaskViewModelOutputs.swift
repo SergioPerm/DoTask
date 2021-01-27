@@ -8,8 +8,6 @@
 
 import UIKit
 
-typealias ShortcutData = (title: String?, colorHex: String?)
-
 protocol DetailTaskViewModelOutputs {
     var selectedDate: Boxing<Date?> { get }
     var selectedTime: Boxing<Date?> { get }

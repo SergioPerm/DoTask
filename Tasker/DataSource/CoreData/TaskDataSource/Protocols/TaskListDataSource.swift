@@ -9,7 +9,7 @@ import Foundation
 
 protocol TaskListDataSource {
     var tasks: [TaskManaged] { get }
-    var tasksWithSections: [Daily] { get }
+    var tasksWithSections: [TaskTimePeriod] { get }
     var observer: TaskListDataSourceObserver? { get set }
 
     func setDoneForTask(with identifier: String)

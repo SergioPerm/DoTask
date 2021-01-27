@@ -9,6 +9,5 @@
 import Foundation
 
 protocol MenuViewModelOutputs {
-    var shortcuts: [Shortcut] { get }
     var tableSections: [MenuItemSectionViewModelType] { get }
 }

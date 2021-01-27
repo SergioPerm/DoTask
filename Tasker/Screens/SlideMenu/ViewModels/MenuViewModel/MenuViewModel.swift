@@ -49,11 +49,7 @@ class MenuViewModel: MenuViewModelType, MenuViewModelInputs, MenuViewModelOutput
     }
     
     // MARK: Outputs
-    
-    var shortcuts: [Shortcut] {
-        return dataSource.shortcuts
-    }
-    
+        
     var tableSections: [MenuItemSectionViewModelType]
     
 }

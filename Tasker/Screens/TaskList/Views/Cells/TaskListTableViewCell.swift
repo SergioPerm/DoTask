@@ -12,68 +12,19 @@ class TaskListTableViewCell: UITableViewCell {
     
     // MARK: External propperies
     
-    public var taskModel: Task? {
+    var viewModel: TaskListItemViewModelType? {
         didSet {
-            guard let taskModel = taskModel else {
-                titleLabel.text = ""
-                dateLabel.text = ""
-                return
-            }
-            
-            titleLabel.text = taskModel.title
-            
-            if let taskDate = taskModel.taskDate {
-                dateLabel.text = dateFormatter.string(from: taskDate)
-                
-                if taskDate < Date().startOfDay() {
-                    dateLabel.textColor = #colorLiteral(red: 1, green: 0.4627013226, blue: 0.494058354, alpha: 1)
-                    dateLabel.font = Font.cellAdditionalTitle.uiFont
-                } else {
-                    dateLabel.textColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
-                    dateLabel.font = Font.cellAdditionalTitle.uiFont
-                }
-                
-                timeLabel.text = taskModel.reminderDate ? timeFormatter.string(from: taskDate) : ""
-            } else {
-                dateLabel.text = ""
-                timeLabel.text = ""
-            }
-            
-            let importanceLevel = ImportanceLevel(rawValue: Int(taskModel.importanceLevel)) ?? .noImportant
-            
-            switch importanceLevel {
-            case .noImportant:
-                importanceView.backgroundColor = .clear
-            case .important:
-                importanceView.backgroundColor = #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1)
-            case .veryImportant:
-                importanceView.backgroundColor = #colorLiteral(red: 0.9372549057, green: 0.7798047149, blue: 0.2104026425, alpha: 1)
-            case .fuckedUpImportant:
-                importanceView.backgroundColor = #colorLiteral(red: 0.9372549057, green: 0.1278472226, blue: 0.1422514355, alpha: 1)
-            }
-
-            if let shortcut = taskModel.shortcut {
-                let shortcutColor = UIColor(hexString: shortcut.color)
-                shadowLayer.layer.shadowColor = shortcutColor.cgColor
-                checkView.layer.borderColor = shortcutColor.cgColor
-                checkView.layer.backgroundColor = shortcutColor.withAlphaComponent(0.11).cgColor
-            } else {
-                shadowLayer.layer.shadowColor = UIColor.black.cgColor
-                checkView.layer.borderColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.8470588235).cgColor
-                checkView.layer.backgroundColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.1099601066)
-            }
-            
-            taskIdentifier = taskModel.uid
+            bindViewModel()
         }
     }
-    
+        
     public var doneHandler: ((_ taskIdentifier: String)->())?
     
     // MARK: Cell properties
     private let dateFormatter: DateFormatter = DateFormatter()
     private let timeFormatter: DateFormatter = DateFormatter()
     
-    private var taskIdentifier: String?
+    //private var taskIdentifier: String?
         
     private let shapeLayer = CAShapeLayer()
         
@@ -177,12 +128,46 @@ class TaskListTableViewCell: UITableViewCell {
 
 extension TaskListTableViewCell {
     
+    private func bindViewModel() {
+        
+        viewModel?.outputs.title.bind { title in
+            self.titleLabel.text = title
+        }
+        
+        viewModel?.outputs.date.bind { date in
+            self.dateLabel.text = date
+        }
+        
+        viewModel?.outputs.reminderTime.bind { time in
+            self.timeLabel.text = time
+        }
+        
+        viewModel?.outputs.importantColor.bind { hexColor in
+            if let hexColor = hexColor {
+                let importanceColor = UIColor(hexString: hexColor)
+                self.shadowLayer.layer.shadowColor = importanceColor.cgColor
+            } else {
+                self.shadowLayer.layer.shadowColor = UIColor.black.cgColor
+            }
+        }
+        
+        viewModel?.outputs.shortcutColor.bind { hexColor in
+            if let hexColor = hexColor {
+                let shortcutColor = UIColor(hexString: hexColor)
+                self.importanceView.backgroundColor = shortcutColor
+                self.checkView.layer.borderColor = shortcutColor.cgColor
+                self.checkView.layer.backgroundColor = shortcutColor.withAlphaComponent(0.11).cgColor
+            } else {
+                self.importanceView.backgroundColor = .clear
+                self.checkView.layer.borderColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.8470588235).cgColor
+                self.checkView.layer.backgroundColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.1099601066)
+            }
+        }
+    }
+    
     // MARK: Setup Cell
     
     private func setup() {
-        dateFormatter.dateFormat = "dd/MM/yyyy"
-        timeFormatter.dateFormat = "HH:mm"
-        
         selectionStyle = .none
         
         contentView.addSubview(shadowLayer)
@@ -264,9 +249,9 @@ extension TaskListTableViewCell {
     
     @objc private func tapDoneAction(sender: UIView) {
         animateCheckMark(view: checkView) {
-            if let taskIdentifier = self.taskIdentifier, let doneHandler = self.doneHandler {
-                doneHandler(taskIdentifier)
-            }
+            //if let taskIdentifier = self.taskIdentifier {
+                self.viewModel?.inputs.setDone()
+            //}
         }
     }
     
@@ -326,7 +311,6 @@ class ShadowView: UIView {
         self.layer.shadowOffset = CGSize(width: 0, height: 3)
         self.layer.shadowRadius = 3
         self.layer.shadowOpacity = 0.3
-        self.layer.shadowColor = UIColor.black.cgColor
         self.layer.shadowPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: 10, height: 10)).cgPath
         self.layer.shouldRasterize = true
         self.layer.rasterizationScale = UIScreen.main.scale

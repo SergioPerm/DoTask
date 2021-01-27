@@ -49,7 +49,8 @@ class SubtaskTableViewCell: UITableViewCell {
     }
     
     func setActive() {
-        self.titleTextView.becomeFirstResponder()
+        titleTextView.becomeFirstResponder()
+        titleTextView.selectedTextRange = titleTextView.textRange(from: titleTextView.endOfDocument, to: titleTextView.endOfDocument)
     }
     
     private var checkView: CheckCellButton = CheckCellButton()
@@ -94,22 +95,24 @@ class SubtaskTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+        
+//    override func prepareForReuse() {
+//        super.prepareForReuse()
+        //heightConstraint?.constant = 33
+        //updateHeightOnDisplay()
+    //}
+            
+//    private func updateHeightOnDisplay() {
+//        if !titleTextView.text.isEmpty {
+//            updateHeightOfRow()
+//        }
+//    }
+//
+//    override func layoutIfNeeded() {
+//        super.layoutIfNeeded()
+//        updateHeightOnDisplay()
+//    }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        heightConstraint?.constant = 33
-        layoutIfNeeded()
-    }
-    
-    override func didMoveToWindow() {
-        super.didMoveToWindow()
-
-        if !titleTextView.text.isEmpty {
-            layoutIfNeeded()
-            updateHeightOfRow()
-        }
-    }
-
 }
 
 extension SubtaskTableViewCell {
@@ -145,6 +148,7 @@ extension SubtaskTableViewCell {
         reorderButton.setContentHuggingPriority(huggingPriority, for: .vertical)
         
         heightConstraint = titleTextView.heightAnchor.constraint(equalToConstant: 33)
+        heightConstraint?.priority = UILayoutPriority(250)
         
         let constraints = [
             doneView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -217,6 +221,14 @@ extension SubtaskTableViewCell {
             delegate.deleteSubtask(subtaskViewModel, cell: self)
         }
     }
+    
+    func getHeight() -> CGFloat {
+        let newSize = titleTextView.sizeThatFits(CGSize(width: titleTextView.frame.width,
+                                                    height: CGFloat.greatestFiniteMagnitude))
+        
+        return newSize.height
+    }
+    
 }
 
 extension SubtaskTableViewCell: UITextViewDelegate {

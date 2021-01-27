@@ -58,6 +58,7 @@
 		B13E078C25A998AB00020F5E /* MenuItemSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13E078B25A998AB00020F5E /* MenuItemSectionViewModel.swift */; };
 		B13E078F25A9991200020F5E /* MenuCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13E078E25A9991200020F5E /* MenuCellFactory.swift */; };
 		B13E079225A9CBBB00020F5E /* MenuItemViewModelCreateShortcutType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13E079125A9CBBB00020F5E /* MenuItemViewModelCreateShortcutType.swift */; };
+		B141727125C138EB00EF0D85 /* SubtasksTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B141727025C138EB00EF0D85 /* SubtasksTableView.swift */; };
 		B15BFA18259877F2003959B8 /* CheckCellButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15BFA17259877F2003959B8 /* CheckCellButton.swift */; };
 		B15C9B672569156A00A809B1 /* CalendarPickerViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15C9B662569156A00A809B1 /* CalendarPickerViewModelOutputs.swift */; };
 		B15C9B7425695B6600A809B1 /* DetailTaskViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15C9B7325695B6600A809B1 /* DetailTaskViewModelType.swift */; };
@@ -217,6 +218,7 @@
 		B13E078B25A998AB00020F5E /* MenuItemSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemSectionViewModel.swift; sourceTree = "<group>"; };
 		B13E078E25A9991200020F5E /* MenuCellFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCellFactory.swift; sourceTree = "<group>"; };
 		B13E079125A9CBBB00020F5E /* MenuItemViewModelCreateShortcutType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemViewModelCreateShortcutType.swift; sourceTree = "<group>"; };
+		B141727025C138EB00EF0D85 /* SubtasksTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtasksTableView.swift; sourceTree = "<group>"; };
 		B15BFA17259877F2003959B8 /* CheckCellButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckCellButton.swift; sourceTree = "<group>"; };
 		B15C9B662569156A00A809B1 /* CalendarPickerViewModelOutputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerViewModelOutputs.swift; sourceTree = "<group>"; };
 		B15C9B7325695B6600A809B1 /* DetailTaskViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskViewModelType.swift; sourceTree = "<group>"; };
@@ -770,6 +772,7 @@
 			isa = PBXGroup;
 			children = (
 				B1391FE7259214C60087D0E9 /* SubtaskTableViewCell.swift */,
+				B141727025C138EB00EF0D85 /* SubtasksTableView.swift */,
 			);
 			path = SubtaskList;
 			sourceTree = "<group>";
@@ -1376,6 +1379,7 @@
 				B1EF663B25A489B50050FF1C /* DetailShortcutViewController.swift in Sources */,
 				B18C91C225334D74004DFB73 /* ImportanceButton.swift in Sources */,
 				B15C9B7625695B7E00A809B1 /* DetailTaskViewModelInputs.swift in Sources */,
+				B141727125C138EB00EF0D85 /* SubtasksTableView.swift in Sources */,
 				B12B0AF525ADDCEE0078315C /* ShortcutListViewModel.swift in Sources */,
 				B17ED83D25BAEFB8009B51CB /* ImageWithoutRender.swift in Sources */,
 				B1EF663F25A48D2E0050FF1C /* SlideMenuViewType.swift in Sources */,

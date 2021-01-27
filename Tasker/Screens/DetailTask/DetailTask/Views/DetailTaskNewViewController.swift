@@ -162,7 +162,6 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
         super.viewDidLoad()
         setupView()
         bindViewModel()
-        scrollView?.updateSizes()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -295,8 +294,8 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
                        options: .curveEaseOut,
                        animations: {
                         self.view.frame.origin = self.viewOrigin
+                        
         }, completion: { [weak self] finished in
-            self?.scrollView?.updateSizes()
             self?.scrollView?.becomeTextInputResponder()
         })
     }

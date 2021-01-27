@@ -8,9 +8,10 @@
 
 import UIKit
 
+// MARK: DetailTaskScrollViewType
+
 protocol DetailTaskScrollViewType: UIScrollView {
     var limitToScroll: CGFloat { get set }
-    func updateSizes()
     func setCloseHandler(handler: (() -> Void)?)
     func becomeTextInputResponder()
     func resignTextInputResponders()
@@ -19,8 +20,12 @@ protocol DetailTaskScrollViewType: UIScrollView {
     func shakeTitle()
 }
 
+// MARK: DetailTaskScrollView
+
 class DetailTaskScrollView: UIScrollView {
 
+    // MARK: View's properties
+    
     private let scrollContentView: UIView = {
         let contentView = UIView()
         contentView.translatesAutoresizingMaskIntoConstraints = false
@@ -65,26 +70,25 @@ class DetailTaskScrollView: UIScrollView {
         return textView
     }()
     
-    private let subtaskTableView: UITableView = {
-        let tableView = UITableView()
+    private let subtaskTableView: SubtasksTableView = {
+        let tableView = SubtasksTableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.bounces = false
         tableView.isScrollEnabled = false
         
         return tableView
     }()
-    
-    private var subtaskTableViewHeightConstraint: NSLayoutConstraint = NSLayoutConstraint()
+
     private weak var parentView: UIView?
-    
-    private var lowerLimitToScroll: CGFloat = 0.0
-    
     private weak var viewModel: DetailTaskViewModelType?
     
+    private var subtaskTableViewHeightConstraint: NSLayoutConstraint = NSLayoutConstraint()
+    private var lowerLimitToScroll: CGFloat = 0.0
     private var tapToCloseHandler: (() -> Void)?
-    
     private var pastActiveInput: TaskTitleTextView?
     private var subtaskTextInputs: [TaskTitleTextView?] = []
+    
+    // MARK: Initializers
     
     init(viewModel: DetailTaskViewModelType) {
         self.viewModel = viewModel
@@ -98,8 +102,11 @@ class DetailTaskScrollView: UIScrollView {
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
         setup()
+        updateTableViewSize()
     }
 }
+
+// MARK: SETUP View
 
 extension DetailTaskScrollView {
     private func setup() {
@@ -127,6 +134,14 @@ extension DetailTaskScrollView {
         setupActions()
         setupSubtasksTableView()
     }
+        
+    private func setupSubtasksTableView() {
+        subtaskTableView.register(SubtaskTableViewCell.self, forCellReuseIdentifier: SubtaskTableViewCell.className)
+        subtaskTableView.separatorStyle = .none
+                
+        subtaskTableView.estimatedRowHeight = 33
+        subtaskTableView.dataSource = self
+    }
     
     private func setupConstraints() {
         var constraints = [
@@ -153,7 +168,7 @@ extension DetailTaskScrollView {
             titleTextView.topAnchor.constraint(equalTo: swipeCloseView.bottomAnchor)
         ])
         
-        subtaskTableViewHeightConstraint = subtaskTableView.heightAnchor.constraint(equalToConstant: 66)
+        subtaskTableViewHeightConstraint = subtaskTableView.heightAnchor.constraint(equalToConstant: .greatestFiniteMagnitude)
         subtaskTableViewHeightConstraint.priority = UILayoutPriority(250)
         
         let subtaskTableViewBottomConstraint = subtaskTableView.bottomAnchor.constraint(equalTo: scrollContentView.bottomAnchor, constant: -50)
@@ -173,21 +188,13 @@ extension DetailTaskScrollView {
         let closeTap = UITapGestureRecognizer(target: self, action: #selector(tapToCloseAction(_:)))
         swipeCloseView.addGestureRecognizer(closeTap)
     }
-    
-    // MARK: TableView Setup
-    
-    private func setupSubtasksTableView() {
-        subtaskTableViewHeightConstraint.isActive = true
         
-        subtaskTableView.register(SubtaskTableViewCell.self, forCellReuseIdentifier: SubtaskTableViewCell.className)
-        subtaskTableView.separatorStyle = .none
-                
-        subtaskTableView.dataSource = self
-        subtaskTableView.estimatedRowHeight = 33
-    }
-    
-    // MARK: Actions
-        
+
+}
+
+// MARK: Actions
+
+extension DetailTaskScrollView {
     @objc private func tapToCloseAction(_ recognizer: UITapGestureRecognizer) {
         if let tapAction = tapToCloseHandler {
             tapAction()
@@ -199,21 +206,23 @@ extension DetailTaskScrollView {
 
 extension DetailTaskScrollView {
                 
+    private func resetScrollView() {
+        var scrollViewContentOffset = contentOffset
+        scrollViewContentOffset.y = 0
+                
+        UIView.animate(withDuration: 0.3) {
+            self.setContentOffset(scrollViewContentOffset, animated: false)
+        }
+    }
+    
     private func updateScrollSizeAfterChangeSubtasks(addRowHeight: CGFloat) {
         guard let parentView = parentView else { return }
         
         let currentTableViewFrameAtMainView = subtaskTableView.convert(subtaskTableView.bounds, to: parentView.window)
         
-        if contentOffset.y > 0 && addRowHeight < 0 {
+        if contentOffset.y >= 0 && addRowHeight < 0 {
             if abs(addRowHeight) > contentOffset.y {
-                var scrollViewContentOffset = contentOffset
-                scrollViewContentOffset.y = 0
-                
-                UIView.animate(withDuration: 0.3) {
-                    self.setContentOffset(scrollViewContentOffset, animated: false)
-                } completion: { finished in
-                    self.isScrollEnabled = false
-                }
+                resetScrollView()
             } else {
                 var scrollViewContentOffset = contentOffset
                 scrollViewContentOffset.y += addRowHeight
@@ -234,17 +243,19 @@ extension DetailTaskScrollView {
     }
     
     private func updateTableViewSize(addRowHeight: CGFloat? = nil) {
+        
+        subtaskTableView.layoutIfNeeded()
+        if subtaskTableView.contentSize.height != subtaskTableViewHeightConstraint.constant {
+            let addSize = subtaskTableView.contentSize.height - subtaskTableViewHeightConstraint.constant
+            subtaskTableViewHeightConstraint.constant += addSize
+        }
+        
         if let addRowHeight = addRowHeight {
-            subtaskTableView.layoutIfNeeded()
             subtaskTableViewHeightConstraint.constant += addRowHeight
-        } else {
-            subtaskTableView.layoutIfNeeded()
-            if subtaskTableView.contentSize.height != subtaskTableViewHeightConstraint.constant {
-                let addSize = subtaskTableView.contentSize.height - subtaskTableViewHeightConstraint.constant
-                subtaskTableViewHeightConstraint.constant += addSize
-            }
         }
     }
+    
+    // MARK: AddSubtask
     
     private func addSubtask() {
         guard let viewModel = viewModel else { return }
@@ -268,12 +279,13 @@ extension DetailTaskScrollView {
 // MARK: UITableViewDataSource
 
 extension DetailTaskScrollView: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel?.outputs.subtasks.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = subtaskTableView.dequeueReusableCell(withIdentifier: SubtaskTableViewCell.className) as! SubtaskTableViewCell
+        let cell = subtaskTableView.dequeueReusableCell(withIdentifier: SubtaskTableViewCell.className, for: indexPath) as! SubtaskTableViewCell
 
         if let viewModel = viewModel {
             cell.subtaskViewModel = viewModel.outputs.subtasks[indexPath.row]
@@ -285,7 +297,10 @@ extension DetailTaskScrollView: UITableViewDataSource {
         
         cell.parentScrollView = self
         cell.cellDelegate = self
-
+        
+        cell.setNeedsLayout()
+        cell.layoutIfNeeded()
+        
         return cell
     }
 }
@@ -421,6 +436,8 @@ extension DetailTaskScrollView: SubtaskTableViewCellDelegate {
         updateTableViewSize()
     }
     
+    // MARK: DeleteSubtask
+    
     func deleteSubtask(_ subtaskViewModel: SubtaskViewModelType, cell: SubtaskTableViewCell) {
         
         guard let viewModel = viewModel else {
@@ -428,7 +445,7 @@ extension DetailTaskScrollView: SubtaskTableViewCellDelegate {
         }
         
         if let indexPath = subtaskTableView.indexPath(for: cell) {
-            
+                        
             if (viewModel.outputs.subtasks.count - 1) > 0 {
                 let activeCellIndex = indexPath.row == 0 ? 1 : indexPath.row - 1
                 let activeCellIndexPath = IndexPath(row: activeCellIndex, section: 0)
@@ -436,12 +453,12 @@ extension DetailTaskScrollView: SubtaskTableViewCellDelegate {
                 activeCell.setActive()
             } else {
                 self.titleTextView.becomeFirstResponder()
+                self.titleTextView.selectedTextRange = self.titleTextView.textRange(from: self.titleTextView.endOfDocument, to: self.titleTextView.endOfDocument)
             }
             
             guard let cellHeight = self.subtaskTableView.cellForRow(at: indexPath)?.frame.height else { return }
             
             subtaskTableView.performBatchUpdates {
-                subtaskTableView.beginUpdates()
                 viewModel.inputs.deleteSubtask(subtask: subtaskViewModel)
                 subtaskTableView.deleteRows(at: [indexPath], with: .top)
             } completion: { (finished) in
@@ -450,6 +467,7 @@ extension DetailTaskScrollView: SubtaskTableViewCellDelegate {
                     self.updateTableViewSize()
                 }
             }
+
         }
     }
 }
@@ -501,10 +519,6 @@ extension DetailTaskScrollView: DetailTaskScrollViewType {
     
     func addNewSubtask() {
         addSubtask()
-    }
-    
-    func updateSizes() {
-        updateTableViewSize()
     }
     
     func setCloseHandler(handler: (() -> Void)?) {

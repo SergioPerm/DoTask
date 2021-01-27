@@ -183,7 +183,6 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
         super.viewDidLoad()
         setupView()
         bindViewModel()
-        scrollView?.updateSizes()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -324,7 +323,7 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
     // MARK: View animations
     private func showView() {
         let safeAreaFrame = UIView.globalSafeAreaFrame
-        
+
         viewOrigin = CGPoint(x: safeAreaFrame.origin.x, y: safeAreaFrame.origin.y + topMargin)
         
         UIView.animate(withDuration: 0.3,
@@ -332,8 +331,7 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
                        options: .curveEaseOut,
                        animations: {
                         self.view.frame.origin = self.viewOrigin
-        }, completion: { [weak self] finished in
-            self?.scrollView?.updateSizes()
+        }, completion: { finished in
         })
     }
     

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CheckCellButton: UIView {
+class CheckSubtask: UIView {
 
     var check: Bool {
         didSet {
@@ -35,7 +35,7 @@ class CheckCellButton: UIView {
     
 }
 
-extension CheckCellButton {
+extension CheckSubtask {
 
     private func redrawShapes() {
         circleShape.removeFromSuperlayer()

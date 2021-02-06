@@ -8,7 +8,7 @@
 
 import Foundation
 
-class SubtaskViewModel: NSObject, SubtaskViewModelType, SubtaskViewModelInputs, SubtaskViewModelOutputs {
+class SubtaskViewModel: NSObject, DetailTaskTableItemViewModelType, SubtaskViewModelType, SubtaskViewModelInputs, SubtaskViewModelOutputs {
   
     private var subtask: Subtask
     //private weak var detailTaskViewModel: DetailTaskViewModelType?

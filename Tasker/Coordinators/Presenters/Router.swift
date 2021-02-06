@@ -70,7 +70,7 @@ class Router: NSObject, RouterType {
             rootViewController.add(vc, withDimmedBack: true)
         case .navigationStack:
             if let presentableControllerNavBar = getNavigationController(from: vc) {
-                presentableControllerNavBar.pushViewController(vc, animated: false)
+                presentableControllerNavBar.pushViewController(vc, animated: transition != nil)
                 presentableControllerNavBar.delegate = self
                 rootViewController.add(presentableControllerNavBar)
             } else {
@@ -86,7 +86,9 @@ class Router: NSObject, RouterType {
                 vc.transitioningDelegate = transitionDelegate
             }
             
-            rootViewController.present(vc, animated: true, completion: nil)
+            let rootVC = rootViewController.presentedViewController ?? rootViewController
+            
+            rootVC.present(vc, animated: true, completion: nil)
         case .systemPopoverModal:
             rootViewController.modalTransitionStyle   = .crossDissolve
             rootViewController.modalPresentationStyle = .popover

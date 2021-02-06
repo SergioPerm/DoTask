@@ -12,5 +12,5 @@ protocol MenuViewModelInputs: class {
     var createShortcutHandler: (() -> Void)? { get set }
     var shortcutTableView: ShortcutListTableViewType? { get set }
     func deleteShortcut(for shortcut: Shortcut)
-    func selectShortcut(for indexPath: IndexPath)
+    func selectItem(for indexPath: IndexPath)
 }

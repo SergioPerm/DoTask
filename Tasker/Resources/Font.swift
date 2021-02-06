@@ -9,7 +9,7 @@
 import UIKit
 
 enum FontFactory: String {
-    case Regular = "HelveticaNeue"
+    case Regular = "AvenirNext-Medium"
     case TypeWriting = "Helvetica"
     
     func of(size: CGFloat) -> UIFont {

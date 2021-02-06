@@ -15,7 +15,7 @@ class TaskListViewController: UIViewController, PresentableController {
     var persistentType: PersistentViewControllerType?
     
     // MARK: ViewModel
-    private var viewModel: TaskListViewModel {
+    private var viewModel: TaskListViewModelType {
         didSet {
             bindViewModel()
         }
@@ -33,10 +33,10 @@ class TaskListViewController: UIViewController, PresentableController {
     private var withSlideMenu: Bool
     
     var editTaskAction: ((_ taskUID: String?, _ shortcutUID: String?) ->  Void)?
-    
-    var shortcutFilter: String? {
+        
+    var filter: TaskListFilter? {
         didSet {
-            applyShortcutFilter()
+            applyFilters()
         }
     }
     
@@ -51,7 +51,7 @@ class TaskListViewController: UIViewController, PresentableController {
         
         super.init(nibName: nil, bundle: nil)
         
-        self.viewModel.view = self
+        viewModel.view = self
         bindViewModel()
     }
     
@@ -73,6 +73,10 @@ extension TaskListViewController {
         viewModel.outputs.shortcutFilter.bind { shortcutData in
             self.setupNavigationBarTitle(shortcutData: shortcutData)
         }
+        
+        viewModel.outputs.taskDiaryMode.bind { isTaskDiaryMode in
+            self.setupNavigationBarTitle()
+        }
     }
     
     // MARK: Setup
@@ -80,19 +84,7 @@ extension TaskListViewController {
     private func setupView() {
         
         if let navBar = self.navigationController?.navigationBar {
-            if #available(iOS 13.0, *) {
-                navBar.standardAppearance.backgroundColor = UIColor.white//UIColor.clear
-                navBar.standardAppearance.backgroundEffect = nil
-                navBar.standardAppearance.shadowImage = UIImage()
-                navBar.standardAppearance.shadowColor = .clear
-                navBar.standardAppearance.backgroundImage = UIImage()
-            } else {
-                // Fallback on earlier versions
-                navBar.backgroundColor = .clear
-                navBar.setBackgroundImage(UIImage(), for:.default)
-                navBar.shadowImage = UIImage()
-                navBar.layoutIfNeeded()
-            }
+            navBar.setFlatNavBar()
         }
         
         setupNavigationBarTitle()
@@ -119,29 +111,23 @@ extension TaskListViewController {
         tableView.frame = view.frame
         
         tableView.separatorStyle = .none
-        tableView.rowHeight = 75
+        tableView.estimatedRowHeight = 600
         tableView.backgroundColor = .white
         tableView.showsVerticalScrollIndicator = false
         
         let btn = TaskAddButton {
             if let editAction = self.editTaskAction {
-                editAction(nil, self.shortcutFilter)
+                editAction(nil, self.filter?.shortcutFilter)
             }
         }
         
         view.insertSubview(btn, aboveSubview: tableView)
-        
-        self.navigationController?.view.layer.masksToBounds = false
-        self.navigationController?.view.layer.shadowColor = Color.blueColor.uiColor.cgColor
-        self.navigationController?.view.layer.shadowOpacity = 0.1
-        self.navigationController?.view.layer.shadowOffset = CGSize(width: -4, height: 2)
-        self.navigationController?.view.layer.shadowPath = UIBezierPath(rect: (self.navigationController?.view.bounds)!).cgPath
     }
     
     private func setupNavigationBarTitle(shortcutData: ShortcutData? = nil) {
         
         var isMainTaskList = false
-        if let shortcutFilter = shortcutFilter {
+        if let shortcutFilter = filter?.shortcutFilter {
             isMainTaskList = shortcutFilter.isEmpty
         } else {
             isMainTaskList = true
@@ -175,9 +161,13 @@ extension TaskListViewController {
         
         self.navigationItem.titleView = navLabel
     }
-            
-    private func applyShortcutFilter() {
-        viewModel.inputs.setShortcutFilter(shortcutUID: shortcutFilter)
+                
+    private func applyFilters() {
+        guard let filter = filter else {
+            return
+        }
+    
+        viewModel.inputs.setFilter(filter: filter)
         tableView.reloadData()
     }
     
@@ -202,30 +192,22 @@ extension TaskListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TaskListTableViewCell.className) as! TaskListTableViewCell
-        cell.viewModel = viewModel.periodItems[indexPath.section].tasks[indexPath.row]
+        cell.viewModel = viewModel.outputs.periodItems[indexPath.section].tasks[indexPath.row]
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerName = viewModel.periodItems[section].title
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 50))
-  
-        let label = UILabel()
-        label.frame = CGRect.init(x: 0, y: 5, width: headerView.frame.width, height: headerView.frame.height-20)
-        label.text = "  \(headerName)"
-        label.font = Font.tableHeader.uiFont
+        let headerName = viewModel.outputs.periodItems[section].title
         
-        label.textColor = #colorLiteral(red: 0.2392156863, green: 0.6235294118, blue: 0.9960784314, alpha: 1)
-        label.backgroundColor = UIColor.white
-        
-        headerView.addSubview(label)
+        let headerFrame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: StyleGuide.TaskList.Sizes.headerHeight)
+        let headerView = TaskListTableHeaderView(title: headerName, frame: headerFrame)
                         
         return headerView
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 50
+        return StyleGuide.TaskList.Sizes.headerHeight
     }
     
 }

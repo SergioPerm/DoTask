@@ -33,9 +33,13 @@ class DetailTaskCoordinator: NSObject, Coordinator {
         vc.onShortcutSelect = { shortcutUID, outputs in
             self.selectShortcut(shortcutUID: shortcutUID, shortcutListOutputs: outputs)
         }
+        
+        let transition = PopUpModalTransitionController(viewController: vc, interactionView: vc.scrollView, router: router)
+        //let transition = CardModalTransitionController(viewController: vc, interactionView: vc.scrollView, router: router)
+        
         router?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
-        }, transition: nil)
+        }, transition: transition)
     }
     
     func selectShortcut(shortcutUID: String?, shortcutListOutputs: ShortcutListViewOutputs) {
@@ -45,9 +49,11 @@ class DetailTaskCoordinator: NSObject, Coordinator {
             shortcutListOutputs?.selectedShortcutUID = uid
         }
         
+        let transition = CardModalTransitionController(viewController: vc, interactionView: vc.tableView, router: router)
+        
         router?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
-        }, transition: CardModalTransitionController(viewController: vc, router: router))
+        }, transition: transition)
     }
     
     func openCalendar(date: Date?, calendarOutputs: CalendarPickerViewOutputs) {
@@ -62,10 +68,12 @@ class DetailTaskCoordinator: NSObject, Coordinator {
         vc.selectedDateChangedHandler = { [weak calendarOutputs] date in
             calendarOutputs?.selectedCalendarDate = date
         }
+                
+        let transition = ZoomModalTransitionController()
         
         router?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
-        }, transition: nil)
+        }, transition: transition)
     }
     
     func openReminder(date: Date?, reminderOutputs: TimePickerViewOutputs) {
@@ -79,9 +87,11 @@ class DetailTaskCoordinator: NSObject, Coordinator {
             reminderOutputs?.completionAfterCloseTimePicker()
         }
         
+        let transition = ZoomModalTransitionController()
+        
         router?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
-        }, transition: nil)
+        }, transition: transition)
     }
     
 }

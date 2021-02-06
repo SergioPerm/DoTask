@@ -14,5 +14,6 @@ protocol TaskListItemViewModelOutputs {
     var reminderTime: Boxing<String?> { get }
     var importantColor: Boxing<String?> { get }
     var shortcutColor: Boxing<String?> { get }
+    var isDone: Boxing<Bool> { get }
     func getTaskUID() -> String
 }

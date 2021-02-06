@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ReorderCellButton: UIView {
+class ReorderSubtask: UIView {
 
     private let controlRatioWidthRelativeAtFrame: CGFloat = 0.6
     private let controlShape = CAShapeLayer()
@@ -20,7 +20,7 @@ class ReorderCellButton: UIView {
     
 }
 
-extension ReorderCellButton {
+extension ReorderSubtask {
     private func drawControl() {
         controlShape.removeFromSuperlayer()
         

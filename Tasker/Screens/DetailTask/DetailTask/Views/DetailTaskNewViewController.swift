@@ -16,7 +16,6 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
     
     // MARK: ViewModel
     private var viewModel: DetailTaskViewModelType
-    private var subtasks: [SubtaskViewModelType]
     
     // MARK: Coordinates properties
     private var viewOrigin: CGPoint = CGPoint(x: 0, y: 0)
@@ -24,9 +23,23 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
     private var viewHeight: CGFloat = 0.0
             
     // MARK: Handlers
-    var onCalendarSelect: ((_ selectedDate: Date?, _ vc: CalendarPickerViewOutputs) -> Void)?
-    var onTimeReminderSelect: ((_ selectedTime: Date, _ vc: TimePickerViewOutputs) -> Void)?
-    var onShortcutSelect: ((String?, ShortcutListViewOutputs) -> Void)?
+    var onCalendarSelect: ((_ selectedDate: Date?, _ vc: CalendarPickerViewOutputs) -> Void)? {
+        didSet {
+            viewModel.inputs.setCalendarHandler(onCalendarSelect: onCalendarSelect)
+        }
+    }
+    
+    var onTimeReminderSelect: ((_ selectedTime: Date, _ vc: TimePickerViewOutputs) -> Void)? {
+        didSet {
+            viewModel.inputs.setReminderHandler(onTimeReminderSelect: onTimeReminderSelect)
+        }
+    }
+    
+    var onShortcutSelect: ((String?, ShortcutListViewOutputs) -> Void)? {
+        didSet {
+            viewModel.inputs.setShortcutHandler(onShortcutSelect: onShortcutSelect)
+        }
+    }
     
     // MARK: View properties
     private let topMargin: CGFloat = StyleGuide.DetailTask.Sizes.topMargin
@@ -38,7 +51,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
         return origin
     }()
                 
-    private var scrollView: DetailTaskScrollViewType?
+    var scrollView: DetailTaskScrollViewType
         
     private let accessoryView: UIView = {
         let accessoryView = UIView()
@@ -76,9 +89,9 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
     
     private var accesoryBottomConstraint: NSLayoutConstraint = NSLayoutConstraint()
             
-    private var importanceBtn: ImportanceButton?
-    private var calendarBtn: CalendarButton?
-    private var alarmBtn: AlarmButton?
+    private var importanceBtn: ImportanceAccessory?
+    private var calendarBtn: CalendarAccessory?
+    private var alarmBtn: AlarmAccessory?
     
     private let saveBtn: UIButton = {
         let btn = UIButton()
@@ -89,10 +102,10 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
     // MARK: Init
     init(viewModel: DetailTaskViewModelType, presenter: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
         self.viewModel = viewModel
-        self.subtasks = viewModel.outputs.subtasks
         self.router = presenter
         self.presentableControllerViewType = presentableControllerViewType
-                
+        self.scrollView = DetailTaskScrollView(viewModel: viewModel)
+        
         super.init(nibName: nil, bundle: nil)
     
         setupNotifications()
@@ -133,7 +146,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
                         
             let lowerLimitToScroll = keyboardEndFrame.origin.y - accesoryStackView.frame.height - 50
             
-            scrollView?.limitToScroll = lowerLimitToScroll
+            scrollView.limitToScroll = lowerLimitToScroll
         }
     }
     
@@ -163,16 +176,16 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
         setupView()
         bindViewModel()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        showView()
+        
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        scrollView.becomeTextInputResponder()
     }
         
     // MARK: View setup
     private func setupView() {
         let globalFrame = UIView.globalSafeAreaFrame
-        view.frame = CGRect(origin: viewOriginOnStart, size: CGSize(width: globalFrame.width, height: globalFrame.height - (UIDevice.hasNotch ? 0 : topMargin)))
+        view.frame = CGRect(origin: globalFrame.origin, size: CGSize(width: globalFrame.width, height: globalFrame.height - (UIDevice.hasNotch ? 0 : topMargin)))
         
         view.clipsToBounds = true
         view.backgroundColor = StyleGuide.DetailTask.Colors.viewBGColor
@@ -182,10 +195,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
         mask.path = UIBezierPath(roundedRect: view.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: cornerRadius, height: cornerRadius)).cgPath
         
         view.layer.mask = mask
-        
-        scrollView = DetailTaskScrollView(viewModel: viewModel)
-        guard let scrollView = scrollView else { return }
-        
+                
         scrollView.setCloseHandler(handler: { [weak self] in
             self?.tapToCloseAction()
         })
@@ -197,15 +207,15 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
         
         shortcutButton.shortcutBtnData = viewModel.outputs.selectedShortcut.value
         
-        importanceBtn = ImportanceButton(onTapAction: { [weak self] in
+        importanceBtn = ImportanceAccessory(onTapAction: { [weak self] in
             self?.viewModel.inputs.increaseImportance()
             }, importanceLevel: viewModel.outputs.importanceLevel)
         
-        calendarBtn = CalendarButton(onTapAction: { [weak self] in
+        calendarBtn = CalendarAccessory(onTapAction: { [weak self] in
             self?.calendarTapAction()
             }, day: nil)
         
-        alarmBtn = AlarmButton(onTapAction: { [weak self] in
+        alarmBtn = AlarmAccessory(onTapAction: { [weak self] in
             self?.reminderTapAction()
             })
                  
@@ -225,10 +235,6 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
     // MARK: Actions setup
     private func setupActions() {
         saveBtn.addTarget(self, action: #selector(saveTaskAction(sender:)), for: .touchUpInside)
-        
-        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(swipeToCloseAction(_:)))
-        panGestureRecognizer.delegate = self
-        scrollView?.addGestureRecognizer(panGestureRecognizer)
 
         let addSubtaskTap = UITapGestureRecognizer(target: self, action: #selector(subtasksAddAction(sender:)))
         addSubtaskButton.addGestureRecognizer(addSubtaskTap)
@@ -240,9 +246,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
     // MARK: Constraints setup
     private func setupConstraints() {
         let globalFrame = UIView.globalSafeAreaFrame
-                
-        guard let scrollView = scrollView else { return }
-        
+                        
         var constraints = [
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -296,12 +300,12 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
                         self.view.frame.origin = self.viewOrigin
                         
         }, completion: { [weak self] finished in
-            self?.scrollView?.becomeTextInputResponder()
+            self?.scrollView.becomeTextInputResponder()
         })
     }
     
     private func hideView(completion: @escaping ()->()) {
-        scrollView?.resignTextInputResponders()
+        scrollView.resignTextInputResponders()
         
         UIView.animate(withDuration: 0.3,
                        delay: 0,
@@ -346,6 +350,14 @@ extension DetailTaskNewViewController {
         viewModel.outputs.selectedShortcut.bind { [weak self] shortcutData in
             self?.shortcutButton.shortcutBtnData = shortcutData
         }
+        
+        viewModel.outputs.onReturnToEdit.bind { [weak self] edit in
+            guard let strongSelf = self else { return }
+            
+            if (strongSelf.isViewLoaded && strongSelf.view.window != nil) {
+                strongSelf.scrollView.becomeTextInputResponder()
+            }
+        }
     }
 }
 
@@ -353,114 +365,40 @@ extension DetailTaskNewViewController {
 extension DetailTaskNewViewController {
     
     @objc private func subtasksAddAction(sender: UITapGestureRecognizer) {
-        scrollView?.addNewSubtask()
+        scrollView.addNewSubtask()
     }
     
     // MARK: -Accessory view actions
     @objc private func saveTaskAction(sender: UIButton) {
-        if scrollView?.currentTitle == "" {
-            scrollView?.shakeTitle()
+        if scrollView.currentTitle == "" {
+            scrollView.shakeTitle()
             return
         }
         
-        hideView { [weak self] in
-            guard let self = self else { return }
-            self.viewModel.inputs.saveTask()
-            self.router?.pop(vc: self)
-        }
+        viewModel.inputs.saveTask()
+        router?.pop(vc: self)
     }
     
     private func calendarTapAction() {
-        scrollView?.resignTextInputResponders()
-        
-        if let calendatAction = onCalendarSelect {
-            calendatAction(viewModel.outputs.selectedDate.value, self)
-        }
+        scrollView.resignTextInputResponders()
+        viewModel.inputs.openCalendar()
     }
     
     private func reminderTapAction() {
-        scrollView?.resignTextInputResponders()
-        
-        var normalizeTimeFromDate = viewModel.outputs.selectedDate.value ?? Date()
-        if let taskTime = viewModel.outputs.selectedTime.value {
-            normalizeTimeFromDate = taskTime
-            let calendar = Calendar.current.taskCalendar
-            let timeComponents = calendar.dateComponents([.hour, .minute], from: normalizeTimeFromDate)
-            
-            if let hour = timeComponents.hour, let minute = timeComponents.minute {
-                guard let dateWithTime = Calendar.current.taskCalendar.date(bySettingHour: hour, minute: minute, second: 0, of: normalizeTimeFromDate) else { return }
-                normalizeTimeFromDate = dateWithTime
-            }
-        } else if !normalizeTimeFromDate.isDayToday() {
-            guard let dateWithTime = Calendar.current.taskCalendar.date(bySettingHour: 8, minute: 00, second: 0, of: normalizeTimeFromDate) else { return }
-            normalizeTimeFromDate = dateWithTime
-        }
-        
-        if let reminderAction = onTimeReminderSelect {
-            reminderAction(normalizeTimeFromDate, self)
-        }
+        scrollView.resignTextInputResponders()
+        viewModel.inputs.openReminder()
     }
     
     @objc private func selectShortcutTapAction(sender: UITapGestureRecognizer) {
-        if let shortcutAction = onShortcutSelect {
-            shortcutAction(viewModel.outputs.shortcutUID, self)
-        }
+        viewModel.inputs.openShortcuts()
     }
     
     // MARK: -Close actions
     
     private func tapToCloseAction() {
-        hideView { [weak self] in
-            guard let self = self else { return }
-            self.router?.pop(vc: self)
-        }
+        router?.pop(vc: self)
     }
     
-    @objc private func swipeToCloseAction(_ recognizer: UIPanGestureRecognizer) {
-        let gestureIsDraggingFromTopToBottom = recognizer.velocity(in: view).y > 0
-        
-        if !gestureIsDraggingFromTopToBottom && recognizer.state != .ended {
-            return
-        }
-        
-        switch recognizer.state {
-        case .changed:
-            if view.frame.origin.y < viewOrigin.y {
-                view.frame.origin = viewOrigin
-            }
-            
-            var draggingDistance = recognizer.translation(in: view).y
-            
-            draggingDistance *= 0.2
-            
-            let swipePositionY = view.frame.origin.y + draggingDistance
-            
-            if swipePositionY > viewOrigin.y {
-                view.frame.origin.y = view.frame.origin.y + draggingDistance
-                recognizer.setTranslation(CGPoint.zero, in: view)
-            }
-            
-            if view.frame.origin.y >= viewOrigin.y + 45 {
-                hideView { [weak self] in
-                    guard let self = self else { return }
-                    self.router?.pop(vc: self)
-                }
-            }
-        case .ended:
-            if view.frame.origin.y < viewOrigin.y + 45 {
-                UIView.animate(withDuration: 0.3) {
-                    self.view.frame.origin.y = self.viewOrigin.y
-                }
-            } else {
-                hideView { [weak self] in
-                    guard let self = self else { return }
-                    self.router?.pop(vc: self)
-                }
-            }
-        default:
-            break
-        }
-    }
 }
 
 // MARK: UIGestureRecognizerDelegate
@@ -473,51 +411,6 @@ extension DetailTaskNewViewController: UIGestureRecognizerDelegate {
             }
         }
 
-        return scrollView?.contentOffset.y ?? 0 <= 0
-    }
-}
-
-// MARK: CalendarPickerViewOutputs
-extension DetailTaskNewViewController: CalendarPickerViewOutputs {
-    var selectedCalendarDate: Date? {
-        get {
-            return viewModel.outputs.selectedDate.value
-        }
-        
-        set {
-            viewModel.inputs.setTaskDate(date: newValue)
-        }
-    }
-    
-    func comletionAfterCloseCalendar() {
-        scrollView?.becomeTextInputResponder()
-    }
-}
-
-// MARK: TimePickerViewOutputs
-extension DetailTaskNewViewController: TimePickerViewOutputs {
-    var selectedReminderTime: Date? {
-        get {
-            return viewModel.outputs.selectedTime.value
-        }
-        set {
-            viewModel.inputs.setReminder(date: newValue)
-        }
-    }
-
-    func completionAfterCloseTimePicker() {
-        scrollView?.becomeTextInputResponder()
-    }
-}
-
-// MARK: ShortcutListViewOutputs
-extension DetailTaskNewViewController: ShortcutListViewOutputs {
-    var selectedShortcutUID: String? {
-        get {
-            return viewModel.outputs.shortcutUID
-        }
-        set {
-            viewModel.inputs.setShortcut(shortcutUID: newValue)
-        }
+        return scrollView.contentOffset.y <= 0
     }
 }

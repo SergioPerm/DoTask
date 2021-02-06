@@ -14,6 +14,6 @@ protocol TaskListDataSourceObserver: class {
     func taskInserted(at newIndexPath: IndexPath)
     func taskDeleted(at indexPath: IndexPath)
     func taskUpdated(at indexPath: IndexPath)
-    func taskSectionDelete(indexSet: IndexSet)
-    func taskSectionInsert(indexSet: IndexSet)
+    func taskSectionDelete(section: Int)
+    func taskSectionInsert(section: Int)
 }

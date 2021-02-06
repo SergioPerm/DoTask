@@ -11,6 +11,6 @@ import Foundation
 class CalendarPickerAssembly {
     static func createInstance(date: Date?, presenter: RouterType?) -> CalendarPickerViewController {
         let viewModel: CalendarPickerViewModelType = CalendarPickerViewModel(selectedDate: date)
-        return CalendarPickerViewController(selectedDate: date, viewModel: viewModel, presenter: presenter, presentableControllerViewType: .containerChild)
+        return CalendarPickerViewController(selectedDate: date, viewModel: viewModel, presenter: presenter, presentableControllerViewType: .presentWithTransition)
     }
 }

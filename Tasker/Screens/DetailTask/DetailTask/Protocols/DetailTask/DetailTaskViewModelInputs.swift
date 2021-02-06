@@ -8,14 +8,22 @@
 
 import Foundation
 
-protocol DetailTaskViewModelInputs {
+protocol DetailTaskViewModelInputs: class {
     func setTaskDate(date: Date?)
     func setReminder(date: Date?)
     func setTitle(title: String)
     func setShortcut(shortcutUID: String?)
     func increaseImportance()
-    func addSubtask() -> Int
-    func deleteSubtask(subtask: SubtaskViewModelType)
+    func addSubtask() -> IndexPath
+    func deleteSubtask(indexPath: IndexPath)
     func moveSubtask(from: Int, to: Int)
     func saveTask()
+    
+    func setCalendarHandler(onCalendarSelect: ((_ selectedDate: Date?, _ vc: CalendarPickerViewOutputs) -> Void)?)
+    func setReminderHandler(onTimeReminderSelect: ((_ selectedTime: Date, _ vc: TimePickerViewOutputs) -> Void)?)
+    func setShortcutHandler(onShortcutSelect: ((String?, ShortcutListViewOutputs) -> Void)?)
+    
+    func openCalendar()
+    func openReminder()
+    func openShortcuts()
 }

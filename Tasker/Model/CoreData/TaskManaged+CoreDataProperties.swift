@@ -22,6 +22,7 @@ extension TaskManaged {
     @NSManaged public var reminderDate: Bool
     @NSManaged public var reminderGeo: Bool
     @NSManaged public var taskDate: Date?
+    @NSManaged public var doneDate: Date?
     @NSManaged public var title: String?
     @NSManaged public var isDone: Bool
     @NSManaged public var importanceLevel: Int16
@@ -35,6 +36,14 @@ extension TaskManaged {
         }
         
         return taskDate.dailyNameForTask()
+    }
+    
+    @objc var doneDay: Date? {
+        if let doneDate = self.doneDate {
+            return doneDate.startOfDay()
+        }
+        
+        return Date().startOfDay()
     }
     
 }

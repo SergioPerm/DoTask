@@ -19,7 +19,7 @@ enum ImportanceLevel: Int {
     }
 }
 
-class ImportanceButton: UIView {
+class ImportanceAccessory: UIView {
     
     private let onTapActionHandler: () -> Void
     
@@ -60,7 +60,7 @@ class ImportanceButton: UIView {
 
 }
 
-extension ImportanceButton {
+extension ImportanceAccessory {
     private func setup() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapAction(sender:)))
         addGestureRecognizer(tapGesture)

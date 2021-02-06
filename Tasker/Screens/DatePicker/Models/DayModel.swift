@@ -15,4 +15,5 @@ struct DayModel {
     let isWithinDisplayedMonth: Bool
     let isWeekend: Bool
     let currentDay: Bool
+    let pastDate: Bool
 }

@@ -117,11 +117,21 @@ class CalendarPickerViewController: UIViewController, PresentableController {
         setupView()
     }
     
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//
+//        //Scroll to selected month
+//        let selectedDate = viewModel.outputs.selectedDate.value ?? Date()
+//        let diffAmountMonths = selectedDate.endOfMonth.months(from: Date())
+//        let currentIndexPath = IndexPath(row: 0, section: diffAmountMonths)
+//        collectionView.scrollToItem(at: currentIndexPath, at: .centeredVertically, animated: false)
+//        alignMonthInCollectionView(velocity: CGPoint.zero)
+//    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        showView()
-        
-        ///Scroll to selected month
+           
+        //Scroll to selected month
         let selectedDate = viewModel.outputs.selectedDate.value ?? Date()
         let diffAmountMonths = selectedDate.endOfMonth.months(from: Date())
         let currentIndexPath = IndexPath(row: 0, section: diffAmountMonths)
@@ -197,8 +207,15 @@ extension CalendarPickerViewController {
 extension CalendarPickerViewController {
     private func setupView() {
         //main view
+        guard let mainView = UIView.globalView else { return }
+        let viewOriginAtMainView = CGPoint(x: (globalFrame.width - viewWidth)/2, y: (globalFrame.height - viewHeight)/2)
+        let viewOriginDiffrence = mainView.convert(viewOriginAtMainView, to: view)
+        let origin = CGPoint(x: view.frame.origin.x + viewOriginDiffrence.x, y: view.frame.origin.y + viewOriginDiffrence.y)
+        
+        view.frame.origin = origin
+        
         view.backgroundColor = StyleGuide.CalendarDatePicker.viewBackgroundColor
-        view.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: .zero)
+        //view.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: .zero)
         view.layer.cornerRadius = StyleGuide.CalendarDatePicker.viewCornerRadius
         view.clipsToBounds = true
         
@@ -248,7 +265,7 @@ extension CalendarPickerViewController {
         NSLayoutConstraint.activate(constraints)
         
         view.frame.size = CGSize(width: self.viewWidth, height: viewHeight)
-        view.isHidden = true
+        //view.isHidden = true
     }
     
     private func showView() {
@@ -260,18 +277,18 @@ extension CalendarPickerViewController {
         
         self.view.frame.origin = origin
          
-        let scale = StyleGuide.CalendarDatePicker.scaleShowAnimationValue
-        self.view.transform = CGAffineTransform(scaleX: scale, y: scale)
-        self.view.alpha = StyleGuide.CalendarDatePicker.alphaShowAnimationValue
+//        let scale = StyleGuide.CalendarDatePicker.scaleShowAnimationValue
+//        self.view.transform = CGAffineTransform(scaleX: scale, y: scale)
+//        self.view.alpha = StyleGuide.CalendarDatePicker.alphaShowAnimationValue
         
-        view.isHidden = false
-        UIView.animate(withDuration: 0.2,
-                       delay: 0,
-                       options: .curveEaseInOut,
-                       animations: {
-                        self.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-                        self.view.alpha = 1.0
-        }, completion: nil)
+//        view.isHidden = false
+//        UIView.animate(withDuration: 0.2,
+//                       delay: 0,
+//                       options: .curveEaseInOut,
+//                       animations: {
+//                        self.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+//                        self.view.alpha = 1.0
+//        }, completion: nil)
     }
 }
 
@@ -319,7 +336,7 @@ extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
         let cell = collectionView.cellForItem(at: indexPath) as! CalendarPickerViewCell
                   
         guard let day = cell.day else { return }
-        if day.isWithinDisplayedMonth {
+        if day.isWithinDisplayedMonth && !day.pastDate {
             if let changeDateAction = selectedDateChangedHandler {
                 changeDateAction(day.date)
             }
@@ -374,7 +391,7 @@ extension CalendarPickerViewController: UICollectionViewDelegate {
 
             if (snapToIndex >= 0) {
                 // Damping equal 1 => no oscillations => decay animation:
-                UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity.y < 0 ? velocity.y * -1 : velocity.y, options: .allowUserInteraction, animations: {
+                UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity.y < 0 ? velocity.y * -1 : velocity.y, options: .allowUserInteraction, animations: {
                     self.collectionView.contentOffset = CGPoint(x: 0, y: toValue)
                     self.collectionView.layoutIfNeeded()
                 }, completion: { finished in

@@ -26,6 +26,8 @@ class TaskListTableViewCell: UITableViewCell {
     
     //private var taskIdentifier: String?
         
+    private var isAnimatedOnSelect: Bool = false
+    
     private let shapeLayer = CAShapeLayer()
         
     // MARK: View's properties
@@ -34,7 +36,7 @@ class TaskListTableViewCell: UITableViewCell {
         let label = UILabel()
         label.textColor = StyleGuide.TaskList.Colors.cellMainTitle
         label.font = StyleGuide.TaskList.Fonts.cellMainTitle
-        label.numberOfLines = 1
+        label.numberOfLines = 0
         label.lineBreakMode = .byTruncatingTail
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -105,6 +107,9 @@ class TaskListTableViewCell: UITableViewCell {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         
+        view.layer.cornerRadius = 10
+        view.layer.maskedCorners = [.layerMinXMaxYCorner]
+        
         return view
     }()
     
@@ -128,39 +133,49 @@ class TaskListTableViewCell: UITableViewCell {
 
 extension TaskListTableViewCell {
     
+    // MARK: Bind View-model
+    
     private func bindViewModel() {
         
-        viewModel?.outputs.title.bind { title in
-            self.titleLabel.text = title
+        viewModel?.outputs.title.bind { [weak self] title in
+            self?.titleLabel.text = title
+            self?.shadowLayer.setupShadowDone = false
         }
         
-        viewModel?.outputs.date.bind { date in
-            self.dateLabel.text = date
+        viewModel?.outputs.date.bind { [weak self] date in
+            self?.dateLabel.text = date
         }
         
-        viewModel?.outputs.reminderTime.bind { time in
-            self.timeLabel.text = time
+        viewModel?.outputs.reminderTime.bind { [weak self] time in
+            self?.timeLabel.text = time
         }
         
-        viewModel?.outputs.importantColor.bind { hexColor in
+        viewModel?.outputs.importantColor.bind { [weak self] hexColor in
             if let hexColor = hexColor {
                 let importanceColor = UIColor(hexString: hexColor)
-                self.shadowLayer.layer.shadowColor = importanceColor.cgColor
+                self?.backView.layer.backgroundColor = importanceColor.cgColor
             } else {
-                self.shadowLayer.layer.shadowColor = UIColor.black.cgColor
+                self?.backView.layer.backgroundColor = UIColor.white.cgColor
             }
         }
         
-        viewModel?.outputs.shortcutColor.bind { hexColor in
+        viewModel?.outputs.shortcutColor.bind { [weak self] hexColor in
             if let hexColor = hexColor {
                 let shortcutColor = UIColor(hexString: hexColor)
-                self.importanceView.backgroundColor = shortcutColor
-                self.checkView.layer.borderColor = shortcutColor.cgColor
-                self.checkView.layer.backgroundColor = shortcutColor.withAlphaComponent(0.11).cgColor
+                self?.importanceView.backgroundColor = shortcutColor
+                self?.checkView.layer.borderColor = shortcutColor.cgColor
+                self?.checkView.layer.backgroundColor = shortcutColor.withAlphaComponent(0.11).cgColor
             } else {
-                self.importanceView.backgroundColor = .clear
-                self.checkView.layer.borderColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.8470588235).cgColor
-                self.checkView.layer.backgroundColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.1099601066)
+                self?.importanceView.backgroundColor = .clear
+                self?.checkView.layer.borderColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.8470588235).cgColor
+                self?.checkView.layer.backgroundColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.1099601066)
+            }
+        }
+        
+        viewModel?.outputs.isDone.bind { [weak self] isDone in
+            if isDone {
+                guard let strongSelf = self else { return }
+                strongSelf.animateCheckMark(view: strongSelf.checkView, finishHandler: nil)
             }
         }
     }
@@ -175,8 +190,8 @@ extension TaskListTableViewCell {
         var constraints = [
             shadowLayer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             shadowLayer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            shadowLayer.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -2),
-            shadowLayer.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.8)
+            shadowLayer.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
+            shadowLayer.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -7)
         ]
         
         contentView.addSubview(backView)
@@ -184,8 +199,8 @@ extension TaskListTableViewCell {
         constraints.append(contentsOf: [
             backView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             backView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            backView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -2),
-            backView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.8)
+            backView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
+            backView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -7)
         ])
         
         doneView.addSubview(checkView)
@@ -193,7 +208,7 @@ extension TaskListTableViewCell {
         constraints.append(contentsOf: [
             checkView.widthAnchor.constraint(equalToConstant: 24),
             checkView.heightAnchor.constraint(equalToConstant: 24),
-            checkView.centerYAnchor.constraint(equalTo: doneView.centerYAnchor),
+            checkView.topAnchor.constraint(equalTo: doneView.topAnchor, constant: 12),
             checkView.centerXAnchor.constraint(equalTo: doneView.centerXAnchor)
         ])
         
@@ -201,40 +216,45 @@ extension TaskListTableViewCell {
         
         constraints.append(contentsOf: [
             doneView.leadingAnchor.constraint(equalTo: backView.leadingAnchor, constant: 10),
-            doneView.centerYAnchor.constraint(equalTo: backView.centerYAnchor),
             doneView.topAnchor.constraint(equalTo: backView.topAnchor),
-            doneView.bottomAnchor.constraint(equalTo: backView.bottomAnchor),
-            doneView.widthAnchor.constraint(equalToConstant: 40)
+            doneView.widthAnchor.constraint(equalToConstant: 40),
+            doneView.heightAnchor.constraint(equalToConstant: 40)
         ])
         
         backView.addSubview(titleLabel)
         
+        let titleHeightConstraint = titleLabel.heightAnchor.constraint(equalToConstant: 20)
+        titleHeightConstraint.priority = UILayoutPriority(250)
+        
         constraints.append(contentsOf: [
-            titleLabel.centerYAnchor.constraint(equalTo: backView.centerYAnchor, constant: -10),
+            titleLabel.topAnchor.constraint(equalTo: backView.topAnchor, constant: 10),
+            titleLabel.bottomAnchor.constraint(equalTo: dateLabel.topAnchor, constant: -10),
             titleLabel.leadingAnchor.constraint(equalTo: doneView.trailingAnchor, constant: 10),
-            titleLabel.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: -20),
-            titleLabel.heightAnchor.constraint(equalToConstant: 20)
+            titleLabel.trailingAnchor.constraint(equalTo: importanceView.leadingAnchor, constant: -10),
+            titleHeightConstraint
         ])
         
         backView.addSubview(dateLabel)
         backView.addSubview(timeLabel)
-        
+                
         constraints.append(contentsOf: [
-            dateLabel.centerYAnchor.constraint(equalTo: backView.centerYAnchor, constant: 12),
+            dateLabel.bottomAnchor.constraint(equalTo: backView.bottomAnchor, constant: -10),
             dateLabel.leadingAnchor.constraint(equalTo: doneView.trailingAnchor, constant: 10),
             dateLabel.heightAnchor.constraint(equalToConstant: 20),
-            timeLabel.centerYAnchor.constraint(equalTo: backView.centerYAnchor, constant: 12),
+            dateLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 10),
+            timeLabel.bottomAnchor.constraint(equalTo: backView.bottomAnchor, constant: -10),
+            timeLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 10),
             timeLabel.leadingAnchor.constraint(equalTo: dateLabel.trailingAnchor, constant: 10),
-            timeLabel.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: -40)
+            timeLabel.heightAnchor.constraint(equalToConstant: 20)
         ])
         
         backView.addSubview(importanceView)
         
         constraints.append(contentsOf: [
             importanceView.topAnchor.constraint(equalTo: backView.topAnchor),
-            importanceView.bottomAnchor.constraint(equalTo: backView.bottomAnchor),
             importanceView.trailingAnchor.constraint(equalTo: backView.trailingAnchor),
-            importanceView.widthAnchor.constraint(equalToConstant: 20)
+            importanceView.widthAnchor.constraint(equalToConstant: 20),
+            importanceView.heightAnchor.constraint(equalToConstant: 50)
         ])
                         
         contentView.backgroundColor = .clear
@@ -249,18 +269,21 @@ extension TaskListTableViewCell {
     
     @objc private func tapDoneAction(sender: UIView) {
         animateCheckMark(view: checkView) {
-            //if let taskIdentifier = self.taskIdentifier {
-                self.viewModel?.inputs.setDone()
-            //}
+            self.viewModel?.inputs.setDone()
         }
     }
     
     // MARK: Animations
     
     public func animateSelection(onFinish: @escaping ()->()) {
+        if isAnimatedOnSelect { return }
+        
+        isAnimatedOnSelect = true
+        
         CATransaction.begin()
         CATransaction.setCompletionBlock {
             onFinish()
+            self.isAnimatedOnSelect = false
         }
         
         let animationIn = CAKeyframeAnimation(keyPath: "shadowOpacity")
@@ -273,10 +296,12 @@ extension TaskListTableViewCell {
         CATransaction.commit()
     }
     
-    private func animateCheckMark(view: UIView, finishHandler:@escaping (()->())) {
+    private func animateCheckMark(view: UIView, finishHandler: (()->())?) {
         CATransaction.begin()
         CATransaction.setCompletionBlock {
-            finishHandler()
+            if let finishAction = finishHandler {
+                finishAction()
+            }
         }
         
         let path = UIBezierPath()
@@ -284,8 +309,8 @@ extension TaskListTableViewCell {
         path.addLine(to: CGPoint(x: view.bounds.width/2 - 3, y: view.bounds.height - 3))
         path.addLine(to: CGPoint(x: view.bounds.width - 3, y: 4))
         
-        shapeLayer.fillColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0).cgColor
-        shapeLayer.strokeColor = #colorLiteral(red: 0.1115362046, green: 0.701875, blue: 0.1496753436, alpha: 0.8470588235).cgColor
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.strokeColor = StyleGuide.MainColors.blue.cgColor
         shapeLayer.lineWidth = 3
         shapeLayer.path = path.cgPath
         

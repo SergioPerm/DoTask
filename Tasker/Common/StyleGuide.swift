@@ -12,14 +12,19 @@ struct StyleGuide {
    
     static let baseScreenWidth: CGFloat = 375
     
+    enum MainColors {
+        static let blue: UIColor = #colorLiteral(red: 0.2369126672, green: 0.6231006994, blue: 1, alpha: 1)
+    }
+    
     struct TaskList {
         enum Fonts {
-            static let cellMainTitle: UIFont = FontFactory.Regular.of(size: StyleGuide.getFontSizeRelativeToScreen(baseSize: 15))
+            static let cellMainTitle: UIFont = FontFactory.Regular.of(size: StyleGuide.getFontSizeRelativeToScreen(baseSize: 17))
             static let cellAdditionalTitle: UIFont = FontFactory.Regular.of(size: StyleGuide.getFontSizeRelativeToScreen(baseSize: 12))
         }
         
         enum Sizes {
-            
+            static let headerHeight: CGFloat = 50.0
+            static let headerTitleHeight: CGFloat = 30.0
         }
         
         enum Colors {

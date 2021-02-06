@@ -18,7 +18,7 @@ class ShortcutListViewController: UIViewController, PresentableController, Short
     
     private let viewModel: ShortcutListViewModelType
         
-    private let tableView: UITableView = {
+    var tableView: UITableView = {
         let tableView = UITableView()
         tableView.bounces = false
         tableView.separatorStyle = .none
@@ -205,5 +205,18 @@ extension ShortcutListViewController: UITextFieldDelegate {
             viewModel.inputs.setFilter(shortcutNameFilter: searchText)
             tableView.reloadData()
         }
+    }
+}
+
+extension ShortcutListViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+
+        if let panGesture = gestureRecognizer as? UIPanGestureRecognizer {
+            if panGesture.velocity(in: view).y < 0 {
+                return false
+            }
+        }
+
+        return tableView.contentOffset.y <= 0
     }
 }

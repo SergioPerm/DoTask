@@ -12,7 +12,7 @@ extension Calendar {
     
     var taskCalendar: Calendar {
         get {
-            var calendar = Calendar(identifier: .iso8601)
+            let calendar = Calendar(identifier: .iso8601)
             return calendar
         }
     }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CalendarButton: UIView {
+class CalendarAccessory: UIView {
     
     private let calendarWidthAttitudeToHeightFrame: CGFloat = 0.55
     
@@ -71,7 +71,7 @@ class CalendarButton: UIView {
     
 }
 
-extension CalendarButton {
+extension CalendarAccessory {
     
     private func drawCalendar() {
         calendarShape.removeFromSuperlayer()

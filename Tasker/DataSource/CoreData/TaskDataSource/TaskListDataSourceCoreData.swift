@@ -17,19 +17,42 @@ class TaskListDataSourceCoreData: NSObject {
     private var fetchedResultsController: NSFetchedResultsController<TaskManaged> = NSFetchedResultsController()
     private let notificationCenter = PushNotificationService.shared
     
-    init(context: NSManagedObjectContext, shortcutFilter: String?) {
+    // MARK: Filters
+    
+    private var shortcutFilter: String?
+    private var onlyFinishedTasksFilter: Bool
+    
+    // MARK: Init
+    
+    init(context: NSManagedObjectContext, shortcutFilter: String?, onlyFinishedTasksFilter: Bool = false) {
         self.context = context
+        self.shortcutFilter = shortcutFilter
+        self.onlyFinishedTasksFilter = onlyFinishedTasksFilter
         
         super.init()
         
-        setupFetchResultsController(shortcutFilter: shortcutFilter)
+        setupFetchResultsController()
     }
 }
 
 // MARK: TaskListDataSource
 extension TaskListDataSourceCoreData: TaskListDataSource {
-    func applyShortcutFilter(shortcutFilter: String?) {
-        setupFetchResultsController(shortcutFilter: shortcutFilter)
+//    func applyShortcutFilter(shortcutFilter: String?) {
+//        self.shortcutFilter = shortcutFilter
+//        self.onlyFinishedTasksFilter = false
+//        setupFetchResultsController()
+//    }
+//
+//    func applyTaskDiaryMode() {
+//        self.shortcutFilter = nil
+//        self.onlyFinishedTasksFilter = true
+//        setupFetchResultsController()
+//    }
+    
+    func applyFilters(filter: TaskListFilter) {
+        self.shortcutFilter = filter.shortcutFilter
+        self.onlyFinishedTasksFilter = filter.taskDiaryMode
+        setupFetchResultsController()
     }
     
     func taskModelForIndexPath(indexPath: IndexPath) -> Task {
@@ -37,6 +60,8 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
         return Task(with: task)
     }
         
+    // MARK: Get task model by UID
+    
     func taskModelByIdentifier(identifier: String?) -> Task? {
         guard let identifier = identifier else { return nil }
         if let uuid = UUID(uuidString: identifier) {
@@ -61,6 +86,8 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
         return nil
     }
     
+    // MARK: Get task managed by UID
+    
     func taskByIdentifier(identifier: String) -> TaskManaged? {
         if let uuid = UUID(uuidString: identifier) {
             let fetchRequest: NSFetchRequest<TaskManaged> = TaskManaged.fetchRequest()
@@ -84,6 +111,8 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
         return nil
     }
         
+    // MARK: Get shortcut managed by UID
+    
     func shortcutByIdentifier(identifier: String) -> ShortcutManaged? {
         if let uuid = UUID(uuidString: identifier) {
             let fetchRequest: NSFetchRequest<ShortcutManaged> = NSFetchRequest(entityName: "ShortcutManaged")
@@ -106,6 +135,8 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
         
         return nil
     }
+    
+    // MARK: Get shortcut model by UID
     
     func shortcutModelByIdentifier(identifier: String) -> Shortcut? {
         if let uuid = UUID(uuidString: identifier) {
@@ -130,10 +161,13 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
         return nil
     }
     
+    // MARK: Set done
+    
     func setDoneForTask(with identifier: String) {
         if let task = taskByIdentifier(identifier: identifier) {
             let taskModel = Task(with: task)
             task.isDone = true
+            task.doneDate = Date()
             do {
                 try context.save()
                 
@@ -148,12 +182,16 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
         }
     }
     
+    // MARK: Get taskManaged from model
+    
     func taskForTaskModel(taskModel: Task) -> TaskManaged? {
         if let uuidFilter: UUID = UUID(uuidString: taskModel.uid) {
             return taskByIdentifier(identifier: uuidFilter.uuidString)
         }
         return nil
     }
+    
+    // MARK: Delete task
     
     func deleteTask(from taskModel: Task) {
         if let task = taskForTaskModel(taskModel: taskModel) {
@@ -168,7 +206,9 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
             }
         }
     }
-            
+        
+    // MARK: Get tasks with sections
+    
     var tasksWithSections: [TaskTimePeriod] {
         _ = fetchTasks()
         if let sections = fetchedResultsController.sections {
@@ -177,7 +217,20 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
             for section in sections {
                 //Create model
                 var dailyModel = TaskTimePeriod()
-                dailyModel.name = section.name
+                
+                if onlyFinishedTasksFilter {
+                    let dateFormatter = DateFormatter()
+                    
+                    dateFormatter.timeZone = TimeZone.autoupdatingCurrent
+                    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+                    
+                    if let sectionDate = dateFormatter.date(from: section.name) {
+                        dateFormatter.dateFormat = "dd/MM/yyyy"
+                        dailyModel.name = dateFormatter.string(from: sectionDate)
+                    }
+                } else {
+                    dailyModel.name = section.name
+                }
                 
                 for task in section.objects! {
                     dailyModel.tasks.append(Task(with: task as! TaskManaged))
@@ -192,6 +245,8 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
         return [TaskTimePeriod]()
     }
     
+    // MARK: Get tasks
+    
     var tasks: [TaskManaged] {
         if let fetchedTasks = fetchedResultsController.fetchedObjects {
             return fetchedTasks
@@ -199,6 +254,8 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
             return fetchTasks()
         }
     }
+    
+    // MARK: Add task
     
     func addTask(from task: Task) {
         let newTask = TaskManaged(context: context)
@@ -243,6 +300,8 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
         }
     }
     
+    // MARK: Update task
+    
     func updateTask(from task: Task) {
         if let taskManaged = taskForTaskModel(taskModel: task) {
             taskManaged.title = task.title
@@ -284,13 +343,17 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
         }
     }
     
+    // MARK: Clear data
+    
     func clearData() {
         let fetchRequest: NSFetchRequest<TaskManaged> = TaskManaged.fetchRequest()
 
         do {
             let tasksForDelete = try context.fetch(fetchRequest)
             for task in tasksForDelete {
-                context.delete(task)
+                if task.isDone && task.doneDate == nil {
+                    context.delete(task)
+                }
             }
         } catch {
             fatalError()
@@ -304,6 +367,8 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
     }
 }
 
+// MARK: NSFetchedResultsControllerDelegate
+
 extension TaskListDataSourceCoreData: NSFetchedResultsControllerDelegate {
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
@@ -316,13 +381,11 @@ extension TaskListDataSourceCoreData: NSFetchedResultsControllerDelegate {
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
         
-        let section = IndexSet(integer: sectionIndex)
-        
         switch type {
         case .delete:
-            observer?.taskSectionDelete(indexSet: section)
+            observer?.taskSectionDelete(section: sectionIndex)
         case .insert:
-            observer?.taskSectionInsert(indexSet: section)
+            observer?.taskSectionInsert(section: sectionIndex)
         case .move:
             return
         case .update:
@@ -363,7 +426,7 @@ extension TaskListDataSourceCoreData: NSFetchedResultsControllerDelegate {
 // MARK: FRC
 extension TaskListDataSourceCoreData {
     
-    private func setupFetchResultsController(shortcutFilter: String?) {
+    private func setupFetchResultsController() {
         // Setting up fetchedResultsController
         let fetchRequest: NSFetchRequest<TaskManaged> = TaskManaged.fetchRequest()
         
@@ -372,18 +435,25 @@ extension TaskListDataSourceCoreData {
         let sortDescriptor3 = NSSortDescriptor(key: "title", ascending: true)
         
         var predicate = NSPredicate()
+        var sectionNameKeyPath = "dailyName"
+        
         if let shortcutFilter = shortcutFilter {
             guard let shortcutManaged = shortcutByIdentifier(identifier: shortcutFilter) else { return }
             predicate = NSPredicate(format: "isDone == %@ AND shortcut == %@", false, shortcutManaged)
+            fetchRequest.sortDescriptors = [sortDescriptor, sortDescriptor2, sortDescriptor3]
+        } else if onlyFinishedTasksFilter {
+            predicate = NSPredicate(format: "isDone == true")
+            sectionNameKeyPath = "doneDay"
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "doneDate", ascending: false)]
         } else {
             predicate = NSPredicate(format: "isDone == %@", false)
+            fetchRequest.sortDescriptors = [sortDescriptor, sortDescriptor2, sortDescriptor3]
         }
         
-        fetchRequest.sortDescriptors = [sortDescriptor, sortDescriptor2, sortDescriptor3]
         fetchRequest.predicate = predicate
         fetchRequest.fetchBatchSize = 20
         // Initialize Fetched Results Controller
-        self.fetchedResultsController = NSFetchedResultsController<TaskManaged>(fetchRequest: fetchRequest, managedObjectContext: self.context, sectionNameKeyPath: "dailyName", cacheName: nil)
+        self.fetchedResultsController = NSFetchedResultsController<TaskManaged>(fetchRequest: fetchRequest, managedObjectContext: self.context, sectionNameKeyPath: sectionNameKeyPath, cacheName: nil)
         
         fetchedResultsController.delegate = self
     }

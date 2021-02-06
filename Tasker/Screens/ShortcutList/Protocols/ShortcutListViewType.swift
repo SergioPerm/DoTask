@@ -6,8 +6,9 @@
 //  Copyright © 2021 itotdel. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 protocol ShortcutListViewType: PresentableController {
     var selectShortcutHandler: ((_: String) -> Void)? { get set }
+    var tableView: UITableView { get }
 }

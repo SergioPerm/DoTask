@@ -61,13 +61,19 @@ class CalendarPickerViewModel: CalendarPickerViewModelType, CalendarPickerViewMo
         var allMonths: [MonthModel] = []
         allMonths.removeAll()
         
+        var startDate = Date()
+        if let selectedDate = selectedDate.value {
+            startDate = (selectedDate.startOfDay() - Date().startOfDay()) < 0 ? selectedDate : Date()
+        }
+        
         for year in 0...2 {
             yearComponent.year = year
+            
             var yearDate = Date()
-            if year == 0 {
+            if year != 0 {
                 yearDate = baseDate
             } else {
-                yearDate = calendar.date(byAdding: yearComponent, to: baseDate)!
+                yearDate = calendar.date(byAdding: yearComponent, to: startDate)!
             }
             
             let yearNum = calendar.component(.year, from: yearDate)
@@ -179,11 +185,14 @@ class CalendarPickerViewModel: CalendarPickerViewModelType, CalendarPickerViewMo
             isSelected = calendar.isDate(dayDate, equalTo: selectDate, toGranularity: .day) && isWithinDisplayedMonth
         }
         
+        let pastDate = (dayDate.startOfDay().timeIntervalSinceReferenceDate - Date().startOfDay().timeIntervalSinceReferenceDate) < 0 ? true : false
+        
         return DayModel(date: dayDate, number: dateFormatter.string(from: dayDate),
                         isSelected: isSelected,
                         isWithinDisplayedMonth: isWithinDisplayedMonth,
                         isWeekend: weekDay > 5 ? true : false,
-                        currentDay: isCurrentDay)
+                        currentDay: isCurrentDay,
+                        pastDate: pastDate)
     }
     
 }

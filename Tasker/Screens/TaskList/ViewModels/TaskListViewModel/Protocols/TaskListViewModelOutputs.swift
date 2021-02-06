@@ -11,4 +11,5 @@ import Foundation
 protocol TaskListViewModelOutputs {
     var periodItems: [TaskListPeriodItemViewModelType] { get }
     var shortcutFilter: Boxing<ShortcutData?> { get }
+    var taskDiaryMode: Boxing<Bool> { get }
 }

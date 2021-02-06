@@ -9,6 +9,8 @@
 import Foundation
 
 protocol TaskListViewModelInputs {
-    func setShortcutFilter(shortcutUID: String?)
+//    func setShortcutFilter(shortcutUID: String?)
+//    func setTaskDiaryMode()
+    func setFilter(filter: TaskListFilter)
     func editTask(indexPath: IndexPath)
 }

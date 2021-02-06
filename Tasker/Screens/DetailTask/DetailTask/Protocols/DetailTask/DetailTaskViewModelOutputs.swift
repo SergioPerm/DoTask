@@ -13,7 +13,10 @@ protocol DetailTaskViewModelOutputs {
     var selectedTime: Boxing<Date?> { get }
     var selectedShortcut: Boxing<ShortcutData> { get }
     var shortcutUID: String? { get }
+    var isNewTask: Bool { get }
     var importanceLevel: Int { get }
     var title: String { get }
-    var subtasks: [SubtaskViewModelType] { get }
+    var tableSections: [DetailTaskTableSectionViewModelType] { get }
+    var onReturnToEdit: Boxing<Bool> { get }
+    //var subtasks: [SubtaskViewModelType] { get }
 }

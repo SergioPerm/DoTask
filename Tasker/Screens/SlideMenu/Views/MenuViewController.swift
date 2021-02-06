@@ -45,6 +45,7 @@ class MenuViewController: UIViewController, PresentableController, SlideMenuView
     // MARK: SlideMenuHandlers
     var openSettingsHandler: ((SlideMenuViewType?) -> Void)?
     var openTaskListHandler: ((SlideMenuViewType?, String?) -> Void)?
+    var openTaskDiaryHandler: ((SlideMenuViewType?) -> Void)?
     var openDetailShortcutHandler: ((String?) -> Void)?
     
     // MARK: Init
@@ -224,12 +225,6 @@ extension MenuViewController {
 // MARK: UIGestureRecognizerDelegate
 extension MenuViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        if otherGestureRecognizer.view is UITableView {
-            if let otherPan = otherGestureRecognizer as? UIPanGestureRecognizer {
-                let translation = otherPan.translation(in: otherGestureRecognizer.view)
-                return translation.x < 0
-            }
-        }
         
         return false
     }
@@ -279,21 +274,22 @@ extension MenuViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        guard let taskListAction = openTaskListHandler else { return }
+        guard let taskListAction = openTaskListHandler,
+              let taskDiaryAction = openTaskDiaryHandler else { return }
         
-        viewModel.inputs.selectShortcut(for: indexPath)
+        viewModel.inputs.selectItem(for: indexPath)
         
         if let shortcutViewModel = viewModel.outputs.tableSections[indexPath.section].tableCells[indexPath.row] as? ShortcutMenuItemViewModel {
             
             taskListAction(self, shortcutViewModel.shortcut.uid)
             
-        } else if let mainMenuViewModel = viewModel.outputs.tableSections[indexPath.section].tableCells[indexPath.row] as? MainMenuItemViewModel {
+        } else if let menuItemViewModel = viewModel.outputs.tableSections[indexPath.section].tableCells[indexPath.row] as? MenuItemViewModelMainType {
             
-            switch mainMenuViewModel.menuType {
+            switch menuItemViewModel.menuType {
             case .mainList:
                 taskListAction(self, nil)
             case .diaryList:
-                break
+                taskDiaryAction(self)
             }
         }
     }
@@ -349,8 +345,9 @@ extension MenuViewController: ShortcutListTableViewType {
     }
     
     func tableViewUpdateRow(at indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as! ShortcutMenuTableViewCell
-        cell.updateCell()
+        if let cell = tableView.cellForRow(at: indexPath) as? ShortcutMenuTableViewCell {
+            cell.updateCell()
+        }
     }
 }
 

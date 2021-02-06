@@ -50,6 +50,8 @@ class TaskListItemViewModel: TaskListItemViewModelType, TaskListItemViewModelInp
             self.shortcutColor = Boxing(nil)
         }
         
+        self.isDone = Boxing(task.isDone)
+        
         self.taskUID = task.uid
         self.setDoneTaskHandler = setDoneTaskHandler
         
@@ -92,6 +94,7 @@ class TaskListItemViewModel: TaskListItemViewModelType, TaskListItemViewModelInp
     var reminderTime: Boxing<String?>
     var importantColor: Boxing<String?>
     var shortcutColor: Boxing<String?>
+    var isDone: Boxing<Bool>
     
     func getTaskUID() -> String {
         return taskUID
@@ -107,11 +110,11 @@ extension TaskListItemViewModel {
         case .noImportant:
             return nil
         case .important:
-            return "18E211"
+            return "D4FFD7"
         case .veryImportant:
-            return "EFB700"
+            return "FFF7CB"
         case .fuckedUpImportant:
-            return "EF0703"
+            return "FFDDD9"
         }
     }
 }

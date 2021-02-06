@@ -18,6 +18,7 @@ struct Task {
     var lat: Double?
     var lon: Double?
     var isNew: Bool = false
+    var isDone: Bool
     
     var importanceLevel: Int16 {
         didSet {
@@ -41,6 +42,7 @@ struct Task {
         self.importanceLevel = 0
         self.mainTaskListOrder = self.taskDate == nil ? 1 : 0
         self.subtasks = []
+        self.isDone = false
     }
     
     init(with task: TaskManaged) {
@@ -53,14 +55,11 @@ struct Task {
         self.lon = task.lon
         self.importanceLevel = task.importanceLevel
         self.mainTaskListOrder = task.mainTaskListOrder
+        self.isDone = task.isDone
         
-        var subtasks = task.subtasks.allObjects as! [SubtaskManaged]
-        
-        subtasks.sort {
-            $0.priority > $1.priority
-        }
-        
-        self.subtasks = subtasks.map {
+        let subtasksManaged = task.subtasks.allObjects as! [SubtaskManaged]
+                
+        self.subtasks = subtasksManaged.map {
             return Subtask(with: $0)
         }.sorted {
             $0.priority < $1.priority

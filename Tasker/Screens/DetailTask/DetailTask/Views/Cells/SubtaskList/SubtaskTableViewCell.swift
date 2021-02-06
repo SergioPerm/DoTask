@@ -14,7 +14,7 @@ protocol SubtaskTableViewCellDelegate: class {
     func reorderCell(_ cell: SubtaskTableViewCell, gestureRecognizer: UILongPressGestureRecognizer)
 }
 
-class SubtaskTableViewCell: UITableViewCell {
+class SubtaskTableViewCell: UITableViewCell, DetailTaskCellType {
 
     private weak var heightConstraint: NSLayoutConstraint?
         
@@ -49,11 +49,11 @@ class SubtaskTableViewCell: UITableViewCell {
     }
     
     func setActive() {
-        titleTextView.becomeFirstResponder()
+        let _ = titleTextView.becomeFirstResponder()
         titleTextView.selectedTextRange = titleTextView.textRange(from: titleTextView.endOfDocument, to: titleTextView.endOfDocument)
     }
     
-    private var checkView: CheckCellButton = CheckCellButton()
+    private var checkView: CheckSubtask = CheckSubtask()
     
     private let doneView: UIView = {
         let tapView = UIView()
@@ -78,8 +78,8 @@ class SubtaskTableViewCell: UITableViewCell {
         return deleteBtn
     }()
     
-    private let reorderButton: ReorderCellButton = {
-        let reorderBtn = ReorderCellButton()
+    private let reorderButton: ReorderSubtask = {
+        let reorderBtn = ReorderSubtask()
         reorderBtn.translatesAutoresizingMaskIntoConstraints = false
         
         return reorderBtn
@@ -127,7 +127,7 @@ extension SubtaskTableViewCell {
         titleTextView.placeholderText = "Subtask title"
         titleTextView.titleFont = FontFactory.TypeWriting.of(size: 15)
         
-        checkView = CheckCellButton(check: subtaskViewModel?.outputs.isDone ?? false)
+        checkView = CheckSubtask(check: subtaskViewModel?.outputs.isDone ?? false)
         checkView.translatesAutoresizingMaskIntoConstraints = false
         
         doneView.addSubview(checkView)

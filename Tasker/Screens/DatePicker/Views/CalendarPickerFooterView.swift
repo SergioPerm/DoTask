@@ -59,7 +59,7 @@ class CalendarPickerFooterView: UIView {
         borderMiddleVertical.frame = CGRect(x: frame.width/2, y: frame.height/2, width: borderWidth, height: frame.height/2)
         borderMiddleVertical.backgroundColor = borderColor
         layer.addSublayer(borderMiddleVertical)
-       
+
         borderMiddle.frame = CGRect(x: 0, y: frame.height/2, width: frame.width, height: borderWidth)
         borderMiddle.backgroundColor = borderColor
         layer.addSublayer(borderMiddle)

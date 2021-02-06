@@ -104,13 +104,12 @@ class TimePickerViewController: UIViewController, PresentableController {
         setupView()
         setUpPickerData()
     }
-                
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
         fixPickerColors()
-        showView()
     }
-    
+        
     // MARK: Setup VIEW
     
     private func fixPickerColors() {
@@ -190,8 +189,6 @@ class TimePickerViewController: UIViewController, PresentableController {
         ])
         
         NSLayoutConstraint.activate(constraints)
-        
-        view.isHidden = true
     }
         
     // MARK: Calculate time data

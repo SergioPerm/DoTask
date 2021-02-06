@@ -18,6 +18,7 @@ protocol DetailTaskScrollViewType: UIScrollView {
     func addNewSubtask()
     var currentTitle: String { get }
     func shakeTitle()
+    func updateSizes()
 }
 
 // MARK: DetailTaskScrollView
@@ -78,9 +79,15 @@ class DetailTaskScrollView: UIScrollView {
         
         return tableView
     }()
-
+        
     private weak var parentView: UIView?
     private weak var viewModel: DetailTaskViewModelType?
+    
+    private var detailTaskCellFactory: DetailTaskCellFactory? {
+        didSet {
+            detailTaskCellFactory?.cellTypes.forEach({ $0.register(subtaskTableView)})
+        }
+    }
     
     private var subtaskTableViewHeightConstraint: NSLayoutConstraint = NSLayoutConstraint()
     private var lowerLimitToScroll: CGFloat = 0.0
@@ -88,10 +95,13 @@ class DetailTaskScrollView: UIScrollView {
     private var pastActiveInput: TaskTitleTextView?
     private var subtaskTextInputs: [TaskTitleTextView?] = []
     
+    private var newTask: Bool
+    
     // MARK: Initializers
     
     init(viewModel: DetailTaskViewModelType) {
         self.viewModel = viewModel
+        self.newTask = viewModel.outputs.isNewTask
         super.init(frame: .zero)
     }
     
@@ -102,7 +112,6 @@ class DetailTaskScrollView: UIScrollView {
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
         setup()
-        updateTableViewSize()
     }
 }
 
@@ -117,6 +126,8 @@ extension DetailTaskScrollView {
         
         guard let superview = superview, let viewModel = viewModel else { return }
         
+        detailTaskCellFactory = DetailTaskCellFactory()
+        
         parentView = superview
         
         addSubview(scrollContentView)
@@ -129,7 +140,7 @@ extension DetailTaskScrollView {
         
         scrollContentView.addSubview(titleTextView)
         scrollContentView.addSubview(subtaskTableView)
-        
+                
         setupConstraints()
         setupActions()
         setupSubtasksTableView()
@@ -141,6 +152,7 @@ extension DetailTaskScrollView {
                 
         subtaskTableView.estimatedRowHeight = 33
         subtaskTableView.dataSource = self
+        subtaskTableView.delegate = self
     }
     
     private func setupConstraints() {
@@ -184,12 +196,13 @@ extension DetailTaskScrollView {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // MARK: Setup actions
+    
     private func setupActions() {
         let closeTap = UITapGestureRecognizer(target: self, action: #selector(tapToCloseAction(_:)))
         swipeCloseView.addGestureRecognizer(closeTap)
     }
         
-
 }
 
 // MARK: Actions
@@ -209,7 +222,7 @@ extension DetailTaskScrollView {
     private func resetScrollView() {
         var scrollViewContentOffset = contentOffset
         scrollViewContentOffset.y = 0
-                
+                        
         UIView.animate(withDuration: 0.3) {
             self.setContentOffset(scrollViewContentOffset, animated: false)
         }
@@ -242,8 +255,18 @@ extension DetailTaskScrollView {
         }
     }
     
-    private func updateTableViewSize(addRowHeight: CGFloat? = nil) {
+    private func setTableHeightOnStart() {
+        subtaskTableView.layoutIfNeeded()
         
+        let lastSectionIndex = subtaskTableView.numberOfSections - 1
+        let lastRowIndex = subtaskTableView.numberOfRows(inSection: lastSectionIndex) - 1
+        let rectLastRow = subtaskTableView.rectForRow(at: IndexPath(row: lastRowIndex, section: lastSectionIndex))
+        
+        subtaskTableViewHeightConstraint.constant = rectLastRow.maxY
+    }
+    
+    private func updateTableViewSize(addRowHeight: CGFloat? = nil) {
+                        
         subtaskTableView.layoutIfNeeded()
         if subtaskTableView.contentSize.height != subtaskTableViewHeightConstraint.constant {
             let addSize = subtaskTableView.contentSize.height - subtaskTableViewHeightConstraint.constant
@@ -253,6 +276,7 @@ extension DetailTaskScrollView {
         if let addRowHeight = addRowHeight {
             subtaskTableViewHeightConstraint.constant += addRowHeight
         }
+        
     }
     
     // MARK: AddSubtask
@@ -260,13 +284,12 @@ extension DetailTaskScrollView {
     private func addSubtask() {
         guard let viewModel = viewModel else { return }
         
-        var newIndexPath: IndexPath = IndexPath()
- 
+        var newIndexPath = IndexPath()
+        
         updateTableViewSize(addRowHeight: subtaskTableView.estimatedRowHeight)
         subtaskTableView.performBatchUpdates {
-            let newIndex = viewModel.inputs.addSubtask()
+            newIndexPath = viewModel.inputs.addSubtask()
             
-            newIndexPath = IndexPath(row: newIndex, section: 0)
             subtaskTableView.insertRows(at: [newIndexPath], with: .top)
         } completion: { (finished) in
             let activeCell = self.subtaskTableView.cellForRow(at: newIndexPath) as! SubtaskTableViewCell
@@ -276,32 +299,62 @@ extension DetailTaskScrollView {
     }
 }
 
+// MARK: UITableViewDelegate
+
+extension DetailTaskScrollView: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard let viewModel = viewModel else { return 0.0 }
+        
+        return CGFloat(viewModel.outputs.tableSections[section].sectionHeight)
+    }
+}
+
 // MARK: UITableViewDataSource
 
 extension DetailTaskScrollView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel?.outputs.subtasks.count ?? 0
+        return viewModel?.outputs.tableSections[section].tableCells.count ?? 0
     }
 
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel?.outputs.tableSections.count ?? 0
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = subtaskTableView.dequeueReusableCell(withIdentifier: SubtaskTableViewCell.className, for: indexPath) as! SubtaskTableViewCell
 
-        if let viewModel = viewModel {
-            cell.subtaskViewModel = viewModel.outputs.subtasks[indexPath.row]
+        guard let cellFactory = detailTaskCellFactory, let viewModel = viewModel else {
+            return UITableViewCell()
         }
         
-        var textViews = subtaskTextInputs.compactMap { $0 }
-        textViews.append(cell.titleTextView)
-        subtaskTextInputs = textViews
+        let cellViewModel = viewModel.outputs.tableSections[indexPath.section].tableCells[indexPath.row]
         
-        cell.parentScrollView = self
-        cell.cellDelegate = self
+        let cell = cellFactory.generateCell(viewModel: cellViewModel, tableView: subtaskTableView, for: indexPath)
         
-        cell.setNeedsLayout()
-        cell.layoutIfNeeded()
-        
+        if let subtaskCell = cell as? SubtaskTableViewCell {
+            var textViews = subtaskTextInputs.compactMap { $0 }
+            textViews.append(subtaskCell.titleTextView)
+            subtaskTextInputs = textViews
+            
+            subtaskCell.parentScrollView = self
+            subtaskCell.cellDelegate = self
+            
+            subtaskCell.setNeedsLayout()
+            subtaskCell.layoutIfNeeded()
+        }
+
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let viewModel = viewModel else { return UIView() }
+        
+        let headerHeight = CGFloat(viewModel.outputs.tableSections[section].sectionHeight)
+        
+        let headerView = UIView()
+        headerView.frame = CGRect(x: 0, y: 0, width: 0, height: headerHeight)
+        
+        return headerView
     }
 }
 
@@ -392,13 +445,15 @@ extension DetailTaskScrollView: SubtaskTableViewCellDelegate {
             }
         case UIGestureRecognizerState.changed:
             if let indexPath = indexPath, let snapshot = My.cellSnapshot {
-                var center = snapshot.center
-                center.y = locationInView.y
-                snapshot.center = center
-                if indexPath != Path.initialIndexPath {
-                    viewModel?.inputs.moveSubtask(from: Path.initialIndexPath.row, to: indexPath.row)
-                    subtaskTableView.moveRow(at: Path.initialIndexPath, to: indexPath)
-                    Path.initialIndexPath = indexPath
+                if indexPath.section == 0 {
+                    var center = snapshot.center
+                    center.y = locationInView.y
+                    snapshot.center = center
+                    if indexPath != Path.initialIndexPath {
+                        viewModel?.inputs.moveSubtask(from: Path.initialIndexPath.row, to: indexPath.row)
+                        subtaskTableView.moveRow(at: Path.initialIndexPath, to: indexPath)
+                        Path.initialIndexPath = indexPath
+                    }
                 }
             }
         default:
@@ -446,20 +501,20 @@ extension DetailTaskScrollView: SubtaskTableViewCellDelegate {
         
         if let indexPath = subtaskTableView.indexPath(for: cell) {
                         
-            if (viewModel.outputs.subtasks.count - 1) > 0 {
+            if (viewModel.outputs.tableSections[0].tableCells.count - 1) > 0 {
                 let activeCellIndex = indexPath.row == 0 ? 1 : indexPath.row - 1
                 let activeCellIndexPath = IndexPath(row: activeCellIndex, section: 0)
                 let activeCell = self.subtaskTableView.cellForRow(at: activeCellIndexPath) as! SubtaskTableViewCell
                 activeCell.setActive()
             } else {
-                self.titleTextView.becomeFirstResponder()
+                let _ = self.titleTextView.becomeFirstResponder()
                 self.titleTextView.selectedTextRange = self.titleTextView.textRange(from: self.titleTextView.endOfDocument, to: self.titleTextView.endOfDocument)
             }
             
             guard let cellHeight = self.subtaskTableView.cellForRow(at: indexPath)?.frame.height else { return }
             
             subtaskTableView.performBatchUpdates {
-                viewModel.inputs.deleteSubtask(subtask: subtaskViewModel)
+                viewModel.inputs.deleteSubtask(indexPath: indexPath)
                 subtaskTableView.deleteRows(at: [indexPath], with: .top)
             } completion: { (finished) in
                 if finished {
@@ -486,23 +541,28 @@ extension DetailTaskScrollView: UITextViewDelegate {
 
 // MARK: DetailTaskScrollViewType
 extension DetailTaskScrollView: DetailTaskScrollViewType {
+    
+    func updateSizes() {
+        setTableHeightOnStart()
+    }
+        
     func becomeTextInputResponder() {
         if let pastActiveInput = pastActiveInput {
-            pastActiveInput.becomeFirstResponder()
+            let _ = pastActiveInput.becomeFirstResponder()
         } else {
-            titleTextView.becomeFirstResponder()
+            let _ = titleTextView.becomeFirstResponder()
         }
     }
     
     func resignTextInputResponders() {
         if titleTextView.isFirstResponder {
             pastActiveInput = titleTextView
-            titleTextView.resignFirstResponder()
+            let _ = titleTextView.resignFirstResponder()
         } else {
             subtaskTextInputs.compactMap { $0 }.forEach {
                 if $0.isFirstResponder {
                     pastActiveInput = $0
-                    $0.resignFirstResponder()
+                    let _ = $0.resignFirstResponder()
                 }
             }
         }

@@ -48,6 +48,20 @@ class TaskTitleTextView: UITextView {
         super.layoutSubviews()
         updateFramesAndVisible()
     }
+    
+    override func becomeFirstResponder() -> Bool {
+        let result = super.becomeFirstResponder()
+        addKeyboardObserver()
+        //print("is edit: \(text!)")
+        
+        return result
+    }
+    
+    override func resignFirstResponder() -> Bool {
+        let result = super.resignFirstResponder()
+        removeKeyboardObserver()
+        return result
+    }
 }
 
 extension TaskTitleTextView {
@@ -112,9 +126,9 @@ extension TaskTitleTextView {
             
     @objc private func textDidChange(notification: NSNotification) {
         if notification.name == UITextView.textDidBeginEditingNotification {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                self.updateParentScrollViewOffset()
-            }
+            //DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                //self.updateParentScrollViewOffset()
+            //}
         } else {
             updateParentScrollViewOffset()
         }
@@ -144,15 +158,32 @@ extension TaskTitleTextView {
         }
     }
     
+    @objc private func keyboardDidShowNotification(notification: NSNotification) {
+        //if isFirstResponder {
+            updateParentScrollViewOffset()
+        //}
+    }
+    
+    private func addKeyboardObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShowNotification(notification:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+    }
+    
+    private func removeKeyboardObserver() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
+    }
+    
     private func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(textDidChange(notification:)), name: UITextView.textDidChangeNotification, object: self)
         NotificationCenter.default.addObserver(self, selector: #selector(textDidChange(notification:)), name: UITextView.textDidBeginEditingNotification, object: self)
         
-        
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShowNotification(notification:)), name: UIResponder.keyboardDidShowNotification, object: nil)
     }
     
     private func deleteObservers() {
         NotificationCenter.default.removeObserver(self, name: UITextView.textDidChangeNotification, object: self)
         NotificationCenter.default.removeObserver(self, name: UITextView.textDidBeginEditingNotification, object: self)
+        
+        //NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
+        //NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidHideNotification, object: nil)
     }
 }

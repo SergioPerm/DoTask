@@ -10,6 +10,6 @@ import Foundation
 
 class TimePickerAssembly {
     static func createInstance(date: Date?, presenter: RouterType?) -> TimePickerViewController {
-        return TimePickerViewController(baseTime: date, presenter: presenter, presentableControllerViewType: .containerChild)
+        return TimePickerViewController(baseTime: date, presenter: presenter, presentableControllerViewType: .presentWithTransition)
     }
 }

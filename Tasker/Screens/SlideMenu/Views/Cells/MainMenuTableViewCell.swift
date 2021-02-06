@@ -104,6 +104,6 @@ extension MainMenuTableViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
-    //Use UIResponderChain
-    @objc private func menuSettingsAction(sender: UIButton) { }
+//    //Use UIResponderChain
+//    @objc private func menuSettingsAction(sender: UIButton) { }
 }

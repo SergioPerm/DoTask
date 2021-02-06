@@ -29,6 +29,10 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
         vc.openDetailShortcutHandler = { shortcutUID in
             self.editShortcut(shortcutUID: shortcutUID)
         }
+        vc.openTaskDiaryHandler = { menu in
+            self.openTaskDiary(menu: menu)
+        }
+        
         
         router?.push(vc: vc, completion: nil, transition: nil)
     }
@@ -41,7 +45,22 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
         }, transition: CardModalTransitionController(viewController: vc, router: router))
     }
     
-    func openTaskList(menu: SlideMenuViewType?, shortcutFilter: String? = nil) {
+    func openTaskDiary(menu: SlideMenuViewType?) {
+        let vc = TaskDiaryAssembly.createInstance(router: router)
+        
+        vc.editTaskAction = { uid, shortcutUID in
+            self.editTask(taskUID: uid, shortcutUID: shortcutUID)
+        }
+        
+        let transition = FlipTransitionController()
+        
+        router?.push(vc: vc, completion: { [weak self] in
+            self?.parentCoordinator?.childDidFinish(self)
+        }, transition: transition)
+        
+    }
+    
+    func openTaskList(menu: SlideMenuViewType?, shortcutFilter: String? = nil, taskDiaryMode: Bool = false) {
         
         if let menu = menu {
             if menu.enabled {
@@ -49,7 +68,7 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
             }
         }
         
-        let vc = TaskListAssembly.createInstance(router: router, shortcutFilter: shortcutFilter)
+        let vc = TaskListAssembly.createInstance(router: router, shortcutFilter: shortcutFilter, taskDiaryMode: taskDiaryMode)
         vc.slideMenu = menu
         
         vc.editTaskAction = { uid, shortcutUID in

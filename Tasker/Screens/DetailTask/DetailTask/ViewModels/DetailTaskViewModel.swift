@@ -9,11 +9,18 @@
 import Foundation
 
 class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, DetailTaskViewModelOutputs {
-
+    
     private var task: Task
     private var dataSource: TaskListDataSource
     
-    var subtasks: [SubtaskViewModelType] = []
+    private var onCalendarSelect: ((Date?, CalendarPickerViewOutputs) -> Void)?
+    private var onTimeReminderSelect: ((Date, TimePickerViewOutputs) -> Void)?
+    private var onShortcutSelect: ((String?, ShortcutListViewOutputs) -> Void)?
+    
+    private var taskDateInfoCell: DetailTaskTableItemViewModelType?
+    private var taskReminderInfoCell: DetailTaskTableItemViewModelType?
+    
+    //var subtasks: [SubtaskViewModelType] = []
     
     var inputs: DetailTaskViewModelInputs { return self }
     var outputs: DetailTaskViewModelOutputs { return self }
@@ -33,15 +40,28 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
         }
 
         self.importanceLevel = Int(task.importanceLevel)
-        
-        self.subtasks = self.task.subtasks.map {
-            return SubtaskViewModel(subtask: $0)
-        }
-        
+                
         setShortcut(shortcutUID: shortcutUID)
+        setupSections()
+    }
+    
+    deinit {
+        print("")
     }
     
     // MARK: INPUTS
+    
+    func setCalendarHandler(onCalendarSelect: ((Date?, CalendarPickerViewOutputs) -> Void)?) {
+        self.onCalendarSelect = onCalendarSelect
+    }
+    
+    func setReminderHandler(onTimeReminderSelect: ((Date, TimePickerViewOutputs) -> Void)?) {
+        self.onTimeReminderSelect = onTimeReminderSelect
+    }
+    
+    func setShortcutHandler(onShortcutSelect: ((String?, ShortcutListViewOutputs) -> Void)?) {
+        self.onShortcutSelect = onShortcutSelect
+    }
     
     func setTaskDate(date: Date?) {
         if task.reminderDate, let taskDate = task.taskDate, let newDate = date {
@@ -53,6 +73,10 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
             task.taskDate = date
         }
         selectedDate.value = date
+        
+        if let taskDateViewModel = taskDateInfoCell as? TaskDateInfoViewModelType {
+            taskDateViewModel.inputs.setDate(date: date)
+        }
     }
     
     func setReminder(date: Date?) {
@@ -63,6 +87,10 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
             task.reminderDate = false
         }
         selectedTime.value = date
+        
+        if let taskReminderViewModel = taskReminderInfoCell as? TaskReminderInfoViewModelType {
+            taskReminderViewModel.inputs.setTime(time: date)
+        }
     }
     
     func setTitle(title: String) {
@@ -74,34 +102,33 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
         importanceLevel = Int(task.importanceLevel)
     }
   
-    func addSubtask() -> Int {
-        let newSubtask = SubtaskViewModel(subtask: Subtask())
-        
-        subtasks.append(newSubtask)
-        return subtasks.count - 1
+    func addSubtask() -> IndexPath {
+        tableSections[0].tableCells.append(SubtaskViewModel(subtask: Subtask()))
+        return IndexPath(row: tableSections[0].tableCells.count - 1, section: 0)
     }
     
-    func deleteSubtask(subtask: SubtaskViewModelType) {
-        if let removeIndex = subtasks.firstIndex(where: { $0 == subtask }) {
-            subtasks.remove(at: removeIndex)
-        }
+    func deleteSubtask(indexPath: IndexPath) {
+        tableSections[0].tableCells.remove(at: indexPath.row)
     }
         
     func moveSubtask(from: Int, to: Int) {
-        subtasks.insert(subtasks.remove(at: from), at: to)
+        tableSections[0].tableCells.insert(tableSections[0].tableCells.remove(at: from), at: to)
     }
     
     func saveTask() {
         var priority: Int16 = 0
-        task.subtasks = subtasks.map {
-            var subtask = Subtask()
-            subtask.isDone = $0.outputs.isDone
-            subtask.title = $0.outputs.title
-            subtask.priority = priority
-            
-            priority += 1
-            
-            return subtask
+        task.subtasks = tableSections[0].tableCells.compactMap {
+            if let subtaskViewModel = $0 as? SubtaskViewModelType {
+                var subtask = Subtask()
+                subtask.isDone = subtaskViewModel.outputs.isDone
+                subtask.title = subtaskViewModel.outputs.title
+                subtask.priority = priority
+                
+                priority += 1
+                
+                return subtask
+            }
+            return nil
         }
         
         if task.isNew {
@@ -120,6 +147,39 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
         }
     }
     
+    func openCalendar() {
+        if let calendarAction = self.onCalendarSelect {
+            calendarAction(self.selectedDate.value, self)
+        }
+    }
+    
+    func openReminder() {
+        var normalizeTimeFromDate = selectedDate.value ?? Date()
+        if let taskTime = selectedTime.value {
+            normalizeTimeFromDate = taskTime
+            let calendar = Calendar.current.taskCalendar
+            let timeComponents = calendar.dateComponents([.hour, .minute], from: normalizeTimeFromDate)
+            
+            if let hour = timeComponents.hour, let minute = timeComponents.minute {
+                guard let dateWithTime = Calendar.current.taskCalendar.date(bySettingHour: hour, minute: minute, second: 0, of: normalizeTimeFromDate) else { return }
+                normalizeTimeFromDate = dateWithTime
+            }
+        } else if !normalizeTimeFromDate.isDayToday() {
+            guard let dateWithTime = Calendar.current.taskCalendar.date(bySettingHour: 8, minute: 00, second: 0, of: normalizeTimeFromDate) else { return }
+            normalizeTimeFromDate = dateWithTime
+        }
+        
+        if let reminderAction = onTimeReminderSelect {
+            reminderAction(normalizeTimeFromDate, self)
+        }
+    }
+    
+    func openShortcuts() {
+        if let shortcutAction = onShortcutSelect {
+            shortcutAction(shortcutUID, self)
+        }
+    }
+    
     // MARK: OUTPUTS
     
     var selectedDate: Boxing<Date?>
@@ -132,11 +192,97 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
     
     var selectedShortcut: Boxing<ShortcutData>
     
+    var isNewTask: Bool {
+        return task.isNew
+    }
+    
     var shortcutUID: String? {
         if let shortcut = task.shortcut {
             return shortcut.uid
         }
         
         return nil
+    }
+    
+    var tableSections: [DetailTaskTableSectionViewModelType] = []
+    
+    var onReturnToEdit: Boxing<Bool> = Boxing(true)
+}
+
+// MARK: Setup Sections
+
+extension DetailTaskViewModel {
+    private func setupSections() {
+        
+        let subtasks = self.task.subtasks.map {
+            return SubtaskViewModel(subtask: $0)
+        }
+                
+        let subtasksSection = DetailTaskTableSectionViewModel(cells: subtasks, sectionHeight: 0)
+        
+        tableSections.append(subtasksSection)
+        
+        if !isNewTask {
+            taskDateInfoCell = TaskDateInfoViewModel(taskDate: task.taskDate) { [weak self] in
+                self?.openCalendar()
+            }
+            
+            taskReminderInfoCell = TaskReminderInfoViewModel(taskTime: task.reminderDate ? task.taskDate : nil) { [weak self] in
+                self?.openReminder()
+            }
+                        
+            let infoSection = DetailTaskTableSectionViewModel(cells: [taskDateInfoCell!, taskReminderInfoCell!], sectionHeight: 20)
+            tableSections.append(infoSection)
+        }
+        
+    }
+}
+
+// MARK: CalendarPickerViewOutputs
+extension DetailTaskViewModel: CalendarPickerViewOutputs {
+    var selectedCalendarDate: Date? {
+        get {
+            return selectedDate.value
+        }
+        
+        set {
+            setTaskDate(date: newValue)
+        }
+    }
+    
+    func comletionAfterCloseCalendar() {
+        if task.isNew {
+            onReturnToEdit.value = true
+        }
+    }
+}
+
+// MARK: TimePickerViewOutputs
+extension DetailTaskViewModel: TimePickerViewOutputs {
+    var selectedReminderTime: Date? {
+        get {
+            return selectedTime.value
+        }
+        set {
+            setReminder(date: newValue)
+        }
+    }
+
+    func completionAfterCloseTimePicker() {
+        if task.isNew {
+            onReturnToEdit.value = true
+        }
+    }
+}
+
+// MARK: ShortcutListViewOutputs
+extension DetailTaskViewModel: ShortcutListViewOutputs {
+    var selectedShortcutUID: String? {
+        get {
+            return shortcutUID
+        }
+        set {
+            setShortcut(shortcutUID: newValue)
+        }
     }
 }

@@ -62,18 +62,24 @@ extension CalendarPickerViewCell {
         guard let day = day else { return }
               
         if !day.isWithinDisplayedMonth {
+            dayLabel.textColor = #colorLiteral(red: 0.8125689471, green: 0.8125689471, blue: 0.8125689471, alpha: 1)
             return
         }
+                
+        if day.pastDate {
+            dayLabel.textColor = day.isWeekend ? #colorLiteral(red: 0.8125689471, green: 0.6125979116, blue: 0.7837017068, alpha: 1) : #colorLiteral(red: 0.6921151378, green: 0.6921151378, blue: 0.6921151378, alpha: 1)
+        } else {
+            dayLabel.textColor = day.isWeekend ? Color.pinkColor.uiColor : Color.blueColor.uiColor
+        }
         
-        dayLabel.textColor = day.isWeekend ? Color.pinkColor.uiColor : Color.blueColor.uiColor
+        if day.isSelected {
+            dayLabel.textColor = Color.whiteColor.uiColor
+            layer.sublayers?.insert(selectLayer, at: 0)
+        }
         
         if day.currentDay {
             self.layer.sublayers?.insert(currentDayLayer, at: 0)
         }
 
-        if day.isSelected {
-            dayLabel.textColor = Color.whiteColor.uiColor
-            layer.sublayers?.insert(selectLayer, at: 0)
-        }
     }
 }

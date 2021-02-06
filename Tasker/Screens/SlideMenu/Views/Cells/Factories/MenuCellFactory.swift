@@ -14,7 +14,8 @@ class MenuCellFactory: MenuCellFactoryType {
         SettingsMenuTableViewCell.self,
         MainMenuTableViewCell.self,
         CreateShortcutMenuTableViewCell.self,
-        ShortcutMenuTableViewCell.self
+        ShortcutMenuTableViewCell.self,
+        DiaryMenuTableViewCell.self
     ]
     
     func generateCell(viewModel: MenuItemViewModelType, tableView: UITableView, for indexPath: IndexPath) -> UITableViewCell {
@@ -26,6 +27,10 @@ class MenuCellFactory: MenuCellFactoryType {
             return view
         case let viewModel as MainMenuItemViewModel:
             let view = MainMenuTableViewCell.reuse(tableView, for: indexPath)
+            view.viewModel = viewModel
+            return view
+        case let viewModel as DiaryMenuItemViewModel:
+            let view = DiaryMenuTableViewCell.reuse(tableView, for: indexPath)
             view.viewModel = viewModel
             return view
         case let viewModel as CreateShortcutMenuItemViewModel:

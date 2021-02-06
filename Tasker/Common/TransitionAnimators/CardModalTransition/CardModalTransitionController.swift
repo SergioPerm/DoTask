@@ -13,15 +13,17 @@ class CardModalTransitionController: NSObject, UIViewControllerTransitioningDele
     private let animationDuration: TimeInterval
     private let estimatedFinalHeight: CGFloat
     private let viewController: UIViewController
+    private let interactionView: UIView?
     private let router: RouterType?
     
     private var interactionController: UIPercentDrivenInteractiveTransition?
     
-    init(viewController: UIViewController, router: RouterType?, estimatedFinalHeight: CGFloat = UIScreen.main.bounds.height * 0.1, animationDuration: TimeInterval = 0.4) {
+    init(viewController: UIViewController, interactionView: UIView? = nil, router: RouterType?, estimatedFinalHeight: CGFloat = UIScreen.main.bounds.height * 0.1, animationDuration: TimeInterval = 0.4) {
         self.viewController = viewController
         self.router = router
         self.animationDuration = animationDuration
         self.estimatedFinalHeight = estimatedFinalHeight
+        self.interactionView = interactionView
         
         super.init()
         
@@ -54,11 +56,21 @@ extension CardModalTransitionController {
     private func setupInteraction() {
         let swipeGesture = UIPanGestureRecognizer(target: self, action: #selector(swipeCloseAction(sender:)))
         viewController.view.addGestureRecognizer(swipeGesture)
+        
+        if let interactionView = interactionView {
+            let swipeGesture = UIPanGestureRecognizer(target: self, action: #selector(swipeCloseAction(sender:)))
+            
+            interactionView.addGestureRecognizer(swipeGesture)
+            
+            if let gestureDelegate = viewController as? UIGestureRecognizerDelegate {
+                swipeGesture.delegate = gestureDelegate
+            }
+        }
     }
     
     @objc private func swipeCloseAction(sender: UIPanGestureRecognizer) {
         let translate = sender.translation(in: sender.view)
-        let percent   = translate.y / sender.view!.bounds.size.height
+        let percent   = translate.y / viewController.view.frame.height
 
         if sender.state == .began {
             interactionController = UIPercentDrivenInteractiveTransition()
@@ -68,7 +80,7 @@ extension CardModalTransitionController {
             interactionController?.update(percent)
         } else if sender.state == .ended {
             let velocity = sender.velocity(in: sender.view)
-            print("\(velocity)")
+            print("\(percent)")
             if percent > 0.5 || velocity.y >= 2000 {
                 if let viewController = viewController as? PresentableController {
                     router?.pop(vc: viewController)

@@ -15,7 +15,6 @@ class MainMenuItemViewModel: MenuItemViewModelType, MenuItemViewModelMainType, M
     var selectedItem: Boxing<Bool>
     var rowHeight: Double = 50
 
-    
     var title: String
     var imageName: String
     

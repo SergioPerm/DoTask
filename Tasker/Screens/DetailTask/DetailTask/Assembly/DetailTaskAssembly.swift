@@ -14,9 +14,9 @@ class DetailTaskAssembly {
         let viewModel: DetailTaskViewModel = DetailTaskViewModel(taskUID: taskUID, shortcutUID: shortcutUID, dataSource: dataSource)
 
         if let _ = taskUID {
-            return DetailTaskEditViewController(viewModel: viewModel, presenter: presenter, presentableControllerViewType: .containerChild)
+            return DetailTaskEditViewController(viewModel: viewModel, presenter: presenter, presentableControllerViewType: .presentWithTransition)
         }
         
-        return DetailTaskNewViewController(viewModel: viewModel, presenter: presenter, presentableControllerViewType: .containerChild)
+        return DetailTaskNewViewController(viewModel: viewModel, presenter: presenter, presentableControllerViewType: .presentWithTransition)
     }
 }

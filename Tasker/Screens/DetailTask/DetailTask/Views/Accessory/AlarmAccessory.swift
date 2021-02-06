@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AlarmButton: UIView {
+class AlarmAccessory: UIView {
     
     public var alarmIsSet: Bool {
         didSet {
@@ -40,7 +40,7 @@ class AlarmButton: UIView {
     }
 }
 
-extension AlarmButton {
+extension AlarmAccessory {
     private func setup() {
           let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapAction(sender:)))
         addGestureRecognizer(tapGesture)

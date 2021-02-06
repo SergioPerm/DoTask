@@ -8,6 +8,11 @@
 
 import Foundation
 
+struct TaskListFilter {
+    let shortcutFilter: String?
+    let taskDiaryMode: Bool
+}
+
 class TaskListViewModel: TaskListViewModelType, TaskListViewModelInputs, TaskListViewModelOutputs {
 
     private var dataSource: TaskListDataSource
@@ -17,31 +22,38 @@ class TaskListViewModel: TaskListViewModelType, TaskListViewModelInputs, TaskLis
     var inputs: TaskListViewModelInputs { return self }
     var outputs: TaskListViewModelOutputs { return self }
     
+    private var tableViewFRCHelper: TableViewFRCHelper = TableViewFRCHelper()
+    
     init(dataSource: TaskListDataSource) {
         self.dataSource = dataSource
         self.shortcutFilter = Boxing(nil)
+        self.taskDiaryMode = Boxing(false)
         self.periodItems = []
                 
         self.dataSource.observer = self
         
+        //dataSource.clearData()
+        tableViewFRCHelper.delegate = self
         loadData()
         PushNotificationService.shared.attachObserver(self)
     }
     
     // MARK: Inputs
-    
-    func setShortcutFilter(shortcutUID: String?) {
-        guard let shortcutUID = shortcutUID else {
-            dataSource.applyShortcutFilter(shortcutFilter: nil)
-            loadData()
+        
+    func setFilter(filter: TaskListFilter) {
+        dataSource.applyFilters(filter: filter)
+        loadData()
+        
+        if let shortcutUID = filter.shortcutFilter {
+            let shortcut = dataSource.shortcutModelByIdentifier(identifier: shortcutUID)
+            shortcutFilter.value = (title: shortcut?.name, colorHex: shortcut?.color)
+        } else {
             shortcutFilter.value = nil
-            return
         }
         
-        let shortcut = dataSource.shortcutModelByIdentifier(identifier: shortcutUID)
-        dataSource.applyShortcutFilter(shortcutFilter: shortcutUID)
-        loadData()
-        shortcutFilter.value = (title: shortcut?.name, colorHex: shortcut?.color)
+        if filter.taskDiaryMode {
+            taskDiaryMode.value = true
+        }
     }
     
     func editTask(indexPath: IndexPath) {
@@ -54,6 +66,7 @@ class TaskListViewModel: TaskListViewModelType, TaskListViewModelInputs, TaskLis
     
     var periodItems: [TaskListPeriodItemViewModelType]
     var shortcutFilter: Boxing<ShortcutData?>
+    var taskDiaryMode: Boxing<Bool>
     
 }
 
@@ -76,32 +89,31 @@ extension TaskListViewModel {
         }
 
     }
-    
-    private func addTaskInData(indexPath: IndexPath) {
-        let task = dataSource.tasksWithSections[indexPath.section].tasks[indexPath.row]
-        periodItems[indexPath.section].tasks.insert(TaskListItemViewModel(task: task, setDoneTaskHandler: setDoneTask(taskUID:)), at: indexPath.row)
-    }
-    
-    private func deleteTaskInData(indexPath: IndexPath) {
-        periodItems[indexPath.section].tasks.remove(at: indexPath.row)
-    }
-    
-    private func addTimePeriodInData(indexSet: IndexSet) {
-        if let section = indexSet.first {
-            let timePeriod = dataSource.tasksWithSections[section]
-            periodItems.insert(TaskListPeriodItemViewModel(taskTimePeriod: timePeriod), at: section)
-        }
-    }
-    
-    private func deleteTimePeriodInData(indexSet: IndexSet) {
-        if let section = indexSet.first {
-            periodItems.remove(at: section)
-        }
-    }
-    
+            
     private func updateTaskInData(indexPath: IndexPath) {
         let task = dataSource.tasksWithSections[indexPath.section].tasks[indexPath.row]
         periodItems[indexPath.section].tasks[indexPath.row].inputs.reuse(task: task)
+    }
+}
+
+extension TaskListViewModel: TableViewFRCHelperDelegate {
+    func deleteItem(indexPath: IndexPath) {
+        periodItems[indexPath.section].tasks.remove(at: indexPath.row)
+        if periodItems[indexPath.section].tasks.count == 0 {
+            periodItems.remove(at: indexPath.section)
+        }
+    }
+    
+    func addSection(indexPath: IndexPath) {
+        let section = indexPath.section
+        
+        let timePeriod = dataSource.tasksWithSections[section]
+        periodItems.insert(TaskListPeriodItemViewModel(taskTimePeriod: timePeriod), at: section)
+    }
+    
+    func addItem(indexPath: IndexPath) {
+        let task = dataSource.tasksWithSections[indexPath.section].tasks[indexPath.row]
+        periodItems[indexPath.section].tasks.insert(TaskListItemViewModel(task: task, setDoneTaskHandler: setDoneTask(taskUID:)), at: indexPath.row)
     }
 }
 
@@ -111,16 +123,17 @@ extension TaskListViewModel: TaskListDataSourceObserver {
     }
     
     func tasksDidChange() {
+        tableViewFRCHelper.applyChanges()
         view?.tableViewEndUpdates()
     }
     
     func taskInserted(at newIndexPath: IndexPath) {
-        addTaskInData(indexPath: newIndexPath)
+        tableViewFRCHelper.addTableChange(changeType: .insertItem, indexPath: newIndexPath)
         view?.tableViewInsertRow(at: newIndexPath)
     }
     
     func taskDeleted(at indexPath: IndexPath) {
-        deleteTaskInData(indexPath: indexPath)
+        tableViewFRCHelper.addTableChange(changeType: .deleteItem, indexPath: indexPath)
         view?.tableViewDeleteRow(at: indexPath)
     }
     
@@ -128,14 +141,13 @@ extension TaskListViewModel: TaskListDataSourceObserver {
         updateTaskInData(indexPath: indexPath)
     }
     
-    func taskSectionDelete(indexSet: IndexSet) {
-        deleteTimePeriodInData(indexSet: indexSet)
-        view?.tableViewSectionDelete(at: indexSet)
+    func taskSectionDelete(section: Int) {
+        view?.tableViewSectionDelete(at: IndexSet(integer: section))
     }
     
-    func taskSectionInsert(indexSet: IndexSet) {
-        addTimePeriodInData(indexSet: indexSet)
-        view?.tableViewSectionInsert(at: indexSet)
+    func taskSectionInsert(section: Int) {
+        tableViewFRCHelper.addTableChange(changeType: .insertSection, indexPath: IndexPath(row: 0, section: section))
+        view?.tableViewSectionInsert(at: IndexSet(integer: section))
     }
 }
 

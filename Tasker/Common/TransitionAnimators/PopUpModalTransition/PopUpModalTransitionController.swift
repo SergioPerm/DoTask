@@ -80,7 +80,6 @@ extension PopUpModalTransitionController {
             interactionController?.update(percent)
         } else if sender.state == .ended {
             let velocity = sender.velocity(in: sender.view)
-            print("\(velocity)")
             if percent > 0.5 || velocity.y >= 2000 {
                 if let viewController = viewController as? PresentableController {
                     router?.pop(vc: viewController)

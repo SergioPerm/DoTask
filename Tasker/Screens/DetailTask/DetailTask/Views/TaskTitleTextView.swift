@@ -52,7 +52,6 @@ class TaskTitleTextView: UITextView {
     override func becomeFirstResponder() -> Bool {
         let result = super.becomeFirstResponder()
         addKeyboardObserver()
-        //print("is edit: \(text!)")
         
         return result
     }

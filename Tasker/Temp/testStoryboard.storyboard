@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -21,13 +22,13 @@
                                 <rect key="frame" x="0.0" y="394" width="375" height="273"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yW0-rf-znN">
-                                        <rect key="frame" x="54" y="163" width="124" height="17"/>
+                                        <rect key="frame" x="54" y="163" width="123.5" height="17"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="calendar" translatesAutoresizingMaskIntoConstraints="NO" id="gnK-4h-ckT">
                                                 <rect key="frame" x="0.0" y="0.0" width="32" height="17"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="17 January" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6HC-r1-V7C">
-                                                <rect key="frame" x="42" y="0.0" width="82" height="17"/>
+                                                <rect key="frame" x="42" y="0.0" width="81.5" height="17"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -83,6 +84,25 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <stackView opaque="NO" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="zWS-h0-Nl8">
+                                <rect key="frame" x="16" y="29" width="343" height="45"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cSO-M4-sOR">
+                                        <rect key="frame" x="0.0" y="0.0" width="86" height="45"/>
+                                        <color key="backgroundColor" red="0.72742487410000001" green="1" blue="0.74130145810000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal" title="Button" image="trash"/>
+                                    </button>
+                                    <view contentMode="scaleToFill" horizontalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="bIf-do-iHK">
+                                        <rect key="frame" x="86" y="0.0" width="257" height="45"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" name="Color"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="Dwe-7W-wN3"/>
+                                    <constraint firstItem="bIf-do-iHK" firstAttribute="leading" secondItem="cSO-M4-sOR" secondAttribute="trailing" id="Gtz-HF-Mm3"/>
+                                </constraints>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="78h-tZ-3Fx"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -90,8 +110,11 @@
                             <constraint firstItem="Qyd-Ph-JvX" firstAttribute="trailing" secondItem="78h-tZ-3Fx" secondAttribute="trailing" id="0Mg-Ni-tSX"/>
                             <constraint firstItem="IC7-zU-3aL" firstAttribute="leading" secondItem="78h-tZ-3Fx" secondAttribute="leading" constant="16" id="3Hr-fD-WM2"/>
                             <constraint firstItem="Qyd-Ph-JvX" firstAttribute="bottom" secondItem="78h-tZ-3Fx" secondAttribute="bottom" id="6YF-5L-RJO"/>
+                            <constraint firstItem="78h-tZ-3Fx" firstAttribute="trailing" secondItem="zWS-h0-Nl8" secondAttribute="trailing" constant="16" id="CcM-k3-4Js"/>
                             <constraint firstItem="Qyd-Ph-JvX" firstAttribute="leading" secondItem="78h-tZ-3Fx" secondAttribute="leading" id="Lb7-Bp-H8U"/>
                             <constraint firstItem="Qyd-Ph-JvX" firstAttribute="top" secondItem="IC7-zU-3aL" secondAttribute="bottom" constant="8" symbolic="YES" id="UYj-bq-IfT"/>
+                            <constraint firstItem="zWS-h0-Nl8" firstAttribute="leading" secondItem="78h-tZ-3Fx" secondAttribute="leading" constant="16" id="UoP-FI-F5V"/>
+                            <constraint firstItem="zWS-h0-Nl8" firstAttribute="top" secondItem="78h-tZ-3Fx" secondAttribute="top" constant="29" id="ZpO-CV-Vi1"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -102,6 +125,10 @@
     </scenes>
     <resources>
         <image name="calendar" width="32" height="32"/>
+        <image name="trash" width="32" height="32"/>
+        <namedColor name="Color">
+            <color red="1" green="0.21199999749660492" blue="0.65100002288818359" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

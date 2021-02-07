@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol TaskReminderInfoViewModelType {
-    var inputs: TaskReminderInfoViewModelInputs { get }
-    var outputs: TaskReminderInfoViewModelOutputs { get }
+protocol TaskReminderViewModelType {
+    var inputs: TaskReminderViewModelInputs { get }
+    var outputs: TaskReminderViewModelOutputs { get }
 }

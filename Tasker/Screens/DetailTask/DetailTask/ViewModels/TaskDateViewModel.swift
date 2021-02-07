@@ -8,7 +8,7 @@
 
 import Foundation
 
-class TaskDateInfoViewModel: DetailTaskTableItemViewModelType, TaskDateInfoViewModelType, TaskDateInfoViewModelInputs, TaskDateInfoViewModelOutputs {
+class TaskDateViewModel: DetailTaskTableItemViewModelType, TaskDateViewModelType, TaskDateViewModelInputs, TaskDateViewModelOutputs {
 
     private let openCalendarHandler: () -> Void
     
@@ -18,8 +18,8 @@ class TaskDateInfoViewModel: DetailTaskTableItemViewModelType, TaskDateInfoViewM
         return dateFormatter
     }()
     
-    var inputs: TaskDateInfoViewModelInputs { return self }
-    var outputs: TaskDateInfoViewModelOutputs { return self }
+    var inputs: TaskDateViewModelInputs { return self }
+    var outputs: TaskDateViewModelOutputs { return self }
     
     init(taskDate: Date?, openCalendarHandler: @escaping () -> Void) {
         self.openCalendarHandler = openCalendarHandler
@@ -27,7 +27,7 @@ class TaskDateInfoViewModel: DetailTaskTableItemViewModelType, TaskDateInfoViewM
         if let taskDate = taskDate {
             self.dateInfo = Boxing(dateFormatter.string(from: taskDate))
         } else {
-            self.dateInfo = Boxing("Set date")
+            self.dateInfo = Boxing(nil)
         }
     }
     
@@ -42,7 +42,7 @@ class TaskDateInfoViewModel: DetailTaskTableItemViewModelType, TaskDateInfoViewM
         if let taskDate = date {
             dateInfo.value = dateFormatter.string(from: taskDate)
         } else {
-            dateInfo.value = "Set date"
+            dateInfo.value = nil
         }
     }
     

@@ -54,6 +54,7 @@ class PopUpModalAnimationController: NSObject, UIViewControllerAnimatedTransitio
                 self.dimmView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.6600057827)
                 
                 toVC.view.frame.origin.y = self.estimatedFinalHeight
+                toVC.view.frame.size.height = UIScreen.main.bounds.height - self.estimatedFinalHeight
                 toVC.view.layer.cornerRadius = 12
             }, completion: { _ in
                 transitionContext.completeTransition(!transitionContext.transitionWasCancelled)

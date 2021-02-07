@@ -106,6 +106,24 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
         return btn
     }()
     
+    private let deleteBtn: UIButton = {
+        let btn = UIButton()
+        
+        btn.setImage(UIImage(named: "trash")?.maskWithColor(color: .red), for: .normal)
+        btn.setTitle("   Delete", for: .normal)
+        btn.imageView?.contentMode = .scaleAspectFit
+        btn.imageEdgeInsets = UIEdgeInsets(top: 12, left: 5, bottom: 12, right: 25)
+        btn.setTitleColor(.red, for: .normal)
+        return btn
+    }()
+    
+    private let spacingView: UIView = {
+        let view = UIView()
+        view.setContentHuggingPriority(UILayoutPriority(249), for: .horizontal)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     // MARK: Init
     init(viewModel: DetailTaskViewModelType, presenter: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
         self.viewModel = viewModel
@@ -232,22 +250,28 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
         
         shortcutButton.shortcutBtnData = viewModel.outputs.selectedShortcut.value
         
-        importanceBtn = ImportanceAccessory(onTapAction: { [weak self] in
-            self?.viewModel.inputs.increaseImportance()
+        if viewModel.outputs.isDone {
+            accesoryStackView.distribution = .fill
+            accesoryStackView.addArrangedSubview(deleteBtn)
+            accesoryStackView.addArrangedSubview(spacingView)
+        } else {
+            importanceBtn = ImportanceAccessory(onTapAction: { [weak self] in
+                self?.viewModel.inputs.increaseImportance()
             }, importanceLevel: viewModel.outputs.importanceLevel)
-        
-        calendarBtn = CalendarAccessory(onTapAction: { [weak self] in
-            self?.calendarTapAction()
+            
+            calendarBtn = CalendarAccessory(onTapAction: { [weak self] in
+                self?.calendarTapAction()
             }, day: nil)
-        
-        alarmBtn = AlarmAccessory(onTapAction: { [weak self] in
-            self?.reminderTapAction()
+            
+            alarmBtn = AlarmAccessory(onTapAction: { [weak self] in
+                self?.reminderTapAction()
             })
-                 
-        accesoryStackView.addArrangedSubview(calendarBtn!)
-        accesoryStackView.addArrangedSubview(alarmBtn!)
-        accesoryStackView.addArrangedSubview(importanceBtn!)
-        accesoryStackView.addArrangedSubview(saveBtn)
+            
+            accesoryStackView.addArrangedSubview(calendarBtn!)
+            accesoryStackView.addArrangedSubview(alarmBtn!)
+            accesoryStackView.addArrangedSubview(importanceBtn!)
+            accesoryStackView.addArrangedSubview(saveBtn)
+        }
                 
         accessoryView.addSubview(accesoryStackView)
 
@@ -259,8 +283,13 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
         
     // MARK: Actions setup
     private func setupActions() {
-        saveBtn.addTarget(self, action: #selector(saveTaskAction(sender:)), for: .touchUpInside)
-
+        
+        if viewModel.outputs.isDone {
+            deleteBtn.addTarget(self, action: #selector(deleteTaskAction(sender:)), for: .touchUpInside)
+        } else {
+            saveBtn.addTarget(self, action: #selector(saveTaskAction(sender:)), for: .touchUpInside)
+        }
+        
         let addSubtaskTap = UITapGestureRecognizer(target: self, action: #selector(subtasksAddAction(sender:)))
         addSubtaskButton.addGestureRecognizer(addSubtaskTap)
         
@@ -282,7 +311,7 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
             scrollView.bottomAnchor.constraint(equalTo: accessoryView.topAnchor, constant: 0),
         ]
          
-        accesoryBottomConstraint = accessoryView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -view.globalSafeAreaInsets.bottom - 10)
+        accesoryBottomConstraint = accessoryView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -view.globalSafeAreaInsets.bottom - 20)
         accesoryLeadingConstraint = accessoryView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10)
         accesoryTrailingConstraint = accessoryView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
         
@@ -320,36 +349,16 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
             shortcutWidthConstraint
         ])
         
+        if viewModel.outputs.isDone {
+            let spacingConstraint = deleteBtn.trailingAnchor.constraint(equalTo: spacingView.leadingAnchor)
+            
+            constraints.append(contentsOf: [
+                spacingConstraint
+            ])
+        }
+        
         NSLayoutConstraint.activate(constraints)
         
-    }
-    
-    // MARK: View animations
-    private func showView() {
-        let safeAreaFrame = UIView.globalSafeAreaFrame
-
-        viewOrigin = CGPoint(x: safeAreaFrame.origin.x, y: safeAreaFrame.origin.y + topMargin)
-        
-        UIView.animate(withDuration: 0.3,
-                       delay: 0,
-                       options: .curveEaseOut,
-                       animations: {
-                        self.view.frame.origin = self.viewOrigin
-        }, completion: { finished in
-        })
-    }
-    
-    private func hideView(completion: @escaping ()->()) {
-        scrollView.resignTextInputResponders()
-        
-        UIView.animate(withDuration: 0.3,
-                       delay: 0,
-                       options: .curveEaseOut,
-                       animations: {
-                        self.view.frame.origin = self.viewOriginOnStart
-        }, completion: { (finished) in
-            completion()
-        })
     }
 }
 
@@ -385,6 +394,24 @@ extension DetailTaskEditViewController {
         viewModel.outputs.selectedShortcut.bind { [weak self] shortcutData in
             self?.shortcutButton.shortcutBtnData = shortcutData
         }
+        
+        viewModel.outputs.asksToDelete.bind { [weak self] deleteStatus in
+            if deleteStatus {
+                let deleteActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                
+                let deleteAction = UIAlertAction(title: "Delete task", style: .destructive) { [weak self] _ in
+                    guard let strongSelf = self else { return }
+                    self?.viewModel.inputs.deleteTask()
+                    self?.router?.pop(vc: strongSelf)
+                }
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                
+                deleteActionSheet.addAction(deleteAction)
+                deleteActionSheet.addAction(cancelAction)
+                
+                self?.present(deleteActionSheet, animated: true, completion: nil)
+            }
+        }
     }
 }
 
@@ -406,11 +433,12 @@ extension DetailTaskEditViewController {
             return
         }
         
-        hideView { [weak self] in
-            guard let self = self else { return }
-            self.viewModel.inputs.saveTask()
-            self.router?.pop(vc: self)
-        }
+        viewModel.inputs.saveTask()
+        router?.pop(vc: self)
+    }
+    
+    @objc private func deleteTaskAction(sender: UIButton) {
+        viewModel.inputs.askForDelete()
     }
     
     private func calendarTapAction() {

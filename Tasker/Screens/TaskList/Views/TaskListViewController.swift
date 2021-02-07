@@ -281,6 +281,7 @@ extension TaskListViewController: MenuParentControllerType {
     
     func didMenuCollapse() {
         tableView.isUserInteractionEnabled = true
+        tableView.reloadData()
     }
     
     func getView() -> UIView {

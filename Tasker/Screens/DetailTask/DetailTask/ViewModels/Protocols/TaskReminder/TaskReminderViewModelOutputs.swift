@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol TaskReminderInfoViewModelOutputs {
+protocol TaskReminderViewModelOutputs {
     var timeInfo: Boxing<String?> { get }
 }

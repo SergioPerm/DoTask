@@ -8,7 +8,7 @@
 
 import Foundation
 
-class TaskReminderInfoViewModel: DetailTaskTableItemViewModelType, TaskReminderInfoViewModelType, TaskReminderInfoViewModelInputs, TaskReminderInfoViewModelOutputs {
+class TaskReminderViewModel: DetailTaskTableItemViewModelType, TaskReminderViewModelType, TaskReminderViewModelInputs, TaskReminderViewModelOutputs {
     
     private let openReminderHandler: () -> Void
     
@@ -18,8 +18,8 @@ class TaskReminderInfoViewModel: DetailTaskTableItemViewModelType, TaskReminderI
         return dateFormatter
     }()
     
-    var inputs: TaskReminderInfoViewModelInputs { return self }
-    var outputs: TaskReminderInfoViewModelOutputs { return self }
+    var inputs: TaskReminderViewModelInputs { return self }
+    var outputs: TaskReminderViewModelOutputs { return self }
     
     init(taskTime: Date?, openReminderHandler: @escaping () -> Void) {
         self.openReminderHandler = openReminderHandler
@@ -27,7 +27,7 @@ class TaskReminderInfoViewModel: DetailTaskTableItemViewModelType, TaskReminderI
         if let taskTime = taskTime {
             self.timeInfo = Boxing(dateFormatter.string(from: taskTime))
         } else {
-            self.timeInfo = Boxing("Set reminder")
+            self.timeInfo = Boxing(nil)
         }
     }
     
@@ -37,7 +37,7 @@ class TaskReminderInfoViewModel: DetailTaskTableItemViewModelType, TaskReminderI
         if let taskTime = time {
             timeInfo.value = dateFormatter.string(from: taskTime)
         } else {
-            timeInfo.value = "Set reminder"
+            timeInfo.value = nil
         }
     }
     

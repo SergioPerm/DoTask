@@ -25,6 +25,7 @@ struct StyleGuide {
         enum Sizes {
             static let headerHeight: CGFloat = 50.0
             static let headerTitleHeight: CGFloat = 30.0
+            static let checkMarkSize: CGSize = CGSize(width: 24, height: 24)
         }
         
         enum Colors {

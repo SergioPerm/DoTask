@@ -73,10 +73,14 @@ class TaskDiaryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setupView()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        tableView.layoutSubviews()
+    }
+    
 }
 
 extension TaskDiaryViewController {
@@ -105,7 +109,7 @@ extension TaskDiaryViewController {
         
         self.navigationItem.titleView = navLabel
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .undo, target: self, action: #selector(closeDiary(sender:)))
+//        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .undo, target: self, action: #selector(closeDiary(sender:)))
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -120,6 +124,15 @@ extension TaskDiaryViewController {
         tableView.backgroundColor = .white
         tableView.layer.backgroundColor = UIColor.white.cgColor
         tableView.showsVerticalScrollIndicator = false
+        
+        let rotateButton = UIButton(type: .custom)
+        rotateButton.setImage(UIImage(named: "rotating"), for: .normal)
+        rotateButton.addTarget(self, action: #selector(closeDiary(sender:)), for: .touchUpInside)
+        rotateButton.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
+        
+        let barButtonItem = UIBarButtonItem(customView: rotateButton)
+        
+        navigationItem.leftBarButtonItem = barButtonItem
         
     }
     

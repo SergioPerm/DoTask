@@ -44,7 +44,7 @@ class TaskDiaryViewModel: TaskDiaryViewModelType, TaskDiaryViewModelInputs, Task
 
 extension TaskDiaryViewModel {
     private func unsetDoneTask(taskUID: String) {
-        
+        dataSource.unsetDoneForTask(with: taskUID)
     }
     
     private func loadData() {
@@ -54,7 +54,9 @@ extension TaskDiaryViewModel {
             let periodItem = TaskDiaryPeriodItemViewModel(taskTimePeriod: timePeriod)
             
             timePeriod.tasks.forEach { task in
-                periodItem.tasks.append(TaskDiaryItemViewModel(task: task, unsetDoneTaskHandler: unsetDoneTask(taskUID:)))
+                periodItem.tasks.append(TaskDiaryItemViewModel(task: task) { [weak self] taskUID in
+                    self?.unsetDoneTask(taskUID: taskUID)
+                })
             }
             
             periodItems.append(periodItem)

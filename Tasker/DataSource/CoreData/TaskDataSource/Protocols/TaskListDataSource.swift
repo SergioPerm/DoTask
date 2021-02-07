@@ -13,6 +13,7 @@ protocol TaskListDataSource {
     var observer: TaskListDataSourceObserver? { get set }
 
     func setDoneForTask(with identifier: String)
+    func unsetDoneForTask(with identifier: String)
     func taskByIdentifier(identifier: String) -> TaskManaged?
     func shortcutModelByIdentifier(identifier: String) -> Shortcut?
     func taskModelByIdentifier(identifier: String?) -> Task?

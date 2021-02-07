@@ -14,9 +14,10 @@ protocol DetailTaskViewModelOutputs {
     var selectedShortcut: Boxing<ShortcutData> { get }
     var shortcutUID: String? { get }
     var isNewTask: Bool { get }
+    var isDone: Bool { get }
     var importanceLevel: Int { get }
     var title: String { get }
     var tableSections: [DetailTaskTableSectionViewModelType] { get }
     var onReturnToEdit: Boxing<Bool> { get }
-    //var subtasks: [SubtaskViewModelType] { get }
+    var asksToDelete: Boxing<Bool> { get }
 }

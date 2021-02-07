@@ -12,8 +12,9 @@ class DetailTaskCellFactory: DetailTaskCellFactoryType {
     
     var cellTypes: [DetailTaskCellType.Type] = [
         SubtaskTableViewCell.self,
-        TaskDateInfoTableViewCell.self,
-        TaskReminderInfoTableViewCell.self
+        TaskDateTableViewCell.self,
+        TaskReminderTableViewCell.self,
+        TaskDeleteTableViewCell.self
     ]
     
     func generateCell(viewModel: DetailTaskTableItemViewModelType, tableView: UITableView, for indexPath: IndexPath) -> UITableViewCell {
@@ -24,12 +25,16 @@ class DetailTaskCellFactory: DetailTaskCellFactoryType {
             view.subtaskViewModel = viewModel
                         
             return view
-        case let viewModel as TaskDateInfoViewModelType:
-            let view = TaskDateInfoTableViewCell.reuse(tableView, for: indexPath)
+        case let viewModel as TaskDateViewModelType:
+            let view = TaskDateTableViewCell.reuse(tableView, for: indexPath)
             view.viewModel = viewModel
             return view
-        case let viewModel as TaskReminderInfoViewModelType:
-            let view = TaskReminderInfoTableViewCell.reuse(tableView, for: indexPath)
+        case let viewModel as TaskReminderViewModelType:
+            let view = TaskReminderTableViewCell.reuse(tableView, for: indexPath)
+            view.viewModel = viewModel
+            return view
+        case let viewModel as TaskDeleteViewModelType:
+            let view = TaskDeleteTableViewCell.reuse(tableView, for: indexPath)
             view.viewModel = viewModel
             return view
         default:

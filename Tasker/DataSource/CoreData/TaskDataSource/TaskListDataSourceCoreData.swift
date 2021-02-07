@@ -173,6 +173,22 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
                 
                 let notifyModel = DateNotifier(with: taskModel)
                 notificationCenter.deleteLocalNotifications(identifiers: [notifyModel.identifier])
+            } catch {
+                fatalError()
+            }
+        }
+    }
+    
+    // MARK: Unset Done
+    func unsetDoneForTask(with identifier: String) {
+        if let task = taskByIdentifier(identifier: identifier) {
+            let taskModel = Task(with: task)
+            task.isDone = false
+            task.doneDate = nil
+            do {
+                try context.save()
+                
+                let notifyModel = DateNotifier(with: taskModel)
                 if taskModel.reminderDate {
                     notificationCenter.addLocalNotification(notifyModel: notifyModel)
                 }
@@ -225,7 +241,7 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
                     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
                     
                     if let sectionDate = dateFormatter.date(from: section.name) {
-                        dateFormatter.dateFormat = "dd/MM/yyyy"
+                        dateFormatter.dateFormat = "dd MMMM yyyy"
                         dailyModel.name = dateFormatter.string(from: sectionDate)
                     }
                 } else {
@@ -446,7 +462,7 @@ extension TaskListDataSourceCoreData {
             sectionNameKeyPath = "doneDay"
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: "doneDate", ascending: false)]
         } else {
-            predicate = NSPredicate(format: "isDone == %@", false)
+            predicate = NSPredicate(format: "isDone == false")
             fetchRequest.sortDescriptors = [sortDescriptor, sortDescriptor2, sortDescriptor3]
         }
         

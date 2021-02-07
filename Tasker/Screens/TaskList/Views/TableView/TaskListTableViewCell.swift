@@ -329,18 +329,23 @@ extension TaskListTableViewCell {
 class ShadowView: UIView {
 
     var setupShadowDone: Bool = false
-        
+    //let shadowSublayer: CAShapeLayer = CAShapeLayer()
+    
     public func setupShadow() {
-        if setupShadowDone { return }
-        self.layer.cornerRadius = 8
-        self.layer.shadowOffset = CGSize(width: 0, height: 3)
-        self.layer.shadowRadius = 3
-        self.layer.shadowOpacity = 0.3
-        self.layer.shadowPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: 10, height: 10)).cgPath
-        self.layer.shouldRasterize = true
-        self.layer.rasterizationScale = UIScreen.main.scale
         
-        setupShadowDone = true
+        //shadowSublayer.removeFromSuperlayer()
+                
+        layer.cornerRadius = 8
+        layer.shadowOffset = CGSize(width: 0, height: 3)
+        layer.shadowRadius = 3
+        layer.shadowOpacity = 0.3
+        layer.shadowPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: 10, height: 10)).cgPath
+        layer.shouldRasterize = true
+        layer.rasterizationScale = UIScreen.main.scale
+        
+        //layer.addSublayer(shadowSublayer)
+        
+        //setupShadowDone = true
     }
     
     override func layoutSubviews() {

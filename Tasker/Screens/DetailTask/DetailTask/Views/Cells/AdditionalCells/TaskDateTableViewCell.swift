@@ -8,9 +8,9 @@
 
 import UIKit
 
-class TaskDateInfoTableViewCell: UITableViewCell, DetailTaskCellType {
+class TaskDateTableViewCell: UITableViewCell, DetailTaskCellType {
 
-    var viewModel: TaskDateInfoViewModelType? {
+    var viewModel: TaskDateViewModelType? {
         didSet {
             bindViewModel()
         }
@@ -29,6 +29,7 @@ class TaskDateInfoTableViewCell: UITableViewCell, DetailTaskCellType {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .gray
         label.textAlignment = .left
+        label.isUserInteractionEnabled = true
         
         return label
     }()
@@ -59,7 +60,7 @@ class TaskDateInfoTableViewCell: UITableViewCell, DetailTaskCellType {
 
 }
 
-extension TaskDateInfoTableViewCell {
+extension TaskDateTableViewCell {
     private func setup() {
         contentView.backgroundColor = .white
         selectionStyle = .none
@@ -91,12 +92,18 @@ extension TaskDateInfoTableViewCell {
     
     private func setupActions() {
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(openCalendarAction(sender:)))
-        contentView.addGestureRecognizer(tapRecognizer)
+        infoLabel.addGestureRecognizer(tapRecognizer)
     }
     
     private func bindViewModel() {
         viewModel?.outputs.dateInfo.bind { [weak self] dateInfo in
-            self?.infoLabel.text = dateInfo
+            if let dateInfo = dateInfo {
+                self?.infoLabel.text = dateInfo
+                self?.infoImage.image = self?.infoImage.image?.maskWithColor(color: StyleGuide.MainColors.blue)
+            } else {
+                self?.infoLabel.text = "Set date"
+                self?.infoImage.image = self?.infoImage.image?.maskWithColor(color: .gray)
+            }
         }
     }
     

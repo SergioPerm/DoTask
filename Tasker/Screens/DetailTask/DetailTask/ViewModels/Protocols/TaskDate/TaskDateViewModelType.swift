@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol TaskDateInfoViewModelType: class {
-    var inputs: TaskDateInfoViewModelInputs { get }
-    var outputs: TaskDateInfoViewModelOutputs { get }
+protocol TaskDateViewModelType: class {
+    var inputs: TaskDateViewModelInputs { get }
+    var outputs: TaskDateViewModelOutputs { get }
 }

@@ -19,9 +19,7 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
     
     private var taskDateInfoCell: DetailTaskTableItemViewModelType?
     private var taskReminderInfoCell: DetailTaskTableItemViewModelType?
-    
-    //var subtasks: [SubtaskViewModelType] = []
-    
+        
     var inputs: DetailTaskViewModelInputs { return self }
     var outputs: DetailTaskViewModelOutputs { return self }
     
@@ -40,14 +38,12 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
         }
 
         self.importanceLevel = Int(task.importanceLevel)
-                
+        self.asksToDelete = Boxing(false)
+        
         setShortcut(shortcutUID: shortcutUID)
         setupSections()
     }
     
-    deinit {
-        print("")
-    }
     
     // MARK: INPUTS
     
@@ -71,10 +67,11 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
             task.taskDate = Calendar.current.taskCalendar.date(bySettingHour: hour, minute: minute, second: 0, of: newDate)
         } else {
             task.taskDate = date
+            setReminder(date: nil)
         }
         selectedDate.value = date
         
-        if let taskDateViewModel = taskDateInfoCell as? TaskDateInfoViewModelType {
+        if let taskDateViewModel = taskDateInfoCell as? TaskDateViewModelType {
             taskDateViewModel.inputs.setDate(date: date)
         }
     }
@@ -88,7 +85,7 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
         }
         selectedTime.value = date
         
-        if let taskReminderViewModel = taskReminderInfoCell as? TaskReminderInfoViewModelType {
+        if let taskReminderViewModel = taskReminderInfoCell as? TaskReminderViewModelType {
             taskReminderViewModel.inputs.setTime(time: date)
         }
     }
@@ -136,6 +133,14 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
         } else {
             dataSource.updateTask(from: task)
         }
+    }
+    
+    func deleteTask() {
+        dataSource.deleteTask(from: task)
+    }
+    
+    func askForDelete() {
+        asksToDelete.value = true
     }
     
     func setShortcut(shortcutUID: String?) {
@@ -196,6 +201,10 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
         return task.isNew
     }
     
+    var isDone: Bool {
+        return task.isDone
+    }
+    
     var shortcutUID: String? {
         if let shortcut = task.shortcut {
             return shortcut.uid
@@ -207,6 +216,8 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
     var tableSections: [DetailTaskTableSectionViewModelType] = []
     
     var onReturnToEdit: Boxing<Bool> = Boxing(true)
+    
+    var asksToDelete: Boxing<Bool>
 }
 
 // MARK: Setup Sections
@@ -223,15 +234,27 @@ extension DetailTaskViewModel {
         tableSections.append(subtasksSection)
         
         if !isNewTask {
-            taskDateInfoCell = TaskDateInfoViewModel(taskDate: task.taskDate) { [weak self] in
-                self?.openCalendar()
+            taskDateInfoCell = TaskDateViewModel(taskDate: task.taskDate) { [weak self] in
+                guard let strongSelf = self else { return }
+                if !strongSelf.isDone {
+                    self?.openCalendar()
+                }
             }
             
-            taskReminderInfoCell = TaskReminderInfoViewModel(taskTime: task.reminderDate ? task.taskDate : nil) { [weak self] in
-                self?.openReminder()
+            taskReminderInfoCell = TaskReminderViewModel(taskTime: task.reminderDate ? task.taskDate : nil) { [weak self] in
+                guard let strongSelf = self else { return }
+                if !strongSelf.isDone {
+                    self?.openReminder()
+                }
+            }
+            
+            let deleteCell = TaskDeleteViewModel { [weak self] in
+                self?.asksToDelete.value = true
             }
                         
-            let infoSection = DetailTaskTableSectionViewModel(cells: [taskDateInfoCell!, taskReminderInfoCell!], sectionHeight: 20)
+            guard let taskDateInfoCell = taskDateInfoCell, let taskReminderInfoCell = taskReminderInfoCell else { return }
+            
+            let infoSection = DetailTaskTableSectionViewModel(cells: [taskDateInfoCell, taskReminderInfoCell, deleteCell], sectionHeight: 20)
             tableSections.append(infoSection)
         }
         

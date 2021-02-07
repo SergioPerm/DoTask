@@ -18,6 +18,8 @@ protocol DetailTaskViewModelInputs: class {
     func deleteSubtask(indexPath: IndexPath)
     func moveSubtask(from: Int, to: Int)
     func saveTask()
+    func deleteTask()
+    func askForDelete()
     
     func setCalendarHandler(onCalendarSelect: ((_ selectedDate: Date?, _ vc: CalendarPickerViewOutputs) -> Void)?)
     func setReminderHandler(onTimeReminderSelect: ((_ selectedTime: Date, _ vc: TimePickerViewOutputs) -> Void)?)

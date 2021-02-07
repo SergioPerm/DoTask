@@ -8,9 +8,9 @@
 
 import UIKit
 
-class TaskReminderInfoTableViewCell: UITableViewCell, DetailTaskCellType {
+class TaskReminderTableViewCell: UITableViewCell, DetailTaskCellType {
 
-    var viewModel: TaskReminderInfoViewModelType? {
+    var viewModel: TaskReminderViewModelType? {
         didSet {
             bindViewModel()
         }
@@ -29,6 +29,7 @@ class TaskReminderInfoTableViewCell: UITableViewCell, DetailTaskCellType {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .gray
         label.textAlignment = .left
+        label.isUserInteractionEnabled = true
         
         return label
     }()
@@ -56,7 +57,7 @@ class TaskReminderInfoTableViewCell: UITableViewCell, DetailTaskCellType {
     }
 }
 
-extension TaskReminderInfoTableViewCell {
+extension TaskReminderTableViewCell {
     
     private func setup() {
         contentView.backgroundColor = .white
@@ -89,12 +90,18 @@ extension TaskReminderInfoTableViewCell {
     
     private func setupActions() {
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(openReminderAction(sender:)))
-        contentView.addGestureRecognizer(tapRecognizer)
+        infoLabel.addGestureRecognizer(tapRecognizer)
     }
     
     private func bindViewModel() {
         viewModel?.outputs.timeInfo.bind { [weak self] timeInfo in
-            self?.infoLabel.text = timeInfo
+            if let timeInfo = timeInfo {
+                self?.infoLabel.text = timeInfo
+                self?.infoImage.image = self?.infoImage.image?.maskWithColor(color: StyleGuide.MainColors.blue)
+            } else {
+                self?.infoLabel.text = "Set reminder"
+                self?.infoImage.image = self?.infoImage.image?.maskWithColor(color: .gray)
+            }
         }
     }
     

@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol TaskDateInfoViewModelOutputs {
+protocol TaskDateViewModelOutputs {
     var dateInfo: Boxing<String?> { get }
 }

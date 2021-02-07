@@ -286,36 +286,6 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
         
         NSLayoutConstraint.activate(constraints)
     }
-    
-    // MARK: View animations
-    private func showView() {
-        let safeAreaFrame = UIView.globalSafeAreaFrame
-        
-        viewOrigin = CGPoint(x: safeAreaFrame.origin.x, y: safeAreaFrame.origin.y + topMargin)
-        
-        UIView.animate(withDuration: 0.3,
-                       delay: 0,
-                       options: .curveEaseOut,
-                       animations: {
-                        self.view.frame.origin = self.viewOrigin
-                        
-        }, completion: { [weak self] finished in
-            self?.scrollView.becomeTextInputResponder()
-        })
-    }
-    
-    private func hideView(completion: @escaping ()->()) {
-        scrollView.resignTextInputResponders()
-        
-        UIView.animate(withDuration: 0.3,
-                       delay: 0,
-                       options: .curveEaseOut,
-                       animations: {
-                        self.view.frame.origin = self.viewOriginOnStart
-        }, completion: { (finished) in
-            completion()
-        })
-    }
 }
 
 // MARK: Bind viewModel

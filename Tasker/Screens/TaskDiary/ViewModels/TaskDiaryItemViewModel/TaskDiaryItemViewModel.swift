@@ -26,7 +26,7 @@ class TaskDiaryItemViewModel: TaskDiaryItemViewModelType, TaskDiaryItemViewModel
     
     private var taskUID: String
     
-    private let unsetDoneTaskHandler: ((_ taskUID: String) -> Void)
+    private let unsetDoneTaskHandler: (_ taskUID: String) -> Void
     
     var inputs: TaskDiaryItemViewModelInputs { return self }
     var outputs: TaskDiaryItemViewModelOutputs { return self }

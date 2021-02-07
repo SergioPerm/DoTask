@@ -29,7 +29,9 @@ class TaskDiaryTableViewCell: UITableViewCell {
     private var isAnimatedOnSelect: Bool = false
     
     private let shapeLayer = CAShapeLayer()
-        
+    
+    private var shortcutColor: UIColor?
+    
     // MARK: View's properties
     
     private let titleLabel: UILabel = {
@@ -126,9 +128,10 @@ class TaskDiaryTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        shapeLayer.removeAllAnimations()
         shapeLayer.removeFromSuperlayer()
     }
-    
+        
 }
 
 extension TaskDiaryTableViewCell {
@@ -161,15 +164,20 @@ extension TaskDiaryTableViewCell {
         
         viewModel?.outputs.shortcutColor.bind { [weak self] hexColor in
             if let hexColor = hexColor {
-                let shortcutColor = UIColor(hexString: hexColor)
-                self?.importanceView.backgroundColor = shortcutColor
-                self?.checkView.layer.borderColor = shortcutColor.cgColor
-                self?.checkView.layer.backgroundColor = shortcutColor.withAlphaComponent(0.11).cgColor
+                self?.shortcutColor = UIColor(hexString: hexColor)
+                if let shortcutColor = self?.shortcutColor {
+                    self?.importanceView.backgroundColor = shortcutColor
+                    self?.checkView.layer.borderColor = shortcutColor.cgColor
+                    self?.checkView.layer.backgroundColor = shortcutColor.withAlphaComponent(0.11).cgColor
+                }
             } else {
+                self?.shortcutColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.8470588235)
                 self?.importanceView.backgroundColor = .clear
                 self?.checkView.layer.borderColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.8470588235).cgColor
                 self?.checkView.layer.backgroundColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.1099601066)
             }
+            
+            self?.drawCheckMark()
         }
     }
     
@@ -199,8 +207,8 @@ extension TaskDiaryTableViewCell {
         doneView.addSubview(checkView)
         
         constraints.append(contentsOf: [
-            checkView.widthAnchor.constraint(equalToConstant: 24),
-            checkView.heightAnchor.constraint(equalToConstant: 24),
+            checkView.widthAnchor.constraint(equalToConstant: StyleGuide.TaskList.Sizes.checkMarkSize.width),
+            checkView.heightAnchor.constraint(equalToConstant: StyleGuide.TaskList.Sizes.checkMarkSize.height),
             checkView.topAnchor.constraint(equalTo: doneView.topAnchor, constant: 12),
             checkView.centerXAnchor.constraint(equalTo: doneView.centerXAnchor)
         ])
@@ -256,12 +264,14 @@ extension TaskDiaryTableViewCell {
         
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapDoneAction(sender:)))
         doneView.addGestureRecognizer(tapRecognizer)
+        
+        drawCheckMark()
     }
         
     // MARK: Actions
     
     @objc private func tapDoneAction(sender: UIView) {
-        animateCheckMark(view: checkView) {
+        animateCheckMark() {
             self.viewModel?.inputs.unsetDone()
         }
     }
@@ -289,30 +299,71 @@ extension TaskDiaryTableViewCell {
         CATransaction.commit()
     }
     
-    private func animateCheckMark(view: UIView, finishHandler: (()->())?) {
-        CATransaction.begin()
-        CATransaction.setCompletionBlock {
-            if let finishAction = finishHandler {
-                finishAction()
-            }
-        }
+    private func drawCheckMark() {
+        shapeLayer.removeFromSuperlayer()
+        
+        let checkMarkHeight = StyleGuide.TaskList.Sizes.checkMarkSize.height
         
         let path = UIBezierPath()
-        path.move(to: CGPoint(x: 3, y: view.bounds.height/2))
-        path.addLine(to: CGPoint(x: view.bounds.width/2 - 3, y: view.bounds.height - 3))
-        path.addLine(to: CGPoint(x: view.bounds.width - 3, y: 4))
+        path.move(to: CGPoint(x: 6, y: checkMarkHeight/2))
+        path.addLine(to: CGPoint(x: checkMarkHeight/2 - 2, y: checkMarkHeight - 5))
+        path.addLine(to: CGPoint(x: checkMarkHeight - 6, y: 6))
         
         shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.strokeColor = StyleGuide.MainColors.blue.cgColor
-        shapeLayer.lineWidth = 3
+        shapeLayer.strokeColor = shortcutColor?.cgColor ?? #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.8470588235).cgColor
+        shapeLayer.lineCap = .round
+        shapeLayer.lineJoin = .round
+        shapeLayer.lineWidth = 4
         shapeLayer.path = path.cgPath
         
-        view.layer.addSublayer(shapeLayer)
+        checkView.layer.addSublayer(shapeLayer)
+    }
+    
+    private func animateCheckMark(finishHandler: (()->())?) {
+        shapeLayer.removeFromSuperlayer()
         
+//        CATransaction.begin()
+//        CATransaction.setCompletionBlock {
+//            self.shapeLayer.removeFromSuperlayer()
+//            if let finishAction = finishHandler {
+//                finishAction()
+//            }
+//        }
+
+        let checkMarkHeight = StyleGuide.TaskList.Sizes.checkMarkSize.height
+        
+        let path = UIBezierPath()
+        path.move(to: CGPoint(x: 6, y: checkMarkHeight/2))
+        path.addLine(to: CGPoint(x: checkMarkHeight/2 - 2, y: checkMarkHeight - 5))
+        path.addLine(to: CGPoint(x: checkMarkHeight - 6, y: 6))
+
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.strokeColor = shortcutColor?.cgColor ?? #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.8470588235).cgColor
+        shapeLayer.lineCap = .round
+        shapeLayer.lineJoin = .round
+        shapeLayer.lineWidth = 4
+        shapeLayer.path = path.cgPath
+
+        checkView.layer.addSublayer(shapeLayer)
+
         let animation = CABasicAnimation(keyPath: "strokeEnd")
-        animation.fromValue = 0
+        
+        animation.delegate = self
+        animation.fromValue = 1.0
+        animation.toValue = 0.0
+        animation.fillMode = .forwards
+        animation.isRemovedOnCompletion = false
+    
         animation.duration = 0.3
+
         shapeLayer.add(animation, forKey: "myAnimation")
-        CATransaction.commit()
+//        CATransaction.commit()
+    }
+}
+
+extension TaskDiaryTableViewCell: CAAnimationDelegate {
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+        shapeLayer.removeFromSuperlayer()
+        viewModel?.inputs.unsetDone()
     }
 }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol TaskDateInfoViewModelInputs {
+protocol TaskDateViewModelInputs {
     func setDate(date: Date?)
     func openCalendar()
 }

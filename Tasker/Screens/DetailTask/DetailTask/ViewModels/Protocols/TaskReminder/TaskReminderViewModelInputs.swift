@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol TaskReminderInfoViewModelInputs {
+protocol TaskReminderViewModelInputs {
     func setTime(time: Date?)
     func openReminder()
 }

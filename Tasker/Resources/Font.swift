@@ -40,7 +40,7 @@ enum Font {
         case .cellMainTitle: return FontFactory.Regular.of(size: 15)//return UIFont(name: "HelveticaNeue", size: 15) ?? UIFont.systemFont(ofSize: 15)
         case .mainTitle: return UIFont(name: "AvenirNext-BoldItalic", size: 27) ?? UIFont.systemFont(ofSize: 27)
         case .mainTitle2: return UIFont(name: "AvenirNext-BoldItalic", size: 21) ?? UIFont.systemFont(ofSize: 21)
-        case .tableHeader: return UIFont(name: "AvenirNext-Bold", size: 35) ?? UIFont.systemFont(ofSize: 35)
+        case .tableHeader: return UIFont(name: "AvenirNext-Bold", size: 27) ?? UIFont.systemFont(ofSize: 27)
         case .timePickerBtnFont: return UIFont(name: "HelveticaNeue-Bold", size: 17) ?? UIFont.systemFont(ofSize: 17)
         case .calendarPickerFooterFont: return UIFont(name: "HelveticaNeue-Bold", size: 19) ?? UIFont.systemFont(ofSize: 19)
         case .mainMenuCellFont: return UIFont(name: "HelveticaNeue-Bold", size: 19) ?? UIFont.systemFont(ofSize: 19)

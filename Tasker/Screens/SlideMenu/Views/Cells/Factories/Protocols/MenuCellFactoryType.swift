@@ -9,6 +9,6 @@
 import UIKit
 
 protocol MenuCellFactoryType {
-    var cellTypes: [MenuCellType.Type] { get }
+    var cellTypes: [TableViewCellType.Type] { get }
     func generateCell(viewModel: MenuItemViewModelType, tableView: UITableView, for indexPath: IndexPath) -> UITableViewCell
 }

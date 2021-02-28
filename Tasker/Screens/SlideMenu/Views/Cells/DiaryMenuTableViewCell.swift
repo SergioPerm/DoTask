@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DiaryMenuTableViewCell: UITableViewCell, MenuCellType {
+class DiaryMenuTableViewCell: UITableViewCell, TableViewCellType {
 
     var viewModel: DiaryMenuItemViewModel? {
         didSet {

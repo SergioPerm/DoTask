@@ -16,4 +16,6 @@ protocol RouterType: class {
     func pop(vc: PresentableController)
     
     func getPersistentViewController(persistentType: PersistentViewControllerType) -> UIViewController?
+    
+    func getLastViewFromRootNavigationStack() -> UIViewController?
 }

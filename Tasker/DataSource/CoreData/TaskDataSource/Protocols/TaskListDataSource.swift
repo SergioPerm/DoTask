@@ -25,6 +25,7 @@ protocol TaskListDataSource {
     func clearData()
   
     func applyFilters(filter: TaskListFilter)
-//    func applyShortcutFilter(shortcutFilter: String?)
-//    func applyTaskDiaryMode()
+    
+    func getFirstTaskDate() -> Date?
+    func getAllTaskDates() -> [Date]
 }

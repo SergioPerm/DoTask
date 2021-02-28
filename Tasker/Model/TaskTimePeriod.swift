@@ -11,6 +11,14 @@ import Foundation
 struct TaskTimePeriod {
     var name: String
     var tasks: [Task]
+    var dailyName: DailyName? {
+        didSet {
+            guard let dailyName = dailyName else {
+                return
+            }
+            name = dailyName.rawValue
+        }
+    }
     
     init() {
         self.name = ""

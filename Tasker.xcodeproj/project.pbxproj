@@ -53,7 +53,7 @@
 		B139A76025822527000BAE55 /* testStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B139A75F25822527000BAE55 /* testStoryboard.storyboard */; };
 		B139A76325822555000BAE55 /* TestScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B139A76225822555000BAE55 /* TestScrollViewController.swift */; };
 		B13E076B25A9905100020F5E /* MenuItemSectionViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13E076A25A9905100020F5E /* MenuItemSectionViewModelType.swift */; };
-		B13E076F25A9915600020F5E /* MenuCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13E076E25A9915600020F5E /* MenuCellType.swift */; };
+		B13E076F25A9915600020F5E /* TableViewCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13E076E25A9915600020F5E /* TableViewCellType.swift */; };
 		B13E077425A9922100020F5E /* MenuCellFactoryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13E077325A9922100020F5E /* MenuCellFactoryType.swift */; };
 		B13E077825A994D200020F5E /* MenuItemViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13E077725A994D200020F5E /* MenuItemViewModelType.swift */; };
 		B13E077C25A9956300020F5E /* SettingsMenuItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13E077B25A9956300020F5E /* SettingsMenuItemViewModel.swift */; };
@@ -87,6 +87,10 @@
 		B14C997425C6D6A500E36A94 /* PopUpModalAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14C997325C6D6A500E36A94 /* PopUpModalAnimationController.swift */; };
 		B14C997825C6E20C00E36A94 /* ZoomModalTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14C997725C6E20C00E36A94 /* ZoomModalTransitionController.swift */; };
 		B14C997C25C6E21F00E36A94 /* ZoomModalAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14C997B25C6E21F00E36A94 /* ZoomModalAnimationController.swift */; };
+		B15479D225DBB38D00B70945 /* TaskListPeriodItemViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15479D125DBB38D00B70945 /* TaskListPeriodItemViewModelInputs.swift */; };
+		B15479D525DBB3AC00B70945 /* TaskListPeriodItemViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15479D425DBB3AC00B70945 /* TaskListPeriodItemViewModelOutputs.swift */; };
+		B15B7D0225D1489E00EC1D98 /* DropNavigationTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B7D0125D1489E00EC1D98 /* DropNavigationTransitionController.swift */; };
+		B15B7D0525D148E200EC1D98 /* DropNavigationAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B7D0425D148E200EC1D98 /* DropNavigationAnimationController.swift */; };
 		B15BFA18259877F2003959B8 /* CheckSubtask.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15BFA17259877F2003959B8 /* CheckSubtask.swift */; };
 		B15C9B672569156A00A809B1 /* CalendarPickerViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15C9B662569156A00A809B1 /* CalendarPickerViewModelOutputs.swift */; };
 		B15C9B7425695B6600A809B1 /* DetailTaskViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15C9B7325695B6600A809B1 /* DetailTaskViewModelType.swift */; };
@@ -98,6 +102,20 @@
 		B1603C5A2521EAB70022BE49 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1603C592521EAB70022BE49 /* UIViewController.swift */; };
 		B1603C5C2521FC200022BE49 /* DetailTaskNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1603C5B2521FC200022BE49 /* DetailTaskNewViewController.swift */; };
 		B1664045254464C8007D1AFD /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1664044254464C8007D1AFD /* UIBarButtonItem.swift */; };
+		B1687F6525DC00BE009D3DE2 /* CalendarMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1687F6425DC00BE009D3DE2 /* CalendarMonth.swift */; };
+		B1687F6825DC00E2009D3DE2 /* CalendarDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1687F6725DC00E2009D3DE2 /* CalendarDay.swift */; };
+		B1687F6C25DC069A009D3DE2 /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1687F6B25DC069A009D3DE2 /* CalendarCollectionViewCell.swift */; };
+		B1687F7625DC0783009D3DE2 /* CalendarMonthViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1687F7525DC0783009D3DE2 /* CalendarMonthViewModelType.swift */; };
+		B1687F7B25DC07F2009D3DE2 /* CalendarDayViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1687F7A25DC07F2009D3DE2 /* CalendarDayViewModelOutputs.swift */; };
+		B16D0E0E25DD0631007708AB /* CalendarDayViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D0E0D25DD0631007708AB /* CalendarDayViewModelInputs.swift */; };
+		B16D0E1125DD0697007708AB /* CalendarDayViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D0E1025DD0697007708AB /* CalendarDayViewModelType.swift */; };
+		B16D0E1425DD06D1007708AB /* CalendarDayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D0E1325DD06D1007708AB /* CalendarDayViewModel.swift */; };
+		B16D0E1725DD16B7007708AB /* CalendarMonthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D0E1625DD16B7007708AB /* CalendarMonthViewModel.swift */; };
+		B170813B25DBF275007AC23B /* CalendarCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B170813A25DBF275007AC23B /* CalendarCollectionView.swift */; };
+		B170814025DBF673007AC23B /* CalendarViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B170813F25DBF673007AC23B /* CalendarViewModelInputs.swift */; };
+		B170814325DBF68D007AC23B /* CalendarViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B170814225DBF68C007AC23B /* CalendarViewModelOutputs.swift */; };
+		B170814625DBF6AC007AC23B /* CalendarViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B170814525DBF6AC007AC23B /* CalendarViewModelType.swift */; };
+		B170814925DBF6E2007AC23B /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B170814825DBF6E2007AC23B /* CalendarViewModel.swift */; };
 		B17B8FA725CBEBE300663F97 /* TaskDiaryViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17B8FA625CBEBE300663F97 /* TaskDiaryViewModelInputs.swift */; };
 		B17B8FAA25CBEBFE00663F97 /* TaskDiaryViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17B8FA925CBEBFE00663F97 /* TaskDiaryViewModelType.swift */; };
 		B17B8FAD25CBEC3500663F97 /* TaskDiaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17B8FAC25CBEC3500663F97 /* TaskDiaryViewModel.swift */; };
@@ -118,6 +136,7 @@
 		B18349ED256AEB7500D0D096 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18349EC256AEB7500D0D096 /* MainCoordinator.swift */; };
 		B18349F1256AEC7000D0D096 /* TaskListAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18349F0256AEC7000D0D096 /* TaskListAssembly.swift */; };
 		B18349F4256AF49400D0D096 /* DetailTaskAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18349F3256AF49400D0D096 /* DetailTaskAssembly.swift */; };
+		B1868E5425DFF2910004EC1A /* TaskListNavBarTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1868E5325DFF2910004EC1A /* TaskListNavBarTitle.swift */; };
 		B189A99125247E1D00EAC6A0 /* TimePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B189A98D25247E1C00EAC6A0 /* TimePickerViewController.swift */; };
 		B189A9942524803E00EAC6A0 /* TimePickerViewOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B189A9932524803E00EAC6A0 /* TimePickerViewOutputs.swift */; };
 		B189A99725249ACA00EAC6A0 /* testView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B189A99625249ACA00EAC6A0 /* testView.xib */; };
@@ -161,8 +180,8 @@
 		B1D5C4C0252B674800C4B988 /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5C4BF252B674800C4B988 /* UITableViewCell.swift */; };
 		B1D5DEAC2523667500124DAD /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5DEAB2523667500124DAD /* Font.swift */; };
 		B1D5DEC52523884700124DAD /* CalendarPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5DEB92523884700124DAD /* CalendarPickerViewController.swift */; };
-		B1D5DEC62523884700124DAD /* MonthModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5DEBB2523884700124DAD /* MonthModel.swift */; };
-		B1D5DEC72523884700124DAD /* DayModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5DEBC2523884700124DAD /* DayModel.swift */; };
+		B1D5DEC62523884700124DAD /* CalendarPickerMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5DEBB2523884700124DAD /* CalendarPickerMonth.swift */; };
+		B1D5DEC72523884700124DAD /* CalendarPickerDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5DEBC2523884700124DAD /* CalendarPickerDay.swift */; };
 		B1D5DEC82523884700124DAD /* CalendarPickerFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1D5DEBE2523884700124DAD /* CalendarPickerFooterView.xib */; };
 		B1D5DEC92523884700124DAD /* CalendarPickerViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1D5DEBF2523884700124DAD /* CalendarPickerViewCell.xib */; };
 		B1D5DECA2523884700124DAD /* CalendarPickerHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1D5DEC02523884700124DAD /* CalendarPickerHeaderView.xib */; };
@@ -186,6 +205,14 @@
 		B1D79B0A25CD462D009DB9BF /* AnimationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D79B0925CD462D009DB9BF /* AnimationHelper.swift */; };
 		B1D79B0D25CEABBC009DB9BF /* DiaryMenuItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D79B0C25CEABBC009DB9BF /* DiaryMenuItemViewModel.swift */; };
 		B1D79B1225CEAD03009DB9BF /* DiaryMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D79B1125CEAD03009DB9BF /* DiaryMenuTableViewCell.swift */; };
+		B1DC538425E278F100140F17 /* TaskListEmptyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DC538325E278F100140F17 /* TaskListEmptyTableViewCell.swift */; };
+		B1DC538825E3987E00140F17 /* Weak.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DC538725E3987E00140F17 /* Weak.swift */; };
+		B1DC538B25E3995900140F17 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DC538A25E3995900140F17 /* Event.swift */; };
+		B1DC538E25E3BC0800140F17 /* TaskListEmptyItemViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DC538D25E3BC0800140F17 /* TaskListEmptyItemViewModelType.swift */; };
+		B1DC539125E3BD4200140F17 /* TaskListEmptyItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DC539025E3BD4200140F17 /* TaskListEmptyItemViewModel.swift */; };
+		B1DC539425E3C8BA00140F17 /* TaskListItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DC539325E3C8BA00140F17 /* TaskListItemType.swift */; };
+		B1DC539B25E3CB4F00140F17 /* TaskListCellFactoryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DC539A25E3CB4F00140F17 /* TaskListCellFactoryType.swift */; };
+		B1DC53A125E3CC2E00140F17 /* TaskListCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DC53A025E3CC2E00140F17 /* TaskListCellFactory.swift */; };
 		B1E0653025651A8300948AB5 /* CalendarPickerViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E0652F25651A8300948AB5 /* CalendarPickerViewModelType.swift */; };
 		B1E0653225651EC100948AB5 /* CalendarPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E0653125651EC100948AB5 /* CalendarPickerViewModel.swift */; };
 		B1E06534256524EF00948AB5 /* Boxing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E06533256524EF00948AB5 /* Boxing.swift */; };
@@ -270,7 +297,7 @@
 		B139A75F25822527000BAE55 /* testStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = testStoryboard.storyboard; sourceTree = "<group>"; };
 		B139A76225822555000BAE55 /* TestScrollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestScrollViewController.swift; sourceTree = "<group>"; };
 		B13E076A25A9905100020F5E /* MenuItemSectionViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemSectionViewModelType.swift; sourceTree = "<group>"; };
-		B13E076E25A9915600020F5E /* MenuCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCellType.swift; sourceTree = "<group>"; };
+		B13E076E25A9915600020F5E /* TableViewCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCellType.swift; sourceTree = "<group>"; };
 		B13E077325A9922100020F5E /* MenuCellFactoryType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCellFactoryType.swift; sourceTree = "<group>"; };
 		B13E077725A994D200020F5E /* MenuItemViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemViewModelType.swift; sourceTree = "<group>"; };
 		B13E077B25A9956300020F5E /* SettingsMenuItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMenuItemViewModel.swift; sourceTree = "<group>"; };
@@ -304,6 +331,10 @@
 		B14C997325C6D6A500E36A94 /* PopUpModalAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpModalAnimationController.swift; sourceTree = "<group>"; };
 		B14C997725C6E20C00E36A94 /* ZoomModalTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomModalTransitionController.swift; sourceTree = "<group>"; };
 		B14C997B25C6E21F00E36A94 /* ZoomModalAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomModalAnimationController.swift; sourceTree = "<group>"; };
+		B15479D125DBB38D00B70945 /* TaskListPeriodItemViewModelInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPeriodItemViewModelInputs.swift; sourceTree = "<group>"; };
+		B15479D425DBB3AC00B70945 /* TaskListPeriodItemViewModelOutputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPeriodItemViewModelOutputs.swift; sourceTree = "<group>"; };
+		B15B7D0125D1489E00EC1D98 /* DropNavigationTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropNavigationTransitionController.swift; sourceTree = "<group>"; };
+		B15B7D0425D148E200EC1D98 /* DropNavigationAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropNavigationAnimationController.swift; sourceTree = "<group>"; };
 		B15BFA17259877F2003959B8 /* CheckSubtask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckSubtask.swift; sourceTree = "<group>"; };
 		B15C9B662569156A00A809B1 /* CalendarPickerViewModelOutputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerViewModelOutputs.swift; sourceTree = "<group>"; };
 		B15C9B7325695B6600A809B1 /* DetailTaskViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskViewModelType.swift; sourceTree = "<group>"; };
@@ -315,6 +346,20 @@
 		B1603C592521EAB70022BE49 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		B1603C5B2521FC200022BE49 /* DetailTaskNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskNewViewController.swift; sourceTree = "<group>"; };
 		B1664044254464C8007D1AFD /* UIBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
+		B1687F6425DC00BE009D3DE2 /* CalendarMonth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarMonth.swift; sourceTree = "<group>"; };
+		B1687F6725DC00E2009D3DE2 /* CalendarDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDay.swift; sourceTree = "<group>"; };
+		B1687F6B25DC069A009D3DE2 /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
+		B1687F7525DC0783009D3DE2 /* CalendarMonthViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarMonthViewModelType.swift; sourceTree = "<group>"; };
+		B1687F7A25DC07F2009D3DE2 /* CalendarDayViewModelOutputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDayViewModelOutputs.swift; sourceTree = "<group>"; };
+		B16D0E0D25DD0631007708AB /* CalendarDayViewModelInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDayViewModelInputs.swift; sourceTree = "<group>"; };
+		B16D0E1025DD0697007708AB /* CalendarDayViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDayViewModelType.swift; sourceTree = "<group>"; };
+		B16D0E1325DD06D1007708AB /* CalendarDayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDayViewModel.swift; sourceTree = "<group>"; };
+		B16D0E1625DD16B7007708AB /* CalendarMonthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarMonthViewModel.swift; sourceTree = "<group>"; };
+		B170813A25DBF275007AC23B /* CalendarCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionView.swift; sourceTree = "<group>"; };
+		B170813F25DBF673007AC23B /* CalendarViewModelInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModelInputs.swift; sourceTree = "<group>"; };
+		B170814225DBF68C007AC23B /* CalendarViewModelOutputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModelOutputs.swift; sourceTree = "<group>"; };
+		B170814525DBF6AC007AC23B /* CalendarViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModelType.swift; sourceTree = "<group>"; };
+		B170814825DBF6E2007AC23B /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 		B17B8FA625CBEBE300663F97 /* TaskDiaryViewModelInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDiaryViewModelInputs.swift; sourceTree = "<group>"; };
 		B17B8FA925CBEBFE00663F97 /* TaskDiaryViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDiaryViewModelType.swift; sourceTree = "<group>"; };
 		B17B8FAC25CBEC3500663F97 /* TaskDiaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDiaryViewModel.swift; sourceTree = "<group>"; };
@@ -335,6 +380,7 @@
 		B18349EC256AEB7500D0D096 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		B18349F0256AEC7000D0D096 /* TaskListAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListAssembly.swift; sourceTree = "<group>"; };
 		B18349F3256AF49400D0D096 /* DetailTaskAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskAssembly.swift; sourceTree = "<group>"; };
+		B1868E5325DFF2910004EC1A /* TaskListNavBarTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListNavBarTitle.swift; sourceTree = "<group>"; };
 		B189A98D25247E1C00EAC6A0 /* TimePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimePickerViewController.swift; sourceTree = "<group>"; };
 		B189A9932524803E00EAC6A0 /* TimePickerViewOutputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerViewOutputs.swift; sourceTree = "<group>"; };
 		B189A99625249ACA00EAC6A0 /* testView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = testView.xib; sourceTree = "<group>"; };
@@ -380,8 +426,8 @@
 		B1D5C4BF252B674800C4B988 /* UITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
 		B1D5DEAB2523667500124DAD /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		B1D5DEB92523884700124DAD /* CalendarPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarPickerViewController.swift; sourceTree = "<group>"; };
-		B1D5DEBB2523884700124DAD /* MonthModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonthModel.swift; sourceTree = "<group>"; };
-		B1D5DEBC2523884700124DAD /* DayModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayModel.swift; sourceTree = "<group>"; };
+		B1D5DEBB2523884700124DAD /* CalendarPickerMonth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarPickerMonth.swift; sourceTree = "<group>"; };
+		B1D5DEBC2523884700124DAD /* CalendarPickerDay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarPickerDay.swift; sourceTree = "<group>"; };
 		B1D5DEBE2523884700124DAD /* CalendarPickerFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalendarPickerFooterView.xib; sourceTree = "<group>"; };
 		B1D5DEBF2523884700124DAD /* CalendarPickerViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalendarPickerViewCell.xib; sourceTree = "<group>"; };
 		B1D5DEC02523884700124DAD /* CalendarPickerHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalendarPickerHeaderView.xib; sourceTree = "<group>"; };
@@ -405,6 +451,14 @@
 		B1D79B0925CD462D009DB9BF /* AnimationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationHelper.swift; sourceTree = "<group>"; };
 		B1D79B0C25CEABBC009DB9BF /* DiaryMenuItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryMenuItemViewModel.swift; sourceTree = "<group>"; };
 		B1D79B1125CEAD03009DB9BF /* DiaryMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryMenuTableViewCell.swift; sourceTree = "<group>"; };
+		B1DC538325E278F100140F17 /* TaskListEmptyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListEmptyTableViewCell.swift; sourceTree = "<group>"; };
+		B1DC538725E3987E00140F17 /* Weak.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weak.swift; sourceTree = "<group>"; };
+		B1DC538A25E3995900140F17 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		B1DC538D25E3BC0800140F17 /* TaskListEmptyItemViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListEmptyItemViewModelType.swift; sourceTree = "<group>"; };
+		B1DC539025E3BD4200140F17 /* TaskListEmptyItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListEmptyItemViewModel.swift; sourceTree = "<group>"; };
+		B1DC539325E3C8BA00140F17 /* TaskListItemType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListItemType.swift; sourceTree = "<group>"; };
+		B1DC539A25E3CB4F00140F17 /* TaskListCellFactoryType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListCellFactoryType.swift; sourceTree = "<group>"; };
+		B1DC53A025E3CC2E00140F17 /* TaskListCellFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListCellFactory.swift; sourceTree = "<group>"; };
 		B1E0652F25651A8300948AB5 /* CalendarPickerViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerViewModelType.swift; sourceTree = "<group>"; };
 		B1E0653125651EC100948AB5 /* CalendarPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerViewModel.swift; sourceTree = "<group>"; };
 		B1E06533256524EF00948AB5 /* Boxing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Boxing.swift; sourceTree = "<group>"; };
@@ -606,6 +660,7 @@
 		B139A75E258224E6000BAE55 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				B13E076E25A9915600020F5E /* TableViewCellType.swift */,
 				B139A75A258224B5000BAE55 /* Storyboarded.swift */,
 			);
 			path = Protocols;
@@ -614,7 +669,6 @@
 		B13E076D25A9913E00020F5E /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				B13E076E25A9915600020F5E /* MenuCellType.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -660,6 +714,7 @@
 			children = (
 				B141728025C153DE00EF0D85 /* Protocols */,
 				B1B4CA9225C159B900AF5F61 /* TaskListItemViewModel.swift */,
+				B1DC539025E3BD4200140F17 /* TaskListEmptyItemViewModel.swift */,
 			);
 			path = TaskListItemViewModel;
 			sourceTree = "<group>";
@@ -670,6 +725,8 @@
 				B141728225C1544500EF0D85 /* TaskListItemViewModelOutputs.swift */,
 				B1B4CA9C25C18F9600AF5F61 /* TaskListItemViewModelInputs.swift */,
 				B141728525C1546200EF0D85 /* TaskListItemViewModelType.swift */,
+				B1DC538D25E3BC0800140F17 /* TaskListEmptyItemViewModelType.swift */,
+				B1DC539325E3C8BA00140F17 /* TaskListItemType.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -687,6 +744,8 @@
 			isa = PBXGroup;
 			children = (
 				B141728C25C154C100EF0D85 /* TaskListPeriodItemViewModelType.swift */,
+				B15479D125DBB38D00B70945 /* TaskListPeriodItemViewModelInputs.swift */,
+				B15479D425DBB3AC00B70945 /* TaskListPeriodItemViewModelOutputs.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -763,6 +822,15 @@
 			path = ZoomModalTransition;
 			sourceTree = "<group>";
 		};
+		B15B7D0025D1487000EC1D98 /* DropNavigationTransition */ = {
+			isa = PBXGroup;
+			children = (
+				B15B7D0125D1489E00EC1D98 /* DropNavigationTransitionController.swift */,
+				B15B7D0425D148E200EC1D98 /* DropNavigationAnimationController.swift */,
+			);
+			path = DropNavigationTransition;
+			sourceTree = "<group>";
+		};
 		B15C9B7125695B4400A809B1 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -801,7 +869,7 @@
 		B1603C532521C5AF0022BE49 /* TableView */ = {
 			isa = PBXGroup;
 			children = (
-				B1603C542521C5C20022BE49 /* TaskListTableViewCell.swift */,
+				B1DC539625E3CB1D00140F17 /* Cells */,
 				B17B8FBF25CC0E1A00663F97 /* TaskListTableHeaderView.swift */,
 			);
 			path = TableView;
@@ -829,6 +897,99 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		B1687F6325DC00A0009D3DE2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B1687F6425DC00BE009D3DE2 /* CalendarMonth.swift */,
+				B1687F6725DC00E2009D3DE2 /* CalendarDay.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B1687F6A25DC0680009D3DE2 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				B170813A25DBF275007AC23B /* CalendarCollectionView.swift */,
+				B1687F6B25DC069A009D3DE2 /* CalendarCollectionViewCell.swift */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+		B1687F6E25DC0704009D3DE2 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				B1687F7325DC0756009D3DE2 /* CalendarDay */,
+				B1687F7225DC0728009D3DE2 /* CalendarMonth */,
+				B170813D25DBF658007AC23B /* CalendarViewModel */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+		B1687F6F25DC0710009D3DE2 /* TaskList */ = {
+			isa = PBXGroup;
+			children = (
+				B141728125C153F700EF0D85 /* TaskListPeriodItemViewModel */,
+				B141727F25C153C800EF0D85 /* TaskListItemViewModel */,
+				B141727325C151F000EF0D85 /* TaskListViewModel */,
+			);
+			path = TaskList;
+			sourceTree = "<group>";
+		};
+		B1687F7225DC0728009D3DE2 /* CalendarMonth */ = {
+			isa = PBXGroup;
+			children = (
+				B1687F7425DC0764009D3DE2 /* Protocols */,
+				B16D0E1625DD16B7007708AB /* CalendarMonthViewModel.swift */,
+			);
+			path = CalendarMonth;
+			sourceTree = "<group>";
+		};
+		B1687F7325DC0756009D3DE2 /* CalendarDay */ = {
+			isa = PBXGroup;
+			children = (
+				B1687F7925DC07D0009D3DE2 /* Protocols */,
+				B16D0E1325DD06D1007708AB /* CalendarDayViewModel.swift */,
+			);
+			path = CalendarDay;
+			sourceTree = "<group>";
+		};
+		B1687F7425DC0764009D3DE2 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				B1687F7525DC0783009D3DE2 /* CalendarMonthViewModelType.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		B1687F7925DC07D0009D3DE2 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				B1687F7A25DC07F2009D3DE2 /* CalendarDayViewModelOutputs.swift */,
+				B16D0E0D25DD0631007708AB /* CalendarDayViewModelInputs.swift */,
+				B16D0E1025DD0697007708AB /* CalendarDayViewModelType.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		B170813D25DBF658007AC23B /* CalendarViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B170813E25DBF65F007AC23B /* Protocols */,
+				B170814825DBF6E2007AC23B /* CalendarViewModel.swift */,
+			);
+			path = CalendarViewModel;
+			sourceTree = "<group>";
+		};
+		B170813E25DBF65F007AC23B /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				B170813F25DBF673007AC23B /* CalendarViewModelInputs.swift */,
+				B170814225DBF68C007AC23B /* CalendarViewModelOutputs.swift */,
+				B170814525DBF6AC007AC23B /* CalendarViewModelType.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		B17B8FB425CBFDE000663F97 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -851,6 +1012,7 @@
 		B1804BB6255A8CC9007FECCF /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				B1DC538625E3985900140F17 /* Observable */,
 				B1E79E7C25B5AC6800C443CA /* TransitionAnimators */,
 				B139A75D258224DF000BAE55 /* Helpers */,
 				B1804BB7255A8CED007FECCF /* StyleGuide.swift */,
@@ -899,6 +1061,8 @@
 		B18349EE256AEBD200D0D096 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				B1A9140E252062270021E15C /* TaskList */,
+				B11C75B425C82D25004D6639 /* TaskDiary */,
 				B12B0AE025ADC1A30078315C /* ShortcutList */,
 				B1EF663225A488C20050FF1C /* DetailShortcut */,
 				B1D4CCDE256D25940085C25C /* Settings */,
@@ -906,8 +1070,6 @@
 				B189A98A25247E1C00EAC6A0 /* TimePicker */,
 				B1D5DEB0252386E300124DAD /* DatePicker */,
 				B18C91BF25334D4B004DFB73 /* DetailTask */,
-				B11C75B425C82D25004D6639 /* TaskDiary */,
-				B1A9140E252062270021E15C /* TaskList */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -1038,6 +1200,7 @@
 		B1A9140E252062270021E15C /* TaskList */ = {
 			isa = PBXGroup;
 			children = (
+				B1687F6325DC00A0009D3DE2 /* Models */,
 				B1A91412252062DF0021E15C /* Assembly */,
 				B1A914102520624F0021E15C /* ViewModels */,
 				B1A9140F252062360021E15C /* Views */,
@@ -1048,10 +1211,12 @@
 		B1A9140F252062360021E15C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B1687F6A25DC0680009D3DE2 /* Calendar */,
 				B1C237E425A776CA00111037 /* Protocols */,
 				B1603C532521C5AF0022BE49 /* TableView */,
 				B1A9142A2520B2AD0021E15C /* TaskListViewController.swift */,
 				B18C570C252E168B009D4D03 /* TaskAddButton.swift */,
+				B1868E5325DFF2910004EC1A /* TaskListNavBarTitle.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1059,9 +1224,8 @@
 		B1A914102520624F0021E15C /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				B141728125C153F700EF0D85 /* TaskListPeriodItemViewModel */,
-				B141727F25C153C800EF0D85 /* TaskListItemViewModel */,
-				B141727325C151F000EF0D85 /* TaskListViewModel */,
+				B1687F6F25DC0710009D3DE2 /* TaskList */,
+				B1687F6E25DC0704009D3DE2 /* Calendar */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1244,8 +1408,8 @@
 		B1D5DEBA2523884700124DAD /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				B1D5DEBB2523884700124DAD /* MonthModel.swift */,
-				B1D5DEBC2523884700124DAD /* DayModel.swift */,
+				B1D5DEBB2523884700124DAD /* CalendarPickerMonth.swift */,
+				B1D5DEBC2523884700124DAD /* CalendarPickerDay.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1342,6 +1506,42 @@
 				B1D79B0425CD3BFB009DB9BF /* FlipAnimationController.swift */,
 			);
 			path = FlipAnimation;
+			sourceTree = "<group>";
+		};
+		B1DC538625E3985900140F17 /* Observable */ = {
+			isa = PBXGroup;
+			children = (
+				B1DC538725E3987E00140F17 /* Weak.swift */,
+				B1DC538A25E3995900140F17 /* Event.swift */,
+			);
+			path = Observable;
+			sourceTree = "<group>";
+		};
+		B1DC539625E3CB1D00140F17 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				B1DC539725E3CB2500140F17 /* Factories */,
+				B1DC538325E278F100140F17 /* TaskListEmptyTableViewCell.swift */,
+				B1603C542521C5C20022BE49 /* TaskListTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		B1DC539725E3CB2500140F17 /* Factories */ = {
+			isa = PBXGroup;
+			children = (
+				B1DC539925E3CB3B00140F17 /* Protocols */,
+				B1DC53A025E3CC2E00140F17 /* TaskListCellFactory.swift */,
+			);
+			path = Factories;
+			sourceTree = "<group>";
+		};
+		B1DC539925E3CB3B00140F17 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				B1DC539A25E3CB4F00140F17 /* TaskListCellFactoryType.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		B1E065352565374100948AB5 /* ViewModels */ = {
@@ -1474,6 +1674,7 @@
 		B1E79E7C25B5AC6800C443CA /* TransitionAnimators */ = {
 			isa = PBXGroup;
 			children = (
+				B15B7D0025D1487000EC1D98 /* DropNavigationTransition */,
 				B1D79B0025CD3B66009DB9BF /* FlipAnimation */,
 				B14C997625C6E1F300E36A94 /* ZoomModalTransition */,
 				B14C996F25C6D5BE00E36A94 /* PopUpModalTransition */,
@@ -1687,6 +1888,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1687F6825DC00E2009D3DE2 /* CalendarDay.swift in Sources */,
 				B1E30EE725A70ED60036979D /* MenuViewModelOutputs.swift in Sources */,
 				B1A914162520636E0021E15C /* TaskListDataSourceCoreData.swift in Sources */,
 				B13E078225A995DC00020F5E /* ShortcutMenuItemViewModel.swift in Sources */,
@@ -1694,10 +1896,11 @@
 				B1A9142B2520B2AD0021E15C /* TaskListViewController.swift in Sources */,
 				B13E077425A9922100020F5E /* MenuCellFactoryType.swift in Sources */,
 				B1391FFB259218AA0087D0E9 /* SubtaskManaged+CoreDataProperties.swift in Sources */,
-				B13E076F25A9915600020F5E /* MenuCellType.swift in Sources */,
+				B13E076F25A9915600020F5E /* TableViewCellType.swift in Sources */,
 				B1F9B4DF25B849B00049FE58 /* CardModalTransitionController.swift in Sources */,
 				B1D5DECC2523884700124DAD /* CalendarPickerViewCell.swift in Sources */,
 				B12B0AE725ADC6560078315C /* ShortcutListViewController.swift in Sources */,
+				B1DC538425E278F100140F17 /* TaskListEmptyTableViewCell.swift in Sources */,
 				B1C237E125A7164300111037 /* ShortcutListDataSourceCoreData.swift in Sources */,
 				B17B8FB725CBFDFE00663F97 /* TaskDiaryViewType.swift in Sources */,
 				B13E078C25A998AB00020F5E /* MenuItemSectionViewModel.swift in Sources */,
@@ -1708,8 +1911,11 @@
 				B1F10C0325D012A800153336 /* TaskDeleteViewModel.swift in Sources */,
 				B1FB9BD32588B41E00E54E1B /* TaskTitleTextView.swift in Sources */,
 				B18C91BE2532FA8D004DFB73 /* UIDevice.swift in Sources */,
+				B15479D225DBB38D00B70945 /* TaskListPeriodItemViewModelInputs.swift in Sources */,
 				B141727625C1520F00EF0D85 /* TaskListViewModelInputs.swift in Sources */,
 				B141728D25C154C100EF0D85 /* TaskListPeriodItemViewModelType.swift in Sources */,
+				B16D0E1425DD06D1007708AB /* CalendarDayViewModel.swift in Sources */,
+				B170814925DBF6E2007AC23B /* CalendarViewModel.swift in Sources */,
 				B1D5C4BA252AFE8100C4B988 /* DateNotifier.swift in Sources */,
 				B1392019259233BD0087D0E9 /* SubtaskViewModelInputs.swift in Sources */,
 				B13875EF25715DD2002DA626 /* ShortcutMenuTableViewCell.swift in Sources */,
@@ -1739,6 +1945,7 @@
 				B1E06534256524EF00948AB5 /* Boxing.swift in Sources */,
 				B13920142592329A0087D0E9 /* SubtaskViewModel.swift in Sources */,
 				B1D5DEC52523884700124DAD /* CalendarPickerViewController.swift in Sources */,
+				B15479D525DBB3AC00B70945 /* TaskListPeriodItemViewModelOutputs.swift in Sources */,
 				B1E30EF925A713120036979D /* ShortcutListDataSourceObserver.swift in Sources */,
 				B12B0AE325ADC1CB0078315C /* ShortcutListViewOutputs.swift in Sources */,
 				B12B0AEE25ADC88F0078315C /* ShortcutListViewModelOutputs.swift in Sources */,
@@ -1746,12 +1953,14 @@
 				B18349F4256AF49400D0D096 /* DetailTaskAssembly.swift in Sources */,
 				B1D5C4C0252B674800C4B988 /* UITableViewCell.swift in Sources */,
 				B1EF664625A4BB9C0050FF1C /* ShowInMainListView.swift in Sources */,
+				B1DC539425E3C8BA00140F17 /* TaskListItemType.swift in Sources */,
 				B1F0198725A8BECC00A284B5 /* MenuItemViewModelSelectableType.swift in Sources */,
 				B1D4CCE5256D26090085C25C /* SettingsViewController.swift in Sources */,
 				B141729025C154EE00EF0D85 /* TaskListPeriodItemViewModel.swift in Sources */,
 				B1603C5A2521EAB70022BE49 /* UIViewController.swift in Sources */,
 				B18D45F325A24E0E0081B11E /* DetailAccessoryView.swift in Sources */,
 				B17B8FBA25CC007300663F97 /* TaskDiaryViewController.swift in Sources */,
+				B16D0E1125DD0697007708AB /* CalendarDayViewModelType.swift in Sources */,
 				B11C75AB25C81A4F004D6639 /* TaskReminderViewModelOutputs.swift in Sources */,
 				B14C996525C69C7E00E36A94 /* DetailTaskCellFactory.swift in Sources */,
 				B13E077825A994D200020F5E /* MenuItemViewModelType.swift in Sources */,
@@ -1761,6 +1970,7 @@
 				B14C994E25C68C4100E36A94 /* TaskDateViewModel.swift in Sources */,
 				B1C39D6D256BE40E0005C4B6 /* MenuViewController.swift in Sources */,
 				B1A9140825205DE20021E15C /* CoreDataService.swift in Sources */,
+				B170813B25DBF275007AC23B /* CalendarCollectionView.swift in Sources */,
 				B12B0B0825ADE37F0078315C /* ShortcutListTableViewCell.swift in Sources */,
 				B1F5DFF925D00FB9000FC8D3 /* TaskDeleteTableViewCell.swift in Sources */,
 				B1F0198A25A8C06400A284B5 /* MainMenuItemViewModel.swift in Sources */,
@@ -1770,12 +1980,14 @@
 				B11C75A825C81A31004D6639 /* TaskReminderViewModelInputs.swift in Sources */,
 				B17B8FAD25CBEC3500663F97 /* TaskDiaryViewModel.swift in Sources */,
 				B111F66A25B06FC20086A0AC /* ShortcutListViewType.swift in Sources */,
+				B16D0E0E25DD0631007708AB /* CalendarDayViewModelInputs.swift in Sources */,
 				B12B0AFE25ADDE4B0078315C /* ShortcutViewModelType.swift in Sources */,
 				B1E92B8C259C9A0A00449ABE /* DetailTaskScrollView.swift in Sources */,
 				B1A9141D2520775E0021E15C /* Task.swift in Sources */,
 				B1EF666525A4D8BA0050FF1C /* UIColor.swift in Sources */,
 				B117AECB253217880046AAE9 /* String.swift in Sources */,
 				B1EF664C25A4CD470050FF1C /* ColorSelectionView.swift in Sources */,
+				B1687F7625DC0783009D3DE2 /* CalendarMonthViewModelType.swift in Sources */,
 				B1C39D6A256BD5390005C4B6 /* TimePickerAssembly.swift in Sources */,
 				B13875DE25710985002DA626 /* MainMenuTableViewCell.swift in Sources */,
 				B13920202592348C0087D0E9 /* SubtaskViewModelType.swift in Sources */,
@@ -1790,14 +2002,17 @@
 				B14C995925C691A600E36A94 /* DetailTaskTableSectionViewModel.swift in Sources */,
 				B1D79AF225CC19F6009DB9BF /* TaskDiaryItemViewModel.swift in Sources */,
 				B13875ED257159CF002DA626 /* CreateShortcutMenuTableViewCell.swift in Sources */,
-				B1D5DEC72523884700124DAD /* DayModel.swift in Sources */,
+				B1D5DEC72523884700124DAD /* CalendarPickerDay.swift in Sources */,
 				B1D5DECD2523884700124DAD /* CalendarPickerHeaderView.swift in Sources */,
+				B1687F6525DC00BE009D3DE2 /* CalendarMonth.swift in Sources */,
 				B1D79AEF25CC19CB009DB9BF /* TaskDiaryItemViewModelType.swift in Sources */,
 				B114840025309EA100216541 /* Color.swift in Sources */,
+				B15B7D0225D1489E00EC1D98 /* DropNavigationTransitionController.swift in Sources */,
 				B1D4CCE9256D36EA0085C25C /* UIButton.swift in Sources */,
 				B18349F1256AEC7000D0D096 /* TaskListAssembly.swift in Sources */,
 				B1C5F80D2566551E0040EB3C /* CalendarPickerViewModelInputs.swift in Sources */,
 				B1A913FA252056FA0021E15C /* Tasker.xcdatamodeld in Sources */,
+				B1DC53A125E3CC2E00140F17 /* TaskListCellFactory.swift in Sources */,
 				B1A91419252063C30021E15C /* TaskListDataSource.swift in Sources */,
 				B1EF665C25A4D11E0050FF1C /* DetailShortcutViewModel.swift in Sources */,
 				B1B4CA9325C159B900AF5F61 /* TaskListItemViewModel.swift in Sources */,
@@ -1805,6 +2020,7 @@
 				B1EF665925A4CFEE0050FF1C /* DetailShortcutViewModelOutputs.swift in Sources */,
 				B14C994525C68B4300E36A94 /* TaskDateViewModelInputs.swift in Sources */,
 				B17B8FC025CC0E1A00663F97 /* TaskListTableHeaderView.swift in Sources */,
+				B15B7D0525D148E200EC1D98 /* DropNavigationAnimationController.swift in Sources */,
 				B15BFA18259877F2003959B8 /* CheckSubtask.swift in Sources */,
 				B15C9B7A25695BB800A809B1 /* DetailTaskViewModel.swift in Sources */,
 				B182306A258119DD009ABCE1 /* DetailTaskViewType.swift in Sources */,
@@ -1814,6 +2030,7 @@
 				B1391FE8259214C60087D0E9 /* SubtaskTableViewCell.swift in Sources */,
 				B14C995E25C69BD900E36A94 /* DetailTaskCellFactoryType.swift in Sources */,
 				B13875DC25710057002DA626 /* SettingsMenuTableViewCell.swift in Sources */,
+				B1868E5425DFF2910004EC1A /* TaskListNavBarTitle.swift in Sources */,
 				B1C39D64256BC72E0005C4B6 /* DetailTaskCoordinator.swift in Sources */,
 				B1603C5C2521FC200022BE49 /* DetailTaskNewViewController.swift in Sources */,
 				B14C995625C6906600E36A94 /* DetailTaskTableItemViewModelType.swift in Sources */,
@@ -1837,15 +2054,19 @@
 				B15C9B7625695B7E00A809B1 /* DetailTaskViewModelInputs.swift in Sources */,
 				B141727125C138EB00EF0D85 /* SubtasksTableView.swift in Sources */,
 				B12B0AF525ADDCEE0078315C /* ShortcutListViewModel.swift in Sources */,
+				B16D0E1725DD16B7007708AB /* CalendarMonthViewModel.swift in Sources */,
 				B17ED83D25BAEFB8009B51CB /* ImageWithoutRender.swift in Sources */,
 				B1D79AF725CD2FD0009DB9BF /* TaskDiaryTableHeaderView.swift in Sources */,
+				B170814325DBF68D007AC23B /* CalendarViewModelOutputs.swift in Sources */,
 				B1EF663F25A48D2E0050FF1C /* SlideMenuViewType.swift in Sources */,
+				B1687F6C25DC069A009D3DE2 /* CalendarCollectionViewCell.swift in Sources */,
 				B13E079225A9CBBB00020F5E /* MenuItemViewModelCreateShortcutType.swift in Sources */,
 				B11C75AE25C81AFE004D6639 /* TaskReminderViewModel.swift in Sources */,
 				B1391FFA259218AA0087D0E9 /* SubtaskManaged+CoreDataClass.swift in Sources */,
+				B1DC538825E3987E00140F17 /* Weak.swift in Sources */,
 				B1D79AFB25CD31D0009DB9BF /* TaskDiaryAssembly.swift in Sources */,
 				B14C997825C6E20C00E36A94 /* ZoomModalTransitionController.swift in Sources */,
-				B1D5DEC62523884700124DAD /* MonthModel.swift in Sources */,
+				B1D5DEC62523884700124DAD /* CalendarPickerMonth.swift in Sources */,
 				B13E076B25A9905100020F5E /* MenuItemSectionViewModelType.swift in Sources */,
 				B13875E0257121E7002DA626 /* NSObject.swift in Sources */,
 				B17B8FB125CBED9300663F97 /* TableViewFRCHelper.swift in Sources */,
@@ -1856,6 +2077,8 @@
 				B13E077F25A995B300020F5E /* CreateShortcutMenuItemViewModel.swift in Sources */,
 				B1D4CCE7256D26700085C25C /* SettingsAssembly.swift in Sources */,
 				B13E078F25A9991200020F5E /* MenuCellFactory.swift in Sources */,
+				B170814025DBF673007AC23B /* CalendarViewModelInputs.swift in Sources */,
+				B1687F7B25DC07F2009D3DE2 /* CalendarDayViewModelOutputs.swift in Sources */,
 				B1E47889257A3E2A0055A0B4 /* ShortcutManaged+CoreDataClass.swift in Sources */,
 				B12B0ADE25ADA0C10078315C /* ShortcutButton.swift in Sources */,
 				B1A914292520AB640021E15C /* TaskListView.swift in Sources */,
@@ -1865,8 +2088,10 @@
 				B13E077C25A9956300020F5E /* SettingsMenuItemViewModel.swift in Sources */,
 				B18D45F025A20D2E0081B11E /* HideKeyboardButton.swift in Sources */,
 				B189A9942524803E00EAC6A0 /* TimePickerViewOutputs.swift in Sources */,
+				B1DC538E25E3BC0800140F17 /* TaskListEmptyItemViewModelType.swift in Sources */,
 				B1EF663825A489640050FF1C /* DetailShortcutAssembly.swift in Sources */,
 				B1E4788A257A3E2A0055A0B4 /* ShortcutManaged+CoreDataProperties.swift in Sources */,
+				B1DC539B25E3CB4F00140F17 /* TaskListCellFactoryType.swift in Sources */,
 				B11C75B925C83307004D6639 /* TaskDiaryViewModelOutputs.swift in Sources */,
 				B15C9B672569156A00A809B1 /* CalendarPickerViewModelOutputs.swift in Sources */,
 				B15C9B7425695B6600A809B1 /* DetailTaskViewModelType.swift in Sources */,
@@ -1876,6 +2101,7 @@
 				B1EF666025A4D2E40050FF1C /* Shortcut.swift in Sources */,
 				B18349E9256AEAF300D0D096 /* PresentableController.swift in Sources */,
 				B1C9444425791516008DB558 /* SlideMenuAssembly.swift in Sources */,
+				B170814625DBF6AC007AC23B /* CalendarViewModelType.swift in Sources */,
 				B12B0B0125ADDE6D0078315C /* ShortcutViewModelOutputs.swift in Sources */,
 				B1603C522521C0480022BE49 /* TaskTimePeriod.swift in Sources */,
 				B1D79AE425CC18C2009DB9BF /* TaskDiaryPeriodItemViewModel.swift in Sources */,
@@ -1885,8 +2111,10 @@
 				B1F10BFD25D0125C00153336 /* TaskDeleteViewModelInputs.swift in Sources */,
 				B1664045254464C8007D1AFD /* UIBarButtonItem.swift in Sources */,
 				B1D5DECB2523884700124DAD /* CalendarPickerFooterView.swift in Sources */,
+				B1DC538B25E3995900140F17 /* Event.swift in Sources */,
 				B1E0653025651A8300948AB5 /* CalendarPickerViewModelType.swift in Sources */,
 				B18349E3256AEA9800D0D096 /* Coordinator.swift in Sources */,
+				B1DC539125E3BD4200140F17 /* TaskListEmptyItemViewModel.swift in Sources */,
 				B1E30EED25A70FCD0036979D /* MenuViewModel.swift in Sources */,
 				B12944972534C7E1002FD1EF /* Angle.swift in Sources */,
 				B14C997125C6D61100E36A94 /* PopUpModalTransitionController.swift in Sources */,

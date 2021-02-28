@@ -71,9 +71,9 @@ struct StyleGuide {
     
     enum CalendarDatePicker {
         //ratio sizes
-        static let ratioToScreenWidth: CGFloat = 0.75
+        static let ratioToScreenWidth: CGFloat = 0.85
         static let ratioPanelToCollection: CGFloat = 0.21
-        static let ratioToViewWidthFont: CGFloat = 0.07
+        static let ratioToViewWidthFont: CGFloat = 0.065
         
         //collection view
         static let cellsInterItemSpacing: CGFloat = 5.0

@@ -18,6 +18,8 @@ class Router: NSObject, RouterType {
     
     private var persistentViewControllers: [PersistentViewControllerType: UIViewController] = [:]
     
+    private var rootNavigationController: UINavigationController?
+    
     init(rootViewController: UIViewController) {
         self.rootViewController = rootViewController
         super.init()
@@ -32,6 +34,10 @@ class Router: NSObject, RouterType {
         case .containerChild:
             vc.remove(withDimmedBack: true)
         case .navigationStack:
+            if let presentableControllerNavBar = getNavigationController(from: vc) {
+                presentableControllerNavBar.popViewController(animated: true)
+            }
+        case .navigationStackWithTransition:
             if let presentableControllerNavBar = getNavigationController(from: vc) {
                 presentableControllerNavBar.popViewController(animated: true)
             }
@@ -70,7 +76,21 @@ class Router: NSObject, RouterType {
             rootViewController.add(vc, withDimmedBack: true)
         case .navigationStack:
             if let presentableControllerNavBar = getNavigationController(from: vc) {
-                presentableControllerNavBar.pushViewController(vc, animated: transition != nil)
+                presentableControllerNavBar.pushViewController(vc, animated: false)
+                presentableControllerNavBar.delegate = self
+                rootViewController.add(presentableControllerNavBar)
+            } else {
+                //Instantiate first navigation controller
+                rootNavigationController = UINavigationController(rootViewController: vc)
+                
+                if let rootNavigationController = rootNavigationController {
+                    rootNavigationController.delegate = self
+                    rootViewController.add(rootNavigationController)
+                }
+            }
+        case .navigationStackWithTransition:
+            if let presentableControllerNavBar = getNavigationController(from: vc) {
+                presentableControllerNavBar.pushViewController(vc, animated: true)
                 presentableControllerNavBar.delegate = self
                 rootViewController.add(presentableControllerNavBar)
             } else {
@@ -98,6 +118,13 @@ class Router: NSObject, RouterType {
         if let persistentType = vc.persistentType {
             persistentViewControllers[persistentType] = vc
         }
+    }
+    
+    func getLastViewFromRootNavigationStack() -> UIViewController? {
+        if let navigationController = rootNavigationController {
+            return navigationController.visibleViewController
+        }
+        return nil
     }
     
     func getPersistentViewController(persistentType: PersistentViewControllerType) -> UIViewController? {

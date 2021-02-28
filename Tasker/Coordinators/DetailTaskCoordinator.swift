@@ -15,15 +15,17 @@ class DetailTaskCoordinator: NSObject, Coordinator {
     var router: RouterType?
     private var taskUID: String?
     private var shortcutUID: String?
+    private var taskDate: Date?
     
-    init(presenter: RouterType?, taskUID: String?, shortcutUID: String?) {
+    init(presenter: RouterType?, taskUID: String?, shortcutUID: String?, taskDate: Date?) {
         self.router = presenter
         self.taskUID = taskUID
         self.shortcutUID = shortcutUID
+        self.taskDate = taskDate
     }
     
     func start() {
-        let vc = DetailTaskAssembly.createInstance(taskUID: taskUID, shortcutUID: shortcutUID, presenter: router)
+        let vc = DetailTaskAssembly.createInstance(taskUID: taskUID, shortcutUID: shortcutUID, taskDate: taskDate, presenter: router)
         vc.onCalendarSelect = { date, outputs in
             self.openCalendar(date: date, calendarOutputs: outputs)
         }
@@ -35,8 +37,7 @@ class DetailTaskCoordinator: NSObject, Coordinator {
         }
         
         let transition = PopUpModalTransitionController(viewController: vc, interactionView: vc.scrollView, router: router)
-        //let transition = CardModalTransitionController(viewController: vc, interactionView: vc.scrollView, router: router)
-        
+                
         router?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
         }, transition: transition)

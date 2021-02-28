@@ -45,13 +45,13 @@
          contextName = "TaskListDataSourceCoreDataImpl.controller(_:didChange:at:for:newIndexPath:):TaskListDataSourceCoreDataImpl.swift">
          <PersistentStrings>
             <PersistentString
-               value = "newIndexPath!.row">
-            </PersistentString>
-            <PersistentString
                value = "indexPath!.row">
             </PersistentString>
             <PersistentString
                value = "indexPath.section">
+            </PersistentString>
+            <PersistentString
+               value = "newIndexPath!.row">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -121,10 +121,10 @@
                value = "scrollView.showsHorizontalScrollIndicator">
             </PersistentString>
             <PersistentString
-               value = "scrollView.isScrollEnabled ">
+               value = "scrollView.bouncesZoom ">
             </PersistentString>
             <PersistentString
-               value = "scrollView.bouncesZoom ">
+               value = "scrollView.isScrollEnabled ">
             </PersistentString>
             <PersistentString
                value = "scrollView.isPagingEnabled">
@@ -185,6 +185,14 @@
          contextName = "TaskListViewModel.tasksWillChange():TaskListViewModel.swift">
       </ContextState>
       <ContextState
+         contextName = "CalendarCollectionViewCell.updateVisibleStatus():CalendarCollectionViewCell.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "currentDayLayer">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "TaskListViewController.numberOfSections(in:):TaskListViewController.swift">
          <PersistentStrings>
             <PersistentString
@@ -196,13 +204,13 @@
          contextName = "DetailTaskViewController.swipeToCloseAction(_:):DetailTaskViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "translation.x">
-            </PersistentString>
-            <PersistentString
                value = "rView.frame.origin">
             </PersistentString>
             <PersistentString
                value = "viewOrigin">
+            </PersistentString>
+            <PersistentString
+               value = "translation.x">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

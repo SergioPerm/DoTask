@@ -10,5 +10,5 @@ import Foundation
 
 protocol CalendarPickerViewModelOutputs {
     var selectedDate: Boxing<Date?> { get set}
-    var days: Boxing<[MonthModel]> { get }
+    var days: Boxing<[CalendarPickerMonth]> { get }
 }

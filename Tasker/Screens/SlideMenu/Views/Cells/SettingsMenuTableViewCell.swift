@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SettingsMenuTableViewCell: UITableViewCell, MenuCellType {
+class SettingsMenuTableViewCell: UITableViewCell, TableViewCellType {
     
     var viewModel: SettingsMenuItemViewModel? {
         didSet {

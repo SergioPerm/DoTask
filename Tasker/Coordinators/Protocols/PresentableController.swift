@@ -16,6 +16,7 @@ enum PresentableControllerViewType {
     case slideMenu
     case containerChild
     case navigationStack
+    case navigationStackWithTransition
     case systemPopoverModal
     case presentWithTransition
 }

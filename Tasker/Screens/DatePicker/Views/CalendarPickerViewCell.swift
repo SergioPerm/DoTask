@@ -41,7 +41,7 @@ class CalendarPickerViewCell: UICollectionViewCell {
     
     @IBOutlet weak var dayLabel: UILabel!
     
-    var day: DayModel? {
+    var day: CalendarPickerDay? {
         didSet {
             dayLabel.text = day?.number
             dayLabel.font = dayLabel.font.withSize(UIView.globalSafeAreaFrame.width * StyleGuide.CalendarDatePicker.ratioToScreenWidthCellFont)

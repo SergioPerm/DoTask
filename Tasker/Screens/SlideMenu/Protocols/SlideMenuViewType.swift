@@ -15,5 +15,5 @@ protocol SlideMenuViewType: PresentableController {
     var openTaskDiaryHandler: ((_ menu: SlideMenuViewType?) -> Void)? { get set }
     func toggleMenu()
     var parentController: MenuParentControllerType? { get set }
-    var enabled: Bool { get set }
+    var enabled: Bool { get }
 }

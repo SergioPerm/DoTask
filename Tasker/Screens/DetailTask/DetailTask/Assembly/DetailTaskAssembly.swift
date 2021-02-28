@@ -9,9 +9,9 @@
 import Foundation
 
 class DetailTaskAssembly {
-    static func createInstance(taskUID: String?, shortcutUID: String?, presenter: RouterType?) -> DetailTaskViewType {
+    static func createInstance(taskUID: String?, shortcutUID: String?, taskDate: Date?, presenter: RouterType?) -> DetailTaskViewType {
         let dataSource: TaskListDataSource = TaskListDataSourceCoreData(context: CoreDataService.shared.context, shortcutFilter: nil)
-        let viewModel: DetailTaskViewModel = DetailTaskViewModel(taskUID: taskUID, shortcutUID: shortcutUID, dataSource: dataSource)
+        let viewModel: DetailTaskViewModel = DetailTaskViewModel(taskUID: taskUID, shortcutUID: shortcutUID, taskDate: taskDate, dataSource: dataSource)
 
         if let _ = taskUID {
             return DetailTaskEditViewController(viewModel: viewModel, presenter: presenter, presentableControllerViewType: .presentWithTransition)

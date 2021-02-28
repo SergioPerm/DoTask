@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum dailyName: String {
+enum DailyName: String, CaseIterable {
     case today = "TODAY"
     case tommorow = "TOMORROW"
     case currentWeek = "CURRENT WEEK"
@@ -51,26 +51,36 @@ extension Date {
         return calendar.startOfDay(for: self)
     }
     
+    func endOfDay() -> Date {
+        let calendar = Calendar.current.taskCalendar
+        
+        if let endOfDay = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: self) {
+            return endOfDay
+        } else {
+            return self
+        }
+    }
+    
     func dailyNameForTask() -> String {
         let calendar = Calendar.current.taskCalendar
         let currentDate = calendar.startOfDay(for: Date())
         
         if self < currentDate {
-            return dailyName.today.rawValue
+            return DailyName.today.rawValue
         }
         
         let isCurrentDay = calendar.isDateInToday(self)
         let isTomorrowDay = calendar.isDateInTomorrow(self)
         
         if isCurrentDay {
-            return dailyName.today.rawValue
+            return DailyName.today.rawValue
         } else if isTomorrowDay {
-            return dailyName.tommorow.rawValue
+            return DailyName.tommorow.rawValue
         } else if calendar.isDate(self, equalTo: Date(), toGranularity: .weekOfMonth) {
-            return dailyName.currentWeek.rawValue
+            return DailyName.currentWeek.rawValue
         }
         
-        return dailyName.later.rawValue
+        return DailyName.later.rawValue
     }
     
     func localDate() -> Date {

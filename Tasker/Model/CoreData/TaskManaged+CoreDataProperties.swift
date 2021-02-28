@@ -43,7 +43,15 @@ extension TaskManaged {
             return doneDate.startOfDay()
         }
         
-        return Date().startOfDay()
+        return nil
+    }
+    
+    @objc var taskDay: Date? {
+        if let taskDate = self.taskDate {
+            return taskDate.startOfDay()
+        }
+        
+        return nil
     }
     
 }

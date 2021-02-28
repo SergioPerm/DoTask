@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ShortcutMenuTableViewCell: UITableViewCell, MenuCellType {
+class ShortcutMenuTableViewCell: UITableViewCell, TableViewCellType {
 
     var viewModel: ShortcutMenuItemViewModel? {
         didSet {

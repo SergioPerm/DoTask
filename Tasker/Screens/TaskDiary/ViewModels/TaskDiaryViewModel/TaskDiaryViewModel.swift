@@ -89,6 +89,10 @@ extension TaskDiaryViewModel: TableViewFRCHelperDelegate {
         let task = dataSource.tasksWithSections[indexPath.section].tasks[indexPath.row]
         periodItems[indexPath.section].tasks.insert(TaskDiaryItemViewModel(task: task, unsetDoneTaskHandler: unsetDoneTask(taskUID:)), at: indexPath.row)
     }
+    
+    func deleteSection(indexPath: IndexPath) {
+        
+    }
 }
 
 extension TaskDiaryViewModel: TaskListDataSourceObserver {

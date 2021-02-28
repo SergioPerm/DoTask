@@ -12,7 +12,7 @@ protocol CreateShortcutMenuTableViewCellDelegate {
     func createShortcutAction()
 }
 
-class CreateShortcutMenuTableViewCell: UITableViewCell, MenuCellType {
+class CreateShortcutMenuTableViewCell: UITableViewCell, TableViewCellType {
 
     var viewModel: CreateShortcutMenuItemViewModel? {
         didSet {

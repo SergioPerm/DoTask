@@ -54,7 +54,7 @@ class MenuViewController: UIViewController, PresentableController, SlideMenuView
         self.viewModel = viewModel
         self.router = presenter
         self.presentableControllerViewType = presentableControllerViewType
-        self.enabled = true
+        //self.enabled = true
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -88,9 +88,10 @@ class MenuViewController: UIViewController, PresentableController, SlideMenuView
     // MARK: SlideMenuViewType
     
     var enabled: Bool {
-        didSet {
-            swipeRecognizer?.isEnabled = enabled
-        }
+        return currentState == .menuExpanded
+//        didSet {
+//            swipeRecognizer?.isEnabled = enabled
+//        }
     }
     
     weak var parentController: MenuParentControllerType? {

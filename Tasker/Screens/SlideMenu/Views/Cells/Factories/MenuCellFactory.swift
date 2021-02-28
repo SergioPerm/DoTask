@@ -10,7 +10,7 @@ import UIKit
 
 class MenuCellFactory: MenuCellFactoryType {
     
-    var cellTypes: [MenuCellType.Type] = [
+    var cellTypes: [TableViewCellType.Type] = [
         SettingsMenuTableViewCell.self,
         MainMenuTableViewCell.self,
         CreateShortcutMenuTableViewCell.self,

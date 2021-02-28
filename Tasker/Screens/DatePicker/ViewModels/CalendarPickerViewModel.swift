@@ -16,7 +16,7 @@ class CalendarPickerViewModel: CalendarPickerViewModelType, CalendarPickerViewMo
     var outputs: CalendarPickerViewModelOutputs { return self }
     
     // MARK: Outputs
-    var days: Boxing<[MonthModel]>
+    var days: Boxing<[CalendarPickerMonth]>
     var selectedDate: Boxing<Date?>
         
     // MARK: Inputs
@@ -56,9 +56,9 @@ class CalendarPickerViewModel: CalendarPickerViewModelType, CalendarPickerViewMo
         
     // MARK: Calendar calculations
     
-    private func generateDaysForThreeYears() -> [MonthModel] {
+    private func generateDaysForThreeYears() -> [CalendarPickerMonth] {
         var yearComponent = DateComponents()
-        var allMonths: [MonthModel] = []
+        var allMonths: [CalendarPickerMonth] = []
         allMonths.removeAll()
         
         var startDate = Date()
@@ -100,7 +100,7 @@ class CalendarPickerViewModel: CalendarPickerViewModelType, CalendarPickerViewMo
         return weekDay == 1 ? 7 : weekDay - 1
     }
     
-    private func monthModel(from monthDate: Date) throws -> MonthModel {
+    private func monthModel(from monthDate: Date) throws -> CalendarPickerMonth {
         guard
             let numberOfDaysInMonth = calendar.range(of: .day, in: .month, for: monthDate)?.count,
             let firstDayOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: monthDate)) else {
@@ -110,7 +110,7 @@ class CalendarPickerViewModel: CalendarPickerViewModelType, CalendarPickerViewMo
         let firstDayWeekday = getWeekday(from: firstDayOfMonth)
         let offsetInInitialRow = firstDayWeekday
         
-        var days: [DayModel] = (1..<(numberOfDaysInMonth + offsetInInitialRow)).map { day in
+        var days: [CalendarPickerDay] = (1..<(numberOfDaysInMonth + offsetInInitialRow)).map { day in
             let isWithinDisplayedMonth = day >= offsetInInitialRow
             let dayOffset = isWithinDisplayedMonth ? day - offsetInInitialRow : -(offsetInInitialRow - day)
             
@@ -119,10 +119,10 @@ class CalendarPickerViewModel: CalendarPickerViewModelType, CalendarPickerViewMo
         
         days += generateStartOfNextMonth(using: firstDayOfMonth, totalDays: days.count)
         
-        return MonthModel(numberOfDays: numberOfDaysInMonth, firstDay: firstDayOfMonth, firstDayWeekday: firstDayWeekday, days: days)
+        return CalendarPickerMonth(numberOfDays: numberOfDaysInMonth, firstDay: firstDayOfMonth, firstDayWeekday: firstDayWeekday, days: days)
     }
     
-    private func generateMonth(for monthDate: Date) -> MonthModel {
+    private func generateMonth(for monthDate: Date) -> CalendarPickerMonth {
         guard let monthData = try? monthModel(from: monthDate) else {
             fatalError("An error occurred when generating the metadata for \(monthDate)")
         }
@@ -130,7 +130,7 @@ class CalendarPickerViewModel: CalendarPickerViewModelType, CalendarPickerViewMo
         return monthData
     }
     
-    private func generateDaysInMonth(for baseDate: Date) -> [DayModel] {
+    private func generateDaysInMonth(for baseDate: Date) -> [CalendarPickerDay] {
         guard let monthData = try? monthModel(from: baseDate) else {
             fatalError("An error occurred when generating the metadata for \(baseDate)")
         }
@@ -139,7 +139,7 @@ class CalendarPickerViewModel: CalendarPickerViewModelType, CalendarPickerViewMo
         let offsetInInitialRow = monthData.firstDayWeekday
         let firstDayOfMonth = monthData.firstDay
 
-        var days: [DayModel] = (1..<(numberOfDaysInMonth + offsetInInitialRow)).map { day in
+        var days: [CalendarPickerDay] = (1..<(numberOfDaysInMonth + offsetInInitialRow)).map { day in
 
             let isWithinDisplayedMonth = day >= offsetInInitialRow
             let dayOffset = isWithinDisplayedMonth ? day - offsetInInitialRow : -(offsetInInitialRow - day)
@@ -152,7 +152,7 @@ class CalendarPickerViewModel: CalendarPickerViewModelType, CalendarPickerViewMo
         return days
     }
     
-    private func generateStartOfNextMonth(using firstDayOfDisplayedMonth: Date, totalDays: Int) -> [DayModel] {
+    private func generateStartOfNextMonth(using firstDayOfDisplayedMonth: Date, totalDays: Int) -> [CalendarPickerDay] {
         guard let lastDayInMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1),to: firstDayOfDisplayedMonth) else {
             return []
         }
@@ -163,7 +163,7 @@ class CalendarPickerViewModel: CalendarPickerViewModelType, CalendarPickerViewMo
             return []
         }
                 
-        let days: [DayModel] = (1...additionalDays)
+        let days: [CalendarPickerDay] = (1...additionalDays)
             .map {
                 generateDay(
                     offsetBy: $0,
@@ -174,7 +174,7 @@ class CalendarPickerViewModel: CalendarPickerViewModelType, CalendarPickerViewMo
         return days
     }
     
-    private func generateDay(offsetBy dayOffset: Int, for firstDayOfMonth: Date, isWithinDisplayedMonth: Bool) -> DayModel {
+    private func generateDay(offsetBy dayOffset: Int, for firstDayOfMonth: Date, isWithinDisplayedMonth: Bool) -> CalendarPickerDay {
         let dayDate = calendar.date(byAdding: .day, value: dayOffset, to: firstDayOfMonth)!
         let weekDay = getWeekday(from: dayDate)
 
@@ -187,7 +187,7 @@ class CalendarPickerViewModel: CalendarPickerViewModelType, CalendarPickerViewMo
         
         let pastDate = (dayDate.startOfDay().timeIntervalSinceReferenceDate - Date().startOfDay().timeIntervalSinceReferenceDate) < 0 ? true : false
         
-        return DayModel(date: dayDate, number: dateFormatter.string(from: dayDate),
+        return CalendarPickerDay(date: dayDate, number: dateFormatter.string(from: dayDate),
                         isSelected: isSelected,
                         isWithinDisplayedMonth: isWithinDisplayedMonth,
                         isWeekend: weekDay > 5 ? true : false,

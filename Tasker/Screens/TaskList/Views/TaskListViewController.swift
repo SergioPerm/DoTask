@@ -23,16 +23,36 @@ class TaskListViewController: UIViewController, PresentableController {
     
     // MARK: Properties
     
+    private var taskListCellFactory: TaskListCellFactoryType? {
+        didSet {
+            taskListCellFactory?.cellTypes.forEach({ $0.register(tableView)})
+        }
+    }
+    
     private var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         
         return tableView
     }()
     
+    private var calendarView: CalendarCollectionView = {
+        let calendarView = CalendarCollectionView(date: Date())
+        calendarView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return calendarView
+    }()
+    
+    private var navBarTitle: TaskListNavBarTitle?
+    
+    private var calendarTopConstraint: NSLayoutConstraint = NSLayoutConstraint()
+    private var calendarTopConstraintMargin: CGFloat = 0
+    
     var slideMenu: SlideMenuViewType?
     private var withSlideMenu: Bool
     
-    var editTaskAction: ((_ taskUID: String?, _ shortcutUID: String?) ->  Void)?
+    var editTaskAction: ((_ taskUID: String?, _ shortcutUID: String?, _ taskDate: Date?) ->  Void)?
+    var openCalendarTaskListAction: ((_ menu: SlideMenuViewType?) -> Void)?
         
     var filter: TaskListFilter? {
         didSet {
@@ -70,12 +90,40 @@ extension TaskListViewController {
     // MARK: Bind ViewModel
     
     private func bindViewModel() {
-        viewModel.outputs.shortcutFilter.bind { shortcutData in
-            self.setupNavigationBarTitle(shortcutData: shortcutData)
+        viewModel.outputs.shortcutFilter.bind { [weak self] shortcut in
+            self?.navBarTitle?.setShortcut(shortcut: shortcut)
         }
         
-        viewModel.outputs.taskDiaryMode.bind { isTaskDiaryMode in
-            self.setupNavigationBarTitle()
+        viewModel.outputs.taskListMode.bind { [weak self] mode in
+            guard let strongSelf = self else { return }
+                        
+            if mode == .calendar {
+                strongSelf.calendarTopConstraint.constant = strongSelf.calendarTopConstraintMargin
+                strongSelf.calendarView.scrollToDate()
+            } else {
+
+                strongSelf.calendarTopConstraint.constant = -strongSelf.calendarView.frame.height
+            }
+                      
+            strongSelf.navBarTitle?.setTaskListMode(taskListMode: mode)
+            
+            if strongSelf.isViewLoaded {
+                UIView.animate(withDuration: 0.3,
+                               delay: 0.0,
+                               usingSpringWithDamping: 0.7,
+                               initialSpringVelocity: 5,
+                               options: .curveEaseInOut) {
+                    strongSelf.view.layoutIfNeeded()
+                } completion: { (finished) in
+                    
+                }
+            }
+        }
+        
+        viewModel.outputs.calendarMonth.bind { [weak self] monthName in
+            if let monthName = monthName {
+                self?.navBarTitle?.showMonth(monthName: monthName)
+            }
         }
     }
     
@@ -83,11 +131,47 @@ extension TaskListViewController {
     
     private func setupView() {
         
-        if let navBar = self.navigationController?.navigationBar {
-            navBar.setFlatNavBar()
+        calendarView.viewModel = viewModel.outputs.calendarViewModel
+        view.addSubview(calendarView)
+        
+        // TableView
+        tableView.dataSource = self
+        tableView.delegate = self
+        //tableView.register(TaskListTableViewCell.self, forCellReuseIdentifier: TaskListTableViewCell.className)
+        
+        view.addSubview(tableView)
+        
+        tableView.frame = view.frame
+        
+        tableView.separatorStyle = .none
+        tableView.estimatedRowHeight = 600
+        tableView.backgroundColor = .white
+        tableView.showsVerticalScrollIndicator = false
+        
+        taskListCellFactory = TaskListCellFactory()
+        
+        let btn = TaskAddButton {
+            if let editAction = self.editTaskAction {
+                if self.viewModel.outputs.taskListMode.value == .calendar {
+                    editAction(nil, self.filter?.shortcutFilter, self.viewModel.outputs.calendarSelectedDate)
+                } else {
+                    editAction(nil, self.filter?.shortcutFilter, Date())
+                }
+            }
         }
         
-        setupNavigationBarTitle()
+        view.insertSubview(btn, aboveSubview: tableView)
+
+        setupConstraints()
+        setupNavigationBar()
+        
+        navBarTitle?.showMainTitle()
+    }
+    
+    private func setupNavigationBar() {
+        
+        guard let navBar = self.navigationController?.navigationBar else { return }
+        navBar.setFlatNavBar()
         
         //Menu btn
         let menuBtn = UIButton()
@@ -102,79 +186,79 @@ extension TaskListViewController {
         
         self.navigationItem.leftBarButtonItem = menuBarItem
         
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.register(TaskListTableViewCell.self, forCellReuseIdentifier: TaskListTableViewCell.className)
+        //Calendar btn
+        let calendarButton = UIButton(type: .custom)
+        calendarButton.setImage(UIImage(named: "calendarFill")?.maskWithColor(color: StyleGuide.MainColors.blue), for: .normal)
+        calendarButton.imageEdgeInsets = UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3)
+        calendarButton.addTarget(self, action: #selector(openCalendarViewAction(sender:)), for: .touchUpInside)
+        calendarButton.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
         
-        view.addSubview(tableView)
+        let barButtonItem = UIBarButtonItem(customView: calendarButton)
         
-        tableView.frame = view.frame
+        navigationItem.rightBarButtonItem = barButtonItem
         
-        tableView.separatorStyle = .none
-        tableView.estimatedRowHeight = 600
-        tableView.backgroundColor = .white
-        tableView.showsVerticalScrollIndicator = false
+        let navBarTitleFrame = CGRect(x: 0, y: 0, width: UIView.globalSafeAreaFrame.width * 0.7, height: navBar.frame.height)
+        let taskListNavBarTitleView = TaskListNavBarTitleView(frame: navBarTitleFrame, taskListMode: .list)
+        navigationItem.titleView = taskListNavBarTitleView
         
-        let btn = TaskAddButton {
-            if let editAction = self.editTaskAction {
-                editAction(nil, self.filter?.shortcutFilter)
-            }
-        }
+        navBarTitle = taskListNavBarTitleView
         
-        view.insertSubview(btn, aboveSubview: tableView)
     }
     
-    private func setupNavigationBarTitle(shortcutData: ShortcutData? = nil) {
-        
-        var isMainTaskList = false
-        if let shortcutFilter = filter?.shortcutFilter {
-            isMainTaskList = shortcutFilter.isEmpty
-        } else {
-            isMainTaskList = true
-        }
-        
-        let navLabel = UILabel()
-        
-        if isMainTaskList {
-            let navTitle = NSMutableAttributedString(string: "Task", attributes:[
-                                                        NSAttributedString.Key.foregroundColor: Color.blueColor.uiColor,
-                                                        NSAttributedString.Key.font: Font.mainTitle.uiFont])
-            
-            navTitle.append(NSMutableAttributedString(string: "er", attributes:[
-                                                        NSAttributedString.Key.font: Font.mainTitle2.uiFont,
-                                                        NSAttributedString.Key.foregroundColor: Color.pinkColor.uiColor]))
-            
-            navLabel.attributedText = navTitle
-        } else {
-            
-            guard let shortcutData = shortcutData else { return }
-            guard let hexColor = shortcutData.colorHex, let shortcutTitle = shortcutData.title else { return }
-            
-            let shortcutColor = UIColor(hexString: hexColor)
-            
-            let navTitle = NSMutableAttributedString(string: shortcutTitle, attributes:[
-                                                        NSAttributedString.Key.foregroundColor: shortcutColor,
-                                                        NSAttributedString.Key.font: UIFont(name: "AvenirNext-Bold", size: 21) ?? UIFont.systemFont(ofSize: 21)])
-            
-            navLabel.attributedText = navTitle
-        }
-        
-        self.navigationItem.titleView = navLabel
-    }
-                
-    private func applyFilters() {
-        guard let filter = filter else {
-            return
-        }
+    // MARK: Constraints
     
-        viewModel.inputs.setFilter(filter: filter)
-        tableView.reloadData()
+    private func setupConstraints() {
+        
+        let navBarHeight = self.navigationController?.navigationBar.frame.height ?? 0
+        
+        calendarTopConstraintMargin = UIView.globalSafeAreaFrame.origin.y + navBarHeight
+        
+        calendarTopConstraint = calendarView.topAnchor.constraint(equalTo: view.topAnchor, constant: -calendarView.frame.height)
+        
+        var constraints: [NSLayoutConstraint] = [
+            calendarTopConstraint,
+            calendarView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            calendarView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            calendarView.bottomAnchor.constraint(equalTo: tableView.topAnchor),
+            calendarView.heightAnchor.constraint(equalToConstant: calendarView.frame.height)
+        ]
+        
+        constraints.append(contentsOf: [
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
+        NSLayoutConstraint.activate(constraints)
+        
     }
-    
+                            
     // MARK: Actions
         
     @objc private func tapMenuAction(sender: UIBarButtonItem) {
         slideMenu?.toggleMenu()
+    }
+    
+    @objc private func openCalendarViewAction(sender: UIBarButtonItem) {
+        openCalendar()
+    }
+    
+    private func openCalendar() {
+        if viewModel.outputs.taskListMode.value == .list {
+            viewModel.inputs.setMode(mode: .calendar)
+        } else {
+            viewModel.inputs.setMode(mode: .list)
+        }
+        tableView.reloadData()
+    }
+    
+    private func applyFilters() {
+        guard let filter = filter else {
+            return
+        }
+        
+        viewModel.inputs.setFilter(filter: filter)
+        tableView.reloadData()
     }
 }
 
@@ -187,26 +271,41 @@ extension TaskListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.outputs.periodItems[section].tasks.count
+        viewModel.outputs.periodItems[section].outputs.tasks.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: TaskListTableViewCell.className) as! TaskListTableViewCell
-        cell.viewModel = viewModel.outputs.periodItems[indexPath.section].tasks[indexPath.row]
+        guard let cellFactory = taskListCellFactory else {
+            return UITableViewCell()
+        }
         
-        return cell
+        let cellViewModel = viewModel.outputs.periodItems[indexPath.section].outputs.tasks[indexPath.row]
+        
+        return cellFactory.generateCell(viewModel: cellViewModel, tableView: tableView, for: indexPath)
     }
-    
+                                                                               
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerName = viewModel.outputs.periodItems[section].title
+
+        var headerFrame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: StyleGuide.TaskList.Sizes.headerHeight)
+
+        let periodViewModel = viewModel.outputs.periodItems[section]
+        if periodViewModel.outputs.isEmpty && viewModel.outputs.taskListMode.value == .list {
+            headerFrame.size.height = 30
+        }
         
-        let headerFrame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: StyleGuide.TaskList.Sizes.headerHeight)
-        let headerView = TaskListTableHeaderView(title: headerName, frame: headerFrame)
+        let headerView = TaskListTableHeaderView(frame: headerFrame)
+        headerView.viewModel = viewModel.outputs.periodItems[section]
                         
         return headerView
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        let periodViewModel = viewModel.outputs.periodItems[section]
+        
+        if periodViewModel.outputs.isEmpty && viewModel.outputs.taskListMode.value == .list {
+            return 30
+        }
+        
         return StyleGuide.TaskList.Sizes.headerHeight
     }
     
@@ -216,20 +315,11 @@ extension TaskListViewController: UITableViewDataSource {
 
 extension TaskListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as! TaskListTableViewCell
-        cell.animateSelection {
-            self.viewModel.inputs.editTask(indexPath: indexPath)
+        if let cell = tableView.cellForRow(at: indexPath) as? TaskListTableViewCell {
+            cell.animateSelection {
+                self.viewModel.inputs.editTask(indexPath: indexPath)
+            }
         }
-    }
-        
-    func tableView(_ tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath) {
-        //solve gesture conflicts for slide menu
-        slideMenu?.enabled = false
-    }
-    
-    func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
-        //solve gesture conflicts for slide menu
-        slideMenu?.enabled = true
     }
 }
 
@@ -238,7 +328,7 @@ extension TaskListViewController: UITableViewDelegate {
 extension TaskListViewController: TaskListView {
     func editTask(taskUID: String) {
         if let editAction = editTaskAction {
-            editAction(taskUID, nil)
+            editAction(taskUID, nil, nil)
         }
     }
     

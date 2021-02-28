@@ -73,7 +73,16 @@ extension UIView {
         layer.add(shakeGroup, forKey: "shakeIt")
     }
     
-    
+    func snapshotImageView() -> UIImageView? {
+        UIGraphicsBeginImageContextWithOptions(bounds.size, true, 1)
+        guard let context = UIGraphicsGetCurrentContext() else {
+            return nil
+        }
+        layer.render(in: context)
+        let viewImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return UIImageView(image: viewImage, highlightedImage: viewImage)
+    }
     
 }
 

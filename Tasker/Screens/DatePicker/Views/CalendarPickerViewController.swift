@@ -5,7 +5,6 @@
 //  Created by kluv on 06/09/2020.
 //  Copyright © 2020 com.kluv.itotdel. All rights reserved.
 //
-
 import UIKit
 
 class CalendarPickerViewController: UIViewController, PresentableController {
@@ -54,6 +53,7 @@ class CalendarPickerViewController: UIViewController, PresentableController {
                 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.isScrollEnabled = true
+        collectionView.isPagingEnabled = true
         collectionView.showsVerticalScrollIndicator = false
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -116,18 +116,7 @@ class CalendarPickerViewController: UIViewController, PresentableController {
         bindViewModel()
         setupView()
     }
-    
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//
-//        //Scroll to selected month
-//        let selectedDate = viewModel.outputs.selectedDate.value ?? Date()
-//        let diffAmountMonths = selectedDate.endOfMonth.months(from: Date())
-//        let currentIndexPath = IndexPath(row: 0, section: diffAmountMonths)
-//        collectionView.scrollToItem(at: currentIndexPath, at: .centeredVertically, animated: false)
-//        alignMonthInCollectionView(velocity: CGPoint.zero)
-//    }
-    
+        
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
            
@@ -168,7 +157,6 @@ class CalendarPickerViewController: UIViewController, PresentableController {
 }
 
 //MARK: - Bind viewModel
-
 extension CalendarPickerViewController {
     private func bindViewModel() {
         self.viewModel.outputs.days.bind { [weak self] _ in
@@ -203,7 +191,6 @@ extension CalendarPickerViewController {
 }
 
 //MARK: - Setup and show View
-
 extension CalendarPickerViewController {
     private func setupView() {
         //main view
@@ -215,7 +202,7 @@ extension CalendarPickerViewController {
         view.frame.origin = origin
         
         view.backgroundColor = StyleGuide.CalendarDatePicker.viewBackgroundColor
-        //view.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: .zero)
+        
         view.layer.cornerRadius = StyleGuide.CalendarDatePicker.viewCornerRadius
         view.clipsToBounds = true
         
@@ -265,7 +252,6 @@ extension CalendarPickerViewController {
         NSLayoutConstraint.activate(constraints)
         
         view.frame.size = CGSize(width: self.viewWidth, height: viewHeight)
-        //view.isHidden = true
     }
     
     private func showView() {
@@ -276,24 +262,10 @@ extension CalendarPickerViewController {
         let origin = CGPoint(x: view.frame.origin.x + viewOriginDiffrence.x, y: view.frame.origin.y + viewOriginDiffrence.y)
         
         self.view.frame.origin = origin
-         
-//        let scale = StyleGuide.CalendarDatePicker.scaleShowAnimationValue
-//        self.view.transform = CGAffineTransform(scaleX: scale, y: scale)
-//        self.view.alpha = StyleGuide.CalendarDatePicker.alphaShowAnimationValue
-        
-//        view.isHidden = false
-//        UIView.animate(withDuration: 0.2,
-//                       delay: 0,
-//                       options: .curveEaseInOut,
-//                       animations: {
-//                        self.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-//                        self.view.alpha = 1.0
-//        }, completion: nil)
     }
 }
 
 //MARK: - Common
-
 extension CalendarPickerViewController {
     func setDataForHeaderView(for currentDate: Date) {
         let dateFormatter = DateFormatter()
@@ -303,7 +275,6 @@ extension CalendarPickerViewController {
 }
 
 //MARK: - UICollectionViewDataSource
-
 extension CalendarPickerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.outputs.days.value[section].days.count
@@ -326,7 +297,6 @@ extension CalendarPickerViewController: UICollectionViewDataSource {
 }
 
 //MARK: - UICollectionViewDelegateFlowLayout
-
 extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return cellSize
@@ -349,13 +319,18 @@ extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-//MARK: - UICollectionViewDelegate
-
-extension CalendarPickerViewController: UICollectionViewDelegate {
-
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        indexOfCellBeforeDragging = indexOfMajorCell()
+extension CalendarPickerViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let index = Int(collectionView.contentOffset.y / collectionView.frame.size.height)
+        
+        if (collectionView.contentOffset.y / collectionView.frame.size.height) == CGFloat(index) {
+            setDataForHeaderView(for: viewModel.outputs.days.value[index].firstDay)
+        }
     }
+}
+
+//MARK: - UICollectionViewDelegate
+extension CalendarPickerViewController: UICollectionViewDelegate {
 
     private func indexOfMajorCell() -> Int {
         let sectionHeight = (StyleGuide.CalendarDatePicker.collectionMargins * 2) + (cellSize.height * 6) + (StyleGuide.CalendarDatePicker.cellsInterItemSpacing * 5)
@@ -365,13 +340,7 @@ extension CalendarPickerViewController: UICollectionViewDelegate {
         let safeIndex = max(0, min(numberOfItems - 1, index))
         return safeIndex
     }
-        
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-
-        targetContentOffset.pointee = scrollView.contentOffset
-        alignMonthInCollectionView(velocity: velocity)
-    }
-        
+                
     func alignMonthInCollectionView(velocity: CGPoint) {
         // calculate where scrollView should snap to:
         let indexOfMajorCell = self.indexOfMajorCell()

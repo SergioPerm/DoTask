@@ -23,9 +23,14 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
     var inputs: DetailTaskViewModelInputs { return self }
     var outputs: DetailTaskViewModelOutputs { return self }
     
-    init(taskUID: String?, shortcutUID: String?, dataSource: TaskListDataSource) {
+    init(taskUID: String?, shortcutUID: String?, taskDate: Date?, dataSource: TaskListDataSource) {
                 
         self.task = dataSource.taskModelByIdentifier(identifier: taskUID) ?? Task()
+        
+        if self.task.isNew {
+            self.task.taskDate = taskDate
+        }
+        
         self.dataSource = dataSource
         
         self.selectedDate = Boxing(task.taskDate)

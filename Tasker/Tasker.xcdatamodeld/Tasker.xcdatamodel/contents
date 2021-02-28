@@ -26,6 +26,7 @@
         <attribute name="reminderDate" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="reminderGeo" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="taskDate" optional="YES" attributeType="Date" defaultDateTimeInterval="2429883720" usesScalarValueType="NO"/>
+        <attribute name="taskDay" optional="YES" transient="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <relationship name="shortcut" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ShortcutManaged" inverseName="tasks" inverseEntity="ShortcutManaged"/>
         <relationship name="subtasks" toMany="YES" deletionRule="Cascade" destinationEntity="SubtaskManaged" inverseName="task" inverseEntity="SubtaskManaged"/>
@@ -33,6 +34,6 @@
     <elements>
         <element name="ShortcutManaged" positionX="-12709.92510986328" positionY="-11225.45278930664" width="128" height="118"/>
         <element name="SubtaskManaged" positionX="-13171.48327636719" positionY="-11359.78015136719" width="128" height="103"/>
-        <element name="TaskManaged" positionX="-12941.90240478515" positionY="-11359.91038513184" width="128" height="268"/>
+        <element name="TaskManaged" positionX="-12927.11956787109" positionY="-11476.11582946778" width="128" height="283"/>
     </elements>
 </model>

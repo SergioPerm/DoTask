@@ -49,7 +49,7 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
         let vc = TaskDiaryAssembly.createInstance(router: router)
         
         vc.editTaskAction = { uid, shortcutUID in
-            self.editTask(taskUID: uid, shortcutUID: shortcutUID)
+            self.editTask(taskUID: uid, shortcutUID: shortcutUID, taskDate: nil)
         }
         
         let transition = FlipTransitionController()
@@ -60,19 +60,18 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
         
     }
     
-    func openTaskList(menu: SlideMenuViewType?, shortcutFilter: String? = nil, taskDiaryMode: Bool = false) {
-        
+    func openTaskList(menu: SlideMenuViewType?, shortcutFilter: String? = nil) {
         if let menu = menu {
             if menu.enabled {
                 menu.toggleMenu()
             }
         }
         
-        let vc = TaskListAssembly.createInstance(router: router, shortcutFilter: shortcutFilter, taskDiaryMode: taskDiaryMode)
+        let vc = TaskListAssembly.createInstance(router: router, shortcutFilter: shortcutFilter)
         vc.slideMenu = menu
         
-        vc.editTaskAction = { uid, shortcutUID in
-            self.editTask(taskUID: uid, shortcutUID: shortcutUID)
+        vc.editTaskAction = { uid, shortcutUID, taskDate in
+            self.editTask(taskUID: uid, shortcutUID: shortcutUID, taskDate: taskDate)
         }
 
         router?.push(vc: vc, completion: { [weak self] in
@@ -90,8 +89,8 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
         }, transition: nil)
     }
     
-    func editTask(taskUID: String?, shortcutUID: String?) {
-        let child = DetailTaskCoordinator(presenter: router, taskUID: taskUID, shortcutUID: shortcutUID)
+    func editTask(taskUID: String?, shortcutUID: String?, taskDate: Date?) {
+        let child = DetailTaskCoordinator(presenter: router, taskUID: taskUID, shortcutUID: shortcutUID, taskDate: taskDate)
         child.parentCoordinator = self
         childCoordinators.append(child)
         child.start()

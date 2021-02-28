@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainMenuTableViewCell: UITableViewCell, MenuCellType {
+class MainMenuTableViewCell: UITableViewCell, TableViewCellType {
 
     var viewModel: MainMenuItemViewModel? {
         didSet {

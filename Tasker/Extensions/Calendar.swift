@@ -12,7 +12,8 @@ extension Calendar {
     
     var taskCalendar: Calendar {
         get {
-            let calendar = Calendar(identifier: .iso8601)
+            var calendar = Calendar(identifier: .iso8601)
+            calendar.timeZone = TimeZone.autoupdatingCurrent
             return calendar
         }
     }

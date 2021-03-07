@@ -44,7 +44,7 @@ class TaskListViewModel: TaskListViewModelType, TaskListViewModelInputs, TaskLis
         
         self.dataSource.observer = self
         
-        //dataSource.clearData()
+        dataSource.clearData()
         tableViewFRCHelper.delegate = self
         
         setupCalendarViewModel()
@@ -136,8 +136,12 @@ extension TaskListViewModel {
         calendarViewModel = calendarVM
     }
     
-    private func setDoneTask(taskUID: String) {
-        dataSource.setDoneForTask(with: taskUID)
+    private func changeDoneTask(taskUID: String, done: Bool) {
+        if done {
+            dataSource.setDoneForTask(with: taskUID)
+        } else {
+            dataSource.unsetDoneForTask(with: taskUID)
+        }
     }
     
     private func setCalendarDate(date: Date) {
@@ -172,7 +176,7 @@ extension TaskListViewModel {
             }
             
             timePeriod.tasks.forEach { task in
-                periodItem.inputs.insert(task: TaskListItemViewModel(task: task, setDoneTaskHandler: setDoneTask(taskUID:)))
+                periodItem.inputs.insert(task: TaskListItemViewModel(task: task, setDoneTaskHandler: changeDoneTask(taskUID:done:)))
                 
             }
             
@@ -197,7 +201,9 @@ extension TaskListViewModel {
                 let periodItem = TaskListPeriodItemViewModel(taskTimePeriod: taskTimePeriod, taskListMode: taskListMode.value)
                 
                 if $0 == DailyName.today {
-                    periodItem.inputs.setShowingCapWhenTasksIsEmpty(emptyState: true)
+                    periodItem.inputs.setShowingCapWhenTasksIsEmpty(emptyState: true, capMode: .MainCap)
+                } else {
+                    periodItem.inputs.setShowingCapWhenTasksIsEmpty(emptyState: true, capMode: .LittleSpaceCap)
                 }
                 
                 periodItems.append(periodItem)
@@ -215,7 +221,7 @@ extension TaskListViewModel {
                 
                 let periodItem = TaskListPeriodItemViewModel(taskTimePeriod: taskTimePeriod, taskListMode: taskListMode.value)
                 
-                periodItem.inputs.setShowingCapWhenTasksIsEmpty(emptyState: true)
+                periodItem.inputs.setShowingCapWhenTasksIsEmpty(emptyState: true, capMode: .CalendarCap)
                 
                 periodItems.append(periodItem)
             }
@@ -256,7 +262,7 @@ extension TaskListViewModel: TableViewFRCHelperDelegate {
         let sectionData = dataSource.tasksWithSections[indexPath.section]
         let task = sectionData.tasks[indexPath.row]
         
-        let taskViewModel = TaskListItemViewModel(task: task, setDoneTaskHandler: setDoneTask(taskUID:))
+        let taskViewModel = TaskListItemViewModel(task: task, setDoneTaskHandler: changeDoneTask(taskUID:done:))
         
         let periodItem = periodItems.first(where: {
             $0.outputs.dailyName == sectionData.dailyName

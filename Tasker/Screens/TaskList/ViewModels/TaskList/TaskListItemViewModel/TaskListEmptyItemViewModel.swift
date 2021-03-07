@@ -11,5 +11,6 @@ import Foundation
 class TaskListEmptyItemViewModel: TaskListEmptyItemViewModelType {
         
     var info: String = ""
+    var rowHeight: Int = 60
     
 }

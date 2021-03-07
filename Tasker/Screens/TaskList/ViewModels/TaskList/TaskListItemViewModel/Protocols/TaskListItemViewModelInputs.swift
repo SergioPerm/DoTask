@@ -10,5 +10,6 @@ import Foundation
 
 protocol TaskListItemViewModelInputs {
     func setDone()
+    func unsetDone()
     func reuse(task: Task)
 }

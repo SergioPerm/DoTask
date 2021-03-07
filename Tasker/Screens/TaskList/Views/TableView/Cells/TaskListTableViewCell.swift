@@ -23,9 +23,7 @@ class TaskListTableViewCell: UITableViewCell, TableViewCellType {
     // MARK: Cell properties
     private let dateFormatter: DateFormatter = DateFormatter()
     private let timeFormatter: DateFormatter = DateFormatter()
-    
-    //private var taskIdentifier: String?
-        
+            
     private var isAnimatedOnSelect: Bool = false
     
     private let shapeLayer = CAShapeLayer()
@@ -139,20 +137,22 @@ extension TaskListTableViewCell {
     
     private func bindViewModel() {
         
-        viewModel?.outputs.title.bind { [weak self] title in
+        guard let viewModel = viewModel else { return }
+        
+        viewModel.outputs.title.bind { [weak self] title in
             self?.titleLabel.text = title
             self?.shadowLayer.setupShadowDone = false
         }
         
-        viewModel?.outputs.date.bind { [weak self] date in
+        viewModel.outputs.date.bind { [weak self] date in
             self?.dateLabel.text = date
         }
         
-        viewModel?.outputs.reminderTime.bind { [weak self] time in
+        viewModel.outputs.reminderTime.bind { [weak self] time in
             self?.timeLabel.text = time
         }
         
-        viewModel?.outputs.importantColor.bind { [weak self] hexColor in
+        viewModel.outputs.importantColor.bind { [weak self] hexColor in
             if let hexColor = hexColor {
                 let importanceColor = UIColor(hexString: hexColor)
                 self?.backView.layer.backgroundColor = importanceColor.cgColor
@@ -161,7 +161,7 @@ extension TaskListTableViewCell {
             }
         }
         
-        viewModel?.outputs.shortcutColor.bind { [weak self] hexColor in
+        viewModel.outputs.shortcutColor.bind { [weak self] hexColor in
             if let hexColor = hexColor {
                 self?.shortcutColor = UIColor(hexString: hexColor)
                 if let shortcutColor = self?.shortcutColor {
@@ -177,12 +177,10 @@ extension TaskListTableViewCell {
             }
         }
         
-        viewModel?.outputs.isDone.bind { [weak self] isDone in
-            if isDone {
-                guard let strongSelf = self else { return }
-                strongSelf.animateCheckMark(finishHandler: nil)
-            }
+        if viewModel.outputs.isDone.value {
+            drawCheckMark()
         }
+        
     }
     
     // MARK: Setup Cell
@@ -268,13 +266,20 @@ extension TaskListTableViewCell {
         
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapDoneAction(sender:)))
         doneView.addGestureRecognizer(tapRecognizer)
+        
     }
         
     // MARK: Actions
     
     @objc private func tapDoneAction(sender: UIView) {
         animateCheckMark() {
-            self.viewModel?.inputs.setDone()
+            guard let viewModel = self.viewModel else { return }
+            
+            if viewModel.outputs.isDone.value {
+                viewModel.inputs.unsetDone()
+            } else {
+                viewModel.inputs.setDone()
+            }
         }
     }
     
@@ -301,21 +306,14 @@ extension TaskListTableViewCell {
         CATransaction.commit()
     }
     
-    private func animateCheckMark(finishHandler: (()->())?) {
-        CATransaction.begin()
-        CATransaction.setCompletionBlock {
-            if let finishAction = finishHandler {
-                finishAction()
-            }
-        }
-        
+    private func drawCheckMark() {
         let checkMarkHeight = StyleGuide.TaskList.Sizes.checkMarkSize.height
         
         let path = UIBezierPath()
         path.move(to: CGPoint(x: 6, y: checkMarkHeight/2))
         path.addLine(to: CGPoint(x: checkMarkHeight/2 - 2, y: checkMarkHeight - 5))
         path.addLine(to: CGPoint(x: checkMarkHeight - 6, y: 6))
-
+        
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.strokeColor = shortcutColor?.cgColor ?? #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.8470588235).cgColor
         shapeLayer.lineCap = .round
@@ -324,11 +322,45 @@ extension TaskListTableViewCell {
         shapeLayer.path = path.cgPath
         
         checkView.layer.addSublayer(shapeLayer)
+    }
+    
+    private func animateCheckMark(finishHandler: (()->())?) {
         
-        let animation = CABasicAnimation(keyPath: "strokeEnd")
-        animation.fromValue = 0
+        guard let viewModel = viewModel else { return }
+        
+        if shapeLayer.superlayer == nil {
+            drawCheckMark()
+        }
+        
+        shapeLayer.opacity = 1.0
+        shapeLayer.removeAllAnimations()
+        
+        CATransaction.begin()
+        CATransaction.setCompletionBlock {
+            if let finishAction = finishHandler {
+                finishAction()
+            }
+        }
+                
+        let keyPathAnimation = viewModel.outputs.isDone.value ? "strokeStart" : "strokeEnd"
+        
+        let animation = CABasicAnimation(keyPath: keyPathAnimation)
+        animation.fromValue = 0.0
+        animation.toValue = 1.0
+        
+        if viewModel.outputs.isDone.value {
+            animation.fillMode = .forwards
+            animation.isRemovedOnCompletion = false
+        }
+        
         animation.duration = 0.3
-        shapeLayer.add(animation, forKey: "myAnimation")
+        
+        shapeLayer.add(animation, forKey: keyPathAnimation)
+        
+        if viewModel.outputs.isDone.value {
+            shapeLayer.opacity = 0.0
+        }
+        
         CATransaction.commit()
     }
 }

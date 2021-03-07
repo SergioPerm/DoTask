@@ -15,4 +15,5 @@ protocol TaskListPeriodItemViewModelOutputs {
     var taskListMode: Boxing<TaskListMode> { get }
     var isEmpty: Bool { get }
     var showingCapWhenTasksIsEmpty: Bool { get }
+    var capMode: EmptyCapMode? { get }
 }

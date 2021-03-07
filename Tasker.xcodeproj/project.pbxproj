@@ -36,6 +36,9 @@
 		B12B0B0125ADDE6D0078315C /* ShortcutViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12B0B0025ADDE6D0078315C /* ShortcutViewModelOutputs.swift */; };
 		B12B0B0825ADE37F0078315C /* ShortcutListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12B0B0725ADE37E0078315C /* ShortcutListTableViewCell.swift */; };
 		B12F7E5C2529F83600B71AAC /* PushNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12F7E5B2529F83600B71AAC /* PushNotificationService.swift */; };
+		B131899C25EBD3D4008C63A0 /* BarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B131899B25EBD3D4008C63A0 /* BarButtonItem.swift */; };
+		B13189A325EBD9A6008C63A0 /* SpeechTaskAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13189A225EBD9A6008C63A0 /* SpeechTaskAssembly.swift */; };
+		B13189A625EBD9F7008C63A0 /* SpeechTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13189A525EBD9F7008C63A0 /* SpeechTaskViewController.swift */; };
 		B13875DC25710057002DA626 /* SettingsMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13875DB25710057002DA626 /* SettingsMenuTableViewCell.swift */; };
 		B13875DE25710985002DA626 /* MainMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13875DD25710985002DA626 /* MainMenuTableViewCell.swift */; };
 		B13875E0257121E7002DA626 /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13875DF257121E7002DA626 /* NSObject.swift */; };
@@ -136,6 +139,7 @@
 		B18349ED256AEB7500D0D096 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18349EC256AEB7500D0D096 /* MainCoordinator.swift */; };
 		B18349F1256AEC7000D0D096 /* TaskListAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18349F0256AEC7000D0D096 /* TaskListAssembly.swift */; };
 		B18349F4256AF49400D0D096 /* DetailTaskAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18349F3256AF49400D0D096 /* DetailTaskAssembly.swift */; };
+		B18522A325F2481D00BBC9D1 /* SpeakWave.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18522A225F2481D00BBC9D1 /* SpeakWave.swift */; };
 		B1868E5425DFF2910004EC1A /* TaskListNavBarTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1868E5325DFF2910004EC1A /* TaskListNavBarTitle.swift */; };
 		B189A99125247E1D00EAC6A0 /* TimePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B189A98D25247E1C00EAC6A0 /* TimePickerViewController.swift */; };
 		B189A9942524803E00EAC6A0 /* TimePickerViewOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B189A9932524803E00EAC6A0 /* TimePickerViewOutputs.swift */; };
@@ -147,7 +151,14 @@
 		B18D45F025A20D2E0081B11E /* HideKeyboardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18D45EF25A20D2E0081B11E /* HideKeyboardButton.swift */; };
 		B18D45F325A24E0E0081B11E /* DetailAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18D45F225A24E0E0081B11E /* DetailAccessoryView.swift */; };
 		B192163D2590697200B3FC07 /* SubTaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B192163C2590697200B3FC07 /* SubTaskTableViewCell.swift */; };
+		B19957B425F4F8EE00F883D8 /* AnimatableProps.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19957B325F4F8EE00F883D8 /* AnimatableProps.swift */; };
+		B19957B725F5072B00F883D8 /* SpeechText.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19957B625F5072B00F883D8 /* SpeechText.swift */; };
+		B19957BA25F5081900F883D8 /* SpeechTextInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19957B925F5081900F883D8 /* SpeechTextInfo.swift */; };
+		B19957BD25F5166600F883D8 /* SpeechSwipeCancel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19957BC25F5166600F883D8 /* SpeechSwipeCancel.swift */; };
+		B1A1AA6B25EE68D9001A99E0 /* CircleCrossGradientBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A1AA6A25EE68D9001A99E0 /* CircleCrossGradientBtn.swift */; };
 		B1A303D625AC9EFA00BFAE68 /* DeleteShortcutButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A303D525AC9EFA00BFAE68 /* DeleteShortcutButton.swift */; };
+		B1A4E3EB25EFAFDB00F65463 /* SpeechRecorderTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A4E3EA25EFAFDB00F65463 /* SpeechRecorderTransitionController.swift */; };
+		B1A4E3EE25EFB0E900F65463 /* SpeechRecorderAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A4E3ED25EFB0E900F65463 /* SpeechRecorderAnimationController.swift */; };
 		B1A913F0252056FA0021E15C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A913EF252056FA0021E15C /* AppDelegate.swift */; };
 		B1A913FA252056FA0021E15C /* Tasker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B1A913F8252056FA0021E15C /* Tasker.xcdatamodeld */; };
 		B1A913FC252056FC0021E15C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1A913FB252056FC0021E15C /* Assets.xcassets */; };
@@ -225,6 +236,7 @@
 		B1E47889257A3E2A0055A0B4 /* ShortcutManaged+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E47885257A3E2A0055A0B4 /* ShortcutManaged+CoreDataClass.swift */; };
 		B1E4788A257A3E2A0055A0B4 /* ShortcutManaged+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E47886257A3E2A0055A0B4 /* ShortcutManaged+CoreDataProperties.swift */; };
 		B1E92B8C259C9A0A00449ABE /* DetailTaskScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E92B8B259C9A0A00449ABE /* DetailTaskScrollView.swift */; };
+		B1EF596C25F2280400238AF2 /* AnimationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EF596B25F2280400238AF2 /* AnimationDelegate.swift */; };
 		B1EF663825A489640050FF1C /* DetailShortcutAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EF663725A489640050FF1C /* DetailShortcutAssembly.swift */; };
 		B1EF663B25A489B50050FF1C /* DetailShortcutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EF663A25A489B50050FF1C /* DetailShortcutViewController.swift */; };
 		B1EF663F25A48D2E0050FF1C /* SlideMenuViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EF663E25A48D2E0050FF1C /* SlideMenuViewType.swift */; };
@@ -280,6 +292,9 @@
 		B12B0B0025ADDE6D0078315C /* ShortcutViewModelOutputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutViewModelOutputs.swift; sourceTree = "<group>"; };
 		B12B0B0725ADE37E0078315C /* ShortcutListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutListTableViewCell.swift; sourceTree = "<group>"; };
 		B12F7E5B2529F83600B71AAC /* PushNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationService.swift; sourceTree = "<group>"; };
+		B131899B25EBD3D4008C63A0 /* BarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtonItem.swift; sourceTree = "<group>"; };
+		B13189A225EBD9A6008C63A0 /* SpeechTaskAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTaskAssembly.swift; sourceTree = "<group>"; };
+		B13189A525EBD9F7008C63A0 /* SpeechTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTaskViewController.swift; sourceTree = "<group>"; };
 		B13875DB25710057002DA626 /* SettingsMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMenuTableViewCell.swift; sourceTree = "<group>"; };
 		B13875DD25710985002DA626 /* MainMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuTableViewCell.swift; sourceTree = "<group>"; };
 		B13875DF257121E7002DA626 /* NSObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObject.swift; sourceTree = "<group>"; };
@@ -380,6 +395,7 @@
 		B18349EC256AEB7500D0D096 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		B18349F0256AEC7000D0D096 /* TaskListAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListAssembly.swift; sourceTree = "<group>"; };
 		B18349F3256AF49400D0D096 /* DetailTaskAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskAssembly.swift; sourceTree = "<group>"; };
+		B18522A225F2481D00BBC9D1 /* SpeakWave.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakWave.swift; sourceTree = "<group>"; };
 		B1868E5325DFF2910004EC1A /* TaskListNavBarTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListNavBarTitle.swift; sourceTree = "<group>"; };
 		B189A98D25247E1C00EAC6A0 /* TimePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimePickerViewController.swift; sourceTree = "<group>"; };
 		B189A9932524803E00EAC6A0 /* TimePickerViewOutputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerViewOutputs.swift; sourceTree = "<group>"; };
@@ -391,7 +407,14 @@
 		B18D45EF25A20D2E0081B11E /* HideKeyboardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideKeyboardButton.swift; sourceTree = "<group>"; };
 		B18D45F225A24E0E0081B11E /* DetailAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailAccessoryView.swift; sourceTree = "<group>"; };
 		B192163C2590697200B3FC07 /* SubTaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubTaskTableViewCell.swift; sourceTree = "<group>"; };
+		B19957B325F4F8EE00F883D8 /* AnimatableProps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatableProps.swift; sourceTree = "<group>"; };
+		B19957B625F5072B00F883D8 /* SpeechText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechText.swift; sourceTree = "<group>"; };
+		B19957B925F5081900F883D8 /* SpeechTextInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTextInfo.swift; sourceTree = "<group>"; };
+		B19957BC25F5166600F883D8 /* SpeechSwipeCancel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechSwipeCancel.swift; sourceTree = "<group>"; };
+		B1A1AA6A25EE68D9001A99E0 /* CircleCrossGradientBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleCrossGradientBtn.swift; sourceTree = "<group>"; };
 		B1A303D525AC9EFA00BFAE68 /* DeleteShortcutButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteShortcutButton.swift; sourceTree = "<group>"; };
+		B1A4E3EA25EFAFDB00F65463 /* SpeechRecorderTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecorderTransitionController.swift; sourceTree = "<group>"; };
+		B1A4E3ED25EFB0E900F65463 /* SpeechRecorderAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecorderAnimationController.swift; sourceTree = "<group>"; };
 		B1A913EC252056FA0021E15C /* Tasker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tasker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1A913EF252056FA0021E15C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B1A913F9252056FA0021E15C /* Tasker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Tasker.xcdatamodel; sourceTree = "<group>"; };
@@ -471,6 +494,7 @@
 		B1E47885257A3E2A0055A0B4 /* ShortcutManaged+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShortcutManaged+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B1E47886257A3E2A0055A0B4 /* ShortcutManaged+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShortcutManaged+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B1E92B8B259C9A0A00449ABE /* DetailTaskScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskScrollView.swift; sourceTree = "<group>"; };
+		B1EF596B25F2280400238AF2 /* AnimationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationDelegate.swift; sourceTree = "<group>"; };
 		B1EF663725A489640050FF1C /* DetailShortcutAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailShortcutAssembly.swift; sourceTree = "<group>"; };
 		B1EF663A25A489B50050FF1C /* DetailShortcutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailShortcutViewController.swift; sourceTree = "<group>"; };
 		B1EF663E25A48D2E0050FF1C /* SlideMenuViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideMenuViewType.swift; sourceTree = "<group>"; };
@@ -611,6 +635,44 @@
 				B12B0B0025ADDE6D0078315C /* ShortcutViewModelOutputs.swift */,
 			);
 			path = Shortcut;
+			sourceTree = "<group>";
+		};
+		B131899A25EBD3A9008C63A0 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				B1A1AA6A25EE68D9001A99E0 /* CircleCrossGradientBtn.swift */,
+				B131899B25EBD3D4008C63A0 /* BarButtonItem.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		B131899F25EBD95E008C63A0 /* SpeechTask */ = {
+			isa = PBXGroup;
+			children = (
+				B13189A025EBD97A008C63A0 /* Assembly */,
+				B13189A125EBD98B008C63A0 /* Views */,
+			);
+			path = SpeechTask;
+			sourceTree = "<group>";
+		};
+		B13189A025EBD97A008C63A0 /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				B13189A225EBD9A6008C63A0 /* SpeechTaskAssembly.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		B13189A125EBD98B008C63A0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B13189A525EBD9F7008C63A0 /* SpeechTaskViewController.swift */,
+				B18522A225F2481D00BBC9D1 /* SpeakWave.swift */,
+				B19957B625F5072B00F883D8 /* SpeechText.swift */,
+				B19957B925F5081900F883D8 /* SpeechTextInfo.swift */,
+				B19957BC25F5166600F883D8 /* SpeechSwipeCancel.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		B1391FFE259219070087D0E9 /* CoreData */ = {
@@ -1012,11 +1074,11 @@
 		B1804BB6255A8CC9007FECCF /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				B1EF596E25F245A300238AF2 /* Animations */,
+				B131899A25EBD3A9008C63A0 /* UI */,
 				B1DC538625E3985900140F17 /* Observable */,
-				B1E79E7C25B5AC6800C443CA /* TransitionAnimators */,
 				B139A75D258224DF000BAE55 /* Helpers */,
 				B1804BB7255A8CED007FECCF /* StyleGuide.swift */,
-				B1E06533256524EF00948AB5 /* Boxing.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1061,6 +1123,7 @@
 		B18349EE256AEBD200D0D096 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				B131899F25EBD95E008C63A0 /* SpeechTask */,
 				B1A9140E252062270021E15C /* TaskList */,
 				B11C75B425C82D25004D6639 /* TaskDiary */,
 				B12B0AE025ADC1A30078315C /* ShortcutList */,
@@ -1136,6 +1199,15 @@
 				B18D45F225A24E0E0081B11E /* DetailAccessoryView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		B1A4E3E925EFAFA000F65463 /* SpeechRecorderAnimation */ = {
+			isa = PBXGroup;
+			children = (
+				B1A4E3EA25EFAFDB00F65463 /* SpeechRecorderTransitionController.swift */,
+				B1A4E3ED25EFB0E900F65463 /* SpeechRecorderAnimationController.swift */,
+			);
+			path = SpeechRecorderAnimation;
 			sourceTree = "<group>";
 		};
 		B1A913E3252056FA0021E15C = {
@@ -1511,6 +1583,7 @@
 		B1DC538625E3985900140F17 /* Observable */ = {
 			isa = PBXGroup;
 			children = (
+				B1E06533256524EF00948AB5 /* Boxing.swift */,
 				B1DC538725E3987E00140F17 /* Weak.swift */,
 				B1DC538A25E3995900140F17 /* Event.swift */,
 			);
@@ -1674,6 +1747,7 @@
 		B1E79E7C25B5AC6800C443CA /* TransitionAnimators */ = {
 			isa = PBXGroup;
 			children = (
+				B1A4E3E925EFAFA000F65463 /* SpeechRecorderAnimation */,
 				B15B7D0025D1487000EC1D98 /* DropNavigationTransition */,
 				B1D79B0025CD3B66009DB9BF /* FlipAnimation */,
 				B14C997625C6E1F300E36A94 /* ZoomModalTransition */,
@@ -1681,6 +1755,16 @@
 				B1CB2A0325BD663F009EFABB /* CardModalTransition */,
 			);
 			path = TransitionAnimators;
+			sourceTree = "<group>";
+		};
+		B1EF596E25F245A300238AF2 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				B1EF596B25F2280400238AF2 /* AnimationDelegate.swift */,
+				B1E79E7C25B5AC6800C443CA /* TransitionAnimators */,
+				B19957B325F4F8EE00F883D8 /* AnimatableProps.swift */,
+			);
+			path = Animations;
 			sourceTree = "<group>";
 		};
 		B1EF663225A488C20050FF1C /* DetailShortcut */ = {
@@ -1908,6 +1992,7 @@
 				B1EF665625A4CFDF0050FF1C /* DetailShortcutViewModelInputs.swift in Sources */,
 				B141728325C1544500EF0D85 /* TaskListItemViewModelOutputs.swift in Sources */,
 				B139201D259234520087D0E9 /* SubtaskViewModelOutputs.swift in Sources */,
+				B1A4E3EE25EFB0E900F65463 /* SpeechRecorderAnimationController.swift in Sources */,
 				B1F10C0325D012A800153336 /* TaskDeleteViewModel.swift in Sources */,
 				B1FB9BD32588B41E00E54E1B /* TaskTitleTextView.swift in Sources */,
 				B18C91BE2532FA8D004DFB73 /* UIDevice.swift in Sources */,
@@ -1994,6 +2079,7 @@
 				B1603C552521C5C20022BE49 /* TaskListTableViewCell.swift in Sources */,
 				B10DF889252C629C000FF924 /* Calendar.swift in Sources */,
 				B1B4CA9A25C18A8700AF5F61 /* TaskListViewModel.swift in Sources */,
+				B18522A325F2481D00BBC9D1 /* SpeakWave.swift in Sources */,
 				B15C9B7825695B9E00A809B1 /* DetailTaskViewModelOutputs.swift in Sources */,
 				B1E30EE425A6FBEE0036979D /* MenuViewModelInputs.swift in Sources */,
 				B1A9141B252063FA0021E15C /* TaskListDataSourceObserver.swift in Sources */,
@@ -2007,6 +2093,8 @@
 				B1687F6525DC00BE009D3DE2 /* CalendarMonth.swift in Sources */,
 				B1D79AEF25CC19CB009DB9BF /* TaskDiaryItemViewModelType.swift in Sources */,
 				B114840025309EA100216541 /* Color.swift in Sources */,
+				B19957BA25F5081900F883D8 /* SpeechTextInfo.swift in Sources */,
+				B1A4E3EB25EFAFDB00F65463 /* SpeechRecorderTransitionController.swift in Sources */,
 				B15B7D0225D1489E00EC1D98 /* DropNavigationTransitionController.swift in Sources */,
 				B1D4CCE9256D36EA0085C25C /* UIButton.swift in Sources */,
 				B18349F1256AEC7000D0D096 /* TaskListAssembly.swift in Sources */,
@@ -2059,8 +2147,10 @@
 				B1D79AF725CD2FD0009DB9BF /* TaskDiaryTableHeaderView.swift in Sources */,
 				B170814325DBF68D007AC23B /* CalendarViewModelOutputs.swift in Sources */,
 				B1EF663F25A48D2E0050FF1C /* SlideMenuViewType.swift in Sources */,
+				B1A1AA6B25EE68D9001A99E0 /* CircleCrossGradientBtn.swift in Sources */,
 				B1687F6C25DC069A009D3DE2 /* CalendarCollectionViewCell.swift in Sources */,
 				B13E079225A9CBBB00020F5E /* MenuItemViewModelCreateShortcutType.swift in Sources */,
+				B131899C25EBD3D4008C63A0 /* BarButtonItem.swift in Sources */,
 				B11C75AE25C81AFE004D6639 /* TaskReminderViewModel.swift in Sources */,
 				B1391FFA259218AA0087D0E9 /* SubtaskManaged+CoreDataClass.swift in Sources */,
 				B1DC538825E3987E00140F17 /* Weak.swift in Sources */,
@@ -2074,12 +2164,15 @@
 				B1D79AE125CC18A1009DB9BF /* TaskDiaryPeriodItemViewModelType.swift in Sources */,
 				B14C997425C6D6A500E36A94 /* PopUpModalAnimationController.swift in Sources */,
 				B1D79AFE25CD3259009DB9BF /* TaskDiaryViewPresentable.swift in Sources */,
+				B19957BD25F5166600F883D8 /* SpeechSwipeCancel.swift in Sources */,
 				B13E077F25A995B300020F5E /* CreateShortcutMenuItemViewModel.swift in Sources */,
 				B1D4CCE7256D26700085C25C /* SettingsAssembly.swift in Sources */,
 				B13E078F25A9991200020F5E /* MenuCellFactory.swift in Sources */,
+				B13189A325EBD9A6008C63A0 /* SpeechTaskAssembly.swift in Sources */,
 				B170814025DBF673007AC23B /* CalendarViewModelInputs.swift in Sources */,
 				B1687F7B25DC07F2009D3DE2 /* CalendarDayViewModelOutputs.swift in Sources */,
 				B1E47889257A3E2A0055A0B4 /* ShortcutManaged+CoreDataClass.swift in Sources */,
+				B1EF596C25F2280400238AF2 /* AnimationDelegate.swift in Sources */,
 				B12B0ADE25ADA0C10078315C /* ShortcutButton.swift in Sources */,
 				B1A914292520AB640021E15C /* TaskListView.swift in Sources */,
 				B1D79B0525CD3BFB009DB9BF /* FlipAnimationController.swift in Sources */,
@@ -2097,6 +2190,7 @@
 				B15C9B7425695B6600A809B1 /* DetailTaskViewModelType.swift in Sources */,
 				B11C75B225C81CD7004D6639 /* TaskReminderTableViewCell.swift in Sources */,
 				B1D79B1225CEAD03009DB9BF /* DiaryMenuTableViewCell.swift in Sources */,
+				B19957B725F5072B00F883D8 /* SpeechText.swift in Sources */,
 				B12B0AEB25ADC80D0078315C /* ShortcutListViewModelInputs.swift in Sources */,
 				B1EF666025A4D2E40050FF1C /* Shortcut.swift in Sources */,
 				B18349E9256AEAF300D0D096 /* PresentableController.swift in Sources */,
@@ -2111,6 +2205,7 @@
 				B1F10BFD25D0125C00153336 /* TaskDeleteViewModelInputs.swift in Sources */,
 				B1664045254464C8007D1AFD /* UIBarButtonItem.swift in Sources */,
 				B1D5DECB2523884700124DAD /* CalendarPickerFooterView.swift in Sources */,
+				B19957B425F4F8EE00F883D8 /* AnimatableProps.swift in Sources */,
 				B1DC538B25E3995900140F17 /* Event.swift in Sources */,
 				B1E0653025651A8300948AB5 /* CalendarPickerViewModelType.swift in Sources */,
 				B18349E3256AEA9800D0D096 /* Coordinator.swift in Sources */,
@@ -2121,6 +2216,7 @@
 				B141728625C1546200EF0D85 /* TaskListItemViewModelType.swift in Sources */,
 				B139A75B258224B5000BAE55 /* Storyboarded.swift in Sources */,
 				B1C237E725A7770200111037 /* ShorcutListTableViewType.swift in Sources */,
+				B13189A625EBD9F7008C63A0 /* SpeechTaskViewController.swift in Sources */,
 				B13E078825A9974E00020F5E /* MenuItemViewModelShortcutType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

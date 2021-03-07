@@ -13,5 +13,5 @@ protocol TaskListPeriodItemViewModelInputs {
     func insert(task: TaskListItemViewModelType)
     func remove(at index: Int)
     func setTaskListMode(mode: TaskListMode)
-    func setShowingCapWhenTasksIsEmpty(emptyState: Bool)
+    func setShowingCapWhenTasksIsEmpty(emptyState: Bool, capMode: EmptyCapMode?)
 }

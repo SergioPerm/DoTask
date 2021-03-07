@@ -476,15 +476,15 @@ extension TaskListDataSourceCoreData: NSFetchedResultsControllerDelegate {
                 observer?.taskInserted(at: indexPath)
             }
         case .move:
-            if indexPath == newIndexPath {
-                observer?.taskUpdated(at: indexPath!)
-            } else {
+//            if indexPath == newIndexPath {
+//                observer?.taskUpdated(at: indexPath!)
+//            } else {
                 if let indexPath = indexPath {
                     observer?.taskDeleted(at: indexPath)
                 }
                 if let newIndexPath = newIndexPath {
                     observer?.taskInserted(at: newIndexPath)
-                }
+                //}
             }
         case .update:
             if let indexPath = indexPath {

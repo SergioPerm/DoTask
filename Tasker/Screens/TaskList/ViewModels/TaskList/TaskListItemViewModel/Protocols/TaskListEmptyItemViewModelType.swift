@@ -10,4 +10,5 @@ import Foundation
 
 protocol TaskListEmptyItemViewModelType: class, TaskListItemType {
     var info: String { get }
+    var rowHeight: Int { get }
 }

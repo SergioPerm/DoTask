@@ -29,9 +29,9 @@ class TaskListItemViewModel: TaskListItemViewModelType, TaskListItemViewModelInp
     var inputs: TaskListItemViewModelInputs { return self }
     var outputs: TaskListItemViewModelOutputs { return self }
 
-    private let setDoneTaskHandler: ((_ taskUID: String) -> Void)
+    private let changeDoneTaskHandler: ((_ taskUID: String, _ done: Bool) -> Void)
     
-    init(task: Task, setDoneTaskHandler: @escaping ((_ taskUID: String) -> Void)) {
+    init(task: Task, setDoneTaskHandler: @escaping ((_ taskUID: String, _ done: Bool) -> Void)) {
         self.title = Boxing(task.title)
         
         if let taskDate = task.taskDate {
@@ -53,7 +53,7 @@ class TaskListItemViewModel: TaskListItemViewModelType, TaskListItemViewModelInp
         self.isDone = Boxing(task.isDone)
         
         self.taskUID = task.uid
-        self.setDoneTaskHandler = setDoneTaskHandler
+        self.changeDoneTaskHandler = setDoneTaskHandler
         
         self.importantColor.value = getHexImportanceColor(importanceLevel: task.importanceLevel)
         
@@ -84,7 +84,13 @@ class TaskListItemViewModel: TaskListItemViewModelType, TaskListItemViewModelInp
     // MARK: Inputs
     
     func setDone() {
-        setDoneTaskHandler(taskUID)
+        isDone.value = true
+        changeDoneTaskHandler(taskUID, true)
+    }
+    
+    func unsetDone() {
+        isDone.value = false
+        changeDoneTaskHandler(taskUID, false)
     }
     
     // MARK: Outputs

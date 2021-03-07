@@ -52,7 +52,8 @@ class TaskListViewController: UIViewController, PresentableController {
     private var withSlideMenu: Bool
     
     var editTaskAction: ((_ taskUID: String?, _ shortcutUID: String?, _ taskDate: Date?) ->  Void)?
-    var openCalendarTaskListAction: ((_ menu: SlideMenuViewType?) -> Void)?
+    //var openCalendarTaskListAction: ((_ menu: SlideMenuViewType?) -> Void)?
+    var speechTaskAction: ((_ recognizer: UILongPressGestureRecognizer, _ shortcutUID: String?, _ taskDate: Date?) ->  Void)?
         
     var filter: TaskListFilter? {
         didSet {
@@ -147,10 +148,12 @@ extension TaskListViewController {
         tableView.estimatedRowHeight = 600
         tableView.backgroundColor = .white
         tableView.showsVerticalScrollIndicator = false
+        tableView.sectionFooterHeight = 0
+
         
         taskListCellFactory = TaskListCellFactory()
-        
-        let btn = TaskAddButton {
+  
+        let addBtn = TaskAddButton {
             if let editAction = self.editTaskAction {
                 if self.viewModel.outputs.taskListMode.value == .calendar {
                     editAction(nil, self.filter?.shortcutFilter, self.viewModel.outputs.calendarSelectedDate)
@@ -158,9 +161,13 @@ extension TaskListViewController {
                     editAction(nil, self.filter?.shortcutFilter, Date())
                 }
             }
+        } onLongTapAction: { recognizer in
+            if let speechAction = self.speechTaskAction {
+                speechAction(recognizer, nil, nil)
+            }
         }
         
-        view.insertSubview(btn, aboveSubview: tableView)
+        view.insertSubview(addBtn, aboveSubview: tableView)
 
         setupConstraints()
         setupNavigationBar()
@@ -174,24 +181,22 @@ extension TaskListViewController {
         navBar.setFlatNavBar()
         
         //Menu btn
-        let menuBtn = UIButton()
+        let menuBtn = BarButtonItem()
+        menuBtn.setImage(UIImage(named: "menu")?.maskWithColor(color: StyleGuide.MainColors.blue), for: .normal)
+        menuBtn.imageEdgeInsets = UIEdgeInsets(top: 9, left: 9, bottom: 9, right: 9)
         menuBtn.addTarget(self, action: #selector(tapMenuAction(sender:)), for: .touchUpInside)
-        menuBtn.tintImageWithColor(color: Color.blueColor.uiColor, image: UIImage(named: "menu"))
+        menuBtn.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
         
         let menuBarItem = UIBarButtonItem(customView: menuBtn)
-        let currWidth = menuBarItem.customView?.widthAnchor.constraint(equalToConstant: 25)
-        currWidth?.isActive = true
-        let currHeight = menuBarItem.customView?.heightAnchor.constraint(equalToConstant: 25)
-        currHeight?.isActive = true
         
         self.navigationItem.leftBarButtonItem = menuBarItem
         
         //Calendar btn
-        let calendarButton = UIButton(type: .custom)
+        let calendarButton = BarButtonItem()
         calendarButton.setImage(UIImage(named: "calendarFill")?.maskWithColor(color: StyleGuide.MainColors.blue), for: .normal)
-        calendarButton.imageEdgeInsets = UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3)
+        calendarButton.imageEdgeInsets = UIEdgeInsets(top: 9, left: 9, bottom: 9, right: 9)
         calendarButton.addTarget(self, action: #selector(openCalendarViewAction(sender:)), for: .touchUpInside)
-        calendarButton.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
+        calendarButton.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
         
         let barButtonItem = UIBarButtonItem(customView: calendarButton)
         

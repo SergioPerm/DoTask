@@ -14,6 +14,7 @@ struct StyleGuide {
     
     enum MainColors {
         static let blue: UIColor = #colorLiteral(red: 0.2369126672, green: 0.6231006994, blue: 1, alpha: 1)
+        static let pink: UIColor = #colorLiteral(red: 1, green: 0.2117647059, blue: 0.6509803922, alpha: 0.8470588235)
     }
     
     struct TaskList {
@@ -23,7 +24,7 @@ struct StyleGuide {
         }
         
         enum Sizes {
-            static let headerHeight: CGFloat = 50.0
+            static let headerHeight: CGFloat = 40.0
             static let headerTitleHeight: CGFloat = 30.0
             static let checkMarkSize: CGSize = CGSize(width: 24, height: 24)
         }

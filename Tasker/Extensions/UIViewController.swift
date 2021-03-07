@@ -10,6 +10,16 @@ import UIKit
 
 extension UIViewController {
         
+    func getFirstViewForType<T: UIView>(viewType: T.Type) -> T? {
+        let result = view.subviews.compactMap {$0 as? T}
+        
+        if result.isEmpty {
+            return nil
+        }
+        
+        return result.first
+    }
+    
     func add(_ child: UIViewController) {
         addChild(child)
         view.addSubview(child.view)

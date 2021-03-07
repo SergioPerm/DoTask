@@ -44,11 +44,12 @@ class Router: NSObject, RouterType {
         case .systemPopoverModal:
             vc.dismiss(animated: true, completion: nil)
         case .presentWithTransition:
-            vc.dismiss(animated: true, completion: nil)
+            vc.dismiss(animated: true, completion: {
+                self.transitions.removeValue(forKey: vc)
+            })
         }
         
         runCompletion(for: vc)
-        transitions.removeValue(forKey: vc)
     }
     
     func push(vc: PresentableController, completion: (() -> Void)? = nil, transition: UIViewControllerTransitioningDelegate? = nil) {

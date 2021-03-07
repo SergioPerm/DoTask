@@ -73,6 +73,9 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
         vc.editTaskAction = { uid, shortcutUID, taskDate in
             self.editTask(taskUID: uid, shortcutUID: shortcutUID, taskDate: taskDate)
         }
+        vc.speechTaskAction = { recognizer, shortcutUID, taskDate in
+            self.speechTask(recognizer: recognizer, shortcutUID: shortcutUID, taskDate: taskDate)
+        }
 
         router?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
@@ -95,4 +98,15 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
         childCoordinators.append(child)
         child.start()
     }
+    
+    func speechTask(recognizer: UILongPressGestureRecognizer, shortcutUID: String?, taskDate: Date?) {
+        let vc = SpeechTaskAssembly.createInstance(router: router, recognizer: recognizer, shortcutFilter: shortcutUID)
+        
+        let transition = SpeechRecorderTransitionController()
+        
+        router?.push(vc: vc, completion: {[weak self] in
+            self?.parentCoordinator?.childDidFinish(self)
+        }, transition: transition)
+    }
+    
 }

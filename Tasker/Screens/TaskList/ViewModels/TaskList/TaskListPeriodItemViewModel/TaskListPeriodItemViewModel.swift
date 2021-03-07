@@ -8,6 +8,23 @@
 
 import Foundation
 
+enum EmptyCapMode {
+    case MainCap
+    case CalendarCap
+    case LittleSpaceCap
+    
+    func getRowHeight() -> Int {
+        switch self {
+        case .MainCap:
+            return 110
+        case .CalendarCap:
+            return 70
+        case .LittleSpaceCap:
+            return 5
+        }
+    }
+}
+
 class TaskListPeriodItemViewModel: TaskListPeriodItemViewModelType, TaskListPeriodItemViewModelInputs, TaskListPeriodItemViewModelOutputs {
     
     private let timePeriodName: String
@@ -26,8 +43,9 @@ class TaskListPeriodItemViewModel: TaskListPeriodItemViewModelType, TaskListPeri
     
     // MARK: Inputs
     
-    func setShowingCapWhenTasksIsEmpty(emptyState: Bool) {
-        showingCapWhenTasksIsEmpty = true
+    func setShowingCapWhenTasksIsEmpty(emptyState: Bool, capMode: EmptyCapMode?) {
+        self.showingCapWhenTasksIsEmpty = true
+        self.capMode = capMode
         updateEmptyState(emptyState: emptyState)
     }
         
@@ -84,6 +102,7 @@ class TaskListPeriodItemViewModel: TaskListPeriodItemViewModelType, TaskListPeri
     }
     
     var showingCapWhenTasksIsEmpty: Bool = false
+    var capMode: EmptyCapMode?
     
     var dailyName: DailyName? {
         if let dailyName = taskTimePeriod.dailyName {
@@ -108,6 +127,16 @@ extension TaskListPeriodItemViewModel {
         
         if emptyState && showingCapWhenTasksIsEmpty {
             let taskListItem = TaskListEmptyItemViewModel()
+            
+            if let capMode = capMode {
+                taskListItem.rowHeight = capMode.getRowHeight()
+                
+                if capMode == .LittleSpaceCap {
+                    taskListItem.info = ""
+                } else {
+                    taskListItem.info = "The day is empty"
+                }
+            }
             
             taskListEmptyItem = taskListItem
             tasks.append(taskListItem)

@@ -73,9 +73,9 @@ class ZoomModalAnimationController: NSObject, UIViewControllerAnimatedTransition
                 fromVC.view.layer.transform = ViewControlerScale.modelPresentationScale.transform
                 fromVC.view.alpha = 0.0
             } completion: { (finished) in
-                if !transitionContext.transitionWasCancelled {
+                //if !transitionContext.transitionWasCancelled {
                     self.dimmView.removeFromSuperview()
-                }
+                //}
                 transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
             }
         }

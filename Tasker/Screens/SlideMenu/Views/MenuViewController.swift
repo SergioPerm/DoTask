@@ -38,6 +38,8 @@ class MenuViewController: UIViewController, PresentableController, SlideMenuView
     private var currentState: SlideOutMenuState = .menuCollapsed
     private var isMove = false
     
+    private var swipeEnabled = true
+    
     private var tableView: UITableView!
     
     private var selectedCell: UITableViewCell?
@@ -182,8 +184,27 @@ extension MenuViewController {
         let draggingVelocityExpand: CGFloat = 1.5
         let draggingVelocityAfterExpand: CGFloat = 0.3
         
+        let location = recognizer.location(in: parentController?.getView())
+        print(location)
+                
         switch recognizer.state {
+        case .began:
+            if currentState == .menuCollapsed {
+                let location = recognizer.location(in: parentController?.getView())
+                
+                if location.x > (view.frame.width * 0.2) {
+                    swipeEnabled = false
+                } else {
+                    swipeEnabled = true
+                }
+            } else {
+                swipeEnabled = true
+            }
         case .changed:
+            if !swipeEnabled {
+                return
+            }
+            
             if let rView = recognizer.view {
                                 
                 let centerX = view.bounds.width/2

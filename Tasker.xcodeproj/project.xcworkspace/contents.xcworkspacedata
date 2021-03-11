@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:Tasker.xcodeproj">
+      location = "self:/Users/kluv/Documents/iOS_educataion/Swift/Tasker/Tasker.xcodeproj">
    </FileRef>
 </Workspace>

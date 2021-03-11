@@ -141,6 +141,10 @@
 		B18349F4256AF49400D0D096 /* DetailTaskAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18349F3256AF49400D0D096 /* DetailTaskAssembly.swift */; };
 		B18522A325F2481D00BBC9D1 /* SpeakWave.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18522A225F2481D00BBC9D1 /* SpeakWave.swift */; };
 		B1868E5425DFF2910004EC1A /* TaskListNavBarTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1868E5325DFF2910004EC1A /* TaskListNavBarTitle.swift */; };
+		B188593C25F73E2700C4C440 /* SpeechTaskViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B188593B25F73E2700C4C440 /* SpeechTaskViewModelOutputs.swift */; };
+		B188594025F73E5000C4C440 /* SpeechTaskViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B188593F25F73E5000C4C440 /* SpeechTaskViewModelType.swift */; };
+		B188594425F73FBA00C4C440 /* SpeechTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B188594325F73FBA00C4C440 /* SpeechTaskViewModel.swift */; };
+		B188594725F742EC00C4C440 /* SpeechTaskViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B188594625F742EC00C4C440 /* SpeechTaskViewModelInputs.swift */; };
 		B189A99125247E1D00EAC6A0 /* TimePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B189A98D25247E1C00EAC6A0 /* TimePickerViewController.swift */; };
 		B189A9942524803E00EAC6A0 /* TimePickerViewOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B189A9932524803E00EAC6A0 /* TimePickerViewOutputs.swift */; };
 		B189A99725249ACA00EAC6A0 /* testView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B189A99625249ACA00EAC6A0 /* testView.xib */; };
@@ -397,6 +401,10 @@
 		B18349F3256AF49400D0D096 /* DetailTaskAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskAssembly.swift; sourceTree = "<group>"; };
 		B18522A225F2481D00BBC9D1 /* SpeakWave.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakWave.swift; sourceTree = "<group>"; };
 		B1868E5325DFF2910004EC1A /* TaskListNavBarTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListNavBarTitle.swift; sourceTree = "<group>"; };
+		B188593B25F73E2700C4C440 /* SpeechTaskViewModelOutputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTaskViewModelOutputs.swift; sourceTree = "<group>"; };
+		B188593F25F73E5000C4C440 /* SpeechTaskViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTaskViewModelType.swift; sourceTree = "<group>"; };
+		B188594325F73FBA00C4C440 /* SpeechTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTaskViewModel.swift; sourceTree = "<group>"; };
+		B188594625F742EC00C4C440 /* SpeechTaskViewModelInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTaskViewModelInputs.swift; sourceTree = "<group>"; };
 		B189A98D25247E1C00EAC6A0 /* TimePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimePickerViewController.swift; sourceTree = "<group>"; };
 		B189A9932524803E00EAC6A0 /* TimePickerViewOutputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerViewOutputs.swift; sourceTree = "<group>"; };
 		B189A99625249ACA00EAC6A0 /* testView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = testView.xib; sourceTree = "<group>"; };
@@ -650,6 +658,7 @@
 			isa = PBXGroup;
 			children = (
 				B13189A025EBD97A008C63A0 /* Assembly */,
+				B188593A25F73DD000C4C440 /* ViewModels */,
 				B13189A125EBD98B008C63A0 /* Views */,
 			);
 			path = SpeechTask;
@@ -1143,6 +1152,25 @@
 				B18349F3256AF49400D0D096 /* DetailTaskAssembly.swift */,
 			);
 			path = Assembly;
+			sourceTree = "<group>";
+		};
+		B188593A25F73DD000C4C440 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				B188593E25F73E3700C4C440 /* Protocols */,
+				B188594325F73FBA00C4C440 /* SpeechTaskViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		B188593E25F73E3700C4C440 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				B188593B25F73E2700C4C440 /* SpeechTaskViewModelOutputs.swift */,
+				B188594625F742EC00C4C440 /* SpeechTaskViewModelInputs.swift */,
+				B188593F25F73E5000C4C440 /* SpeechTaskViewModelType.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		B189A98A25247E1C00EAC6A0 /* TimePicker */ = {
@@ -2077,6 +2105,7 @@
 				B13875DE25710985002DA626 /* MainMenuTableViewCell.swift in Sources */,
 				B13920202592348C0087D0E9 /* SubtaskViewModelType.swift in Sources */,
 				B1603C552521C5C20022BE49 /* TaskListTableViewCell.swift in Sources */,
+				B188594025F73E5000C4C440 /* SpeechTaskViewModelType.swift in Sources */,
 				B10DF889252C629C000FF924 /* Calendar.swift in Sources */,
 				B1B4CA9A25C18A8700AF5F61 /* TaskListViewModel.swift in Sources */,
 				B18522A325F2481D00BBC9D1 /* SpeakWave.swift in Sources */,
@@ -2107,6 +2136,7 @@
 				B1294493253469D4002FD1EF /* CalendarAccessory.swift in Sources */,
 				B1EF665925A4CFEE0050FF1C /* DetailShortcutViewModelOutputs.swift in Sources */,
 				B14C994525C68B4300E36A94 /* TaskDateViewModelInputs.swift in Sources */,
+				B188593C25F73E2700C4C440 /* SpeechTaskViewModelOutputs.swift in Sources */,
 				B17B8FC025CC0E1A00663F97 /* TaskListTableHeaderView.swift in Sources */,
 				B15B7D0525D148E200EC1D98 /* DropNavigationAnimationController.swift in Sources */,
 				B15BFA18259877F2003959B8 /* CheckSubtask.swift in Sources */,
@@ -2127,6 +2157,7 @@
 				B192163D2590697200B3FC07 /* SubTaskTableViewCell.swift in Sources */,
 				B1E30EEA25A70F7F0036979D /* MenuViewModelType.swift in Sources */,
 				B1EF664325A4B1DD0050FF1C /* ColorDotView.swift in Sources */,
+				B188594425F73FBA00C4C440 /* SpeechTaskViewModel.swift in Sources */,
 				B189A9992524D68D00EAC6A0 /* Date.swift in Sources */,
 				B141727A25C1537000EF0D85 /* TaskListViewModelOutputs.swift in Sources */,
 				B1EF664F25A4CE610050FF1C /* ColorCollectionViewCell.swift in Sources */,
@@ -2139,6 +2170,7 @@
 				B1A913F0252056FA0021E15C /* AppDelegate.swift in Sources */,
 				B1EF663B25A489B50050FF1C /* DetailShortcutViewController.swift in Sources */,
 				B18C91C225334D74004DFB73 /* ImportanceAccessory.swift in Sources */,
+				B188594725F742EC00C4C440 /* SpeechTaskViewModelInputs.swift in Sources */,
 				B15C9B7625695B7E00A809B1 /* DetailTaskViewModelInputs.swift in Sources */,
 				B141727125C138EB00EF0D85 /* SubtasksTableView.swift in Sources */,
 				B12B0AF525ADDCEE0078315C /* ShortcutListViewModel.swift in Sources */,

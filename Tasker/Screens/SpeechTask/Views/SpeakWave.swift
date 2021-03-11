@@ -20,6 +20,13 @@ class SpeakWave: UIView {
         return gradientLayer
     }()
     
+    private let zoomLayer: CAShapeLayer = {
+        let layer = CAShapeLayer()
+        layer.backgroundColor = #colorLiteral(red: 1, green: 0.8026864087, blue: 0.9260444804, alpha: 1).cgColor
+        
+        return layer
+    }()
+    
     private let microphoneImageView: UIImageView = {
         let image = UIImage(named: "microphone")?.maskWithColor(color: .white)
         let imageView = UIImageView(image: image)
@@ -28,6 +35,11 @@ class SpeakWave: UIView {
         
         return imageView
     }()
+    
+    private var displayLink: CADisplayLink?
+    private var currentSoundLevel: Float = 0.0
+    private var currentScale: CGFloat = 0.0
+    private var frameTime: CFTimeInterval = 0.0
     
     private var microphoneHeightConstraint = NSLayoutConstraint()
     private var microphoneWidthConstraint = NSLayoutConstraint()
@@ -45,9 +57,15 @@ class SpeakWave: UIView {
         super.layoutSubviews()
         
         layer.cornerRadius = bounds.width / 2.0
+        layer.masksToBounds = true
+        
+        zoomLayer.frame = bounds
+        zoomLayer.transform = CATransform3DMakeScale(0.7, 0.7, 1.0)
+        zoomLayer.cornerRadius = zoomLayer.frame.width / 2.0
+        zoomLayer.bounds = zoomLayer.frame
         
         gradient.frame = bounds
-        gradient.transform = CATransform3DMakeScale(0.8, 0.8, 1.0)
+        gradient.transform = CATransform3DMakeScale(0.5, 0.5, 1.0)
         gradient.cornerRadius = gradient.frame.width / 2.0
         gradient.bounds = gradient.frame
         
@@ -59,20 +77,76 @@ class SpeakWave: UIView {
 }
 
 extension SpeakWave {
+    
+    func setVolume(value: Float) {
+        displayLink?.isPaused = false
+        if value > 0.0 {
+            currentSoundLevel = value
+        }
+    }
+    
+    @objc private func updateAnimation() {
+        
+        let now = CACurrentMediaTime()
+        if now - frameTime < 0.03 {
+            return
+        }
+        
+        let zoomStep: CGFloat = 0.075
+        let volumeStep: CGFloat = 0.23
+        var newScale: CGFloat = 0.0
+        
+        if currentScale == 0.0 {
+            currentScale = zoomLayer.transform.m11
+        }
+        
+        if currentSoundLevel > 0.0 {
+            
+            //0.08 max 0.01 min
+            let percentPower = CGFloat(currentSoundLevel) / 0.08
+            let maxTransform: CGFloat = 0.7 + (0.7 * (percentPower))
+
+            newScale = currentScale + volumeStep * percentPower
+            if newScale > maxTransform {
+                newScale = 1.0
+                currentSoundLevel = 0.0
+            }
+        } else {
+            if currentScale > 0.7 {
+                newScale = currentScale - zoomStep
+                if newScale < 0.7 {
+                    newScale = 0.7
+                }
+            }
+        }
+
+        if newScale > 0.0 {
+            zoomLayer.transform = CATransform3DMakeScale(newScale, newScale, 1.0)
+            currentScale = newScale
+            frameTime = CACurrentMediaTime()
+        }
+    }
+    
     private func setup() {
         
-        backgroundColor = #colorLiteral(red: 1, green: 0.8026864087, blue: 0.9260444804, alpha: 1)
+        backgroundColor = .clear
         
+        layer.addSublayer(zoomLayer)
         layer.addSublayer(gradient)
+        
         addSubview(microphoneImageView)
                 
         setupConstraints()
+        
+        displayLink = CADisplayLink(target: self, selector: #selector(updateAnimation))
+        displayLink?.isPaused = true
+        displayLink?.add(to: .main, forMode: .common)
     }
     
     private func setupConstraints() {
         
-        microphoneHeightConstraint = microphoneImageView.heightAnchor.constraint(equalToConstant: frame.width * 0.5)
-        microphoneWidthConstraint = microphoneImageView.widthAnchor.constraint(equalToConstant: frame.width * 0.5)
+        microphoneHeightConstraint = microphoneImageView.heightAnchor.constraint(equalToConstant: frame.width * 0.3)
+        microphoneWidthConstraint = microphoneImageView.widthAnchor.constraint(equalToConstant: frame.width * 0.3)
         
         let constraints = [
             microphoneImageView.centerXAnchor.constraint(equalTo: centerXAnchor),

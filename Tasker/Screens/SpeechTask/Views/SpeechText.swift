@@ -8,10 +8,12 @@
 
 import UIKit
 
-class SpeechText: UILabel {
+class SpeechText: UITextView {
+    
+    private let placeholderText = "Speak"
     
     init() {
-        super.init(frame: .zero)
+        super.init(frame: .zero, textContainer: nil)
         setup()
     }
     
@@ -22,12 +24,79 @@ class SpeechText: UILabel {
 }
 
 extension SpeechText {
-    private func setup() {
-        text = "Speak"
+    
+    func setSpeechText(text: String) {
+        if !text.isEmpty {
+            self.text = text
+            updateTextFont()
+        }
         
-        numberOfLines = 5
+        if isEmpty() && !text.isEmpty {
+            textAlignment = .left
+        }
+    }
+    
+    func updateTextFont() {
+        if bounds.size.equalTo(CGSize.zero) {
+            return
+        }
+
+        guard let textFont = font else { return }
+        
+        let textViewSize = frame.size
+        let fixedWidth = textViewSize.width
+        let expectSize = sizeThatFits(CGSize(width: fixedWidth, height: CGFloat(MAXFLOAT)))
+
+        var expectFont = textFont
+        if (expectSize.height > textViewSize.height) {
+            while (sizeThatFits(CGSize(width: fixedWidth, height: CGFloat(MAXFLOAT))).height > textViewSize.height) {
+                expectFont = textFont.withSize(font!.pointSize - 1)
+                font = expectFont
+            }
+        }
+    }
+    
+    private func setMinimumFontSize() {
+        if contentSize.height > frame.height {
+            guard let textFont = font else {
+                return
+            }
+            font = textFont.withSize(textFont.pointSize - 0.2)
+            sizeToFit()
+            
+            print("уменьшаем!")
+            
+            setMinimumFontSize()
+        }
+    }
+    
+    func isEmpty() -> Bool{
+        if text == placeholderText {
+            return true
+        }
+        return false
+    }
+    
+    private func setup() {
+        text = placeholderText
+        
+        isEditable = false
+        showsVerticalScrollIndicator = false
+            
+        delegate = self
+        backgroundColor = .clear
+        
+//        adjustsFontSizeToFitWidth = true
+//        minimumScaleFactor = 0.3
+//        numberOfLines = 5
         font = UIFont(name: "AvenirNext-Bold", size: StyleGuide.getFontSizeRelativeToScreen(baseSize: 32))
         textColor = .white
         textAlignment = .center
+    }
+}
+
+extension SpeechText: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        print(text)
     }
 }

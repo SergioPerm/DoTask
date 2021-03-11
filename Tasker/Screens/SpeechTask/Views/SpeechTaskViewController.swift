@@ -14,6 +14,12 @@ class SpeechTaskViewController: UIViewController, PresentableController {
     var router: RouterType?
     var persistentType: PersistentViewControllerType?
     
+    private var viewModel: SpeechTaskViewModelType {
+        didSet {
+            bindViewModel()
+        }
+    }
+    
     private var longTapRecognizer: UILongPressGestureRecognizer
     
     private let speakWave: SpeakWave = {
@@ -22,9 +28,7 @@ class SpeechTaskViewController: UIViewController, PresentableController {
         
         return view
     }()
-    
-    typealias TestAlias = UILabel
-    
+        
     private let crossBtn = CircleCrossGradientBtn()
         
     private let speechText: SpeechText = {
@@ -47,8 +51,12 @@ class SpeechTaskViewController: UIViewController, PresentableController {
         
         return swipeView
     }()
-
-    init(router: RouterType?, recognizer: UILongPressGestureRecognizer, presentableControllerViewType: PresentableControllerViewType, persistentType: PersistentViewControllerType? = nil) {
+    
+    private var trailingSwipeToCancelConstraint: NSLayoutConstraint = NSLayoutConstraint()
+    private var prevPointOnSwipe: CGFloat = 0.0
+    
+    init(viewModel: SpeechTaskViewModelType, router: RouterType?, recognizer: UILongPressGestureRecognizer, presentableControllerViewType: PresentableControllerViewType, persistentType: PersistentViewControllerType? = nil) {
+        self.viewModel = viewModel
         self.router = router
         self.presentableControllerViewType = presentableControllerViewType
         self.longTapRecognizer = recognizer
@@ -63,6 +71,24 @@ class SpeechTaskViewController: UIViewController, PresentableController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        bindViewModel()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+                       
+        viewModel.inputs.startRecording()
+        
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.inputs.cancelTask()
+        
+        viewModel.outputs.speechTextChangeEvent.unsubscribe(self)
+        viewModel.outputs.volumeLevel.unsubscribe(self)
+        
+        
     }
              
 }
@@ -71,6 +97,18 @@ class SpeechTaskViewController: UIViewController, PresentableController {
 
 extension SpeechTaskViewController {
  
+    private func bindViewModel() {
+        
+        viewModel.outputs.speechTextChangeEvent.subscribe(self) { this, speechText in
+            this.speechText.setSpeechText(text: speechText)
+        }
+        
+        viewModel.outputs.volumeLevel.subscribe(self) { this, volumeLevel in
+            self.speakWave.setVolume(value: volumeLevel)
+        }
+        
+    }
+    
     private func setup() {
         view.backgroundColor = StyleGuide.MainColors.blue
         
@@ -94,10 +132,15 @@ extension SpeechTaskViewController {
         
         guard let globalFrame = UIView.globalView?.frame else { return }
         
-        let speakWaveWidth = globalFrame.width * 0.4
+        let speakWaveWidth = globalFrame.width * 0.7
                 
         let swipeToCancelHeightConstraint = swipeToCancel.heightAnchor.constraint(equalToConstant: 10)
         swipeToCancelHeightConstraint.priority = UILayoutPriority(250)
+        
+        trailingSwipeToCancelConstraint = swipeToCancel.trailingAnchor.constraint(equalTo: crossBtn.leadingAnchor, constant: -30)
+        
+        let leadingSwipeToCancel = swipeToCancel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30)
+        leadingSwipeToCancel.priority = UILayoutPriority(250)
         
         let constraints = [
             speakWave.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -106,12 +149,13 @@ extension SpeechTaskViewController {
             speakWave.heightAnchor.constraint(equalToConstant: speakWaveWidth),
             speechText.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             speechText.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
-            speechText.widthAnchor.constraint(equalToConstant: globalFrame.width * 0.7),
+            speechText.widthAnchor.constraint(equalToConstant: globalFrame.width * 0.9),
+            speechText.bottomAnchor.constraint(equalTo: speakWave.topAnchor, constant: -20),
             infoText.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             infoText.widthAnchor.constraint(equalToConstant: globalFrame.width * 0.7),
             infoText.topAnchor.constraint(equalTo: speakWave.bottomAnchor, constant: 50),
-            swipeToCancel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-            swipeToCancel.trailingAnchor.constraint(equalTo: crossBtn.leadingAnchor, constant: 30),
+            leadingSwipeToCancel,
+            trailingSwipeToCancelConstraint,
             swipeToCancel.centerYAnchor.constraint(equalTo: crossBtn.centerYAnchor),
             swipeToCancelHeightConstraint
         ]
@@ -126,16 +170,51 @@ extension SpeechTaskViewController {
 // MARK: Actions
 
 extension SpeechTaskViewController {
-    
+        
     @objc private func tapAction(sender: UILongPressGestureRecognizer) {
-        if sender.state == .ended || sender.state == .cancelled {
-            popWhenRelease()
+        
+        switch sender.state {
+        case .changed:
+            
+            let globalFrame = UIView.globalSafeAreaFrame
+                        
+            if prevPointOnSwipe == 0.0 {
+                prevPointOnSwipe = sender.location(in: view).x
+            }
+            
+            let closeZoneX = globalFrame.width * 0.4
+            
+            let currentX = sender.location(in: view).x
+            
+            if closeZoneX > currentX {
+                popSpeech()
+            }
+            
+            trailingSwipeToCancelConstraint.constant -= prevPointOnSwipe - currentX
+            prevPointOnSwipe = currentX
+
+            view.setNeedsLayout()
+        case .ended:
+            trailingSwipeToCancelConstraint.constant = -30
+            view.setNeedsLayout()
+            saveTaskAnaPop()
+        case .cancelled:
+            saveTaskAnaPop()
+        default:
+            return
         }
+        
     }
     
-    private func popWhenRelease() {
+    private func saveTaskAnaPop() {
+        viewModel.inputs.saveTask(taskTitle: speechText.text)
+        popSpeech()
+    }
+    
+    private func popSpeech() {
         longTapRecognizer.removeTarget(self, action: #selector(tapAction(sender:)))
         router?.pop(vc: self)
     }
     
 }
+

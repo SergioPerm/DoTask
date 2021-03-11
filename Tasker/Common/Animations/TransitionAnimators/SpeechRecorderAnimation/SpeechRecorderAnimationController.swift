@@ -51,19 +51,6 @@ extension SpeechRecorderAnimationController {
         return CGRect(origin: center, size: CGSize.zero).insetBy(dx: -radius, dy: -radius)
     }
     
-    func toImage(view: UIView, isOpaque: Bool) -> UIImage? {
-        UIGraphicsBeginImageContextWithOptions(view.bounds.size, isOpaque, 0.0)
-        
-        defer { UIGraphicsEndImageContext() }
-        
-        if let context = UIGraphicsGetCurrentContext() {
-            view.layer.render(in: context)
-            let image = UIGraphicsGetImageFromCurrentImageContext()
-            return image
-        }
-        return nil
-     }
-    
     private func presentTransition(using transitionContext: UIViewControllerContextTransitioning) {
      
         guard let toVC = transitionContext.viewController(forKey: .to) as? SpeechTaskViewController else { return }
@@ -86,11 +73,9 @@ extension SpeechRecorderAnimationController {
         //off shadow for speechVC
         addBtnView.layer.shadowColor = UIColor.clear.cgColor
         
-        let snapshotSpeechText = UIImageView(image: toImage(view: speechText, isOpaque: false))
-        
         guard let snapshotAddBtn = addBtnView.snapshotView(afterScreenUpdates: true),
               let snapshotSpeakWave = speakWaveView.snapshotView(afterScreenUpdates: true),
-//              let snapshotSpeechText = UIImageView(image: toImage(view: speechText)),//speechText.snapshotView(afterScreenUpdates: true),
+              let snapshotSpeechText = speechText.snapshotView(afterScreenUpdates: true),
               let snapshotSpeechInfoText = speechInfoText.snapshotView(afterScreenUpdates: true),
               let snapshotSpeechSwipeCancel = speechSwipeCancel.snapshotView(afterScreenUpdates: true)
               else { return }
@@ -156,13 +141,12 @@ extension SpeechRecorderAnimationController {
                 
         containerSnapshotSpeechSwipeCancel.frame.origin.x += 100
         containerSnapshotSpeechSwipeCancel.layer.opacity = 0.0
-                
-        UIView.animate(withDuration: presentDuration, delay: 0.0, options: .curveEaseIn) {
+        
+        UIView.animate(withDuration: presentDuration) {
             self.containerSnapshotSpeechSwipeCancel.frame.origin.x -= 100
             self.containerSnapshotSpeechSwipeCancel.layer.opacity = 1.0
-        } completion: { (finished) in
         }
-
+        
         UIView.animate(withDuration: presentDuration - 0.2, delay: 0.2, usingSpringWithDamping: 0.25, initialSpringVelocity: 0.5, options: .curveEaseIn) {
             
             [self.containerSnapshotSpeechText,
@@ -225,16 +209,16 @@ extension SpeechRecorderAnimationController {
               let speechSwipeCancel = fromVC.getFirstViewForType(viewType: SpeechSwipeCancel.self)
         else { return }
         
-        containerSnapshotSpeechText = UIImageView(image: toImage(view: speechText, isOpaque: false))
-        
         [addBtnView,
          speakWaveView,
+         speechText,
          speechInfoText,
          speechSwipeCancel].forEach({
             $0.isHidden = true
          })
         
         [containerSnapshotSpeakWave,
+         containerSnapshotSpeechText,
          containerSnapshotSpeechInfoText,
          containerSnapshotSpeechSwipeCancel].forEach({
             $0.isHidden = false
@@ -271,12 +255,9 @@ extension SpeechRecorderAnimationController {
         let transformScale = CATransform3DMakeScale(1.0, 1.0, 1.0)
         let transformDecrease = CGAffineTransform(scaleX: 0.5, y: 0.5)
         
-        UIView.animate(withDuration: dismissDuration - 0.1) {
-            speechText.transform = transformDecrease
-        }
-        
         UIView.animate(withDuration: dismissDuration) {
             [self.containerSnapshotSpeakWave,
+             self.containerSnapshotSpeechText,
              self.containerSnapshotSpeechInfoText,
              self.containerSnapshotSpeechSwipeCancel].forEach({
                 $0.transform = transformDecrease

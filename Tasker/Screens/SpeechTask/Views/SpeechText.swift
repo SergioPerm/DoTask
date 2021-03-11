@@ -83,20 +83,11 @@ extension SpeechText {
         isEditable = false
         showsVerticalScrollIndicator = false
             
-        delegate = self
         backgroundColor = .clear
         
-//        adjustsFontSizeToFitWidth = true
-//        minimumScaleFactor = 0.3
-//        numberOfLines = 5
         font = UIFont(name: "AvenirNext-Bold", size: StyleGuide.getFontSizeRelativeToScreen(baseSize: 32))
         textColor = .white
         textAlignment = .center
     }
 }
 
-extension SpeechText: UITextViewDelegate {
-    func textViewDidChange(_ textView: UITextView) {
-        print(text)
-    }
-}

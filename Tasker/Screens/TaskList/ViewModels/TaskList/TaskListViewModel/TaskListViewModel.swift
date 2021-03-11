@@ -43,8 +43,7 @@ class TaskListViewModel: TaskListViewModelType, TaskListViewModelInputs, TaskLis
         self.calendarMonth = Boxing(nil)
         
         self.dataSource.observer = self
-        
-        dataSource.clearData()
+        		
         tableViewFRCHelper.delegate = self
         
         setupCalendarViewModel()

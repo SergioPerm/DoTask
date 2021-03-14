@@ -58,19 +58,11 @@ class SpeechTaskViewModel: SpeechTaskViewModelType, SpeechTaskViewModelInputs, S
         }
         
         
+        recordQueue = DispatchQueue(label: "audio.cocurent.queue", qos: .userInteractive, attributes: .concurrent)
         
-//        recordQueue = DispatchQueue(label: "audio.cocurent.queue", qos: .userInteractive, attributes: .concurrent)
-//
-//        recordQueue?.async { [weak self] in
-        
-        record()
-        
-//            do {
-//                try self?.record()
-//            } catch {
-//                print("Start recodring error: \(error)")
-//            }
-        //}
+        recordQueue?.async { [unowned self] in
+            self.record()
+        }
     }
     
     func saveTask(taskTitle: String) {
@@ -79,9 +71,6 @@ class SpeechTaskViewModel: SpeechTaskViewModelType, SpeechTaskViewModelInputs, S
         newTask.taskDate = Date()
 
         dataSource.addTask(from: newTask)
-        recordQueue?.sync { [weak self] in
-            self?.stopAudio()
-        }
         
         stopAudio()
     }
@@ -100,24 +89,15 @@ class SpeechTaskViewModel: SpeechTaskViewModelType, SpeechTaskViewModelInputs, S
 extension SpeechTaskViewModel {
     
     private func stopAudio() {
-        self.recognitionRequest?.endAudio()
-        self.recognitionTask?.finish()
-        self.audioEngine?.inputNode.removeTap(onBus: 0)
-        self.audioEngine?.stop()
-
-
-        
-//        self.audioEngine?.stop()
-//        self.audioEngine?.mainMixerNode.removeTap(onBus: 0)
-//
-//
-//        //self.recognitionTask?.finish()
-//        //self.inputNode?.removeTap(onBus: 0)
-//        self.recognitionRequest?.endAudio()
-//
-//        self.recognitionTask = nil
-//        //Maybe this line was causing the issue
-//       // self.audioEngine?.stop()
+        recordQueue?.sync { [unowned self] in
+            self.recognitionRequest?.endAudio()
+            self.recognitionTask?.finish()
+            self.recognitionRequest = nil
+            self.recognitionTask = nil
+            self.audioEngine?.inputNode.removeTap(onBus: 0)
+            self.audioEngine?.stop()
+            self.audioEngine = nil
+        }
     }
     
     private func getFullSpeechText() -> String {
@@ -201,9 +181,9 @@ extension SpeechTaskViewModel {
             let level = self?.getVolume(from: buffer, bufferSize: 1024)
 
             if let level = level {
-                DispatchQueue.main.async { [weak self] in
-                    self?.volumeLevel.raise(level)
-                }
+//                DispatchQueue.main.async {
+//                    self?.volumeLevel.raise(level)
+//                }
             }
         }
 
@@ -226,42 +206,43 @@ extension SpeechTaskViewModel {
                         
         recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest) { [weak self] result, error in
             
-            if let result = result {
-                guard let strongSelf = self else { return }
-
-                let bestTranscription = result.bestTranscription
-                let transcribedString = result.bestTranscription.formattedString
-
-                var confidence: Float = 0.0
-                if bestTranscription.segments.count > 0 {
-                    confidence = result.bestTranscription.segments[0].confidence
-                }
-
-                if !strongSelf.speechSentenses.isEmpty {
-                    var currentSentese = strongSelf.speechSentenses.removeLast()
-                    currentSentese = transcribedString
-                    strongSelf.speechSentenses.append(currentSentese)
-
-                    if confidence > 0.1 {
-                        strongSelf.speechSentenses.append("")
-                    }
-                } else {
-                    strongSelf.speechSentenses.append(transcribedString)
-                }
-                
-                let speechText = strongSelf.getFullSpeechText()
-
-                DispatchQueue.main.async { [weak self] in
-                    self?.speechTextChangeEvent.raise(speechText)
-                }
+            guard let result = result else { return }
+            
+            //guard let strongSelf = self else { return }
+            
+            let bestTranscription = result.bestTranscription
+            let transcribedString = result.bestTranscription.formattedString
+            
+            var confidence: Float = 0.0
+            if bestTranscription.segments.count > 0 {
+                confidence = result.bestTranscription.segments[0].confidence
             }
             
-            if error != nil {
-                self?.recognitionTask?.finish()
-                self?.inputNode?.removeTap(onBus: 0)
-                self?.audioEngine?.stop()
-                self?.recognitionRequest = nil
-            }
+//            if !self?.speechSentenses.isEmpty {
+//                var currentSentese = self?.speechSentenses.removeLast()
+//                currentSentese = transcribedString
+//                self.speechSentenses.append(currentSentese)
+//
+//                if confidence > 0.1 {
+//                    self.speechSentenses.append("")
+//                }
+//            } else {
+//                self.speechSentenses.append(transcribedString)
+//            }
+//
+//            let speechText = self.getFullSpeechText()
+            
+            //                DispatchQueue.main.async {
+            //                    self?.speechTextChangeEvent.raise(speechText)
+            //                }
+            
+            
+//            if error != nil {
+//                self.recognitionTask?.finish()
+//                self.inputNode?.removeTap(onBus: 0)
+//                self.audioEngine?.stop()
+//                self.recognitionRequest = nil
+//            }
         }
     }
 }

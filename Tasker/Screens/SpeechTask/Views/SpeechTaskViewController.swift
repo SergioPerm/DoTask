@@ -83,12 +83,11 @@ class SpeechTaskViewController: UIViewController, PresentableController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        viewModel.inputs.cancelTask()
+        
+        speakWave.stopAnimate()
         
         viewModel.outputs.speechTextChangeEvent.unsubscribe(self)
         viewModel.outputs.volumeLevel.unsubscribe(self)
-        
-        
     }
              
 }
@@ -197,16 +196,16 @@ extension SpeechTaskViewController {
         case .ended:
             trailingSwipeToCancelConstraint.constant = -30
             view.setNeedsLayout()
-            saveTaskAnaPop()
+            saveTaskAndPop()
         case .cancelled:
-            saveTaskAnaPop()
+            saveTaskAndPop()
         default:
             return
         }
         
     }
     
-    private func saveTaskAnaPop() {
+    private func saveTaskAndPop() {
         viewModel.inputs.saveTask(taskTitle: speechText.text)
         popSpeech()
     }

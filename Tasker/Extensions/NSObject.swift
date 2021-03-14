@@ -13,7 +13,11 @@ extension NSObject {
         return String(describing: type(of: self))
     }
     
-    class var className: String {
+    static var className: String {
+        if let classString = NSStringFromClass(self).components(separatedBy: CharacterSet(charactersIn: ".")).last {
+            return classString
+        }
+        
         return String(describing: self)
     }
 }

@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
         PushNotificationService.shared.checkAuthorization()
 
         let router = Router(rootViewController: UIViewController())
@@ -31,15 +32,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = router.rootViewController
         window?.makeKeyAndVisible()
         
-//        let path = FileManager
-//            .default
-//            .urls(for: .applicationSupportDirectory, in: .userDomainMask)
-//            .last?
-//            .absoluteString
-//            .replacingOccurrences(of: "file://", with: "")
-//            .removingPercentEncoding
-//
-//        print(path ?? "Not found")
         
         return true
     }

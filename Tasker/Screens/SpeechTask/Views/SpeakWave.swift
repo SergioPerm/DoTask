@@ -49,6 +49,10 @@ class SpeakWave: UIView {
         setup()
     }
     
+    deinit {
+        print("")
+    }
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
@@ -77,6 +81,11 @@ class SpeakWave: UIView {
 }
 
 extension SpeakWave {
+    
+    func stopAnimate() {
+        displayLink?.remove(from: .main, forMode: .common)
+        displayLink = nil
+    }
     
     func setVolume(value: Float) {
         displayLink?.isPaused = false

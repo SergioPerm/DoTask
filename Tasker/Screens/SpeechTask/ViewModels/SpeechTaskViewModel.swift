@@ -181,7 +181,7 @@ extension SpeechTaskViewModel {
             let level = self?.getVolume(from: buffer, bufferSize: 1024)
 
             if let level = level {
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
                     self?.volumeLevel.raise(level)
                 }
             }
@@ -231,7 +231,7 @@ extension SpeechTaskViewModel {
 
             let speechText = strongSelf.getFullSpeechText()
             
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
                 self?.speechTextChangeEvent.raise(speechText)
             }
             

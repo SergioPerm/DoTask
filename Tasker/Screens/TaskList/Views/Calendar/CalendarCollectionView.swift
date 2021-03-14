@@ -95,12 +95,14 @@ extension CalendarCollectionView {
             })
             
             if let pageIndex = pageIndex {
+                if visibleCells.isEmpty { return }
+                
                 if currentIndex != pageIndex {
                     scrollToItem(at: IndexPath(row: 0, section: pageIndex), at: .top, animated: false)
-                } else {
-                    if let monthViewModel = viewModel?.outputs.calendarData[pageIndex] {
-                        viewModel?.inputs.setSelectedMonth(monthViewModel: monthViewModel)
-                    }
+                }
+                
+                if let monthViewModel = viewModel?.outputs.calendarData[pageIndex] {
+                    viewModel?.inputs.setSelectedMonth(monthViewModel: monthViewModel)
                 }
             }
         }

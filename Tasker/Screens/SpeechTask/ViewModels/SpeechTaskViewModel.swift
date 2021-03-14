@@ -16,9 +16,10 @@ class SpeechTaskViewModel: SpeechTaskViewModelType, SpeechTaskViewModelInputs, S
     // MARK: Audio
     private var recordQueue: DispatchQueue?
     
-    private let audioEngine = AVAudioEngine()
+    private var audioEngine: AVAudioEngine?
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
+    private var inputNode: AVAudioInputNode?
     
     private var speechSentenses: [String] = []
     
@@ -29,6 +30,10 @@ class SpeechTaskViewModel: SpeechTaskViewModelType, SpeechTaskViewModelInputs, S
         self.dataSource = dataSource
         self.speechTextChangeEvent = Event<String>()
         self.volumeLevel = Event<Float>()
+    }
+    
+    deinit {
+        print("test")
     }
     
     // MARK: Inputs
@@ -54,35 +59,35 @@ class SpeechTaskViewModel: SpeechTaskViewModelType, SpeechTaskViewModelInputs, S
         
         
         
-        recordQueue = DispatchQueue(label: "audio.cocurent.queue", qos: .userInteractive, attributes: .concurrent)
-
-        recordQueue?.async { [weak self] in
-            do {
-                try self?.record()
-            } catch {
-                print("Start recodring error: \(error)")
-            }
-        }
+//        recordQueue = DispatchQueue(label: "audio.cocurent.queue", qos: .userInteractive, attributes: .concurrent)
+//
+//        recordQueue?.async { [weak self] in
         
+        record()
         
-        
+//            do {
+//                try self?.record()
+//            } catch {
+//                print("Start recodring error: \(error)")
+//            }
+        //}
     }
     
     func saveTask(taskTitle: String) {
         var newTask = Task()
         newTask.title = taskTitle
         newTask.taskDate = Date()
-        
+
         dataSource.addTask(from: newTask)
+        recordQueue?.sync { [weak self] in
+            self?.stopAudio()
+        }
+        
+        stopAudio()
     }
     
     func cancelTask() {
-        recordQueue?.sync { [weak self] in
-            self?.recognitionTask?.finish()
-            self?.audioEngine.inputNode.removeTap(onBus: 0)
-            self?.audioEngine.stop()
-            self?.recognitionRequest = nil
-        }
+        stopAudio()
     }
     
     // MARK: Outputs
@@ -93,6 +98,27 @@ class SpeechTaskViewModel: SpeechTaskViewModelType, SpeechTaskViewModelInputs, S
 }
 
 extension SpeechTaskViewModel {
+    
+    private func stopAudio() {
+        self.recognitionRequest?.endAudio()
+        self.recognitionTask?.finish()
+        self.audioEngine?.inputNode.removeTap(onBus: 0)
+        self.audioEngine?.stop()
+
+
+        
+//        self.audioEngine?.stop()
+//        self.audioEngine?.mainMixerNode.removeTap(onBus: 0)
+//
+//
+//        //self.recognitionTask?.finish()
+//        //self.inputNode?.removeTap(onBus: 0)
+//        self.recognitionRequest?.endAudio()
+//
+//        self.recognitionTask = nil
+//        //Maybe this line was causing the issue
+//       // self.audioEngine?.stop()
+    }
     
     private func getFullSpeechText() -> String {
         var fullText = ""
@@ -136,7 +162,13 @@ extension SpeechTaskViewModel {
         }
     }
     
-    private func record() throws {
+    private func record() {
+        
+        if audioEngine == nil {
+            audioEngine = AVAudioEngine()
+        }
+        
+        inputNode = audioEngine?.inputNode
         
         recognitionTask?.cancel()
         
@@ -145,27 +177,43 @@ extension SpeechTaskViewModel {
         recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
         
         let audioSession = AVAudioSession.sharedInstance()
-        try audioSession.setCategory(.record, mode: .measurement, options: .duckOthers)
-        try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+        
+        do {
+            try audioSession.setCategory(.record, mode: .measurement, options: .duckOthers)
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        do {
+            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+        } catch {
+            print(error.localizedDescription)
+        }
                 
-        let inputNode = audioEngine.inputNode
-        inputNode.removeTap(onBus: 0)
-        let recordingFormat = inputNode.outputFormat(forBus: 0)
-        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { [weak self] (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
+        audioEngine?.inputNode.removeTap(onBus: AVAudioNodeBus(0))
+               
+        
+        let recordingFormat = inputNode?.inputFormat(forBus: 0)
+        
+        audioEngine?.inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { [weak self] (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
             self?.recognitionRequest?.append(buffer)
             
             let level = self?.getVolume(from: buffer, bufferSize: 1024)
-            
+
             if let level = level {
                 DispatchQueue.main.async { [weak self] in
                     self?.volumeLevel.raise(level)
                 }
             }
-            
         }
 
-        audioEngine.prepare()
-        try audioEngine.start()
+        audioEngine?.prepare()
+        
+        do {
+            try audioEngine?.start()
+        } catch {
+            print(error.localizedDescription)
+        }
         
         guard let recognitionRequest = recognitionRequest else { fatalError("Unable to create a SFSpeechAudioBufferRecognitionRequest object") }
         recognitionRequest.shouldReportPartialResults = true
@@ -210,8 +258,8 @@ extension SpeechTaskViewModel {
             
             if error != nil {
                 self?.recognitionTask?.finish()
-                self?.audioEngine.inputNode.removeTap(onBus: 0)
-                self?.audioEngine.stop()
+                self?.inputNode?.removeTap(onBus: 0)
+                self?.audioEngine?.stop()
                 self?.recognitionRequest = nil
             }
         }

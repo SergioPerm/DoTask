@@ -185,7 +185,6 @@ extension MenuViewController {
         let draggingVelocityAfterExpand: CGFloat = 0.3
         
         let location = recognizer.location(in: parentController?.getView())
-        print(location)
                 
         switch recognizer.state {
         case .began:
@@ -298,15 +297,15 @@ extension MenuViewController: UITableViewDelegate {
         
         guard let taskListAction = openTaskListHandler,
               let taskDiaryAction = openTaskDiaryHandler else { return }
-        
+
         viewModel.inputs.selectItem(for: indexPath)
-        
+
         if let shortcutViewModel = viewModel.outputs.tableSections[indexPath.section].tableCells[indexPath.row] as? ShortcutMenuItemViewModel {
-            
+
             taskListAction(self, shortcutViewModel.shortcut.uid)
-            
+
         } else if let menuItemViewModel = viewModel.outputs.tableSections[indexPath.section].tableCells[indexPath.row] as? MenuItemViewModelMainType {
-            
+
             switch menuItemViewModel.menuType {
             case .mainList:
                 taskListAction(self, nil)
@@ -315,7 +314,7 @@ extension MenuViewController: UITableViewDelegate {
             }
         }
     }
-    
+        
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         if let shortcutViewModel = viewModel.outputs.tableSections[indexPath.section].tableCells[indexPath.row] as? ShortcutMenuItemViewModel {

@@ -172,8 +172,6 @@ extension SpeechRecorderAnimationController {
              })
                         
         } completion: { (finished) in
-            print("finish anim \(finished)")
-            
             [self.containerSnapshotSpeakWave,
              self.containerSnapshotSpeechText,
              self.containerSnapshotSpeechInfoText,

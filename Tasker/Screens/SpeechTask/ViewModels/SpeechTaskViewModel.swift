@@ -31,11 +31,7 @@ class SpeechTaskViewModel: SpeechTaskViewModelType, SpeechTaskViewModelInputs, S
         self.speechTextChangeEvent = Event<String>()
         self.volumeLevel = Event<Float>()
     }
-    
-    deinit {
-        print("test")
-    }
-    
+        
     // MARK: Inputs
     
     func startRecording() {

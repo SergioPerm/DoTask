@@ -48,11 +48,7 @@ class SpeakWave: UIView {
         super.init(frame: CGRect.zero)
         setup()
     }
-    
-    deinit {
-        print("")
-    }
-    
+        
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }

@@ -737,13 +737,6 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
-		B13E076D25A9913E00020F5E /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Protocols;
-			sourceTree = "<group>";
-		};
 		B13E077125A991F500020F5E /* Factories */ = {
 			isa = PBXGroup;
 			children = (
@@ -1858,7 +1851,6 @@
 			isa = PBXGroup;
 			children = (
 				B13E077125A991F500020F5E /* Factories */,
-				B13E076D25A9913E00020F5E /* Protocols */,
 				B13875DB25710057002DA626 /* SettingsMenuTableViewCell.swift */,
 				B13875DD25710985002DA626 /* MainMenuTableViewCell.swift */,
 				B13875EE25715DD2002DA626 /* ShortcutMenuTableViewCell.swift */,
@@ -1952,7 +1944,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1130;
-				LastUpgradeCheck = 1220;
+				LastUpgradeCheck = 1240;
 				ORGANIZATIONNAME = itotdel;
 				TargetAttributes = {
 					B1A913EB252056FA0021E15C = {
@@ -2378,7 +2370,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
-				SWIFT_COMPILATION_MODE = singlefile;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};

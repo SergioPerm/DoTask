@@ -63,9 +63,7 @@ extension SpeechText {
             }
             font = textFont.withSize(textFont.pointSize - 0.2)
             sizeToFit()
-            
-            print("уменьшаем!")
-            
+                        
             setMinimumFontSize()
         }
     }

@@ -94,6 +94,7 @@ extension ShortcutMenuTableViewCell {
         title.font = title.font.withSize(globalWidth * StyleGuide.SlideMenu.ratioToScreenWidthFontSizeMiddleTitle)
         
         contentView.addSubview(shapeView)
+
         shapeView.addSubview(title)
         
         let constraints = [

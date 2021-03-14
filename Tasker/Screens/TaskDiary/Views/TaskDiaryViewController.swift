@@ -28,7 +28,12 @@ class TaskDiaryNavigationController: UINavigationController, PresentableControll
         
         self.vc = TaskDiaryViewController(viewModel: viewModel)
         
-        super.init(rootViewController: vc)
+        if #available(iOS 13.0, *) {
+            super.init(rootViewController: vc)
+        } else {
+            super.init(nibName: nil, bundle: nil)
+            self.viewControllers = [vc]
+        }
         
         view.backgroundColor = .white
     }

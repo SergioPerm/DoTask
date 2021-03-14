@@ -181,9 +181,9 @@ extension SpeechTaskViewModel {
             let level = self?.getVolume(from: buffer, bufferSize: 1024)
 
             if let level = level {
-//                DispatchQueue.main.async {
-//                    self?.volumeLevel.raise(level)
-//                }
+                DispatchQueue.main.async {
+                    self?.volumeLevel.raise(level)
+                }
             }
         }
 
@@ -207,8 +207,7 @@ extension SpeechTaskViewModel {
         recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest) { [weak self] result, error in
             
             guard let result = result else { return }
-            
-            //guard let strongSelf = self else { return }
+            guard let strongSelf = self else { return }
             
             let bestTranscription = result.bestTranscription
             let transcribedString = result.bestTranscription.formattedString
@@ -218,31 +217,30 @@ extension SpeechTaskViewModel {
                 confidence = result.bestTranscription.segments[0].confidence
             }
             
-//            if !self?.speechSentenses.isEmpty {
-//                var currentSentese = self?.speechSentenses.removeLast()
-//                currentSentese = transcribedString
-//                self.speechSentenses.append(currentSentese)
-//
-//                if confidence > 0.1 {
-//                    self.speechSentenses.append("")
-//                }
-//            } else {
-//                self.speechSentenses.append(transcribedString)
-//            }
-//
-//            let speechText = self.getFullSpeechText()
+            if !strongSelf.speechSentenses.isEmpty {
+                var currentSentese = strongSelf.speechSentenses.removeLast()
+                currentSentese = transcribedString
+                strongSelf.speechSentenses.append(currentSentese)
+
+                if confidence > 0.1 {
+                    strongSelf.speechSentenses.append("")
+                }
+            } else {
+                strongSelf.speechSentenses.append(transcribedString)
+            }
+
+            let speechText = strongSelf.getFullSpeechText()
             
-            //                DispatchQueue.main.async {
-            //                    self?.speechTextChangeEvent.raise(speechText)
-            //                }
+            DispatchQueue.main.async {
+                self?.speechTextChangeEvent.raise(speechText)
+            }
             
-            
-//            if error != nil {
-//                self.recognitionTask?.finish()
-//                self.inputNode?.removeTap(onBus: 0)
-//                self.audioEngine?.stop()
-//                self.recognitionRequest = nil
-//            }
+            if error != nil {
+                self?.recognitionTask?.finish()
+                self?.inputNode?.removeTap(onBus: 0)
+                self?.audioEngine?.stop()
+                self?.recognitionRequest = nil
+            }
         }
     }
 }

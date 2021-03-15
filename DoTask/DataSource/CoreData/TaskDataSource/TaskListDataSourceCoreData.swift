@@ -342,7 +342,7 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
         if let uuid: UUID = UUID(uuidString: task.uid) {
             
             newTask.identificator = uuid
-            newTask.title = task.title
+            newTask.title = task.title.trimmingCharacters(in: .whitespacesAndNewlines)
             newTask.taskDate = task.taskDate
             newTask.reminderDate = task.reminderDate
             newTask.reminderGeo = task.reminderGeo
@@ -362,7 +362,7 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
             task.subtasks.forEach {
                 let newSubtask = SubtaskManaged(context: context)
                 newSubtask.isDone = $0.isDone
-                newSubtask.title = $0.title
+                newSubtask.title = $0.title.trimmingCharacters(in: .whitespacesAndNewlines)
                 newSubtask.priority = $0.priority
                 newSubtask.task = newTask
             }
@@ -384,7 +384,7 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
     
     func updateTask(from task: Task) {
         if let taskManaged = taskForTaskModel(taskModel: task) {
-            taskManaged.title = task.title
+            taskManaged.title = task.title.trimmingCharacters(in: .whitespacesAndNewlines)
             taskManaged.taskDate = task.taskDate
             taskManaged.reminderDate = task.reminderDate
             taskManaged.reminderGeo = task.reminderGeo
@@ -404,7 +404,7 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
             task.subtasks.forEach {
                 let newSubtask = SubtaskManaged(context: context)
                 newSubtask.isDone = $0.isDone
-                newSubtask.title = $0.title
+                newSubtask.title = $0.title.trimmingCharacters(in: .whitespacesAndNewlines)
                 newSubtask.priority = $0.priority
                 newSubtask.task = taskManaged
             }
@@ -530,24 +530,25 @@ extension TaskListDataSourceCoreData {
         if let shortcutFilter = shortcutFilter {
             guard let shortcutManaged = shortcutByIdentifier(identifier: shortcutFilter) else { return }
             predicates.append(NSPredicate(format: "shortcut == %@", shortcutManaged))
+        } else {
+            predicates.append(NSPredicate(format: "shortcut.showInMainList == %@ OR shortcut == nil", NSNumber(value: true)))
         }
         
         if let dayFilter = dayFilter {
             predicates.append(NSPredicate(format: "taskDate >= %@ AND taskDate <= %@", dayFilter.startOfDay() as NSDate, dayFilter.endOfDay() as NSDate))
             sectionNameKeyPath = "taskDay"
         } else {
-            //predicates.append(NSPredicate(format: "isDone == false"))
             predicates.append(NSPredicate(format: "isDone == %@", NSNumber(value: onlyFinishedTasksFilter)))
         }
         
         if onlyFinishedTasksFilter {
-            //predicates.append(NSPredicate(format: "isDone == %@", NSNumber(value: true)))
             sectionNameKeyPath = "doneDay"
             fetchRequest.sortDescriptors = taskDiarySortDescriptors
         }
                 
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         fetchRequest.fetchBatchSize = 20
+        
         // Initialize Fetched Results Controller
         self.fetchedResultsController = NSFetchedResultsController<TaskManaged>(fetchRequest: fetchRequest, managedObjectContext: self.context, sectionNameKeyPath: sectionNameKeyPath, cacheName: nil)
         

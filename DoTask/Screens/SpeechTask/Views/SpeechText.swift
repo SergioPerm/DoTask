@@ -10,7 +10,7 @@ import UIKit
 
 class SpeechText: UITextView {
     
-    private let placeholderText = "Speak"
+    private let placeholderText = ""
     
     init() {
         super.init(frame: .zero, textContainer: nil)

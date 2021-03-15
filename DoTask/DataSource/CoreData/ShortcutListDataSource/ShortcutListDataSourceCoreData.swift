@@ -96,7 +96,7 @@ extension ShortcutListDataSourceCoreData: ShortcutListDataSource {
         if let uuid: UUID = UUID(uuidString: shortcut.uid) {
             
             newShortcut.identificator = uuid
-            newShortcut.name = shortcut.name
+            newShortcut.name = shortcut.name.trimmingCharacters(in: .whitespacesAndNewlines)
             newShortcut.color = shortcut.color
             newShortcut.showInMainList = shortcut.showInMainList
             
@@ -111,7 +111,7 @@ extension ShortcutListDataSourceCoreData: ShortcutListDataSource {
     
     func updateShortcut(for shortcut: Shortcut) {
         if let shortcutManaged = shortcutManagedByIdentifier(identifier: shortcut.uid) {
-            shortcutManaged.name = shortcut.name
+            shortcutManaged.name = shortcut.name.trimmingCharacters(in: .whitespacesAndNewlines)
             shortcutManaged.color = shortcut.color
             shortcutManaged.showInMainList = shortcut.showInMainList
             

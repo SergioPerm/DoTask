@@ -9,7 +9,7 @@
 import Foundation
 import Speech
 
-class SpeechTaskViewModel: SpeechTaskViewModelType, SpeechTaskViewModelInputs, SpeechTaskViewModelOutputs {
+class SpeechTaskViewModel: NSObject, SpeechTaskViewModelType, SpeechTaskViewModelInputs, SpeechTaskViewModelOutputs {
     
     private let dataSource: TaskListDataSource
     
@@ -168,6 +168,7 @@ extension SpeechTaskViewModel {
                 
         audioEngine?.inputNode.removeTap(onBus: AVAudioNodeBus(0))
                
+        speechRecognizer?.delegate = self
         
         let recordingFormat = inputNode?.inputFormat(forBus: 0)
         
@@ -237,6 +238,14 @@ extension SpeechTaskViewModel {
                 self?.audioEngine?.stop()
                 self?.recognitionRequest = nil
             }
+        }
+    }
+}
+
+extension SpeechTaskViewModel: SFSpeechRecognizerDelegate {
+    func speechRecognizer(_ speechRecognizer: SFSpeechRecognizer, availabilityDidChange available: Bool) {
+        if available {
+            speechTextChangeEvent.raise("Speak..")
         }
     }
 }

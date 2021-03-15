@@ -230,7 +230,7 @@
 		B1DC53A125E3CC2E00140F17 /* TaskListCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DC53A025E3CC2E00140F17 /* TaskListCellFactory.swift */; };
 		B1E0653025651A8300948AB5 /* CalendarPickerViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E0652F25651A8300948AB5 /* CalendarPickerViewModelType.swift */; };
 		B1E0653225651EC100948AB5 /* CalendarPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E0653125651EC100948AB5 /* CalendarPickerViewModel.swift */; };
-		B1E06534256524EF00948AB5 /* Boxing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E06533256524EF00948AB5 /* Boxing.swift */; };
+		B1E06534256524EF00948AB5 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E06533256524EF00948AB5 /* Observable.swift */; };
 		B1E30EE425A6FBEE0036979D /* MenuViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E30EE325A6FBEE0036979D /* MenuViewModelInputs.swift */; };
 		B1E30EE725A70ED60036979D /* MenuViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E30EE625A70ED60036979D /* MenuViewModelOutputs.swift */; };
 		B1E30EEA25A70F7F0036979D /* MenuViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E30EE925A70F7F0036979D /* MenuViewModelType.swift */; };
@@ -493,7 +493,7 @@
 		B1DC53A025E3CC2E00140F17 /* TaskListCellFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListCellFactory.swift; sourceTree = "<group>"; };
 		B1E0652F25651A8300948AB5 /* CalendarPickerViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerViewModelType.swift; sourceTree = "<group>"; };
 		B1E0653125651EC100948AB5 /* CalendarPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerViewModel.swift; sourceTree = "<group>"; };
-		B1E06533256524EF00948AB5 /* Boxing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Boxing.swift; sourceTree = "<group>"; };
+		B1E06533256524EF00948AB5 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		B1E30EE325A6FBEE0036979D /* MenuViewModelInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewModelInputs.swift; sourceTree = "<group>"; };
 		B1E30EE625A70ED60036979D /* MenuViewModelOutputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewModelOutputs.swift; sourceTree = "<group>"; };
 		B1E30EE925A70F7F0036979D /* MenuViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewModelType.swift; sourceTree = "<group>"; };
@@ -917,8 +917,7 @@
 				B14C995825C691A600E36A94 /* DetailTaskTableSectionViewModel.swift */,
 				B1F10C0225D012A800153336 /* TaskDeleteViewModel.swift */,
 			);
-			name = ViewModels;
-			path = ../ViewModels;
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		B15EA21025CFFE8F002816E6 /* Protocols */ = {
@@ -1148,8 +1147,7 @@
 			children = (
 				B18349F3256AF49400D0D096 /* DetailTaskAssembly.swift */,
 			);
-			name = Assembly;
-			path = ../Assembly;
+			path = Assembly;
 			sourceTree = "<group>";
 		};
 		B188593A25F73DD000C4C440 /* ViewModels */ = {
@@ -1207,8 +1205,7 @@
 				B15C9B7225695B4C00A809B1 /* ViewModels */,
 				B18C91C025334D63004DFB73 /* Views */,
 			);
-			name = DetailTask;
-			path = DetailTask/DetailTask;
+			path = DetailTask;
 			sourceTree = "<group>";
 		};
 		B18C91C025334D63004DFB73 /* Views */ = {
@@ -1224,8 +1221,7 @@
 				B1E92B8B259C9A0A00449ABE /* DetailTaskScrollView.swift */,
 				B18D45F225A24E0E0081B11E /* DetailAccessoryView.swift */,
 			);
-			name = Views;
-			path = ../Views;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		B1A4E3E925EFAFA000F65463 /* SpeechRecorderAnimation */ = {
@@ -1610,7 +1606,7 @@
 		B1DC538625E3985900140F17 /* Observable */ = {
 			isa = PBXGroup;
 			children = (
-				B1E06533256524EF00948AB5 /* Boxing.swift */,
+				B1E06533256524EF00948AB5 /* Observable.swift */,
 				B1DC538725E3987E00140F17 /* Weak.swift */,
 				B1DC538A25E3995900140F17 /* Event.swift */,
 			);
@@ -2052,7 +2048,7 @@
 				B1D5C4BE252B540000C4B988 /* NotificationTaskObserver.swift in Sources */,
 				B1D79B0A25CD462D009DB9BF /* AnimationHelper.swift in Sources */,
 				B18349E7256AEACB00D0D096 /* RouterType.swift in Sources */,
-				B1E06534256524EF00948AB5 /* Boxing.swift in Sources */,
+				B1E06534256524EF00948AB5 /* Observable.swift in Sources */,
 				B13920142592329A0087D0E9 /* SubtaskViewModel.swift in Sources */,
 				B1D5DEC52523884700124DAD /* CalendarPickerViewController.swift in Sources */,
 				B15479D525DBB3AC00B70945 /* TaskListPeriodItemViewModelOutputs.swift in Sources */,

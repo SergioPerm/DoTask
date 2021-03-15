@@ -12,7 +12,7 @@ class MainMenuItemViewModel: MenuItemViewModelType, MenuItemViewModelMainType, M
     
     var menuType: MainMenuType
     
-    var selectedItem: Boxing<Bool>
+    var selectedItem: Observable<Bool>
     var rowHeight: Double = 50
 
     var title: String
@@ -21,7 +21,7 @@ class MainMenuItemViewModel: MenuItemViewModelType, MenuItemViewModelMainType, M
     init(title: String, imageName: String, selected: Bool = false, menuType: MainMenuType) {
         self.title = title
         self.imageName = imageName
-        self.selectedItem = Boxing(selected)
+        self.selectedItem = Observable(selected)
         self.menuType = menuType
     }
     

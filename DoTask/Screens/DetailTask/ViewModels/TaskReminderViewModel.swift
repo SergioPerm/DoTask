@@ -25,9 +25,9 @@ class TaskReminderViewModel: DetailTaskTableItemViewModelType, TaskReminderViewM
         self.openReminderHandler = openReminderHandler
         
         if let taskTime = taskTime {
-            self.timeInfo = Boxing(dateFormatter.string(from: taskTime))
+            self.timeInfo = Observable(dateFormatter.string(from: taskTime))
         } else {
-            self.timeInfo = Boxing(nil)
+            self.timeInfo = Observable(nil)
         }
     }
     
@@ -47,6 +47,6 @@ class TaskReminderViewModel: DetailTaskTableItemViewModelType, TaskReminderViewM
     
     // MARK: Outputs
     
-    var timeInfo: Boxing<String?>
+    var timeInfo: Observable<String?>
     
 }

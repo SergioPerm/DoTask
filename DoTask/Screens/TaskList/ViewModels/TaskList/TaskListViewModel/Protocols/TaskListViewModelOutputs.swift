@@ -10,10 +10,10 @@ import Foundation
 
 protocol TaskListViewModelOutputs {
     var periodItems: [TaskListPeriodItemViewModelType] { get }
-    var shortcutFilter: Boxing<ShortcutData?> { get }
-    var taskDiaryMode: Boxing<Bool> { get }
-    var taskListMode: Boxing<TaskListMode> { get }
+    var shortcutFilter: Observable<ShortcutData?> { get }
+    var taskDiaryMode: Observable<Bool> { get }
+    var taskListMode: Observable<TaskListMode> { get }
     var calendarViewModel: CalendarViewModelType? { get }
     var calendarSelectedDate: Date? { get }
-    var calendarMonth: Boxing<String?> { get }
+    var calendarMonth: Observable<String?> { get }
 }

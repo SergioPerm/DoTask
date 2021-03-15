@@ -16,8 +16,8 @@ class CalendarPickerViewModel: CalendarPickerViewModelType, CalendarPickerViewMo
     var outputs: CalendarPickerViewModelOutputs { return self }
     
     // MARK: Outputs
-    var days: Boxing<[CalendarPickerMonth]>
-    var selectedDate: Boxing<Date?>
+    var days: Observable<[CalendarPickerMonth]>
+    var selectedDate: Observable<Date?>
         
     // MARK: Inputs
     func calculateDays() {
@@ -50,8 +50,8 @@ class CalendarPickerViewModel: CalendarPickerViewModelType, CalendarPickerViewMo
     // MARK: Initializers
     
     init(selectedDate: Date?) {
-        self.selectedDate = Boxing(selectedDate)
-        self.days = Boxing([])
+        self.selectedDate = Observable(selectedDate)
+        self.days = Observable([])
     }
         
     // MARK: Calendar calculations

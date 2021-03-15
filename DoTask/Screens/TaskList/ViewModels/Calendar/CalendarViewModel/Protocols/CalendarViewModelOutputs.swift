@@ -9,8 +9,8 @@
 import Foundation
 
 protocol CalendarViewModelOutputs {
-    var selectedDate: Boxing<Date?> { get set }
+    var selectedDate: Observable<Date?> { get set }
     var selectedDay: CalendarDayViewModelType? { get }
     var calendarData: [CalendarMonthViewModelType] { get }
-    var focusDate: Boxing<Date> { get }
+    var focusDate: Observable<Date> { get }
 }

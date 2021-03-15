@@ -33,17 +33,17 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
         
         self.dataSource = dataSource
         
-        self.selectedDate = Boxing(task.taskDate)
-        self.selectedTime = Boxing(task.reminderDate ? task.taskDate : nil)
+        self.selectedDate = Observable(task.taskDate)
+        self.selectedTime = Observable(task.reminderDate ? task.taskDate : nil)
         
         if let shortcut =  self.task.shortcut {
-            self.selectedShortcut = Boxing(ShortcutData(title: shortcut.name, colorHex: shortcut.color))
+            self.selectedShortcut = Observable(ShortcutData(title: shortcut.name, colorHex: shortcut.color))
         } else {
-            self.selectedShortcut = Boxing(ShortcutData(title: nil, colorHex: nil))
+            self.selectedShortcut = Observable(ShortcutData(title: nil, colorHex: nil))
         }
 
         self.importanceLevel = Int(task.importanceLevel)
-        self.asksToDelete = Boxing(false)
+        self.asksToDelete = Observable(false)
         
         setShortcut(shortcutUID: shortcutUID)
         setupSections()
@@ -192,15 +192,15 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
     
     // MARK: OUTPUTS
     
-    var selectedDate: Boxing<Date?>
-    var selectedTime: Boxing<Date?>
+    var selectedDate: Observable<Date?>
+    var selectedTime: Observable<Date?>
     var importanceLevel: Int
     
     var title: String {
         return task.title
     }
     
-    var selectedShortcut: Boxing<ShortcutData>
+    var selectedShortcut: Observable<ShortcutData>
     
     var isNewTask: Bool {
         return task.isNew
@@ -220,9 +220,9 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
     
     var tableSections: [DetailTaskTableSectionViewModelType] = []
     
-    var onReturnToEdit: Boxing<Bool> = Boxing(true)
+    var onReturnToEdit: Observable<Bool> = Observable(true)
     
-    var asksToDelete: Boxing<Bool>
+    var asksToDelete: Observable<Bool>
 }
 
 // MARK: Setup Sections

@@ -9,11 +9,11 @@
 import Foundation
 
 protocol TaskListItemViewModelOutputs {
-    var title: Boxing<String> { get }
-    var date: Boxing<String> { get }
-    var reminderTime: Boxing<String?> { get }
-    var importantColor: Boxing<String?> { get }
-    var shortcutColor: Boxing<String?> { get }
-    var isDone: Boxing<Bool> { get }
+    var title: Observable<String> { get }
+    var date: Observable<String> { get }
+    var reminderTime: Observable<String?> { get }
+    var importantColor: Observable<String?> { get }
+    var shortcutColor: Observable<String?> { get }
+    var isDone: Observable<Bool> { get }
     func getTaskUID() -> String
 }

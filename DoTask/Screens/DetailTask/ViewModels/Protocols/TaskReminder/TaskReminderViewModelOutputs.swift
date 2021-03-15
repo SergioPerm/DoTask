@@ -9,5 +9,5 @@
 import Foundation
 
 protocol TaskReminderViewModelOutputs {
-    var timeInfo: Boxing<String?> { get }
+    var timeInfo: Observable<String?> { get }
 }

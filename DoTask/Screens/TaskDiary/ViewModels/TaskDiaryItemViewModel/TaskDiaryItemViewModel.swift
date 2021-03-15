@@ -32,22 +32,22 @@ class TaskDiaryItemViewModel: TaskDiaryItemViewModelType, TaskDiaryItemViewModel
     var outputs: TaskDiaryItemViewModelOutputs { return self }
     
     init(task: Task, unsetDoneTaskHandler: @escaping ((_ taskUID: String) -> Void)) {
-        self.title = Boxing(task.title)
+        self.title = Observable(task.title)
         
         if let taskDate = task.taskDate {
-            self.date = Boxing(dateFormatter.string(from: taskDate))
-            self.reminderTime = Boxing(task.reminderDate ? timeFormatter.string(from: taskDate) : "")
+            self.date = Observable(dateFormatter.string(from: taskDate))
+            self.reminderTime = Observable(task.reminderDate ? timeFormatter.string(from: taskDate) : "")
         } else {
-            self.date = Boxing("")
-            self.reminderTime = Boxing("")
+            self.date = Observable("")
+            self.reminderTime = Observable("")
         }
         
-        self.importantColor = Boxing("")
+        self.importantColor = Observable("")
         
         if let shortcut = task.shortcut {
-            self.shortcutColor = Boxing(shortcut.color)
+            self.shortcutColor = Observable(shortcut.color)
         } else {
-            self.shortcutColor = Boxing(nil)
+            self.shortcutColor = Observable(nil)
         }
                 
         self.taskUID = task.uid
@@ -87,15 +87,15 @@ class TaskDiaryItemViewModel: TaskDiaryItemViewModelType, TaskDiaryItemViewModel
     
     // MARK: Outputs
     
-    var title: Boxing<String>
+    var title: Observable<String>
     
-    var date: Boxing<String>
+    var date: Observable<String>
     
-    var reminderTime: Boxing<String?>
+    var reminderTime: Observable<String?>
     
-    var importantColor: Boxing<String?>
+    var importantColor: Observable<String?>
     
-    var shortcutColor: Boxing<String?>
+    var shortcutColor: Observable<String?>
     
     func getTaskUID() -> String {
         return taskUID

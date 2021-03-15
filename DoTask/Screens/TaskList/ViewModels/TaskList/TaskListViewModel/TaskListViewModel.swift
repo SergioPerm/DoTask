@@ -36,11 +36,11 @@ class TaskListViewModel: TaskListViewModelType, TaskListViewModelInputs, TaskLis
     
     init(dataSource: TaskListDataSource) {
         self.dataSource = dataSource
-        self.shortcutFilter = Boxing(nil)
-        self.taskDiaryMode = Boxing(false)
+        self.shortcutFilter = Observable(nil)
+        self.taskDiaryMode = Observable(false)
         self.periodItems = []
-        self.taskListMode = Boxing(TaskListMode.list)
-        self.calendarMonth = Boxing(nil)
+        self.taskListMode = Observable(TaskListMode.list)
+        self.calendarMonth = Observable(nil)
         
         self.dataSource.observer = self
         		
@@ -111,16 +111,16 @@ class TaskListViewModel: TaskListViewModelType, TaskListViewModelInputs, TaskLis
     // MARK: Outputs
     
     var periodItems: [TaskListPeriodItemViewModelType]
-    var shortcutFilter: Boxing<ShortcutData?>
-    var taskDiaryMode: Boxing<Bool>
-    var taskListMode: Boxing<TaskListMode>
+    var shortcutFilter: Observable<ShortcutData?>
+    var taskDiaryMode: Observable<Bool>
+    var taskListMode: Observable<TaskListMode>
     var calendarViewModel: CalendarViewModelType?
     
     var calendarSelectedDate: Date? {
         return calendarViewModel?.outputs.selectedDay?.outputs.date
     }
     
-    var calendarMonth: Boxing<String?>
+    var calendarMonth: Observable<String?>
     
 }
 

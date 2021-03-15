@@ -32,25 +32,25 @@ class TaskListItemViewModel: TaskListItemViewModelType, TaskListItemViewModelInp
     private let changeDoneTaskHandler: ((_ taskUID: String, _ done: Bool) -> Void)
     
     init(task: Task, setDoneTaskHandler: @escaping ((_ taskUID: String, _ done: Bool) -> Void)) {
-        self.title = Boxing(task.title)
+        self.title = Observable(task.title)
         
         if let taskDate = task.taskDate {
-            self.date = Boxing(dateFormatter.string(from: taskDate))
-            self.reminderTime = Boxing(task.reminderDate ? timeFormatter.string(from: taskDate) : "")
+            self.date = Observable(dateFormatter.string(from: taskDate))
+            self.reminderTime = Observable(task.reminderDate ? timeFormatter.string(from: taskDate) : "")
         } else {
-            self.date = Boxing("")
-            self.reminderTime = Boxing("")
+            self.date = Observable("")
+            self.reminderTime = Observable("")
         }
         
-        self.importantColor = Boxing("")
+        self.importantColor = Observable("")
         
         if let shortcut = task.shortcut {
-            self.shortcutColor = Boxing(shortcut.color)
+            self.shortcutColor = Observable(shortcut.color)
         } else {
-            self.shortcutColor = Boxing(nil)
+            self.shortcutColor = Observable(nil)
         }
         
-        self.isDone = Boxing(task.isDone)
+        self.isDone = Observable(task.isDone)
         
         self.taskUID = task.uid
         self.changeDoneTaskHandler = setDoneTaskHandler
@@ -95,12 +95,12 @@ class TaskListItemViewModel: TaskListItemViewModelType, TaskListItemViewModelInp
     
     // MARK: Outputs
     
-    var title: Boxing<String>
-    var date: Boxing<String>
-    var reminderTime: Boxing<String?>
-    var importantColor: Boxing<String?>
-    var shortcutColor: Boxing<String?>
-    var isDone: Boxing<Bool>
+    var title: Observable<String>
+    var date: Observable<String>
+    var reminderTime: Observable<String?>
+    var importantColor: Observable<String?>
+    var shortcutColor: Observable<String?>
+    var isDone: Observable<Bool>
     
     func getTaskUID() -> String {
         return taskUID

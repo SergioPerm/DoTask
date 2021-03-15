@@ -9,6 +9,6 @@
 import Foundation
 
 protocol CalendarPickerViewModelOutputs {
-    var selectedDate: Boxing<Date?> { get set}
-    var days: Boxing<[CalendarPickerMonth]> { get }
+    var selectedDate: Observable<Date?> { get set}
+    var days: Observable<[CalendarPickerMonth]> { get }
 }

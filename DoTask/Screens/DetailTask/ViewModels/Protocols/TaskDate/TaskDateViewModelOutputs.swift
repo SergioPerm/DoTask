@@ -9,5 +9,5 @@
 import Foundation
 
 protocol TaskDateViewModelOutputs {
-    var dateInfo: Boxing<String?> { get }
+    var dateInfo: Observable<String?> { get }
 }

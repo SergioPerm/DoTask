@@ -25,9 +25,9 @@ class TaskDateViewModel: DetailTaskTableItemViewModelType, TaskDateViewModelType
         self.openCalendarHandler = openCalendarHandler
         
         if let taskDate = taskDate {
-            self.dateInfo = Boxing(dateFormatter.string(from: taskDate))
+            self.dateInfo = Observable(dateFormatter.string(from: taskDate))
         } else {
-            self.dateInfo = Boxing(nil)
+            self.dateInfo = Observable(nil)
         }
     }
     
@@ -48,6 +48,6 @@ class TaskDateViewModel: DetailTaskTableItemViewModelType, TaskDateViewModelType
     
     // MARK: Outputs
     
-    var dateInfo: Boxing<String?>
+    var dateInfo: Observable<String?>
     
 }

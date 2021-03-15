@@ -9,10 +9,10 @@
 import Foundation
 
 protocol TaskDiaryItemViewModelOutputs {
-    var title: Boxing<String> { get }
-    var date: Boxing<String> { get }
-    var reminderTime: Boxing<String?> { get }
-    var importantColor: Boxing<String?> { get }
-    var shortcutColor: Boxing<String?> { get }
+    var title: Observable<String> { get }
+    var date: Observable<String> { get }
+    var reminderTime: Observable<String?> { get }
+    var importantColor: Observable<String?> { get }
+    var shortcutColor: Observable<String?> { get }
     func getTaskUID() -> String
 }

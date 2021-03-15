@@ -12,11 +12,11 @@ class ShortcutMenuItemViewModel: MenuItemViewModelType, MenuItemViewModelSelecta
     
     var rowHeight: Double = 40
     var shortcut: Shortcut
-    var selectedItem: Boxing<Bool>
+    var selectedItem: Observable<Bool>
     
     init(shortcut: Shortcut, selected: Bool = false) {
         self.shortcut = shortcut
-        self.selectedItem = Boxing(selected)
+        self.selectedItem = Observable(selected)
     }
     
     func reuse(for shortcut: Shortcut) {

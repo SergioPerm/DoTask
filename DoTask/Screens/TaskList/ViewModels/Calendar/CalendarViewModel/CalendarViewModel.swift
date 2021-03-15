@@ -41,9 +41,9 @@ class CalendarViewModel: CalendarViewModelType, CalendarViewModelInputs, Calenda
     
     init(startDate: Date) {
         self.startDate = startDate
-        self.selectedDate = Boxing(Date())
+        self.selectedDate = Observable(Date())
         self.calendarData = []
-        self.focusDate = Boxing(Date())
+        self.focusDate = Observable(Date())
         
         calculateDays()
     }
@@ -146,10 +146,10 @@ class CalendarViewModel: CalendarViewModelType, CalendarViewModelInputs, Calenda
     
     // MARK: Outputs
     
-    var selectedDate: Boxing<Date?>
+    var selectedDate: Observable<Date?>
     var calendarData: [CalendarMonthViewModelType]
     var selectedDay: CalendarDayViewModelType?
-    var focusDate: Boxing<Date>
+    var focusDate: Observable<Date>
     
 }
 

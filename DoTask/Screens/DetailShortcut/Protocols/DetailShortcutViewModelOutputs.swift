@@ -9,7 +9,7 @@
 import UIKit
 
 protocol DetailShortcutViewModelOutputs {
-    var selectedColor: Boxing<UIColor?> { get }
+    var selectedColor: Observable<UIColor?> { get }
     var title: String { get }
     var isNew: Bool { get }
     var showInMainListSetting: Bool { get }

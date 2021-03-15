@@ -25,7 +25,7 @@ class DetailShortcutViewModel: DetailShortcutViewModelType, DetailShortcutViewMo
         self.dataSource = dataSource
         
         
-        self.selectedColor = Boxing(UIColor(hexString: shortcut.color))
+        self.selectedColor = Observable(UIColor(hexString: shortcut.color))
         self.title = shortcut.name
         
         if shortcutUID == nil {
@@ -65,7 +65,7 @@ class DetailShortcutViewModel: DetailShortcutViewModelType, DetailShortcutViewMo
 
     // MARK: OUTPUTS
     
-    var selectedColor: Boxing<UIColor?>
+    var selectedColor: Observable<UIColor?>
     var title: String
     var showInMainListSetting: Bool {
         return shortcut.showInMainList

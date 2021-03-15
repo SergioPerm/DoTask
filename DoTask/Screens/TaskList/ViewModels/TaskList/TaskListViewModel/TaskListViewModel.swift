@@ -149,11 +149,11 @@ extension TaskListViewModel {
         
         setFilter(filter: filter)
         
+        view?.tableViewReload()
+        
         periodItems.forEach {
             $0.inputs.setTaskListMode(mode: .calendar)
         }
-        
-        view?.tableViewReload()
     }
     
     private func setCalendarMonth(monthName: String?) {
@@ -162,13 +162,12 @@ extension TaskListViewModel {
     
     private func loadData() {
         
-        recreatePeriodItemsWireframe()//periodItems.removeAll()
+        recreatePeriodItemsWireframe()
         periodItemsFRC.removeAll()
         
         dataSource.tasksWithSections.forEach { timePeriod in
             
             guard let periodItem = periodItems.first(where: {
-                //find another solution!
                 $0.outputs.dailyName == timePeriod.dailyName
             }) else {
                 return

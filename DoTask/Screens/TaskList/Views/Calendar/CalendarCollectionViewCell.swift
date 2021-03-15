@@ -52,44 +52,7 @@ class CalendarCollectionViewCell: UICollectionViewCell {
           
         return layer
     }()
-    
-//    private lazy var dayWithTasksLayer: CAShapeLayer = {
-//        let circleLayer = CAShapeLayer()
-//        let radius: CGFloat = frame.width/16
-//        circleLayer.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: (2.0 * radius), height: 2.0 * radius), cornerRadius: radius).cgPath
-//        circleLayer.position = CGPoint(x: frame.width/2 - radius, y: frame.height * 0.75)
-//        circleLayer.lineWidth = 1
-//        circleLayer.strokeColor = Color.blueColor.uiColor.cgColor
-//        circleLayer.fillColor = Color.blueColor.uiColor.cgColor
-//
-//        return circleLayer
-//    }()
-//
-//    private lazy var dayWithDoneTasksLayer: CAShapeLayer = {
-//        let checkLayer = CAShapeLayer()
-//
-//        let path = UIBezierPath()
-//
-//        let startPoint = CGPoint(x: frame.width/2 - 6, y: (frame.height * 0.75) + 2)
-//
-//        path.move(to: startPoint)
-//
-//        var nextPoint = CGPoint(x: startPoint.x + 2, y: startPoint.y + 2)
-//        path.addLine(to: nextPoint)
-//        path.move(to: nextPoint)
-//
-//        nextPoint = CGPoint(x: nextPoint.x + 2.5, y: startPoint.y - 2.5)
-//        path.addLine(to: nextPoint)
-//
-//        checkLayer.path = path.cgPath
-//        checkLayer.lineWidth = 2.0
-//        checkLayer.lineCap = .round
-//        checkLayer.fillColor =  #colorLiteral(red: 0.364339892, green: 0.7325225515, blue: 0.4118772155, alpha: 1).cgColor
-//        checkLayer.strokeColor = #colorLiteral(red: 0.364339892, green: 0.7325225515, blue: 0.4118772155, alpha: 1).cgColor
-//
-//        return checkLayer
-//    }()
-    
+        
     private let dayLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "HelveticaNeue-Bold", size: 17)

@@ -9,8 +9,6 @@
 import Foundation
 
 protocol TaskListPeriodItemViewModelType {
-    //var title: String { get }
-    //var tasks: [TaskListItemViewModelType] { get set }
     var inputs: TaskListPeriodItemViewModelInputs { get }
     var outputs: TaskListPeriodItemViewModelOutputs { get }
 }

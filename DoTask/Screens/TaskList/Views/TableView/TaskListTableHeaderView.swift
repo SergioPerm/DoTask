@@ -11,6 +11,11 @@ import UIKit
 class TaskListTableHeaderView: UIView {
 
     var viewModel: TaskListPeriodItemViewModelType? {
+//        willSet {
+//            if newValue == nil {
+//                viewModel?.outputs.taskListModeEvent.unsubscribe(self)
+//            }
+//        }
         didSet {
             bindViewModel()
         }
@@ -46,19 +51,7 @@ class TaskListTableHeaderView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-//        guard let viewModel = viewModel else { return }
-//
-//        if viewModel.outputs.isEmpty {
-//            frame.size.height = StyleGuide.TaskList.Sizes.headerTitleHeight
-//            titleLabel.frame = CGRect.init(x: 0, y: 0, width: frame.width, height: StyleGuide.TaskList.Sizes.headerTitleHeight)
-//
-//        } else {
-//            titleLabel.frame = CGRect.init(x: 0, y: 5, width: frame.width, height: StyleGuide.TaskList.Sizes.headerTitleHeight)
-//
-//            titleLayer.frame = titleLabel.bounds
-//        }
-        
+                
         titleLabel.frame = CGRect.init(x: 0, y: 0, width: frame.width, height: StyleGuide.TaskList.Sizes.headerTitleHeight)
         titleLayer.frame = titleLabel.bounds
     }
@@ -72,15 +65,29 @@ extension TaskListTableHeaderView {
             titleLayer.string = "  \(title)"
         }
         
-        viewModel?.outputs.taskListMode.bind { [weak self] mode in
-            if mode == .calendar {
-                self?.titleLayer.fontSize = 19
-            } else {
-                self?.titleLayer.fontSize = 27
-            }
+        guard let viewModel = viewModel else { return }
+
+        if viewModel.outputs.taskListMode == .calendar {
+            titleLayer.fontSize = 19
+        } else {
+            titleLayer.fontSize = 27
         }
         
+//        viewModel?.outputs.taskListModeEvent.subscribe(self, handler: { this, mode in
+//            if mode == .calendar {
+//                this.titleLayer.fontSize = 19
+//            } else {
+//                this.titleLayer.fontSize = 27
+//            }
+//        })
         
+//        viewModel?.outputs.taskListMode.bind { [weak self] mode in
+//            if mode == .calendar {
+//                self?.titleLayer.fontSize = 19
+//            } else {
+//                self?.titleLayer.fontSize = 27
+//            }
+//        }
         
     }
 }

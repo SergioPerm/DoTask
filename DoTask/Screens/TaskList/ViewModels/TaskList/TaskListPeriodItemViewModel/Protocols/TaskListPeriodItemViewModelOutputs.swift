@@ -12,7 +12,7 @@ protocol TaskListPeriodItemViewModelOutputs {
     var title: String { get }
     var dailyName: DailyName? { get }
     var tasks: [TaskListItemType] { get }
-    var taskListMode: Boxing<TaskListMode> { get }
+    var taskListMode: TaskListMode { get }
     var isEmpty: Bool { get }
     var showingCapWhenTasksIsEmpty: Bool { get }
     var capMode: EmptyCapMode? { get }

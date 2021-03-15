@@ -38,7 +38,7 @@ class TaskListPeriodItemViewModel: TaskListPeriodItemViewModelType, TaskListPeri
     init(taskTimePeriod: TaskTimePeriod, taskListMode: TaskListMode = .list) {
         self.taskTimePeriod = taskTimePeriod
         self.timePeriodName = taskTimePeriod.name
-        self.taskListMode = Boxing(taskListMode)
+        self.taskListMode = taskListMode
     }
     
     // MARK: Inputs
@@ -74,7 +74,7 @@ class TaskListPeriodItemViewModel: TaskListPeriodItemViewModelType, TaskListPeri
     }
     
     func setTaskListMode(mode: TaskListMode) {
-        taskListMode.value = mode
+        taskListMode = mode
     }
     
     // MARK: Outputs
@@ -85,7 +85,7 @@ class TaskListPeriodItemViewModel: TaskListPeriodItemViewModelType, TaskListPeri
     
     var tasks: [TaskListItemType] = []
     
-    var taskListMode: Boxing<TaskListMode>
+    var taskListMode: TaskListMode
     
     var isEmpty: Bool {
         

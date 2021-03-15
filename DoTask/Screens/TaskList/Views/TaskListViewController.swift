@@ -254,6 +254,7 @@ extension TaskListViewController {
         } else {
             viewModel.inputs.setMode(mode: .list)
         }
+        
         tableView.reloadData()
     }
     

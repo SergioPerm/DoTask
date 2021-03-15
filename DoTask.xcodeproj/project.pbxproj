@@ -392,7 +392,7 @@
 		B17ED83C25BAEFB8009B51CB /* ImageWithoutRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWithoutRender.swift; sourceTree = "<group>"; };
 		B17F3E1125A5ADC400C4D5A1 /* UICollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewCell.swift; sourceTree = "<group>"; };
 		B1804BB7255A8CED007FECCF /* StyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleGuide.swift; sourceTree = "<group>"; };
-		B1823069258119DD009ABCE1 /* DetailTaskViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DetailTaskViewType.swift; path = DoTask/Screens/DetailTask/DetailTask/Views/Protocols/DetailTaskViewType.swift; sourceTree = SOURCE_ROOT; };
+		B1823069258119DD009ABCE1 /* DetailTaskViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DetailTaskViewType.swift; path = DoTask/Screens/DetailTask/Views/Protocols/DetailTaskViewType.swift; sourceTree = SOURCE_ROOT; };
 		B182306E25811D40009ABCE1 /* DetailTaskEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskEditViewController.swift; sourceTree = "<group>"; };
 		B18349E2256AEA9800D0D096 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		B18349E6256AEACB00D0D096 /* RouterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterType.swift; sourceTree = "<group>"; };
@@ -917,7 +917,8 @@
 				B14C995825C691A600E36A94 /* DetailTaskTableSectionViewModel.swift */,
 				B1F10C0225D012A800153336 /* TaskDeleteViewModel.swift */,
 			);
-			path = ViewModels;
+			name = ViewModels;
+			path = ../ViewModels;
 			sourceTree = "<group>";
 		};
 		B15EA21025CFFE8F002816E6 /* Protocols */ = {
@@ -1147,7 +1148,8 @@
 			children = (
 				B18349F3256AF49400D0D096 /* DetailTaskAssembly.swift */,
 			);
-			path = Assembly;
+			name = Assembly;
+			path = ../Assembly;
 			sourceTree = "<group>";
 		};
 		B188593A25F73DD000C4C440 /* ViewModels */ = {
@@ -1222,7 +1224,8 @@
 				B1E92B8B259C9A0A00449ABE /* DetailTaskScrollView.swift */,
 				B18D45F225A24E0E0081B11E /* DetailAccessoryView.swift */,
 			);
-			path = Views;
+			name = Views;
+			path = ../Views;
 			sourceTree = "<group>";
 		};
 		B1A4E3E925EFAFA000F65463 /* SpeechRecorderAnimation */ = {

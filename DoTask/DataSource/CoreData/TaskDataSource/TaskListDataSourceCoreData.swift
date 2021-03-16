@@ -15,6 +15,9 @@ class TaskListDataSourceCoreData: NSObject {
     // MARK: - Properites
     weak var observer: TaskListDataSourceObserver?
     private var fetchedResultsController: NSFetchedResultsController<TaskManaged> = NSFetchedResultsController()
+    
+    // for observe showInMainList property in shortcut
+    private var shortcutFecthResultsController: NSFetchedResultsController<ShortcutManaged> = NSFetchedResultsController()
     private let notificationCenter = PushNotificationService.shared
     
     // MARK: Filters
@@ -33,6 +36,7 @@ class TaskListDataSourceCoreData: NSObject {
         super.init()
         
         setupFetchResultsController()
+        setupShortcutFecthResultsController()
     }
 }
 
@@ -323,7 +327,7 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
         
         return [TaskTimePeriod]()
     }
-    
+        
     // MARK: Get tasks
     
     var tasks: [TaskManaged] {
@@ -447,7 +451,7 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
     }
 }
 
-// MARK: NSFetchedResultsControllerDelegate
+// MARK: Task FRC Delegate
 
 extension TaskListDataSourceCoreData: NSFetchedResultsControllerDelegate {
     
@@ -476,7 +480,18 @@ extension TaskListDataSourceCoreData: NSFetchedResultsControllerDelegate {
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-                
+        
+        if shortcutFecthResultsController == controller, let shortcutManaged = anObject as? ShortcutManaged {
+            context.performAndWait {
+                shortcutManaged.tasks.forEach {
+                    if let taskManaged = $0 as? TaskManaged {
+                        taskManaged.shortcut = shortcutManaged
+                    }
+                }
+            }
+            return
+        }
+        
         switch type {
         case .delete:
             observer?.taskDeleted(at: indexPath!)
@@ -485,15 +500,12 @@ extension TaskListDataSourceCoreData: NSFetchedResultsControllerDelegate {
                 observer?.taskInserted(at: indexPath)
             }
         case .move:
-//            if indexPath == newIndexPath {
-//                observer?.taskUpdated(at: indexPath!)
-//            } else {
-                if let indexPath = indexPath {
-                    observer?.taskDeleted(at: indexPath)
-                }
-                if let newIndexPath = newIndexPath {
-                    observer?.taskInserted(at: newIndexPath)
-                //}
+            if let indexPath = indexPath {
+                observer?.taskDeleted(at: indexPath)
+            }
+            if let newIndexPath = newIndexPath {
+                observer?.taskInserted(at: newIndexPath)
+                
             }
         case .update:
             if let indexPath = indexPath {
@@ -507,8 +519,27 @@ extension TaskListDataSourceCoreData: NSFetchedResultsControllerDelegate {
     
 }
 
+// MARK: Shortcut FRC Delegate
+
+
+
 // MARK: FRC
 extension TaskListDataSourceCoreData {
+    
+    private func setupShortcutFecthResultsController() {
+        let fetchRequest: NSFetchRequest<ShortcutManaged> = ShortcutManaged.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        
+        shortcutFecthResultsController = NSFetchedResultsController<ShortcutManaged>(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        
+        shortcutFecthResultsController.delegate = self
+        
+        do {
+            try shortcutFecthResultsController.performFetch()
+        } catch {
+            fatalError()
+        }
+    }
     
     private func setupFetchResultsController() {
         // Setting up fetchedResultsController
@@ -553,6 +584,7 @@ extension TaskListDataSourceCoreData {
         self.fetchedResultsController = NSFetchedResultsController<TaskManaged>(fetchRequest: fetchRequest, managedObjectContext: self.context, sectionNameKeyPath: sectionNameKeyPath, cacheName: nil)
         
         fetchedResultsController.delegate = self
+        
     }
     
     private func fetchTasks() -> [TaskManaged] {

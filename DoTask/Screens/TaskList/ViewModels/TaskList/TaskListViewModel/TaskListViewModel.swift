@@ -53,7 +53,7 @@ class TaskListViewModel: TaskListViewModelType, TaskListViewModelInputs, TaskLis
     }
     
     // MARK: Inputs
-        
+            
     func setFilter(filter: TaskListFilter) {
         currentFilter = filter
         

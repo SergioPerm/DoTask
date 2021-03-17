@@ -91,6 +91,7 @@
 		B14C997425C6D6A500E36A94 /* PopUpModalAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14C997325C6D6A500E36A94 /* PopUpModalAnimationController.swift */; };
 		B14C997825C6E20C00E36A94 /* ZoomModalTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14C997725C6E20C00E36A94 /* ZoomModalTransitionController.swift */; };
 		B14C997C25C6E21F00E36A94 /* ZoomModalAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14C997B25C6E21F00E36A94 /* ZoomModalAnimationController.swift */; };
+		B1506A722602273A00DC2B88 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = B1506A712602273A00DC2B88 /* Podfile */; };
 		B15479D225DBB38D00B70945 /* TaskListPeriodItemViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15479D125DBB38D00B70945 /* TaskListPeriodItemViewModelInputs.swift */; };
 		B15479D525DBB3AC00B70945 /* TaskListPeriodItemViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15479D425DBB3AC00B70945 /* TaskListPeriodItemViewModelOutputs.swift */; };
 		B15B7D0225D1489E00EC1D98 /* DropNavigationTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B7D0125D1489E00EC1D98 /* DropNavigationTransitionController.swift */; };
@@ -265,9 +266,11 @@
 		B1F9B4DC25B8487F0049FE58 /* CardModalAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F9B4DB25B8487F0049FE58 /* CardModalAnimationController.swift */; };
 		B1F9B4DF25B849B00049FE58 /* CardModalTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F9B4DE25B849B00049FE58 /* CardModalTransitionController.swift */; };
 		B1FB9BD32588B41E00E54E1B /* TaskTitleTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FB9BD22588B41E00E54E1B /* TaskTitleTextView.swift */; };
+		DBBB393D0085E791C16F4F49 /* Pods_DoTask.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDCD4C7B8F2A0776B9536093 /* Pods_DoTask.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		92BBB4598D83E03977C24D8B /* Pods-DoTask.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoTask.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DoTask/Pods-DoTask.debug.xcconfig"; sourceTree = "<group>"; };
 		B10DF888252C629C000FF924 /* Calendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calendar.swift; sourceTree = "<group>"; };
 		B110991225FA283300E7CDB1 /* DiaryMenuItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryMenuItemViewModel.swift; sourceTree = "<group>"; };
 		B111F66625B06EE90086A0AC /* ShortcutListAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutListAssembly.swift; sourceTree = "<group>"; };
@@ -352,6 +355,7 @@
 		B14C997325C6D6A500E36A94 /* PopUpModalAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpModalAnimationController.swift; sourceTree = "<group>"; };
 		B14C997725C6E20C00E36A94 /* ZoomModalTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomModalTransitionController.swift; sourceTree = "<group>"; };
 		B14C997B25C6E21F00E36A94 /* ZoomModalAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomModalAnimationController.swift; sourceTree = "<group>"; };
+		B1506A712602273A00DC2B88 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		B15479D125DBB38D00B70945 /* TaskListPeriodItemViewModelInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPeriodItemViewModelInputs.swift; sourceTree = "<group>"; };
 		B15479D425DBB3AC00B70945 /* TaskListPeriodItemViewModelOutputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPeriodItemViewModelOutputs.swift; sourceTree = "<group>"; };
 		B15B7D0125D1489E00EC1D98 /* DropNavigationTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropNavigationTransitionController.swift; sourceTree = "<group>"; };
@@ -528,6 +532,8 @@
 		B1F9B4DB25B8487F0049FE58 /* CardModalAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardModalAnimationController.swift; sourceTree = "<group>"; };
 		B1F9B4DE25B849B00049FE58 /* CardModalTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardModalTransitionController.swift; sourceTree = "<group>"; };
 		B1FB9BD22588B41E00E54E1B /* TaskTitleTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTitleTextView.swift; sourceTree = "<group>"; };
+		BDCD4C7B8F2A0776B9536093 /* Pods_DoTask.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoTask.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E5AB8F39970F8AE6DF7A3253 /* Pods-DoTask.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoTask.release.xcconfig"; path = "Pods/Target Support Files/Pods-DoTask/Pods-DoTask.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -535,12 +541,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBBB393D0085E791C16F4F49 /* Pods_DoTask.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7211443C84B440439F1BA2C4 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				92BBB4598D83E03977C24D8B /* Pods-DoTask.debug.xcconfig */,
+				E5AB8F39970F8AE6DF7A3253 /* Pods-DoTask.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		B111F66525B06ED20086A0AC /* Assembly */ = {
 			isa = PBXGroup;
 			children = (
@@ -1236,8 +1252,11 @@
 		B1A913E3252056FA0021E15C = {
 			isa = PBXGroup;
 			children = (
+				B1506A712602273A00DC2B88 /* Podfile */,
 				B1A913EE252056FA0021E15C /* DoTask */,
 				B1A913ED252056FA0021E15C /* Products */,
+				7211443C84B440439F1BA2C4 /* Pods */,
+				FB489076FC3026FE2B75112C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1919,6 +1938,14 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		FB489076FC3026FE2B75112C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BDCD4C7B8F2A0776B9536093 /* Pods_DoTask.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1926,6 +1953,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B1A91403252056FC0021E15C /* Build configuration list for PBXNativeTarget "DoTask" */;
 			buildPhases = (
+				67E1C2203912A78C2773EE91 /* [CP] Check Pods Manifest.lock */,
 				B1A913E8252056FA0021E15C /* Sources */,
 				B1A913E9252056FA0021E15C /* Frameworks */,
 				B1A913EA252056FA0021E15C /* Resources */,
@@ -1979,6 +2007,7 @@
 			files = (
 				B1A913FF252056FC0021E15C /* LaunchScreen.storyboard in Resources */,
 				B1A913FC252056FC0021E15C /* Assets.xcassets in Resources */,
+				B1506A722602273A00DC2B88 /* Podfile in Resources */,
 				B1D5DECA2523884700124DAD /* CalendarPickerHeaderView.xib in Resources */,
 				B1D5DEC92523884700124DAD /* CalendarPickerViewCell.xib in Resources */,
 				B139A76025822527000BAE55 /* testStoryboard.storyboard in Resources */,
@@ -1988,6 +2017,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		67E1C2203912A78C2773EE91 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DoTask-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B1A913E8252056FA0021E15C /* Sources */ = {
@@ -2381,6 +2431,7 @@
 		};
 		B1A91404252056FC0021E15C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 92BBB4598D83E03977C24D8B /* Pods-DoTask.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -2403,6 +2454,7 @@
 		};
 		B1A91405252056FC0021E15C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E5AB8F39970F8AE6DF7A3253 /* Pods-DoTask.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";

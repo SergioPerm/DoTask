@@ -12,7 +12,11 @@ class SpeakWave: UIView {
 
     private lazy var gradient: CAGradientLayer = {
         let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [#colorLiteral(red: 1, green: 0.7027073819, blue: 0.9019589665, alpha: 1).cgColor, #colorLiteral(red: 1, green: 0.2117647059, blue: 0.6509803922, alpha: 1).cgColor]
+        
+        let color1 = StyleGuide.SpeechTask.SpeakWave.Colors.gradientColor1.cgColor
+        let color2 = StyleGuide.SpeechTask.SpeakWave.Colors.gradientColor2.cgColor
+        
+        gradientLayer.colors = [color1, color2]
         
         gradientLayer.startPoint = CGPoint(x: 0, y: 0)
         gradientLayer.endPoint = CGPoint(x: 1, y: 1)
@@ -22,7 +26,7 @@ class SpeakWave: UIView {
     
     private let zoomLayer: CAShapeLayer = {
         let layer = CAShapeLayer()
-        layer.backgroundColor = #colorLiteral(red: 1, green: 0.8026864087, blue: 0.9260444804, alpha: 1).cgColor
+        layer.backgroundColor = StyleGuide.SpeechTask.SpeakWave.Colors.zoomLayerColor.cgColor
         
         return layer
     }()
@@ -39,7 +43,10 @@ class SpeakWave: UIView {
     private var displayLink: CADisplayLink?
     private var currentSoundLevel: Float = 0.0
     private var currentScale: CGFloat = 0.0
-    private var frameTime: CFTimeInterval = 0.0
+    private var currentFrameTime: CFTimeInterval = 0.0
+    private var minFrameTime: CFTimeInterval = 0.03
+    private let zoomStep: CGFloat = 0.075
+    private let volumeStep: CGFloat = 0.23
     
     private var microphoneHeightConstraint = NSLayoutConstraint()
     private var microphoneWidthConstraint = NSLayoutConstraint()
@@ -59,18 +66,23 @@ class SpeakWave: UIView {
         layer.cornerRadius = bounds.width / 2.0
         layer.masksToBounds = true
         
+        let zoomLayerStartScale = StyleGuide.SpeechTask.SpeakWave.Sizes.Scale.zoomLayerXYStartScale
+        let gradientLayerStartScale = StyleGuide.SpeechTask.SpeakWave.Sizes.Scale.gradientLayerXYStartScale
+                
+        let micWidthRatioToGradient = StyleGuide.SpeechTask.SpeakWave.Sizes.Ratio.micWidthRatioToGradient
+        
         zoomLayer.frame = bounds
-        zoomLayer.transform = CATransform3DMakeScale(0.7, 0.7, 1.0)
+        zoomLayer.transform = CATransform3DMakeScale(zoomLayerStartScale, zoomLayerStartScale, 1.0)
         zoomLayer.cornerRadius = zoomLayer.frame.width / 2.0
         zoomLayer.bounds = zoomLayer.frame
         
         gradient.frame = bounds
-        gradient.transform = CATransform3DMakeScale(0.5, 0.5, 1.0)
+        gradient.transform = CATransform3DMakeScale(gradientLayerStartScale, gradientLayerStartScale, 1.0)
         gradient.cornerRadius = gradient.frame.width / 2.0
         gradient.bounds = gradient.frame
         
-        microphoneHeightConstraint.constant = gradient.frame.width * 0.5
-        microphoneWidthConstraint.constant = gradient.frame.width * 0.5
+        microphoneHeightConstraint.constant = gradient.frame.width * micWidthRatioToGradient
+        microphoneWidthConstraint.constant = gradient.frame.width * micWidthRatioToGradient
         layoutIfNeeded()
     }
     
@@ -93,23 +105,23 @@ extension SpeakWave {
     @objc private func updateAnimation() {
         
         let now = CACurrentMediaTime()
-        if now - frameTime < 0.03 {
+        if now - currentFrameTime < minFrameTime {
             return
         }
         
-        let zoomStep: CGFloat = 0.075
-        let volumeStep: CGFloat = 0.23
         var newScale: CGFloat = 0.0
         
         if currentScale == 0.0 {
             currentScale = zoomLayer.transform.m11
         }
         
+        let minScale = StyleGuide.SpeechTask.SpeakWave.Sizes.Scale.zoomLayerXYStartScale
+        
         if currentSoundLevel > 0.0 {
             
             //0.08 max 0.01 min
             let percentPower = CGFloat(currentSoundLevel) / 0.08
-            let maxTransform: CGFloat = 0.7 + (0.7 * (percentPower))
+            let maxTransform: CGFloat = minScale + (minScale * (percentPower))
 
             newScale = currentScale + volumeStep * percentPower
             if newScale > maxTransform {
@@ -117,10 +129,10 @@ extension SpeakWave {
                 currentSoundLevel = 0.0
             }
         } else {
-            if currentScale > 0.7 {
+            if currentScale > minScale {
                 newScale = currentScale - zoomStep
-                if newScale < 0.7 {
-                    newScale = 0.7
+                if newScale < minScale {
+                    newScale = minScale
                 }
             }
         }
@@ -128,7 +140,7 @@ extension SpeakWave {
         if newScale > 0.0 {
             zoomLayer.transform = CATransform3DMakeScale(newScale, newScale, 1.0)
             currentScale = newScale
-            frameTime = CACurrentMediaTime()
+            currentFrameTime = CACurrentMediaTime()
         }
     }
     
@@ -150,8 +162,10 @@ extension SpeakWave {
     
     private func setupConstraints() {
         
-        microphoneHeightConstraint = microphoneImageView.heightAnchor.constraint(equalToConstant: frame.width * 0.3)
-        microphoneWidthConstraint = microphoneImageView.widthAnchor.constraint(equalToConstant: frame.width * 0.3)
+        let micWidthRatioToGradient = StyleGuide.SpeechTask.SpeakWave.Sizes.Ratio.micWidthRatioToGradient
+        
+        microphoneHeightConstraint = microphoneImageView.heightAnchor.constraint(equalToConstant: gradient.frame.width * micWidthRatioToGradient)
+        microphoneWidthConstraint = microphoneImageView.widthAnchor.constraint(equalToConstant: gradient.frame.width * micWidthRatioToGradient)
         
         let constraints = [
             microphoneImageView.centerXAnchor.constraint(equalTo: centerXAnchor),

@@ -210,7 +210,7 @@ extension SpeechTaskViewModel {
             let transcribedString = result.bestTranscription.formattedString
             
             var confidence: Float = 0.0
-            if bestTranscription.segments.count > 0 {
+            if !bestTranscription.segments.isEmpty {
                 confidence = result.bestTranscription.segments[0].confidence
             }
             
@@ -219,6 +219,7 @@ extension SpeechTaskViewModel {
                 currentSentese = transcribedString
                 strongSelf.speechSentenses.append(currentSentese)
 
+                //0.1 is min confidence for recognize words
                 if confidence > 0.1 {
                     strongSelf.speechSentenses.append("")
                 }

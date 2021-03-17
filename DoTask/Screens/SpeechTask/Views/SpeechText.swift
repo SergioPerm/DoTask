@@ -31,9 +31,7 @@ extension SpeechText {
             updateTextFont()
         }
         
-        if isEmpty() && !text.isEmpty {
-            textAlignment = .left
-        }
+        textAlignment = .left
     }
     
     func updateTextFont() {
@@ -56,19 +54,19 @@ extension SpeechText {
         }
     }
     
-    private func setMinimumFontSize() {
-        if contentSize.height > frame.height {
-            guard let textFont = font else {
-                return
-            }
-            font = textFont.withSize(textFont.pointSize - 0.2)
-            sizeToFit()
-                        
-            setMinimumFontSize()
-        }
-    }
+//    private func setMinimumFontSize() {
+//        if contentSize.height > frame.height {
+//            guard let textFont = font else {
+//                return
+//            }
+//            font = textFont.withSize(textFont.pointSize - 0.2)
+//            sizeToFit()
+//
+//            setMinimumFontSize()
+//        }
+//    }
     
-    func isEmpty() -> Bool{
+    func isEmpty() -> Bool {
         if text == placeholderText {
             return true
         }

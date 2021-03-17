@@ -37,8 +37,7 @@ class DropNavigationAnimationController: NSObject, UIViewControllerAnimatedTrans
 extension DropNavigationAnimationController {
     private func presentTransition(using transitionContext: UIViewControllerContextTransitioning) {
                 
-        guard let fromVC = transitionContext.viewController(forKey: .from),
-              let toVC = transitionContext.viewController(forKey: .to)
+        guard let toVC = transitionContext.viewController(forKey: .to)
         else {
             return
         }
@@ -47,7 +46,6 @@ extension DropNavigationAnimationController {
         
         toVC.view.layoutIfNeeded()
         guard let snapshotTo = toVC.view.snapshotImageView() else { return }
-        //guard let snapshotTo = toVC.view.snapshotView(afterScreenUpdates: true) else { return }
         
         snapshotTo.frame = toVC.view.frame
         snapshotTo.frame.origin.y -= toVC.view.frame.height

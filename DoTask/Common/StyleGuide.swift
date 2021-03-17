@@ -35,6 +35,43 @@ struct StyleGuide {
         }
     }
     
+    struct SpeechTask {
+        struct Sizes {
+            enum RatioToScreenWidth {
+                static let speakWaveWidth: CGFloat = 0.7
+                static let speechTextWidth: CGFloat = 0.98
+                static let letftWidthClose: CGFloat = 0.4
+                static let closeZoneToSwipe: CGFloat = 0.4
+            }
+        }
+        
+        struct SpeakWave {
+            struct Sizes {
+                enum Scale {
+                    static let zoomLayerXYStartScale: CGFloat = 0.7
+                    static let gradientLayerXYStartScale: CGFloat = 0.5
+                }
+                
+                enum Ratio {
+                    static let micWidthRatioToGradient: CGFloat = 0.5
+                }
+            }
+            
+            enum Colors {
+                static let gradientColor1: UIColor = #colorLiteral(red: 1, green: 0.7027073819, blue: 0.9019589665, alpha: 1)
+                static let gradientColor2: UIColor = #colorLiteral(red: 1, green: 0.2117647059, blue: 0.6509803922, alpha: 1)
+                static let zoomLayerColor: UIColor = #colorLiteral(red: 1, green: 0.8026864087, blue: 0.9260444804, alpha: 1)
+            }
+        }
+        
+        struct SpeachText {
+            enum Colors {
+                static let textColor: UIColor = .white
+                static let backgroundColor: UIColor = .clear
+            }
+        }
+    }
+    
     static func getFontSizeRelativeToScreen(baseSize: CGFloat) -> CGFloat {
         //Current runable device/simulator width find
         let bounds = UIScreen.main.bounds

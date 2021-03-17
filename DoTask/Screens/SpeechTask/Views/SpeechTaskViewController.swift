@@ -113,13 +113,7 @@ extension SpeechTaskViewController {
         
         longTapRecognizer.addTarget(self, action: #selector(tapAction(sender:)))
         view.addGestureRecognizer(longTapRecognizer)
-        
-        let btnWidth = crossBtn.frame.width
-        guard let globalFrame = UIView.globalView?.frame else { return }
-        let btnOrigin = CGPoint(x: globalFrame.width - btnWidth - 20, y: globalFrame.height - btnWidth - 20 - view.globalSafeAreaInsets.bottom)
-        
-        crossBtn.frame.origin = btnOrigin
-                
+                        
         [crossBtn, speakWave, speechText, infoText, swipeToCancel].forEach({
             self.view.addSubview($0)
         })
@@ -131,7 +125,7 @@ extension SpeechTaskViewController {
         
         guard let globalFrame = UIView.globalView?.frame else { return }
         
-        let speakWaveWidth = globalFrame.width * 0.7
+        let speakWaveWidth = globalFrame.width * StyleGuide.SpeechTask.Sizes.RatioToScreenWidth.speakWaveWidth
                 
         let swipeToCancelHeightConstraint = swipeToCancel.heightAnchor.constraint(equalToConstant: 10)
         swipeToCancelHeightConstraint.priority = UILayoutPriority(250)
@@ -148,10 +142,10 @@ extension SpeechTaskViewController {
             speakWave.heightAnchor.constraint(equalToConstant: speakWaveWidth),
             speechText.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             speechText.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
-            speechText.widthAnchor.constraint(equalToConstant: globalFrame.width * 0.9),
+            speechText.widthAnchor.constraint(equalToConstant: globalFrame.width * StyleGuide.SpeechTask.Sizes.RatioToScreenWidth.speakWaveWidth),
             speechText.bottomAnchor.constraint(equalTo: speakWave.topAnchor, constant: -20),
             infoText.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            infoText.widthAnchor.constraint(equalToConstant: globalFrame.width * 0.7),
+            infoText.widthAnchor.constraint(equalToConstant: globalFrame.width * StyleGuide.SpeechTask.Sizes.RatioToScreenWidth.speakWaveWidth),
             infoText.topAnchor.constraint(equalTo: speakWave.bottomAnchor, constant: 50),
             leadingSwipeToCancel,
             trailingSwipeToCancelConstraint,
@@ -181,7 +175,7 @@ extension SpeechTaskViewController {
                 prevPointOnSwipe = sender.location(in: view).x
             }
             
-            let closeZoneX = globalFrame.width * 0.4
+            let closeZoneX = globalFrame.width * StyleGuide.SpeechTask.Sizes.RatioToScreenWidth.closeZoneToSwipe
             
             let currentX = sender.location(in: view).x
             

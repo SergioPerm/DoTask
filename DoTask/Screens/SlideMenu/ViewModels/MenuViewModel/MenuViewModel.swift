@@ -66,7 +66,7 @@ extension MenuViewModel {
         let mainItemsSection = MenuItemSectionViewModel(cells: [
             selectedCellViewModel,
             DiaryMenuItemViewModel(title: "Task diary", imageName: "diary", menuType: .diaryList)
-        ], sectionHeight: 30) 
+        ], sectionHeight: 30)
         
         let createShortcutSection = MenuItemSectionViewModel(cells: [createShortcutViewModel], sectionHeight: 0)
         

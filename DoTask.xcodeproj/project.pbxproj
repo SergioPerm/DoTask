@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -241,6 +241,9 @@
 		B1E47889257A3E2A0055A0B4 /* ShortcutManaged+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E47885257A3E2A0055A0B4 /* ShortcutManaged+CoreDataClass.swift */; };
 		B1E4788A257A3E2A0055A0B4 /* ShortcutManaged+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E47886257A3E2A0055A0B4 /* ShortcutManaged+CoreDataProperties.swift */; };
 		B1E92B8C259C9A0A00449ABE /* DetailTaskScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E92B8B259C9A0A00449ABE /* DetailTaskScrollView.swift */; };
+		B1EC8C9D260322F400FECE7F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B1EC8C9C260322F400FECE7F /* SnapKit */; };
+		B1EC8CAC260326DF00FECE7F /* Rswift in Frameworks */ = {isa = PBXBuildFile; productRef = B1EC8CAB260326DF00FECE7F /* Rswift */; };
+		B1EC8CB62603301800FECE7F /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EC8CB52603301800FECE7F /* R.generated.swift */; };
 		B1EF596C25F2280400238AF2 /* AnimationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EF596B25F2280400238AF2 /* AnimationDelegate.swift */; };
 		B1EF663825A489640050FF1C /* DetailShortcutAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EF663725A489640050FF1C /* DetailShortcutAssembly.swift */; };
 		B1EF663B25A489B50050FF1C /* DetailShortcutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EF663A25A489B50050FF1C /* DetailShortcutViewController.swift */; };
@@ -266,6 +269,19 @@
 		B1F9B4DF25B849B00049FE58 /* CardModalTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F9B4DE25B849B00049FE58 /* CardModalTransitionController.swift */; };
 		B1FB9BD32588B41E00E54E1B /* TaskTitleTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FB9BD22588B41E00E54E1B /* TaskTitleTextView.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B1EC8CA7260324EE00FECE7F /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		B10DF888252C629C000FF924 /* Calendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calendar.swift; sourceTree = "<group>"; };
@@ -504,6 +520,7 @@
 		B1E47885257A3E2A0055A0B4 /* ShortcutManaged+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShortcutManaged+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B1E47886257A3E2A0055A0B4 /* ShortcutManaged+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShortcutManaged+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B1E92B8B259C9A0A00449ABE /* DetailTaskScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskScrollView.swift; sourceTree = "<group>"; };
+		B1EC8CB52603301800FECE7F /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		B1EF596B25F2280400238AF2 /* AnimationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationDelegate.swift; sourceTree = "<group>"; };
 		B1EF663725A489640050FF1C /* DetailShortcutAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailShortcutAssembly.swift; sourceTree = "<group>"; };
 		B1EF663A25A489B50050FF1C /* DetailShortcutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailShortcutViewController.swift; sourceTree = "<group>"; };
@@ -535,6 +552,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1EC8C9D260322F400FECE7F /* SnapKit in Frameworks */,
+				B1EC8CAC260326DF00FECE7F /* Rswift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1252,6 +1271,7 @@
 		B1A913EE252056FA0021E15C /* DoTask */ = {
 			isa = PBXGroup;
 			children = (
+				B1EC8CB52603301800FECE7F /* R.generated.swift */,
 				B1804BB6255A8CC9007FECCF /* Common */,
 				B18349E0256AEA5A00D0D096 /* Coordinators */,
 				B18349EE256AEBD200D0D096 /* Screens */,
@@ -1926,10 +1946,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B1A91403252056FC0021E15C /* Build configuration list for PBXNativeTarget "DoTask" */;
 			buildPhases = (
-				B143D8642602623F002FBB6A /* ShellScript */,
+				B1EC8CAD2603271100FECE7F /* R.swift */,
 				B1A913E8252056FA0021E15C /* Sources */,
 				B1A913E9252056FA0021E15C /* Frameworks */,
 				B1A913EA252056FA0021E15C /* Resources */,
+				B1EC8CA7260324EE00FECE7F /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1937,6 +1958,8 @@
 			);
 			name = DoTask;
 			packageProductDependencies = (
+				B1EC8C9C260322F400FECE7F /* SnapKit */,
+				B1EC8CAB260326DF00FECE7F /* Rswift */,
 			);
 			productName = Tasker;
 			productReference = B1A913EC252056FA0021E15C /* DoTask.app */;
@@ -1967,6 +1990,9 @@
 			);
 			mainGroup = B1A913E3252056FA0021E15C;
 			packageReferences = (
+				B1EC8C9B260322F400FECE7F /* XCRemoteSwiftPackageReference "SnapKit" */,
+				B1EC8CA8260325FC00FECE7F /* XCRemoteSwiftPackageReference "R.swift" */,
+				B1EC8CAA260326DF00FECE7F /* XCRemoteSwiftPackageReference "R.swift" */,
 			);
 			productRefGroup = B1A913ED252056FA0021E15C /* Products */;
 			projectDirPath = "";
@@ -1995,7 +2021,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		B143D8642602623F002FBB6A /* ShellScript */ = {
+		B1EC8CAD2603271100FECE7F /* R.swift */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2003,14 +2029,17 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"$TEMP_DIR/rswift-lastrun",
 			);
+			name = R.swift;
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				$SRCROOT/DoTask/R.generated.swift,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "swift run --disable-automatic-resolution -c release swiftgen config run --config \"$SRCROOT/Configs/.swiftgen.yml\"\n";
+			shellScript = "$SRCROOT/rswift generate $SRCROOT/DoTask/R.generated.swift\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2174,6 +2203,7 @@
 				B17B8FBD25CC063C00663F97 /* UINavigationBar.swift in Sources */,
 				B1A9142525209CC60021E15C /* TaskManaged+CoreDataProperties.swift in Sources */,
 				B192163D2590697200B3FC07 /* SubTaskTableViewCell.swift in Sources */,
+				B1EC8CB62603301800FECE7F /* R.generated.swift in Sources */,
 				B1E30EEA25A70F7F0036979D /* MenuViewModelType.swift in Sources */,
 				B1EF664325A4B1DD0050FF1C /* ColorDotView.swift in Sources */,
 				B188594425F73FBA00C4C440 /* SpeechTaskViewModel.swift in Sources */,
@@ -2469,6 +2499,46 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B1EC8C9B260322F400FECE7F /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
+		B1EC8CA8260325FC00FECE7F /* XCRemoteSwiftPackageReference "R.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mac-cain13/R.swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.4.0;
+			};
+		};
+		B1EC8CAA260326DF00FECE7F /* XCRemoteSwiftPackageReference "R.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mac-cain13/R.swift.Library";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.4.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B1EC8C9C260322F400FECE7F /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B1EC8C9B260322F400FECE7F /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		B1EC8CAB260326DF00FECE7F /* Rswift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B1EC8CAA260326DF00FECE7F /* XCRemoteSwiftPackageReference "R.swift" */;
+			productName = Rswift;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		B1A913F8252056FA0021E15C /* Tasker.xcdatamodeld */ = {

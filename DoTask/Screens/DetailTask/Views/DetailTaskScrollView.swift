@@ -41,7 +41,7 @@ class DetailTaskScrollView: UIScrollView {
 
         var chevron = UIImageView()
          
-        chevron = UIImageView(image: UIImage(named: "chevron"))
+        chevron = UIImageView(image: R.image.detailTask.chevron())
         chevron.contentMode = .scaleAspectFit
         chevron.translatesAutoresizingMaskIntoConstraints = false
         chevron.tintColor = StyleGuide.DetailTask.Colors.chevronTintColor

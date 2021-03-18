@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class SpeechTaskViewController: UIViewController, PresentableController {
             
@@ -136,10 +137,6 @@ extension SpeechTaskViewController {
         leadingSwipeToCancel.priority = UILayoutPriority(250)
         
         let constraints = [
-            speakWave.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            speakWave.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            speakWave.widthAnchor.constraint(equalToConstant: speakWaveWidth),
-            speakWave.heightAnchor.constraint(equalToConstant: speakWaveWidth),
             speechText.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             speechText.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
             speechText.widthAnchor.constraint(equalToConstant: globalFrame.width * StyleGuide.SpeechTask.Sizes.RatioToScreenWidth.speakWaveWidth),
@@ -154,6 +151,11 @@ extension SpeechTaskViewController {
         ]
         
         NSLayoutConstraint.activate(constraints)
+        
+        speakWave.snp.makeConstraints { (make) in
+            make.center.equalTo(view)
+            make.width.height.equalTo(speakWaveWidth)
+        }
         
         view.layoutIfNeeded()
     }

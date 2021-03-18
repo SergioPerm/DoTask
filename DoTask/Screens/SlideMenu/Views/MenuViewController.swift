@@ -327,7 +327,7 @@ extension MenuViewController: UITableViewDelegate {
                 completion(true)
             })
             
-            if let editImage =  UIImage(named: "edit")?.cgImage {
+            if let editImage =  R.image.menu.edit()?.cgImage {
                 contextEditShortcut.image = ImageWithoutRender(cgImage: editImage, scale: 1.2, orientation: .up)
             }
             

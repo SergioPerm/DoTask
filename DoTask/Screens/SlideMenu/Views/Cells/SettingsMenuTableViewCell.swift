@@ -22,7 +22,7 @@ class SettingsMenuTableViewCell: UITableViewCell, TableViewCellType {
         //Settings button
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.tintImageWithColor(color: Color.blueColor.uiColor, image: UIImage(named: "settings"))
+        btn.tintImageWithColor(color: Color.blueColor.uiColor, image: R.image.menu.settings())
         btn.addTarget(self, action: #selector(menuSettingsAction(sender:)), for: .touchUpInside)
         return btn
     }()

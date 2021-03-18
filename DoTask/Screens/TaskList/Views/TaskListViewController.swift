@@ -182,7 +182,8 @@ extension TaskListViewController {
         
         //Menu btn
         let menuBtn = BarButtonItem()
-        menuBtn.setImage(UIImage(named: "menu")?.maskWithColor(color: StyleGuide.MainColors.blue), for: .normal)
+        
+        menuBtn.setImage(R.image.mainNavBar.menu()?.maskWithColor(color: StyleGuide.MainColors.blue), for: .normal)
         menuBtn.imageEdgeInsets = UIEdgeInsets(top: 9, left: 9, bottom: 9, right: 9)
         menuBtn.addTarget(self, action: #selector(tapMenuAction(sender:)), for: .touchUpInside)
         menuBtn.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
@@ -193,7 +194,8 @@ extension TaskListViewController {
         
         //Calendar btn
         let calendarButton = BarButtonItem()
-        calendarButton.setImage(UIImage(named: "calendarFill")?.maskWithColor(color: StyleGuide.MainColors.blue), for: .normal)
+        
+        calendarButton.setImage(R.image.mainNavBar.calendar()?.maskWithColor(color: StyleGuide.MainColors.blue), for: .normal)
         calendarButton.imageEdgeInsets = UIEdgeInsets(top: 9, left: 9, bottom: 9, right: 9)
         calendarButton.addTarget(self, action: #selector(openCalendarViewAction(sender:)), for: .touchUpInside)
         calendarButton.frame = CGRect(x: 0, y: 0, width: 44, height: 44)

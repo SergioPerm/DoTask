@@ -15,7 +15,7 @@ class SpeakWave: UIView {
         
         let color1 = StyleGuide.SpeechTask.SpeakWave.Colors.gradientColor1.cgColor
         let color2 = StyleGuide.SpeechTask.SpeakWave.Colors.gradientColor2.cgColor
-        
+                
         gradientLayer.colors = [color1, color2]
         
         gradientLayer.startPoint = CGPoint(x: 0, y: 0)
@@ -32,7 +32,7 @@ class SpeakWave: UIView {
     }()
     
     private let microphoneImageView: UIImageView = {
-        let image = UIImage(named: "microphone")?.maskWithColor(color: .white)
+        let image = R.image.speechTask.microphone()?.maskWithColor(color: .white)
         let imageView = UIImageView(image: image)
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false

@@ -13,7 +13,7 @@ class TaskDeleteTableViewCell: UITableViewCell, DetailTaskCellType {
     var viewModel: TaskDeleteViewModelType?
     
     private let infoImage: UIImageView = {
-        let imgView = UIImageView(image: UIImage(named: "trash")?.maskWithColor(color: .red))
+        let imgView = UIImageView(image: R.image.detailTask.trash()?.maskWithColor(color: .red))
         imgView.translatesAutoresizingMaskIntoConstraints = false
         imgView.contentMode = .scaleAspectFit
         

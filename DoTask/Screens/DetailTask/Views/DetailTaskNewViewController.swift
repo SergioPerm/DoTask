@@ -95,7 +95,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
     
     private let saveBtn: UIButton = {
         let btn = UIButton()
-        btn.setImage(UIImage(named: "checkmark"), for: .normal)
+        btn.setImage(R.image.detailTask.saveTask(), for: .normal)
         return btn
     }()
     

@@ -46,7 +46,7 @@ class CreateShortcutMenuTableViewCell: UITableViewCell, TableViewCellType {
     let createShortcutBtn: UIButton = {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setImage(UIImage(named: "add"), for: .normal)
+        btn.setImage(R.image.menu.addPlus(), for: .normal)
         btn.contentMode = .left
         btn.imageView?.contentMode = .scaleAspectFit
         

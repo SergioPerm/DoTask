@@ -102,14 +102,13 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
     
     private let saveBtn: UIButton = {
         let btn = UIButton()
-        btn.setImage(UIImage(named: "checkmark"), for: .normal)
+        btn.setImage(R.image.detailTask.saveTask(), for: .normal)
         return btn
     }()
     
     private let deleteBtn: UIButton = {
         let btn = UIButton()
-        
-        btn.setImage(UIImage(named: "trash")?.maskWithColor(color: .red), for: .normal)
+        btn.setImage(R.image.detailTask.trash()?.maskWithColor(color: .red), for: .normal)
         btn.setTitle("   Delete", for: .normal)
         btn.imageView?.contentMode = .scaleAspectFit
         btn.imageEdgeInsets = UIEdgeInsets(top: 12, left: 5, bottom: 12, right: 25)

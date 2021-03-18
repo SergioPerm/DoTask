@@ -40,7 +40,7 @@ class ShortcutListViewController: UIViewController, PresentableController, Short
     }()
     
     private let searchImage: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "search"))
+        let imageView = UIImageView(image: R.image.shortcutList.search())
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         

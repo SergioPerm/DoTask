@@ -17,7 +17,7 @@ class TaskDateTableViewCell: UITableViewCell, DetailTaskCellType {
     }
     
     private let infoImage: UIImageView = {
-        let imgView = UIImageView(image: UIImage(named: "calendar2")?.maskWithColor(color: .gray))
+        let imgView = UIImageView(image: R.image.detailTask.calendar()?.maskWithColor(color: .gray))
         imgView.translatesAutoresizingMaskIntoConstraints = false
         imgView.contentMode = .scaleAspectFit
         

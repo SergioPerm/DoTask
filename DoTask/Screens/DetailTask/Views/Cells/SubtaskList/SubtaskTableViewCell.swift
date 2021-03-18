@@ -71,8 +71,7 @@ class SubtaskTableViewCell: UITableViewCell, DetailTaskCellType {
     
     private let deleteButton: UIButton = {
         let deleteBtn = UIButton()
-        
-        deleteBtn.tintImageWithColor(color: .gray, image: UIImage(named: "cancel"))
+        deleteBtn.tintImageWithColor(color: .gray, image: R.image.detailTask.removeSubtask())
         deleteBtn.translatesAutoresizingMaskIntoConstraints = false
         
         return deleteBtn

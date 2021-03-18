@@ -11,7 +11,8 @@ import UIKit
 class SpeechSwipeCancel: UIView {
 
     private let arrowImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "SpeechCancelLeftArrow")?.maskWithColor(color: .white))
+        let image = R.image.speechTask.leftArrow()?.maskWithColor(color: .white)
+        let imageView = UIImageView(image: image)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         

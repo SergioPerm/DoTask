@@ -17,7 +17,7 @@ class TaskReminderTableViewCell: UITableViewCell, DetailTaskCellType {
     }
     
     private let infoImage: UIImageView = {
-        let imgView = UIImageView(image: UIImage(named: "reminder")?.maskWithColor(color: .gray))
+        let imgView = UIImageView(image: R.image.detailTask.reminder()?.maskWithColor(color: .gray))
         imgView.translatesAutoresizingMaskIntoConstraints = false
         imgView.contentMode = .scaleAspectFit
         

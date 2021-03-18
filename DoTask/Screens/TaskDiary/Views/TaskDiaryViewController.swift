@@ -131,7 +131,7 @@ extension TaskDiaryViewController {
         tableView.showsVerticalScrollIndicator = false
         
         let rotateButton = UIButton(type: .custom)
-        rotateButton.setImage(UIImage(named: "rotating"), for: .normal)
+        rotateButton.setImage(R.image.diaryTask.rotating(), for: .normal)
         rotateButton.addTarget(self, action: #selector(closeDiary(sender:)), for: .touchUpInside)
         rotateButton.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
         

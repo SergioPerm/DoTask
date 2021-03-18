@@ -39,7 +39,7 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         circleLayer.path = UIBezierPath(roundedRect: CGRect(x: 0.0, y: 0.0, width: 2.0 * radius, height: 2.0 * radius), cornerRadius: radius).cgPath
                                         
         circleLayer.position = CGPoint(x: 0.0, y: 0.0)
-        circleLayer.lineWidth = 4.0
+        circleLayer.lineWidth = StyleGuide.TaskList.Calendar.Sizes.currentDayLayerLineWidth
         circleLayer.strokeColor = Color.blueColor.uiColor.cgColor
         circleLayer.fillColor = Color.clearColor.uiColor.cgColor
          
@@ -48,7 +48,7 @@ class CalendarCollectionViewCell: UICollectionViewCell {
     
     private lazy var dayWithTasksLayer: CalendarDayWithTasksLayer = {
         let layer = CalendarDayWithTasksLayer()
-        layer.frame = CGRect(x: frame.width / 4, y: frame.height * 0.75, width: frame.width / 2, height: frame.width / 4)
+        layer.frame = CGRect(x: frame.width / 4, y: frame.height * 0.7, width: frame.width / 2, height: frame.width / 4)
           
         return layer
     }()

@@ -47,11 +47,7 @@ class TaskDiaryNavigationController: UINavigationController, PresentableControll
 class TaskDiaryViewController: UIViewController {
     
     // MARK: ViewModel
-    private var viewModel: TaskDiaryViewModelType {
-        didSet {
-            bindViewModel()
-        }
-    }
+    private var viewModel: TaskDiaryViewModelType
     
     // MARK: Properties
     
@@ -69,7 +65,6 @@ class TaskDiaryViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         
         viewModel.view = self
-        bindViewModel()
     }
     
     required init?(coder: NSCoder) {
@@ -89,17 +84,13 @@ class TaskDiaryViewController: UIViewController {
 }
 
 extension TaskDiaryViewController {
-    private func bindViewModel() {
-        
-    }
     
     private func setupView() {
         
         view.backgroundColor = .white
         
-        if let navBar = self.navigationController?.navigationBar {
-            navBar.setFlatNavBar()
-        }
+        guard let navBar = self.navigationController?.navigationBar else { return }
+        navBar.setFlatNavBar()
         
         let navTitle = NSMutableAttributedString(string: "Dia", attributes:[
                                                     NSAttributedString.Key.foregroundColor: Color.blueColor.uiColor,
@@ -113,9 +104,7 @@ extension TaskDiaryViewController {
         navLabel.attributedText = navTitle
         
         self.navigationItem.titleView = navLabel
-        
-//        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .undo, target: self, action: #selector(closeDiary(sender:)))
-        
+                
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(TaskDiaryTableViewCell.self, forCellReuseIdentifier: TaskDiaryTableViewCell.className)
@@ -131,9 +120,13 @@ extension TaskDiaryViewController {
         tableView.showsVerticalScrollIndicator = false
         
         let rotateButton = UIButton(type: .custom)
+        
+        let imageInset = StyleGuide.TaskList.NavBar.Sizes.insetImageNavBarBtn
+        
+        rotateButton.imageEdgeInsets = UIEdgeInsets(top: imageInset, left: imageInset, bottom: imageInset, right: imageInset)
         rotateButton.setImage(R.image.diaryTask.rotating(), for: .normal)
         rotateButton.addTarget(self, action: #selector(closeDiary(sender:)), for: .touchUpInside)
-        rotateButton.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
+        rotateButton.frame = CGRect(x: 0, y: 0, width: navBar.frame.height, height: navBar.frame.height)
         
         let barButtonItem = UIBarButtonItem(customView: rotateButton)
         

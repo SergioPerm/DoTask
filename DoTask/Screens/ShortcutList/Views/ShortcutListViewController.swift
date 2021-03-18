@@ -22,7 +22,7 @@ class ShortcutListViewController: UIViewController, PresentableController, Short
         let tableView = UITableView()
         tableView.bounces = false
         tableView.separatorStyle = .none
-        tableView.rowHeight = 50
+        tableView.rowHeight = StyleGuide.ShortcutList.Sizes.tableRowHeight
         
         tableView.backgroundColor = .white
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -185,7 +185,7 @@ extension ShortcutListViewController: UITableViewDataSource {
 
 extension ShortcutListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        return StyleGuide.ShortcutList.Sizes.tableRowHeight
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

@@ -52,7 +52,6 @@ class TaskListViewController: UIViewController, PresentableController {
     private var withSlideMenu: Bool
     
     var editTaskAction: ((_ taskUID: String?, _ shortcutUID: String?, _ taskDate: Date?) ->  Void)?
-    //var openCalendarTaskListAction: ((_ menu: SlideMenuViewType?) -> Void)?
     var speechTaskAction: ((_ recognizer: UILongPressGestureRecognizer, _ shortcutUID: String?, _ taskDate: Date?) ->  Void)?
         
     var filter: TaskListFilter? {
@@ -108,6 +107,7 @@ extension TaskListViewController {
                       
             strongSelf.navBarTitle?.setTaskListMode(taskListMode: mode)
             
+            //Animate expand/collapse calendar
             if strongSelf.isViewLoaded {
                 UIView.animate(withDuration: 0.3,
                                delay: 0.0,
@@ -138,7 +138,6 @@ extension TaskListViewController {
         // TableView
         tableView.dataSource = self
         tableView.delegate = self
-        //tableView.register(TaskListTableViewCell.self, forCellReuseIdentifier: TaskListTableViewCell.className)
         
         view.addSubview(tableView)
         
@@ -182,12 +181,15 @@ extension TaskListViewController {
         
         //Menu btn
         let menuBtn = BarButtonItem()
-        
+                
         menuBtn.setImage(R.image.mainNavBar.menu()?.maskWithColor(color: StyleGuide.MainColors.blue), for: .normal)
-        menuBtn.imageEdgeInsets = UIEdgeInsets(top: 9, left: 9, bottom: 9, right: 9)
-        menuBtn.addTarget(self, action: #selector(tapMenuAction(sender:)), for: .touchUpInside)
-        menuBtn.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
         
+        let imageInset = StyleGuide.TaskList.NavBar.Sizes.insetImageNavBarBtn
+        
+        menuBtn.imageEdgeInsets = UIEdgeInsets(top: imageInset, left: imageInset, bottom: imageInset, right: imageInset)
+        menuBtn.addTarget(self, action: #selector(tapMenuAction(sender:)), for: .touchUpInside)
+        menuBtn.frame = CGRect(x: 0, y: 0, width: navBar.frame.height, height: navBar.frame.height)
+                
         let menuBarItem = UIBarButtonItem(customView: menuBtn)
         
         self.navigationItem.leftBarButtonItem = menuBarItem
@@ -196,15 +198,15 @@ extension TaskListViewController {
         let calendarButton = BarButtonItem()
         
         calendarButton.setImage(R.image.mainNavBar.calendar()?.maskWithColor(color: StyleGuide.MainColors.blue), for: .normal)
-        calendarButton.imageEdgeInsets = UIEdgeInsets(top: 9, left: 9, bottom: 9, right: 9)
+        calendarButton.imageEdgeInsets = UIEdgeInsets(top: imageInset, left: imageInset, bottom: imageInset, right: imageInset)
         calendarButton.addTarget(self, action: #selector(openCalendarViewAction(sender:)), for: .touchUpInside)
-        calendarButton.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
+        calendarButton.frame = CGRect(x: 0, y: 0, width: navBar.frame.height, height: navBar.frame.height)
         
         let barButtonItem = UIBarButtonItem(customView: calendarButton)
         
         navigationItem.rightBarButtonItem = barButtonItem
         
-        let navBarTitleFrame = CGRect(x: 0, y: 0, width: UIView.globalSafeAreaFrame.width * 0.7, height: navBar.frame.height)
+        let navBarTitleFrame = CGRect(x: 0, y: 0, width: UIView.globalSafeAreaFrame.width * StyleGuide.TaskList.NavBar.Sizes.RatioToScreenWidth.navBarTitleWidth, height: navBar.frame.height)
         let taskListNavBarTitleView = TaskListNavBarTitleView(frame: navBarTitleFrame, taskListMode: .list)
         navigationItem.titleView = taskListNavBarTitleView
         
@@ -298,7 +300,7 @@ extension TaskListViewController: UITableViewDataSource {
 
         let periodViewModel = viewModel.outputs.periodItems[section]
         if periodViewModel.outputs.isEmpty && viewModel.outputs.taskListMode.value == .list {
-            headerFrame.size.height = 30
+            headerFrame.size.height = StyleGuide.TaskList.Sizes.headerTitleHeight
         }
         
         let headerView = TaskListTableHeaderView(frame: headerFrame)
@@ -311,7 +313,7 @@ extension TaskListViewController: UITableViewDataSource {
         let periodViewModel = viewModel.outputs.periodItems[section]
         
         if periodViewModel.outputs.isEmpty && viewModel.outputs.taskListMode.value == .list {
-            return 30
+            return StyleGuide.TaskList.Sizes.headerTitleHeight
         }
         
         return StyleGuide.TaskList.Sizes.headerHeight

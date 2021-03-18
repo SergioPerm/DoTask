@@ -67,28 +67,11 @@ class ShortcutListTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        drawDot()
-    }
-    
+        
 }
 
 extension ShortcutListTableViewCell {
-    
-    private func drawDot() {
-        dotShape.removeFromSuperlayer()
         
-        let diametr = contentView.frame.height
-        
-        let circlePath = UIBezierPath(arcCenter: CGPoint(x: diametr/2, y: diametr/2), radius: diametr/5, startAngle: 0.0, endAngle: CGFloat(Double.pi * 2), clockwise: true)
-        dotShape.path = circlePath.cgPath
-        dotShape.fillColor = color.cgColor
-        
-        colorDotView.layer.addSublayer(dotShape)
-    }
-    
     private func setup() {
         selectionStyle = .none
         

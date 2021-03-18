@@ -244,6 +244,7 @@ extension CalendarViewModel {
             return []
         }
 
+        //42 is common count days in collection
         let additionalDays = 42 - totalDays
 
         guard additionalDays > 0 else {

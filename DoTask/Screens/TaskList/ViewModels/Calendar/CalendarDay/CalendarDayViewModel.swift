@@ -66,10 +66,4 @@ class CalendarDayViewModel: CalendarDayViewModelType, CalendarDayViewModelInputs
     var date: Date {
         return calendarDay.date
     }
-//
-//
-//    func unbind() {
-//        isSelected = Boxing(isSelected.value)
-//        dayWithTasks = Boxing(dayWithTasks.value)
-//    }
 }

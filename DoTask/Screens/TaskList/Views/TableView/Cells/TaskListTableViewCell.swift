@@ -65,15 +65,10 @@ class TaskListTableViewCell: UITableViewCell, TableViewCellType {
         return label
     }()
     
-    private let checkView: UIView = {
-        let checkView = UIView()
-        
+    private let checkView: CheckTask = {
+        let checkView = CheckTask()
         checkView.translatesAutoresizingMaskIntoConstraints = false
-        checkView.layer.borderWidth = 2.5
-        checkView.layer.borderColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.8470588235).cgColor
-        checkView.layer.cornerRadius = 4
-        checkView.layer.backgroundColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.1099601066)
-    
+
         return checkView
     }()
     
@@ -84,8 +79,8 @@ class TaskListTableViewCell: UITableViewCell, TableViewCellType {
         return tapView
     }()
     
-    private let shadowLayer: ShadowView = {
-        let shadowLayer = ShadowView()
+    private let shadowLayer: MainCellShadow = {
+        let shadowLayer = MainCellShadow()
         shadowLayer.translatesAutoresizingMaskIntoConstraints = false
         shadowLayer.backgroundColor = .white
         
@@ -97,7 +92,7 @@ class TaskListTableViewCell: UITableViewCell, TableViewCellType {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .white
         
-        view.layer.cornerRadius = 8
+        view.layer.cornerRadius = StyleGuide.CommonViews.MainCell.Sizes.cornerRadius
         view.layer.masksToBounds = true
         
         return view
@@ -107,7 +102,7 @@ class TaskListTableViewCell: UITableViewCell, TableViewCellType {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         
-        view.layer.cornerRadius = 10
+        view.layer.cornerRadius = StyleGuide.CommonViews.MainCell.Sizes.importanceCornerRadius
         view.layer.maskedCorners = [.layerMinXMaxYCorner]
         
         return view
@@ -220,8 +215,9 @@ extension TaskListTableViewCell {
         constraints.append(contentsOf: [
             doneView.leadingAnchor.constraint(equalTo: backView.leadingAnchor, constant: 10),
             doneView.topAnchor.constraint(equalTo: backView.topAnchor),
-            doneView.widthAnchor.constraint(equalToConstant: 40),
-            doneView.heightAnchor.constraint(equalToConstant: 40)
+            doneView.bottomAnchor.constraint(equalTo: backView.bottomAnchor),
+            doneView.trailingAnchor.constraint(equalTo: titleLabel.leadingAnchor, constant: -10),
+            doneView.widthAnchor.constraint(equalToConstant: 40)
         ])
         
         backView.addSubview(titleLabel)
@@ -232,7 +228,6 @@ extension TaskListTableViewCell {
         constraints.append(contentsOf: [
             titleLabel.topAnchor.constraint(equalTo: backView.topAnchor, constant: 10),
             titleLabel.bottomAnchor.constraint(equalTo: dateLabel.topAnchor, constant: -10),
-            titleLabel.leadingAnchor.constraint(equalTo: doneView.trailingAnchor, constant: 10),
             titleLabel.trailingAnchor.constraint(equalTo: importanceView.leadingAnchor, constant: -10),
             titleHeightConstraint
         ])
@@ -307,18 +302,18 @@ extension TaskListTableViewCell {
     }
     
     private func drawCheckMark() {
-        let checkMarkHeight = StyleGuide.TaskList.Sizes.checkMarkSize.height
+        let checkMarkSize = StyleGuide.TaskList.Sizes.checkMarkSize.height
         
         let path = UIBezierPath()
-        path.move(to: CGPoint(x: 6, y: checkMarkHeight/2))
-        path.addLine(to: CGPoint(x: checkMarkHeight/2 - 2, y: checkMarkHeight - 5))
-        path.addLine(to: CGPoint(x: checkMarkHeight - 6, y: 6))
+        path.move(to: CGPoint(x: checkMarkSize/4, y: checkMarkSize/2))
+        path.addLine(to: CGPoint(x: checkMarkSize/2 - checkMarkSize/12, y: checkMarkSize - checkMarkSize/5))
+        path.addLine(to: CGPoint(x: checkMarkSize - checkMarkSize/4, y: checkMarkSize/4))
         
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.strokeColor = shortcutColor?.cgColor ?? #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.8470588235).cgColor
         shapeLayer.lineCap = .round
         shapeLayer.lineJoin = .round
-        shapeLayer.lineWidth = 4
+        shapeLayer.lineWidth = StyleGuide.TaskList.Sizes.checkMarkLineWidth
         shapeLayer.path = path.cgPath
         
         checkView.layer.addSublayer(shapeLayer)
@@ -332,8 +327,8 @@ extension TaskListTableViewCell {
             drawCheckMark()
         }
         
-        shapeLayer.opacity = 1.0
         shapeLayer.removeAllAnimations()
+        shapeLayer.opacity = 1.0
         
         CATransaction.begin()
         CATransaction.setCompletionBlock {
@@ -342,15 +337,14 @@ extension TaskListTableViewCell {
             }
         }
                 
-        let keyPathAnimation = viewModel.outputs.isDone.value ? "strokeStart" : "strokeEnd"
+        let keyPathAnimation = "strokeEnd"
         
         let animation = CABasicAnimation(keyPath: keyPathAnimation)
-        animation.fromValue = 0.0
-        animation.toValue = 1.0
+        animation.fromValue = viewModel.outputs.isDone.value ? 1.0 : 0.0
+        animation.toValue = viewModel.outputs.isDone.value ? 0.0 : 1.0
         
         if viewModel.outputs.isDone.value {
-            animation.fillMode = .forwards
-            animation.isRemovedOnCompletion = false
+            animation.fillMode = .removed
         }
         
         animation.duration = 0.3
@@ -362,35 +356,5 @@ extension TaskListTableViewCell {
         }
         
         CATransaction.commit()
-    }
-}
-
-// MARK: Setup shadow
-
-class ShadowView: UIView {
-
-    var setupShadowDone: Bool = false
-    //let shadowSublayer: CAShapeLayer = CAShapeLayer()
-    
-    public func setupShadow() {
-        
-        //shadowSublayer.removeFromSuperlayer()
-                
-        layer.cornerRadius = 8
-        layer.shadowOffset = CGSize(width: 0, height: 3)
-        layer.shadowRadius = 3
-        layer.shadowOpacity = 0.3
-        layer.shadowPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: 10, height: 10)).cgPath
-        layer.shouldRasterize = true
-        layer.rasterizationScale = UIScreen.main.scale
-        
-        //layer.addSublayer(shadowSublayer)
-        
-        //setupShadowDone = true
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        setupShadow()
     }
 }

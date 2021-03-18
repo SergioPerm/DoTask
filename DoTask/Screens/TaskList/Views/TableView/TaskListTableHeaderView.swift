@@ -11,11 +11,6 @@ import UIKit
 class TaskListTableHeaderView: UIView {
 
     var viewModel: TaskListPeriodItemViewModelType? {
-//        willSet {
-//            if newValue == nil {
-//                viewModel?.outputs.taskListModeEvent.unsubscribe(self)
-//            }
-//        }
         didSet {
             bindViewModel()
         }
@@ -72,22 +67,6 @@ extension TaskListTableHeaderView {
         } else {
             titleLayer.fontSize = 27
         }
-        
-//        viewModel?.outputs.taskListModeEvent.subscribe(self, handler: { this, mode in
-//            if mode == .calendar {
-//                this.titleLayer.fontSize = 19
-//            } else {
-//                this.titleLayer.fontSize = 27
-//            }
-//        })
-        
-//        viewModel?.outputs.taskListMode.bind { [weak self] mode in
-//            if mode == .calendar {
-//                self?.titleLayer.fontSize = 19
-//            } else {
-//                self?.titleLayer.fontSize = 27
-//            }
-//        }
         
     }
 }

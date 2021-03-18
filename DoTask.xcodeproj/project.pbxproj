@@ -120,6 +120,8 @@
 		B170814325DBF68D007AC23B /* CalendarViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B170814225DBF68C007AC23B /* CalendarViewModelOutputs.swift */; };
 		B170814625DBF6AC007AC23B /* CalendarViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B170814525DBF6AC007AC23B /* CalendarViewModelType.swift */; };
 		B170814925DBF6E2007AC23B /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B170814825DBF6E2007AC23B /* CalendarViewModel.swift */; };
+		B1778F092603639C009A9328 /* CheckTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1778F082603639C009A9328 /* CheckTask.swift */; };
+		B1778F0B26036863009A9328 /* MainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1778F0A26036863009A9328 /* MainCell.swift */; };
 		B17B8FA725CBEBE300663F97 /* TaskDiaryViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17B8FA625CBEBE300663F97 /* TaskDiaryViewModelInputs.swift */; };
 		B17B8FAA25CBEBFE00663F97 /* TaskDiaryViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17B8FA925CBEBFE00663F97 /* TaskDiaryViewModelType.swift */; };
 		B17B8FAD25CBEC3500663F97 /* TaskDiaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17B8FAC25CBEC3500663F97 /* TaskDiaryViewModel.swift */; };
@@ -397,6 +399,8 @@
 		B170814225DBF68C007AC23B /* CalendarViewModelOutputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModelOutputs.swift; sourceTree = "<group>"; };
 		B170814525DBF6AC007AC23B /* CalendarViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModelType.swift; sourceTree = "<group>"; };
 		B170814825DBF6E2007AC23B /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
+		B1778F082603639C009A9328 /* CheckTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckTask.swift; sourceTree = "<group>"; };
+		B1778F0A26036863009A9328 /* MainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCell.swift; sourceTree = "<group>"; };
 		B17B8FA625CBEBE300663F97 /* TaskDiaryViewModelInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDiaryViewModelInputs.swift; sourceTree = "<group>"; };
 		B17B8FA925CBEBFE00663F97 /* TaskDiaryViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDiaryViewModelType.swift; sourceTree = "<group>"; };
 		B17B8FAC25CBEC3500663F97 /* TaskDiaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDiaryViewModel.swift; sourceTree = "<group>"; };
@@ -671,6 +675,8 @@
 			children = (
 				B131899B25EBD3D4008C63A0 /* BarButtonItem.swift */,
 				B19A3FC825FA247E003B31EE /* CircleCrossGradientBtn.swift */,
+				B1778F082603639C009A9328 /* CheckTask.swift */,
+				B1778F0A26036863009A9328 /* MainCell.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -2132,6 +2138,7 @@
 				B1C39D6D256BE40E0005C4B6 /* MenuViewController.swift in Sources */,
 				B1A9140825205DE20021E15C /* CoreDataService.swift in Sources */,
 				B170813B25DBF275007AC23B /* CalendarCollectionView.swift in Sources */,
+				B1778F0B26036863009A9328 /* MainCell.swift in Sources */,
 				B12B0B0825ADE37F0078315C /* ShortcutListTableViewCell.swift in Sources */,
 				B1F5DFF925D00FB9000FC8D3 /* TaskDeleteTableViewCell.swift in Sources */,
 				B1F0198A25A8C06400A284B5 /* MainMenuItemViewModel.swift in Sources */,
@@ -2286,6 +2293,7 @@
 				B1B4CA9D25C18F9600AF5F61 /* TaskListItemViewModelInputs.swift in Sources */,
 				B1F10BFD25D0125C00153336 /* TaskDeleteViewModelInputs.swift in Sources */,
 				B1664045254464C8007D1AFD /* UIBarButtonItem.swift in Sources */,
+				B1778F092603639C009A9328 /* CheckTask.swift in Sources */,
 				B1D5DECB2523884700124DAD /* CalendarPickerFooterView.swift in Sources */,
 				B19957B425F4F8EE00F883D8 /* AnimatableProps.swift in Sources */,
 				B1DC538B25E3995900140F17 /* Event.swift in Sources */,

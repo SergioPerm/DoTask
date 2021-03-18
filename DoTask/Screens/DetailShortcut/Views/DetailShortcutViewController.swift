@@ -74,12 +74,19 @@ class DetailShortcutViewController: UIViewController, PresentableController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        placeholderLabel.frame = CGRect(x: 0, y: 5, width: nameTextField.frame.width, height: nameTextField.frame.height * 0.8)
+        
+        let placeholderHeightRatioToFrame: CGFloat = 0.8
+        
+        placeholderLabel.frame = CGRect(x: 0, y: 5, width: nameTextField.frame.width, height: nameTextField.frame.height * placeholderHeightRatioToFrame)
+        
+        colorSelectionView.selectedColor = viewModel.outputs.selectedColor.value
         
         if colorSelectionView.selectedColor == nil {
             //default color
             colorSelectionView.selectedColor = viewModel.outputs.getAllColors()[3]
         }
+        
+        nameTextField.becomeFirstResponder()
     }
     
 }
@@ -124,15 +131,7 @@ extension DetailShortcutViewController {
         
         nameTextField.delegate = self
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-            self?.nameTextField.becomeFirstResponder()
-        }
-                
         colorSelectionView.presetColors = viewModel.outputs.getAllColors()
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-            self?.colorSelectionView.selectedColor = self?.viewModel.outputs.selectedColor.value
-        }
     }
             
     private func setupConstraints() {

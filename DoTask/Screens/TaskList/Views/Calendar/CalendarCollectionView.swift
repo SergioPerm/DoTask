@@ -20,6 +20,7 @@ class CalendarCollectionView: UICollectionView {
     }
     
     private var currentIndex: Int = 0
+    private let rowsCount: CGFloat = 6.0
     
     private lazy var cellSize: CGSize = {
         let padding = (StyleGuide.CalendarDatePicker.collectionMargins * 2) + (StyleGuide.CalendarDatePicker.cellsInterItemSpacing * (StyleGuide.CalendarDatePicker.cellPerRowCount - 1))
@@ -29,7 +30,7 @@ class CalendarCollectionView: UICollectionView {
         return CGSize(width: cellWidth, height: cellWidth)
     }()
     
-    private lazy var collectionHeight: CGFloat = cellSize.height * 6 + StyleGuide.CalendarDatePicker.cellsInterItemSpacing * 5 + StyleGuide.CalendarDatePicker.collectionMargins * 2
+    private lazy var collectionHeight: CGFloat = cellSize.height * rowsCount + StyleGuide.CalendarDatePicker.cellsInterItemSpacing * (rowsCount - 1) + StyleGuide.CalendarDatePicker.collectionMargins * 2
     
     private lazy var viewHeight = collectionHeight
     

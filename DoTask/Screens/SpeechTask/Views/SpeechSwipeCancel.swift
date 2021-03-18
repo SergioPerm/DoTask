@@ -49,7 +49,7 @@ extension SpeechSwipeCancel {
         addSubview(arrowImageView)
         addSubview(textLabel)
         
-        let arrowSide = globalFrame.width * 0.05
+        let arrowSide = globalFrame.width * StyleGuide.SpeechTask.SpeechSwipe.Sizes.Ratio.arrowImageSideSize
         let textLabelWidthAnchor = textLabel.widthAnchor.constraint(equalToConstant: 50)
         textLabelWidthAnchor.priority = UILayoutPriority(250)
         

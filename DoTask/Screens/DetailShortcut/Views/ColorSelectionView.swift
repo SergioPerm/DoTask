@@ -22,11 +22,12 @@ class ColorSelectionView: UIView {
             
             if let index = presetColors.firstIndex(where: { color in return selectedColor.description == color.description}) {
                 let indexPath = IndexPath(row: index, section: 0)
+                collectionView.scrollToItem(at: indexPath, at: .right, animated: false)
                 if let cell = collectionView.cellForItem(at: indexPath) as? ColorCollectionViewCell {
                     selectedCell = cell
                     cell.selectedColor = true
                     
-                    collectionView.scrollToItem(at: indexPath, at: .right, animated: true)
+//                    collectionView.scrollToItem(at: indexPath, at: .right, animated: true)
                 }
             }
         }

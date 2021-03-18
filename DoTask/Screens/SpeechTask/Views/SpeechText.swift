@@ -53,19 +53,7 @@ extension SpeechText {
             }
         }
     }
-    
-//    private func setMinimumFontSize() {
-//        if contentSize.height > frame.height {
-//            guard let textFont = font else {
-//                return
-//            }
-//            font = textFont.withSize(textFont.pointSize - 0.2)
-//            sizeToFit()
-//
-//            setMinimumFontSize()
-//        }
-//    }
-    
+        
     func isEmpty() -> Bool {
         if text == placeholderText {
             return true

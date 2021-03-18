@@ -67,15 +67,10 @@ class TaskDiaryTableViewCell: UITableViewCell {
         return label
     }()
     
-    private let checkView: UIView = {
-        let checkView = UIView()
-        
+    private let checkView: CheckTask = {
+        let checkView = CheckTask()
         checkView.translatesAutoresizingMaskIntoConstraints = false
-        checkView.layer.borderWidth = 2.5
-        checkView.layer.borderColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.8470588235).cgColor
-        checkView.layer.cornerRadius = 4
-        checkView.layer.backgroundColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.1099601066)
-    
+
         return checkView
     }()
     
@@ -86,8 +81,8 @@ class TaskDiaryTableViewCell: UITableViewCell {
         return tapView
     }()
     
-    private let shadowLayer: ShadowView = {
-        let shadowLayer = ShadowView()
+    private let shadowLayer: MainCellShadow = {
+        let shadowLayer = MainCellShadow()
         shadowLayer.translatesAutoresizingMaskIntoConstraints = false
         shadowLayer.backgroundColor = .white
         
@@ -99,7 +94,7 @@ class TaskDiaryTableViewCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .white
         
-        view.layer.cornerRadius = 8
+        view.layer.cornerRadius = StyleGuide.CommonViews.MainCell.Sizes.cornerRadius
         view.layer.masksToBounds = true
         
         return view
@@ -109,7 +104,7 @@ class TaskDiaryTableViewCell: UITableViewCell {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         
-        view.layer.cornerRadius = 10
+        view.layer.cornerRadius = StyleGuide.CommonViews.MainCell.Sizes.importanceCornerRadius
         view.layer.maskedCorners = [.layerMinXMaxYCorner]
         
         return view
@@ -300,52 +295,24 @@ extension TaskDiaryTableViewCell {
     }
     
     private func drawCheckMark() {
-        shapeLayer.removeFromSuperlayer()
-        
-        let checkMarkHeight = StyleGuide.TaskList.Sizes.checkMarkSize.height
+        let checkMarkSize = StyleGuide.TaskList.Sizes.checkMarkSize.height
         
         let path = UIBezierPath()
-        path.move(to: CGPoint(x: 6, y: checkMarkHeight/2))
-        path.addLine(to: CGPoint(x: checkMarkHeight/2 - 2, y: checkMarkHeight - 5))
-        path.addLine(to: CGPoint(x: checkMarkHeight - 6, y: 6))
+        path.move(to: CGPoint(x: checkMarkSize/4, y: checkMarkSize/2))
+        path.addLine(to: CGPoint(x: checkMarkSize/2 - checkMarkSize/12, y: checkMarkSize - checkMarkSize/5))
+        path.addLine(to: CGPoint(x: checkMarkSize - checkMarkSize/4, y: checkMarkSize/4))
         
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.strokeColor = shortcutColor?.cgColor ?? #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.8470588235).cgColor
         shapeLayer.lineCap = .round
         shapeLayer.lineJoin = .round
-        shapeLayer.lineWidth = 4
+        shapeLayer.lineWidth = StyleGuide.TaskList.Sizes.checkMarkLineWidth
         shapeLayer.path = path.cgPath
         
         checkView.layer.addSublayer(shapeLayer)
     }
     
     private func animateCheckMark(finishHandler: (()->())?) {
-        shapeLayer.removeFromSuperlayer()
-        
-//        CATransaction.begin()
-//        CATransaction.setCompletionBlock {
-//            self.shapeLayer.removeFromSuperlayer()
-//            if let finishAction = finishHandler {
-//                finishAction()
-//            }
-//        }
-
-        let checkMarkHeight = StyleGuide.TaskList.Sizes.checkMarkSize.height
-        
-        let path = UIBezierPath()
-        path.move(to: CGPoint(x: 6, y: checkMarkHeight/2))
-        path.addLine(to: CGPoint(x: checkMarkHeight/2 - 2, y: checkMarkHeight - 5))
-        path.addLine(to: CGPoint(x: checkMarkHeight - 6, y: 6))
-
-        shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.strokeColor = shortcutColor?.cgColor ?? #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.8470588235).cgColor
-        shapeLayer.lineCap = .round
-        shapeLayer.lineJoin = .round
-        shapeLayer.lineWidth = 4
-        shapeLayer.path = path.cgPath
-
-        checkView.layer.addSublayer(shapeLayer)
-
         let animation = CABasicAnimation(keyPath: "strokeEnd")
         
         animation.delegate = self
@@ -357,7 +324,6 @@ extension TaskDiaryTableViewCell {
         animation.duration = 0.3
 
         shapeLayer.add(animation, forKey: "myAnimation")
-//        CATransaction.commit()
     }
 }
 

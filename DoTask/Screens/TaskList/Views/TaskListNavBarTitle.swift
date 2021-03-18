@@ -148,19 +148,7 @@ extension TaskListNavBarTitleView {
         }
         
     }
-    
-    private func showShortcutTitle(animated: Bool = false) {
-        if taskListMode == .calendar {
-            
-            
-            
-        } else {
-            
-            
-            
-        }
-    }
-    
+        
     private func showMonthTitle(monthName: String, animated: Bool = false) {
         
         let navTitle = NSMutableAttributedString(string: monthName, attributes:[
@@ -197,7 +185,7 @@ extension TaskListNavBarTitleView {
 
         guard let shortcutHexColor = shortcut?.colorHex else { return }
         
-        let dotRadius = colorDotView.frame.width * 0.4
+        let dotRadius = colorDotView.frame.width * StyleGuide.TaskList.NavBar.Sizes.RatioToParentFrame.shortcutColorDotRadius
         
         let dotColor = UIColor(hexString: shortcutHexColor).cgColor
         
@@ -205,7 +193,7 @@ extension TaskListNavBarTitleView {
         dotShape.path = circlePath.cgPath
         dotShape.fillColor = dotColor
         dotShape.strokeColor = dotColor
-        dotShape.lineWidth = 1.0
+        dotShape.lineWidth = StyleGuide.TaskList.NavBar.Sizes.shortcutColorDotLineWidth
 
         colorDotView.layer.addSublayer(dotShape)
     }
@@ -222,7 +210,6 @@ extension TaskListNavBarTitleView: TaskListNavBarTitle {
     
     func setShortcut(shortcut: ShortcutData?) {
         self.shortcut = shortcut
-        showShortcutTitle(animated: true)
     }
     
     func showMonth(monthName: String) {

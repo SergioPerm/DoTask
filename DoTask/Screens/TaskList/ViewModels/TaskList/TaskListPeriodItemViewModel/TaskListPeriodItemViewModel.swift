@@ -16,11 +16,11 @@ enum EmptyCapMode {
     func getRowHeight() -> Int {
         switch self {
         case .MainCap:
-            return 110
+            return StyleGuide.TaskList.Sizes.capRowHeightMain
         case .CalendarCap:
-            return 70
+            return StyleGuide.TaskList.Sizes.capRowHeightCalendar
         case .LittleSpaceCap:
-            return 5
+            return StyleGuide.TaskList.Sizes.capRowHeightLittle
         }
     }
 }
@@ -68,7 +68,7 @@ class TaskListPeriodItemViewModel: TaskListPeriodItemViewModelType, TaskListPeri
     func remove(at index: Int) {
         tasks.remove(at: index)
         
-        if tasks.count == 0 {
+        if tasks.isEmpty {
             updateEmptyState(emptyState: true)
         }
     }

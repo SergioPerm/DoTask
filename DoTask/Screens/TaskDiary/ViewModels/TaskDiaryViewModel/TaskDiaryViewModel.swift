@@ -73,7 +73,7 @@ extension TaskDiaryViewModel {
 extension TaskDiaryViewModel: TableViewFRCHelperDelegate {
     func deleteItem(indexPath: IndexPath) {
         periodItems[indexPath.section].tasks.remove(at: indexPath.row)
-        if periodItems[indexPath.section].tasks.count == 0 {
+        if periodItems[indexPath.section].tasks.isEmpty {
             periodItems.remove(at: indexPath.section)
         }
     }

@@ -14,10 +14,8 @@ class CalendarDayWithTasksLayer: CAShapeLayer {
     
     private lazy var dayWithTasksLayer: CAShapeLayer = {
         let circleLayer = CAShapeLayer()
-        let radius: CGFloat = frame.width/8
-        circleLayer.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: (2.0 * radius), height: 2.0 * radius), cornerRadius: radius).cgPath
-        //circleLayer.position = CGPoint(x: frame.width/2 - radius, y: frame.height * 0.75)
-        circleLayer.lineWidth = 1
+        let radius: CGFloat = frame.height/4
+        circleLayer.path = UIBezierPath(roundedRect: CGRect(x: 0, y: frame.height/4, width: (2.0 * radius), height: 2.0 * radius), cornerRadius: radius).cgPath
         circleLayer.strokeColor = Color.blueColor.uiColor.cgColor
         circleLayer.fillColor = Color.blueColor.uiColor.cgColor
         
@@ -29,19 +27,19 @@ class CalendarDayWithTasksLayer: CAShapeLayer {
         
         let path = UIBezierPath()
         
-        let startPoint = CGPoint(x: 0, y: 2)
+        let startPoint = CGPoint(x: 0, y: frame.height/2)
         
         path.move(to: startPoint)
         
-        var nextPoint = CGPoint(x: startPoint.x + 2, y: startPoint.y + 2.5)
+        var nextPoint = CGPoint(x: startPoint.x + frame.height/6, y: startPoint.y + frame.height/5)
         path.addLine(to: nextPoint)
         path.move(to: nextPoint)
         
-        nextPoint = CGPoint(x: nextPoint.x + 3, y: startPoint.y - 2.5)
+        nextPoint = CGPoint(x: nextPoint.x + frame.height/3, y: startPoint.y - frame.height/5)
         path.addLine(to: nextPoint)
         
         checkLayer.path = path.cgPath
-        checkLayer.lineWidth = 2.5
+        checkLayer.lineWidth = StyleGuide.TaskList.Calendar.Sizes.dayWithDoneTasksLayerLineWidth
         checkLayer.lineCap = .round
         checkLayer.fillColor =  #colorLiteral(red: 0.364339892, green: 0.7325225515, blue: 0.4118772155, alpha: 1).cgColor
         checkLayer.strokeColor = #colorLiteral(red: 0.364339892, green: 0.7325225515, blue: 0.4118772155, alpha: 1).cgColor
@@ -90,26 +88,29 @@ extension CalendarDayWithTasksLayer {
         dayWithTasksLayer.removeFromSuperlayer()
         dayWithDoneTasksLayer.removeFromSuperlayer()
         
+        let layerMargins: CGFloat = 2.0
+        let layerWidth: CGFloat = frame.height/2
+        let halfWidth: CGFloat = frame.width/2
+        
         switch status {
         case .doneAndProgress:
             addSublayer(dayWithTasksLayer)
             addSublayer(dayWithDoneTasksLayer)
-            
-            dayWithDoneTasksLayer.position = CGPoint(x: frame.width/2 - 6, y: 0)
-            dayWithTasksLayer.position = CGPoint(x: frame.width/2 + 2, y: 0)
+                        
+            dayWithDoneTasksLayer.position = CGPoint(x: halfWidth - layerWidth - layerMargins, y: 0)
+            dayWithTasksLayer.position = CGPoint(x: halfWidth + layerMargins, y: 0)
             
         case .allDone:
             addSublayer(dayWithDoneTasksLayer)
             
-            dayWithDoneTasksLayer.position = CGPoint(x: frame.width/2 - (frame.width/8), y: 0)
+            dayWithDoneTasksLayer.position = CGPoint(x: halfWidth - (layerWidth/2), y: 0)
         case .inProgress:
             addSublayer(dayWithTasksLayer)
             
-            dayWithTasksLayer.position = CGPoint(x: frame.width/2 - (frame.width/8), y: 0)
+            dayWithTasksLayer.position = CGPoint(x: halfWidth - (layerWidth/2), y: 0)
         default:
             return
         }
-        
         
     }
 }

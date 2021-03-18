@@ -97,7 +97,6 @@ extension TaskTitleTextView {
     }
     
     private func setup() {
-        
         textContainerInset.left = 0
         textContainer.lineFragmentPadding = 0
         
@@ -124,11 +123,7 @@ extension TaskTitleTextView {
     }
             
     @objc private func textDidChange(notification: NSNotification) {
-        if notification.name == UITextView.textDidBeginEditingNotification {
-            //DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                //self.updateParentScrollViewOffset()
-            //}
-        } else {
+        if notification.name != UITextView.textDidBeginEditingNotification {
             updateParentScrollViewOffset()
         }
     }
@@ -158,9 +153,7 @@ extension TaskTitleTextView {
     }
     
     @objc private func keyboardDidShowNotification(notification: NSNotification) {
-        //if isFirstResponder {
-            updateParentScrollViewOffset()
-        //}
+        updateParentScrollViewOffset()
     }
     
     private func addKeyboardObserver() {
@@ -174,15 +167,10 @@ extension TaskTitleTextView {
     private func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(textDidChange(notification:)), name: UITextView.textDidChangeNotification, object: self)
         NotificationCenter.default.addObserver(self, selector: #selector(textDidChange(notification:)), name: UITextView.textDidBeginEditingNotification, object: self)
-        
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShowNotification(notification:)), name: UIResponder.keyboardDidShowNotification, object: nil)
     }
     
     private func deleteObservers() {
         NotificationCenter.default.removeObserver(self, name: UITextView.textDidChangeNotification, object: self)
         NotificationCenter.default.removeObserver(self, name: UITextView.textDidBeginEditingNotification, object: self)
-        
-        //NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
-        //NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidHideNotification, object: nil)
     }
 }

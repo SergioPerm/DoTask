@@ -17,6 +17,27 @@ struct StyleGuide {
         static let pink: UIColor = #colorLiteral(red: 1, green: 0.2117647059, blue: 0.6509803922, alpha: 0.8470588235)
     }
     
+    struct CommonViews {
+        struct CheckTask {
+            enum Sizes {
+                static let borderWidth: CGFloat = 2.5
+                static let cornerRadius: CGFloat = 4
+            }
+        }
+        
+        struct MainCell {
+            enum Sizes {
+                static let cornerRadius: CGFloat = 8.0
+                static let shadowRadius: CGFloat = 3.0
+                static let shadowOffset: CGSize = CGSize(width: 0, height: 3)
+                static let importanceCornerRadius: CGFloat = 10
+            }
+            enum Appearance {
+                static let shadowOpacity: Float = 0.3
+            }
+        }
+    }
+    
     struct TaskList {
         enum Fonts {
             static let cellMainTitle: UIFont = FontFactory.Regular.of(size: StyleGuide.getFontSizeRelativeToScreen(baseSize: 17))
@@ -27,11 +48,44 @@ struct StyleGuide {
             static let headerHeight: CGFloat = 40.0
             static let headerTitleHeight: CGFloat = 30.0
             static let checkMarkSize: CGSize = CGSize(width: 24, height: 24)
+            static let checkMarkLineWidth: CGFloat = 4.0
+            
+            static let capRowHeightMain: Int = 110
+            static let capRowHeightCalendar: Int = 70
+            static let capRowHeightLittle: Int = 5
         }
         
         enum Colors {
             static let cellMainTitle: UIColor = #colorLiteral(red: 0.2369126672, green: 0.6231006994, blue: 1, alpha: 1)
             static let cellAdditionalTitle: UIColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        }
+        
+        struct Calendar {
+            enum Sizes {
+                static let currentDayLayerLineWidth: CGFloat = 4.0
+                static let dayWithDoneTasksLayerLineWidth: CGFloat = 2.5
+            }
+        }
+        
+        struct NavBar {
+            struct Sizes {
+                static let insetImageNavBarBtn: CGFloat = 9.0
+                static let shortcutColorDotLineWidth: CGFloat = 1.0
+                
+                enum RatioToScreenWidth {
+                    static let navBarTitleWidth: CGFloat = 0.7
+                }
+                
+                enum RatioToParentFrame {
+                    static let shortcutColorDotRadius: CGFloat = 0.4
+                }
+            }
+        }
+    }
+    
+    struct ShortcutList {
+        struct Sizes {
+            static let tableRowHeight: CGFloat = 50
         }
     }
     
@@ -68,6 +122,14 @@ struct StyleGuide {
             enum Colors {
                 static let textColor: UIColor = .white
                 static let backgroundColor: UIColor = .clear
+            }
+        }
+        
+        struct SpeechSwipe {
+            struct Sizes {
+                enum Ratio {
+                    static let arrowImageSideSize: CGFloat = 0.05
+                }
             }
         }
     }

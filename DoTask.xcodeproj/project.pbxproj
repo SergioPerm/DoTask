@@ -1820,7 +1820,6 @@
 			isa = PBXGroup;
 			children = (
 				B1EF663325A488DB0050FF1C /* Assembly */,
-				B1EF663525A488E90050FF1C /* Protocols */,
 				B1EF663425A488E40050FF1C /* ViewModels */,
 				B1EF663625A488F00050FF1C /* Views */,
 			);
@@ -1838,6 +1837,7 @@
 		B1EF663425A488E40050FF1C /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				B1EF663525A488E90050FF1C /* Protocols */,
 				B1EF665B25A4D11E0050FF1C /* DetailShortcutViewModel.swift */,
 			);
 			path = ViewModels;

@@ -78,15 +78,9 @@ class DetailShortcutViewController: UIViewController, PresentableController {
         let placeholderHeightRatioToFrame: CGFloat = 0.8
         
         placeholderLabel.frame = CGRect(x: 0, y: 5, width: nameTextField.frame.width, height: nameTextField.frame.height * placeholderHeightRatioToFrame)
-        
-        colorSelectionView.selectedColor = viewModel.outputs.selectedColor.value
-        
-        if colorSelectionView.selectedColor == nil {
-            //default color
-            colorSelectionView.selectedColor = viewModel.outputs.getAllColors()[3]
-        }
-        
+                
         nameTextField.becomeFirstResponder()
+        colorSelectionView.scrollToSelected()
     }
     
 }
@@ -117,10 +111,8 @@ extension DetailShortcutViewController {
         
         showInMainListView.showInMainList = viewModel.outputs.showInMainListSetting
         
-        colorSelectionView.colorSelectionHandler = { [weak self] color in
-            if let selectColor = color {
-                self?.viewModel.inputs.setColor(color: selectColor)
-            }
+        colorSelectionView.colorSelectionHandler = { [weak self] colorHex in
+            self?.viewModel.inputs.setColor(colorHex: colorHex)
         }
         
         let saveShortcutTap = UITapGestureRecognizer(target: self, action: #selector(saveShortcutAction(sender:)))
@@ -199,9 +191,10 @@ extension DetailShortcutViewController {
 
 extension DetailShortcutViewController {
     private func bindViewModel() {
-        viewModel.outputs.selectedColor.bind { [weak self] color in
-            guard let color = color else { return }
-            self?.colorDotView.currentColor = color
+        colorSelectionView.presetColors = viewModel.outputs.getAllColors()
+        
+        viewModel.outputs.selectedColor.bind { [weak self] colorHex in
+            self?.colorDotView.currentColor = UIColor(hexString: colorHex)
         }
     }
 }

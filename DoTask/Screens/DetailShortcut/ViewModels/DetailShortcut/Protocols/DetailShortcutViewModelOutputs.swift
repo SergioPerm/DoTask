@@ -9,9 +9,9 @@
 import UIKit
 
 protocol DetailShortcutViewModelOutputs {
-    var selectedColor: Observable<UIColor?> { get }
+    var selectedColor: Observable<String> { get }
     var title: String { get }
     var isNew: Bool { get }
     var showInMainListSetting: Bool { get }
-    func getAllColors() -> [UIColor]
+    func getAllColors() -> [ColorSelectionItemViewModelType]
 }

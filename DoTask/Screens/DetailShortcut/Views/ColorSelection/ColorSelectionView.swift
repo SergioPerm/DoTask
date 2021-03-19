@@ -10,26 +10,14 @@ import UIKit
 
 class ColorSelectionView: UIView {
 
-    var presetColors: [UIColor] = []
-    var selectedColor: UIColor? {
+    var presetColors: [ColorSelectionItemViewModelType]? {
         didSet {
-            guard let selectedColor = selectedColor else {
-                if let selectedCell = selectedCell {
-                    selectedCell.selectedColor = false
-                }
-                return
-            }
+            selectedCellViewModel = presetColors?.first(where: {
+                $0.outputs.select == true
+            })
             
-            if let index = presetColors.firstIndex(where: { color in return selectedColor.description == color.description}) {
-                let indexPath = IndexPath(row: index, section: 0)
-                collectionView.scrollToItem(at: indexPath, at: .right, animated: false)
-                if let cell = collectionView.cellForItem(at: indexPath) as? ColorCollectionViewCell {
-                    selectedCell = cell
-                    cell.selectedColor = true
-                    
-//                    collectionView.scrollToItem(at: indexPath, at: .right, animated: true)
-                }
-            }
+            collectionView.reloadData()
+            
         }
     }
     
@@ -49,9 +37,9 @@ class ColorSelectionView: UIView {
     
     private let borderShape: CAShapeLayer = CAShapeLayer()
     
-    private var selectedCell: ColorCollectionViewCell?
+    private var selectedCellViewModel: ColorSelectionItemViewModelType?
     
-    var colorSelectionHandler: ((_ color: UIColor?) -> Void)?
+    var colorSelectionHandler: ((_ colorHex: String) -> Void)?
     
     init() {
         super.init(frame: .zero)
@@ -66,7 +54,7 @@ class ColorSelectionView: UIView {
         super.layoutSubviews()
         updateShapes()
     }
-    
+
 }
 
 extension ColorSelectionView {
@@ -104,21 +92,32 @@ extension ColorSelectionView {
         
         layer.addSublayer(borderShape)
     }
+    
+    func scrollToSelected() {
+        guard let indexColor = presetColors?.firstIndex(where: {
+            $0.outputs.select == true
+        }) else { return }
+        
+        collectionView.scrollToItem(at: IndexPath(row: indexColor, section: 0), at: .left, animated: true)
+    }
 }
 
 extension ColorSelectionView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath) as! ColorCollectionViewCell
         
-        if let selectedCell = selectedCell {
-            selectedCell.selectedColor = false
+        guard let presetColors = presetColors else { return }
+        
+        let cellViewModel = presetColors[indexPath.row]
+        
+        if let selectedCellViewModel = selectedCellViewModel {
+            selectedCellViewModel.inputs.setSelected(selected: false)
         }
         
-        selectedCell = cell
-        cell.selectedColor = true
+        selectedCellViewModel = cellViewModel
+        cellViewModel.inputs.setSelected(selected: true)
         
         if let colorSelectAction = colorSelectionHandler {
-            colorSelectAction(cell.cellColor)
+            colorSelectAction(cellViewModel.outputs.colorHex)
         }
     }
     
@@ -130,14 +129,13 @@ extension ColorSelectionView: UICollectionViewDelegateFlowLayout {
 
 extension ColorSelectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return presetColors.count
+        return presetColors?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ColorCollectionViewCell.reuseIdentifier, for: indexPath) as! ColorCollectionViewCell
         
-        cell.cellColor = presetColors[indexPath.row]
+        cell.viewModel = presetColors?[indexPath.row]
         
         return cell
     }

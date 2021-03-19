@@ -122,6 +122,10 @@
 		B170814925DBF6E2007AC23B /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B170814825DBF6E2007AC23B /* CalendarViewModel.swift */; };
 		B1778F092603639C009A9328 /* CheckTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1778F082603639C009A9328 /* CheckTask.swift */; };
 		B1778F0B26036863009A9328 /* MainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1778F0A26036863009A9328 /* MainCell.swift */; };
+		B1778F11260397C6009A9328 /* ColorSelectionItemViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1778F10260397C6009A9328 /* ColorSelectionItemViewModelInputs.swift */; };
+		B1778F13260397E7009A9328 /* ColorSelectionViewModelItemOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1778F12260397E7009A9328 /* ColorSelectionViewModelItemOutputs.swift */; };
+		B1778F1526039805009A9328 /* ColorSelectionItemViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1778F1426039805009A9328 /* ColorSelectionItemViewModelType.swift */; };
+		B1778F17260398E4009A9328 /* ColorSelectionItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1778F16260398E4009A9328 /* ColorSelectionItemViewModel.swift */; };
 		B17B8FA725CBEBE300663F97 /* TaskDiaryViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17B8FA625CBEBE300663F97 /* TaskDiaryViewModelInputs.swift */; };
 		B17B8FAA25CBEBFE00663F97 /* TaskDiaryViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17B8FA925CBEBFE00663F97 /* TaskDiaryViewModelType.swift */; };
 		B17B8FAD25CBEC3500663F97 /* TaskDiaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17B8FAC25CBEC3500663F97 /* TaskDiaryViewModel.swift */; };
@@ -401,6 +405,10 @@
 		B170814825DBF6E2007AC23B /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 		B1778F082603639C009A9328 /* CheckTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckTask.swift; sourceTree = "<group>"; };
 		B1778F0A26036863009A9328 /* MainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCell.swift; sourceTree = "<group>"; };
+		B1778F10260397C6009A9328 /* ColorSelectionItemViewModelInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelectionItemViewModelInputs.swift; sourceTree = "<group>"; };
+		B1778F12260397E7009A9328 /* ColorSelectionViewModelItemOutputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelectionViewModelItemOutputs.swift; sourceTree = "<group>"; };
+		B1778F1426039805009A9328 /* ColorSelectionItemViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelectionItemViewModelType.swift; sourceTree = "<group>"; };
+		B1778F16260398E4009A9328 /* ColorSelectionItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelectionItemViewModel.swift; sourceTree = "<group>"; };
 		B17B8FA625CBEBE300663F97 /* TaskDiaryViewModelInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDiaryViewModelInputs.swift; sourceTree = "<group>"; };
 		B17B8FA925CBEBFE00663F97 /* TaskDiaryViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDiaryViewModelType.swift; sourceTree = "<group>"; };
 		B17B8FAC25CBEC3500663F97 /* TaskDiaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDiaryViewModel.swift; sourceTree = "<group>"; };
@@ -1078,6 +1086,43 @@
 				B170813F25DBF673007AC23B /* CalendarViewModelInputs.swift */,
 				B170814225DBF68C007AC23B /* CalendarViewModelOutputs.swift */,
 				B170814525DBF6AC007AC23B /* CalendarViewModelType.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		B1778F0C26039776009A9328 /* ColorSelection */ = {
+			isa = PBXGroup;
+			children = (
+				B1EF664B25A4CD470050FF1C /* ColorSelectionView.swift */,
+				B1EF664E25A4CE610050FF1C /* ColorCollectionViewCell.swift */,
+			);
+			path = ColorSelection;
+			sourceTree = "<group>";
+		};
+		B1778F0D26039789009A9328 /* DetailShortcut */ = {
+			isa = PBXGroup;
+			children = (
+				B1EF663525A488E90050FF1C /* Protocols */,
+				B1EF665B25A4D11E0050FF1C /* DetailShortcutViewModel.swift */,
+			);
+			path = DetailShortcut;
+			sourceTree = "<group>";
+		};
+		B1778F0E26039796009A9328 /* ColorSelection */ = {
+			isa = PBXGroup;
+			children = (
+				B1778F0F260397A0009A9328 /* Protocols */,
+				B1778F16260398E4009A9328 /* ColorSelectionItemViewModel.swift */,
+			);
+			path = ColorSelection;
+			sourceTree = "<group>";
+		};
+		B1778F0F260397A0009A9328 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				B1778F10260397C6009A9328 /* ColorSelectionItemViewModelInputs.swift */,
+				B1778F12260397E7009A9328 /* ColorSelectionViewModelItemOutputs.swift */,
+				B1778F1426039805009A9328 /* ColorSelectionItemViewModelType.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -1837,8 +1882,8 @@
 		B1EF663425A488E40050FF1C /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				B1EF663525A488E90050FF1C /* Protocols */,
-				B1EF665B25A4D11E0050FF1C /* DetailShortcutViewModel.swift */,
+				B1778F0E26039796009A9328 /* ColorSelection */,
+				B1778F0D26039789009A9328 /* DetailShortcut */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1856,13 +1901,12 @@
 		B1EF663625A488F00050FF1C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B1778F0C26039776009A9328 /* ColorSelection */,
 				B1EF663A25A489B50050FF1C /* DetailShortcutViewController.swift */,
 				B1EF664225A4B1DD0050FF1C /* ColorDotView.swift */,
 				B1EF664525A4BB9C0050FF1C /* ShowInMainListView.swift */,
 				B1EF664825A4C3980050FF1C /* SaveShortcutButton.swift */,
 				B1A303D525AC9EFA00BFAE68 /* DeleteShortcutButton.swift */,
-				B1EF664B25A4CD470050FF1C /* ColorSelectionView.swift */,
-				B1EF664E25A4CE610050FF1C /* ColorCollectionViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2125,6 +2169,7 @@
 				B141729025C154EE00EF0D85 /* TaskListPeriodItemViewModel.swift in Sources */,
 				B1603C5A2521EAB70022BE49 /* UIViewController.swift in Sources */,
 				B18D45F325A24E0E0081B11E /* DetailAccessoryView.swift in Sources */,
+				B1778F13260397E7009A9328 /* ColorSelectionViewModelItemOutputs.swift in Sources */,
 				B17B8FBA25CC007300663F97 /* TaskDiaryViewController.swift in Sources */,
 				B19A3FC925FA247E003B31EE /* CircleCrossGradientBtn.swift in Sources */,
 				B16D0E1125DD0697007708AB /* CalendarDayViewModelType.swift in Sources */,
@@ -2222,6 +2267,7 @@
 				B12810E22599FC7800CB7CFE /* ReorderSubtask.swift in Sources */,
 				B14C996D25C6A50B00E36A94 /* TaskDateTableViewCell.swift in Sources */,
 				B1EF664925A4C3980050FF1C /* SaveShortcutButton.swift in Sources */,
+				B1778F11260397C6009A9328 /* ColorSelectionItemViewModelInputs.swift in Sources */,
 				B14C994B25C68C0900E36A94 /* TaskDateViewModelType.swift in Sources */,
 				B14C997C25C6E21F00E36A94 /* ZoomModalAnimationController.swift in Sources */,
 				B1A913F0252056FA0021E15C /* AppDelegate.swift in Sources */,
@@ -2236,10 +2282,12 @@
 				B1D79AF725CD2FD0009DB9BF /* TaskDiaryTableHeaderView.swift in Sources */,
 				B170814325DBF68D007AC23B /* CalendarViewModelOutputs.swift in Sources */,
 				B1EF663F25A48D2E0050FF1C /* SlideMenuViewType.swift in Sources */,
+				B1778F17260398E4009A9328 /* ColorSelectionItemViewModel.swift in Sources */,
 				B1687F6C25DC069A009D3DE2 /* CalendarCollectionViewCell.swift in Sources */,
 				B13E079225A9CBBB00020F5E /* MenuItemViewModelCreateShortcutType.swift in Sources */,
 				B131899C25EBD3D4008C63A0 /* BarButtonItem.swift in Sources */,
 				B11C75AE25C81AFE004D6639 /* TaskReminderViewModel.swift in Sources */,
+				B1778F1526039805009A9328 /* ColorSelectionItemViewModelType.swift in Sources */,
 				B1391FFA259218AA0087D0E9 /* SubtaskManaged+CoreDataClass.swift in Sources */,
 				B1DC538825E3987E00140F17 /* Weak.swift in Sources */,
 				B1D79AFB25CD31D0009DB9BF /* TaskDiaryAssembly.swift in Sources */,

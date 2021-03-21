@@ -150,7 +150,7 @@ extension DetailTaskScrollView {
         subtaskTableView.register(SubtaskTableViewCell.self, forCellReuseIdentifier: SubtaskTableViewCell.className)
         subtaskTableView.separatorStyle = .none
                 
-        subtaskTableView.estimatedRowHeight = 33
+        subtaskTableView.estimatedRowHeight = StyleGuide.DetailTask.Sizes.tableViewEstimatedHeight
         subtaskTableView.dataSource = self
         subtaskTableView.delegate = self
     }
@@ -237,7 +237,8 @@ extension DetailTaskScrollView {
         
         if let viewModel = viewModel {
             if viewModel.outputs.tableSections.count > 1 {
-                tableMaxY = currentTableViewFrameAtMainView.maxY - 120
+                let padding: CGFloat = 10.0
+                tableMaxY = currentTableViewFrameAtMainView.maxY - (StyleGuide.DetailTask.Sizes.accesoryStackViewHeight + StyleGuide.DetailTask.Sizes.buttonsAreaHeightForScrollLimit + padding * 2)
             } else {
                 tableMaxY = currentTableViewFrameAtMainView.maxY
             }

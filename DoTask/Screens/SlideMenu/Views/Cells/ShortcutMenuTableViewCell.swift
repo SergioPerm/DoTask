@@ -19,7 +19,6 @@ class ShortcutMenuTableViewCell: UITableViewCell, TableViewCellType {
     // MARK: View's properties
     private let title: UILabel = {
        let label = UILabel()
-        label.text = "Work"
         label.font = Font.additionalMenuCellFont.uiFont
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
@@ -29,7 +28,7 @@ class ShortcutMenuTableViewCell: UITableViewCell, TableViewCellType {
     
     private let shapeView: UIView = {
        let view = UIView()
-        view.layer.cornerRadius = 5
+        view.layer.cornerRadius = StyleGuide.SlideMenu.ShortcutItem.Sizes.cornerRadius
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -91,15 +90,15 @@ extension ShortcutMenuTableViewCell {
         selectionStyle = .none
         
         let globalWidth = UIView.globalSafeAreaFrame.width
-        title.font = title.font.withSize(globalWidth * StyleGuide.SlideMenu.ratioToScreenWidthFontSizeMiddleTitle)
+        title.font = title.font.withSize(globalWidth * StyleGuide.SlideMenu.Sizes.RatioToScreenWidth.ratioToScreenWidthFontSizeMiddleTitle)
         
         contentView.addSubview(shapeView)
 
         shapeView.addSubview(title)
         
         let constraints = [
-            shapeView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: StyleGuide.SlideMenu.leftMargin),
-            shapeView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -StyleGuide.SlideMenu.leftMargin),
+            shapeView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: StyleGuide.SlideMenu.Sizes.leftMargin),
+            shapeView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -StyleGuide.SlideMenu.Sizes.leftMargin),
             shapeView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             shapeView.heightAnchor.constraint(equalToConstant: 33),
             title.leadingAnchor.constraint(equalTo: shapeView.leadingAnchor, constant: 8),

@@ -18,7 +18,7 @@ class DetailShortcutViewController: UIViewController, PresentableController {
     private var viewModel: DetailShortcutViewModelType
     
     // MARK: View's properties
-    private let placeholderLabel: UILabel = UILabel()
+    //private let placeholderLabel: UILabel = UILabel()
     
     private let labelView: UIView = {
         let view = UIView()
@@ -41,6 +41,8 @@ class DetailShortcutViewController: UIViewController, PresentableController {
     private let colorSelectionView: ColorSelectionView = ColorSelectionView()
     
     private var colorSelectionBottomConstraint: NSLayoutConstraint = NSLayoutConstraint()
+    
+    private var viewFrame: CGRect = .zero
     
     // MARK: Initializers
     
@@ -67,19 +69,17 @@ class DetailShortcutViewController: UIViewController, PresentableController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        setupPlaceholder()
         setupConstraints()
         bindViewModel()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        nameTextField.becomeFirstResponder()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        let placeholderHeightRatioToFrame: CGFloat = 0.8
-        
-        placeholderLabel.frame = CGRect(x: 0, y: 5, width: nameTextField.frame.width, height: nameTextField.frame.height * placeholderHeightRatioToFrame)
-                
-        nameTextField.becomeFirstResponder()
         colorSelectionView.scrollToSelected()
     }
     
@@ -89,10 +89,19 @@ class DetailShortcutViewController: UIViewController, PresentableController {
 
 extension DetailShortcutViewController {
     private func setup() {
+        
+        guard let globalView = UIView.globalView else { return }
+        
+        let topMargin = globalView.frame.height * StyleGuide.DetailShortcut.Sizes.RatioToScrennHeight.topMargin
+        viewFrame = CGRect(x: 0, y: topMargin, width: globalView.frame.width, height: globalView.frame.height - topMargin)
+        view.frame = viewFrame
+        
         view.backgroundColor = .white
                 
         labelView.addSubview(colorDotView)
         labelView.addSubview(nameTextField)
+        
+        nameTextField.placeholder = "New shortcut"
         
         view.addSubview(labelView)
         view.addSubview(showInMainListView)
@@ -161,30 +170,21 @@ extension DetailShortcutViewController {
             colorSelectionBottomConstraint
         ])
         
+        let btnWidthRatioToScreenWidth = StyleGuide.DetailShortcut.Sizes.RatioToScreenWidth.btnWidth
+        
         constraints.append(contentsOf: [
             saveShortcutBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             saveShortcutBtn.bottomAnchor.constraint(equalTo: colorSelectionView.topAnchor, constant: -10),
-            saveShortcutBtn.widthAnchor.constraint(equalToConstant: UIView.globalSafeAreaFrame.width * 0.25),
+            saveShortcutBtn.widthAnchor.constraint(equalToConstant: UIView.globalSafeAreaFrame.width * btnWidthRatioToScreenWidth),
             saveShortcutBtn.heightAnchor.constraint(equalToConstant: 30),
             deleteShortcutBtn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             deleteShortcutBtn.bottomAnchor.constraint(equalTo: colorSelectionView.topAnchor, constant: -10),
-            deleteShortcutBtn.widthAnchor.constraint(equalToConstant: UIView.globalSafeAreaFrame.width * 0.25),
+            deleteShortcutBtn.widthAnchor.constraint(equalToConstant: UIView.globalSafeAreaFrame.width * btnWidthRatioToScreenWidth),
             deleteShortcutBtn.heightAnchor.constraint(equalToConstant: 30)
         ])
         
         NSLayoutConstraint.activate(constraints)
     }
-    
-    private func setupPlaceholder() {
-        placeholderLabel.text = "New shortcut"
-        placeholderLabel.sizeToFit()
-        nameTextField.addSubview(placeholderLabel)
-        placeholderLabel.textColor = UIColor.lightGray
-        placeholderLabel.isHidden = !nameTextField.text!.isEmpty
-        
-        placeholderLabel.frame = CGRect(x: 0, y: 5, width: UIView.globalSafeAreaFrame.width * 0.7, height: 50 * 0.8)
-    }
-        
 }
 
 // MARK: Bind viewModel
@@ -243,14 +243,17 @@ extension DetailShortcutViewController {
                 
         let userInfo = notification.userInfo!
         
+        guard let globalView = UIView.globalView else { return }
+        
         let animationDuration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
         let keyboardEndFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-        let convertedKeyboardEndFrame = view.convert(keyboardEndFrame, from: view.window)
+        let convertedKeyboardEndFrame = globalView.convert(keyboardEndFrame, from: globalView.window)
+        //let convertedKeyboardEndFrame = view.convert(keyboardEndFrame, from: view.window)
         let rawAnimationCurve = (notification.userInfo![UIResponder.keyboardAnimationCurveUserInfoKey] as! NSNumber).uint32Value << 16
         let animationCurve = UIView.AnimationOptions.init(rawValue: UInt(rawAnimationCurve))
                 
         if keyboardShow {
-            colorSelectionBottomConstraint.constant = convertedKeyboardEndFrame.minY - view.bounds.maxY
+            colorSelectionBottomConstraint.constant = (convertedKeyboardEndFrame.minY - viewFrame.minY) - view.bounds.maxY
         } else {
             colorSelectionBottomConstraint.constant = -view.globalSafeAreaInsets.bottom
         }
@@ -269,7 +272,6 @@ extension DetailShortcutViewController {
 
 extension DetailShortcutViewController: UITextFieldDelegate {
     @objc private func textFieldEditAction(sender: Any?) {
-        placeholderLabel.isHidden = !nameTextField.text!.isEmpty
         viewModel.inputs.setTitle(title: nameTextField.text!)
     }
 }

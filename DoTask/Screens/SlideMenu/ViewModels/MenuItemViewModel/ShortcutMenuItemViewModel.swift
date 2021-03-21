@@ -10,7 +10,7 @@ import Foundation
 
 class ShortcutMenuItemViewModel: MenuItemViewModelType, MenuItemViewModelSelectableType, MenuItemViewModelShortcutType {
     
-    var rowHeight: Double = 40
+    var rowHeight: Double = StyleGuide.SlideMenu.Sizes.midRowHeight
     var shortcut: Shortcut
     var selectedItem: Observable<Bool>
     

@@ -13,7 +13,7 @@ class MainMenuItemViewModel: MenuItemViewModelType, MenuItemViewModelMainType, M
     var menuType: MainMenuType
     
     var selectedItem: Observable<Bool>
-    var rowHeight: Double = 50
+    var rowHeight: Double = StyleGuide.SlideMenu.Sizes.bigRowHeight
 
     var title: String
     var imageName: String

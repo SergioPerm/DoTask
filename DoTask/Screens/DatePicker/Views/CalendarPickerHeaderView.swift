@@ -10,7 +10,6 @@ import UIKit
 
 class CalendarPickerHeaderView: UIView {
 
-    let kCONTENT_XIB_NAME = "CalendarPickerHeaderView"
     var borderBottom: CALayer = CALayer()
     let borderWidth: CGFloat = StyleGuide.CalendarDatePicker.borderWidth
     let borderColor = StyleGuide.CalendarDatePicker.borderColor.cgColor
@@ -29,7 +28,7 @@ class CalendarPickerHeaderView: UIView {
     }
 
     func commonInit() {
-        let nib = UINib(nibName: kCONTENT_XIB_NAME, bundle: Bundle.main)
+        let nib = UINib(nibName: self.className, bundle: Bundle.main)
         nib.instantiate(withOwner: self, options: nil)
         contentView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(contentView)

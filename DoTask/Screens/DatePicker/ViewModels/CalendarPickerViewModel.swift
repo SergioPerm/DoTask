@@ -157,7 +157,8 @@ class CalendarPickerViewModel: CalendarPickerViewModelType, CalendarPickerViewMo
             return []
         }
         
-        let additionalDays = 42 - totalDays//14 - calendar.component(.weekday, from: lastDayInMonth)
+        //42 is common count days in collection
+        let additionalDays = 42 - totalDays
                
         guard additionalDays > 0 else {
             return []

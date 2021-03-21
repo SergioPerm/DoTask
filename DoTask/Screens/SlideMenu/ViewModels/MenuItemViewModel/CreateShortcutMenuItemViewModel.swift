@@ -10,7 +10,7 @@ import Foundation
 
 class CreateShortcutMenuItemViewModel: MenuItemViewModelType, MenuItemViewModelCreateShortcutType {
     
-    var rowHeight: Double = 40.0
+    var rowHeight: Double = StyleGuide.SlideMenu.Sizes.midRowHeight
     var createShortcutHandler: (() -> Void)?
             
     func createShortcut() {

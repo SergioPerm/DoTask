@@ -74,27 +74,24 @@ extension DiaryMenuTableViewCell {
         selectionStyle = .none
         
         let globalWidth = UIView.globalSafeAreaFrame.width
-        title.font = title.font.withSize(globalWidth * StyleGuide.SlideMenu.ratioToScreenWidthFontSizeBigTitle)
+        title.font = title.font.withSize(globalWidth * StyleGuide.SlideMenu.Sizes.RatioToScreenWidth.ratioToScreenWidthFontSizeBigTitle)
         
         addSubview(icon)
         addSubview(title)
         
         let constraints = [
-            icon.leadingAnchor.constraint(equalTo: leadingAnchor, constant: StyleGuide.SlideMenu.leftMargin),
+            icon.leadingAnchor.constraint(equalTo: leadingAnchor, constant: StyleGuide.SlideMenu.Sizes.leftMargin),
             icon.centerYAnchor.constraint(equalTo: centerYAnchor),
             icon.widthAnchor.constraint(equalToConstant: 25),
             icon.heightAnchor.constraint(equalToConstant: 25),
             title.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 10),
             title.centerYAnchor.constraint(equalTo: centerYAnchor),
             title.heightAnchor.constraint(equalToConstant: 25),
-            title.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -StyleGuide.SlideMenu.leftMargin)
+            title.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -StyleGuide.SlideMenu.Sizes.leftMargin)
         ]
         
         backgroundColor = .clear
         
         NSLayoutConstraint.activate(constraints)
     }
-    
-//    //Use UIResponderChain
-//    @objc private func menuSettingsAction(sender: UIButton) { }
 }

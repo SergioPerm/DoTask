@@ -83,14 +83,14 @@ extension CreateShortcutMenuTableViewCell {
         selectionStyle = .none
 
         let globalWidth = UIView.globalSafeAreaFrame.width
-        title1.font = title1.font.withSize(globalWidth * StyleGuide.SlideMenu.ratioToScreenWidthFontSizeSmallTitle)
+        title1.font = title1.font.withSize(globalWidth * StyleGuide.SlideMenu.Sizes.RatioToScreenWidth.ratioToScreenWidthFontSizeSmallTitle)
                 
         contentView.addSubview(title1)
         contentView.addSubview(createShortcutBtn)
 
         let widthConstraint = title1.widthAnchor.constraint(equalToConstant: 150)
         let constraints = [
-            title1.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: StyleGuide.SlideMenu.leftMargin),
+            title1.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: StyleGuide.SlideMenu.Sizes.leftMargin),
             title1.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             title1.heightAnchor.constraint(equalToConstant: 25),
             widthConstraint,
@@ -101,7 +101,7 @@ extension CreateShortcutMenuTableViewCell {
             createShortcutBtn.widthAnchor.constraint(equalToConstant: 30)
         ]
 
-        createShortcutBtn.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 15)
+        createShortcutBtn.imageEdgeInsets = StyleGuide.SlideMenu.CreateShortcut.Sizes.createBtnImgInsets
         
         contentView.backgroundColor = .clear
 

@@ -66,7 +66,7 @@ extension SettingsMenuTableViewCell {
         }
         
         let constraints = [
-            settingsButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: StyleGuide.SlideMenu.leftMargin),
+            settingsButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: StyleGuide.SlideMenu.Sizes.leftMargin),
             settingsButton.topAnchor.constraint(equalTo: topAnchor, constant: 10),
             settingsButton.heightAnchor.constraint(equalToConstant: 25),
             settingsButton.widthAnchor.constraint(equalToConstant: 25)

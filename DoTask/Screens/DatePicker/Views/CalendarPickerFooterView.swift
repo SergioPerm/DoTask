@@ -10,7 +10,6 @@ import UIKit
 
 class CalendarPickerFooterView: UIView {
     
-    let kCONTENT_XIB_NAME = "CalendarPickerFooterView"
     var borderTop: CALayer = CALayer()
     var borderMiddle: CALayer = CALayer()
     var borderMiddleVertical: CALayer = CALayer()
@@ -34,7 +33,7 @@ class CalendarPickerFooterView: UIView {
     }
 
     func commonInit() {
-        let nib = UINib(nibName: kCONTENT_XIB_NAME, bundle: Bundle.main)
+        let nib = UINib(nibName: self.className, bundle: Bundle.main)
         nib.instantiate(withOwner: self, options: nil)
         contentView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(contentView)

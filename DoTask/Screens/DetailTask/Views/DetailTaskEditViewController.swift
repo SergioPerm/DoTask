@@ -111,7 +111,7 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
         btn.setImage(R.image.detailTask.trash()?.maskWithColor(color: .red), for: .normal)
         btn.setTitle("   Delete", for: .normal)
         btn.imageView?.contentMode = .scaleAspectFit
-        btn.imageEdgeInsets = UIEdgeInsets(top: 12, left: 5, bottom: 12, right: 25)
+        btn.imageEdgeInsets = StyleGuide.DetailTask.Sizes.deleteBtnImageInsets
         btn.setTitleColor(.red, for: .normal)
         return btn
     }()
@@ -168,7 +168,7 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
         if let userInfo = notification.userInfo {
             let keyboardEndFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
                         
-            let lowerLimitToScroll = keyboardEndFrame.origin.y - accesoryStackView.frame.height - 50
+            let lowerLimitToScroll = keyboardEndFrame.origin.y - accesoryStackView.frame.height - StyleGuide.DetailTask.Sizes.buttonsAreaHeightForScrollLimit
             
             scrollView.limitToScroll = lowerLimitToScroll
         }
@@ -185,24 +185,26 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
         
         let correctionSpaceForBottomSafeArea = notification.name == UIResponder.keyboardWillHideNotification ? view.globalSafeAreaInsets.bottom : 0
         
+        let padding: CGFloat = 10
+        
         if keyboardShow {
             accesoryBottomConstraint.constant = convertedKeyboardEndFrame.minY - view.bounds.maxY - correctionSpaceForBottomSafeArea
         } else {
-            accesoryBottomConstraint.constant = -view.globalSafeAreaInsets.bottom - 10
+            accesoryBottomConstraint.constant = -view.globalSafeAreaInsets.bottom - padding
         }
         
-        accesoryTrailingConstraint.constant = keyboardShow ? 0 : -10
-        accesoryLeadingConstraint.constant = keyboardShow ? 0 : 10
+        accesoryTrailingConstraint.constant = keyboardShow ? 0 : -padding
+        accesoryLeadingConstraint.constant = keyboardShow ? 0 : padding
         
         let globalFrame = UIView.globalSafeAreaFrame
-        addSubtaskBtnTrailingConstraint.constant = keyboardShow ? -((globalFrame.width * 0.2) + 20) : -10
+        addSubtaskBtnTrailingConstraint.constant = keyboardShow ? -((globalFrame.width * StyleGuide.DetailTask.Sizes.ratioToScreenWidth.hideKeyboardWidth) + padding * 2) : -padding
         
         UIView.animate(withDuration: animationDuration,
                        delay: 0.0,
                        options: [.beginFromCurrentState, animationCurve],
                        animations: {
                         self.view.layoutIfNeeded()
-                        self.accessoryView.layer.cornerRadius = keyboardShow ? 0 : 6
+                        self.accessoryView.layer.cornerRadius = keyboardShow ? 0 : StyleGuide.DetailTask.Sizes.accessoryCornerRadius
                         self.accessoryView.layoutIfNeeded()
                         self.hideKeyboardButton.isHidden = !keyboardShow
         }, completion: nil)
@@ -223,7 +225,7 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
     // MARK: View setup
     private func setupView() {
         let globalFrame = UIView.globalSafeAreaFrame
-        view.frame = CGRect(origin: globalFrame.origin, size: CGSize(width: globalFrame.width, height: globalFrame.height - (UIDevice.hasNotch ? 0 : topMargin)))
+        view.frame = CGRect(origin: globalFrame.origin, size: CGSize(width: globalFrame.width, height: globalFrame.height))
         
         view.clipsToBounds = true
         view.backgroundColor = StyleGuide.DetailTask.Colors.viewBGColor
@@ -331,11 +333,11 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
             hideKeyboardButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             hideKeyboardButton.heightAnchor.constraint(equalToConstant: 30),
             hideKeyboardButton.bottomAnchor.constraint(equalTo: accessoryView.topAnchor, constant: -10),
-            hideKeyboardButton.widthAnchor.constraint(equalToConstant: globalFrame.width * 0.2),
+            hideKeyboardButton.widthAnchor.constraint(equalToConstant: globalFrame.width * StyleGuide.DetailTask.Sizes.ratioToScreenWidth.hideKeyboardWidth),
             addSubtaskButton.heightAnchor.constraint(equalToConstant: 30),
             addSubtaskBtnTrailingConstraint,
             addSubtaskButton.bottomAnchor.constraint(equalTo: accessoryView.topAnchor, constant: -10),
-            addSubtaskButton.widthAnchor.constraint(equalToConstant: globalFrame.width * 0.4)
+            addSubtaskButton.widthAnchor.constraint(equalToConstant: globalFrame.width * StyleGuide.DetailTask.Sizes.ratioToScreenWidth.addSubtaskWidth)
         ])
         
         let shortcutWidthConstraint = shortcutButton.widthAnchor.constraint(equalToConstant: 10)

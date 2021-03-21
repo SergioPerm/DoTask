@@ -29,19 +29,19 @@ class DetailAccessoryView: UIView {
 extension DetailAccessoryView {
     
     private func updateShadow() {
-        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: 10).cgPath
+        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: StyleGuide.DetailTask.Sizes.accessoryCornerRadius).cgPath
     }
     
     private func setup() {
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .white
-        layer.cornerRadius = 10
+        layer.cornerRadius = StyleGuide.DetailTask.Sizes.accessoryCornerRadius
         
         clipsToBounds = false
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOpacity = 0.2
         layer.shadowOffset = CGSize(width: 0.0, height: 6.0)
-        layer.shadowRadius = 10
+        layer.shadowRadius = StyleGuide.DetailTask.Sizes.accessoryCornerRadius
     }
     
 }

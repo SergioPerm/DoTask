@@ -83,10 +83,12 @@ extension ShowInMainListView {
         topBorderShape.removeFromSuperlayer()
         bottomBorderShape.removeFromSuperlayer()
         
-        topBorderShape.frame = CGRect(x: 0, y: 0, width: frame.width, height: 1)
+        let borderHeight = StyleGuide.DetailShortcut.ShowInMainList.Sizes.borderHeight
+        
+        topBorderShape.frame = CGRect(x: 0, y: 0, width: frame.width, height: borderHeight)
         topBorderShape.backgroundColor = #colorLiteral(red: 0.8463017875, green: 0.8463017875, blue: 0.8463017875, alpha: 1).cgColor
         
-        bottomBorderShape.frame = CGRect(x: 0, y: frame.height - 2, width: frame.width, height: 1)
+        bottomBorderShape.frame = CGRect(x: 0, y: frame.height - borderHeight, width: frame.width, height: borderHeight)
         bottomBorderShape.backgroundColor = #colorLiteral(red: 0.8463017875, green: 0.8463017875, blue: 0.8463017875, alpha: 1).cgColor
         
         layer.addSublayer(topBorderShape)

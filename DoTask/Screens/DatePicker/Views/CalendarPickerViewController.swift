@@ -64,8 +64,9 @@ class CalendarPickerViewController: UIViewController, PresentableController {
     
     // MARK: CollectionView values
     
+    private let rowCount: CGFloat = 6.0
     private var indexOfCellBeforeDragging = 0
-    private lazy var collectionHeight: CGFloat = cellSize.height * 6 + StyleGuide.CalendarDatePicker.cellsInterItemSpacing * 5 + StyleGuide.CalendarDatePicker.collectionMargins * 2
+    private lazy var collectionHeight: CGFloat = cellSize.height * rowCount + StyleGuide.CalendarDatePicker.cellsInterItemSpacing * (rowCount - 1) + StyleGuide.CalendarDatePicker.collectionMargins * 2
     
     private lazy var cellSize: CGSize = {
         let padding = (StyleGuide.CalendarDatePicker.collectionMargins * 2) + (StyleGuide.CalendarDatePicker.cellsInterItemSpacing * (StyleGuide.CalendarDatePicker.cellPerRowCount - 1))
@@ -117,6 +118,15 @@ class CalendarPickerViewController: UIViewController, PresentableController {
         setupView()
     }
         
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let selectedDate = viewModel.outputs.selectedDate.value ?? Date()
+        let diffAmountMonths = selectedDate.endOfMonth.months(from: Date())
+
+        setDataForHeaderView(for: viewModel.outputs.days.value[diffAmountMonths].firstDay)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
            
@@ -124,8 +134,7 @@ class CalendarPickerViewController: UIViewController, PresentableController {
         let selectedDate = viewModel.outputs.selectedDate.value ?? Date()
         let diffAmountMonths = selectedDate.endOfMonth.months(from: Date())
         let currentIndexPath = IndexPath(row: 0, section: diffAmountMonths)
-        collectionView.scrollToItem(at: currentIndexPath, at: .centeredVertically, animated: false)
-        alignMonthInCollectionView(velocity: CGPoint.zero)
+        collectionView.scrollToItem(at: currentIndexPath, at: .centeredVertically, animated: true)
     }
     
     //MARK: Actions
@@ -253,16 +262,6 @@ extension CalendarPickerViewController {
         
         view.frame.size = CGSize(width: self.viewWidth, height: viewHeight)
     }
-    
-    private func showView() {
-        guard let mainView = UIView.globalView else { return }
-                
-        let viewOriginAtMainView = CGPoint(x: (globalFrame.width - viewWidth)/2, y: (globalFrame.height - viewHeight)/2)
-        let viewOriginDiffrence = mainView.convert(viewOriginAtMainView, to: view)
-        let origin = CGPoint(x: view.frame.origin.x + viewOriginDiffrence.x, y: view.frame.origin.y + viewOriginDiffrence.y)
-        
-        self.view.frame.origin = origin
-    }
 }
 
 //MARK: - Common
@@ -325,53 +324,6 @@ extension CalendarPickerViewController: UIScrollViewDelegate {
         
         if (collectionView.contentOffset.y / collectionView.frame.size.height) == CGFloat(index) {
             setDataForHeaderView(for: viewModel.outputs.days.value[index].firstDay)
-        }
-    }
-}
-
-//MARK: - UICollectionViewDelegate
-extension CalendarPickerViewController: UICollectionViewDelegate {
-
-    private func indexOfMajorCell() -> Int {
-        let sectionHeight = (StyleGuide.CalendarDatePicker.collectionMargins * 2) + (cellSize.height * 6) + (StyleGuide.CalendarDatePicker.cellsInterItemSpacing * 5)
-        let proportionalOffset = collectionView.contentOffset.y / sectionHeight
-        let index = Int(round(proportionalOffset))
-        let numberOfItems = viewModel.outputs.days.value.count
-        let safeIndex = max(0, min(numberOfItems - 1, index))
-        return safeIndex
-    }
-                
-    func alignMonthInCollectionView(velocity: CGPoint) {
-        // calculate where scrollView should snap to:
-        let indexOfMajorCell = self.indexOfMajorCell()
-
-        // calculate conditions:
-        let dataSourceCount = viewModel.outputs.days.value.count
-        let swipeVelocityThreshold: CGFloat = 0.5 // after some trail and error
-        let hasEnoughVelocityToSlideToTheNextCell = indexOfCellBeforeDragging + 1 < dataSourceCount && velocity.y > swipeVelocityThreshold
-        let hasEnoughVelocityToSlideToThePreviousCell = indexOfCellBeforeDragging >= 0 && velocity.y < -swipeVelocityThreshold
-        let majorCellIsTheCellBeforeDragging = indexOfMajorCell == indexOfCellBeforeDragging
-        let didUseSwipeToSkipCell = majorCellIsTheCellBeforeDragging && (hasEnoughVelocityToSlideToTheNextCell || hasEnoughVelocityToSlideToThePreviousCell)
-
-        if didUseSwipeToSkipCell {
-
-            let snapToIndex = indexOfCellBeforeDragging + (hasEnoughVelocityToSlideToTheNextCell ? 1 : -1)
-            let toValue = collectionHeight * CGFloat(snapToIndex)
-
-            if (snapToIndex >= 0) {
-                // Damping equal 1 => no oscillations => decay animation:
-                UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity.y < 0 ? velocity.y * -1 : velocity.y, options: .allowUserInteraction, animations: {
-                    self.collectionView.contentOffset = CGPoint(x: 0, y: toValue)
-                    self.collectionView.layoutIfNeeded()
-                }, completion: { finished in
-                    self.setDataForHeaderView(for: self.viewModel.outputs.days.value[snapToIndex].firstDay)
-                })
-            }
-
-        } else {
-            let offsetForSlide = CGFloat(indexOfMajorCell) * collectionHeight
-            collectionView.setContentOffset(CGPoint(x: 0, y: offsetForSlide), animated: true)
-            setDataForHeaderView(for: viewModel.outputs.days.value[indexOfMajorCell].firstDay)
         }
     }
 }

@@ -10,7 +10,7 @@ import UIKit
 
 class ReorderSubtask: UIView {
 
-    private let controlRatioWidthRelativeAtFrame: CGFloat = 0.6
+    private let controlRatioWidthRelativeAtFrame: CGFloat = StyleGuide.DetailTask.Sizes.ratioToFrameWidth.reorderControlWidth
     private let controlShape = CAShapeLayer()
     
     override func layoutSubviews() {
@@ -30,15 +30,19 @@ extension ReorderSubtask {
         
         let controlWidth = frame.width * controlRatioWidthRelativeAtFrame
         let sidePadding = (frame.width - controlWidth) / 2
+        let interLineSpacing: CGFloat = 5
         
+        //middle line
         linePath.move(to: CGPoint(x: sidePadding, y: frame.height/2))
         linePath.addLine(to: CGPoint(x: sidePadding + controlWidth, y: frame.height/2))
         
-        linePath.move(to: CGPoint(x: sidePadding, y: frame.height/2 - 5))
-        linePath.addLine(to: CGPoint(x: sidePadding + controlWidth, y: frame.height/2 - 5))
+        //top line
+        linePath.move(to: CGPoint(x: sidePadding, y: frame.height/2 - interLineSpacing))
+        linePath.addLine(to: CGPoint(x: sidePadding + controlWidth, y: frame.height/2 - interLineSpacing))
         
-        linePath.move(to: CGPoint(x: sidePadding, y: frame.height/2 + 5))
-        linePath.addLine(to: CGPoint(x: sidePadding + controlWidth, y: frame.height/2 + 5))
+        //bottom line
+        linePath.move(to: CGPoint(x: sidePadding, y: frame.height/2 + interLineSpacing))
+        linePath.addLine(to: CGPoint(x: sidePadding + controlWidth, y: frame.height/2 + interLineSpacing))
             
         controlShape.path = linePath.cgPath
         controlShape.lineWidth = lineWidth

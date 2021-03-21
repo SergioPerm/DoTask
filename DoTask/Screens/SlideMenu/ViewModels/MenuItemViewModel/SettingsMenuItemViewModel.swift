@@ -9,5 +9,5 @@
 import Foundation
 
 class SettingsMenuItemViewModel: MenuItemViewModelType {
-    var rowHeight: Double = 40
+    var rowHeight: Double = StyleGuide.SlideMenu.Sizes.midRowHeight
 }

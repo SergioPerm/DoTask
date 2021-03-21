@@ -89,6 +89,58 @@ struct StyleGuide {
         }
     }
     
+    struct DetailShortcut {
+        struct Sizes {
+            enum RatioToScrennHeight {
+                static let topMargin: CGFloat = 0.1
+            }
+            
+            enum RatioToScreenWidth {
+                static let btnWidth: CGFloat = 0.25
+            }
+        }
+        
+        struct ColorSelectionView {
+            enum Sizes {
+                static let collectionViewLayoutSectionInset: UIEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+                static let collectionViewLayoutMinLineSpacing: CGFloat = 0.0
+                static let topBorderHeight: CGFloat = 1.0
+                static let collectionCellSize: CGSize = CGSize(width: 50, height: 50)
+            }
+        }
+        
+        struct ColorCollectionViewCell {
+            enum Sizes {
+                static let colorCircleLineWidth: CGFloat = 1.0
+                static let colorCircleSelectLineWidth: CGFloat = 2.0
+            }
+        }
+        
+        struct ColorDotView {
+            enum Sizes {
+                static let lineWidth: CGFloat = 1.0
+            }
+        }
+        
+        struct ShowInMainList {
+            enum Sizes {
+                static let borderHeight: CGFloat = 1.0
+            }
+        }
+        
+        struct SaveBtn {
+            enum Sizes {
+                static let cornerRadiud: CGFloat = 15.0
+            }
+        }
+        
+        struct DeleteBtn {
+            enum Sizes {
+                static let cornerRadius: CGFloat = 15.0
+            }
+        }
+    }
+    
     struct SpeechTask {
         struct Sizes {
             enum RatioToScreenWidth {
@@ -147,7 +199,7 @@ struct StyleGuide {
     
     enum DetailTask {
         
-        enum Sizes {
+        struct Sizes {
             //view
             static let topMargin: CGFloat = 40.0
             static let viewCornerRadius: CGFloat = 16.0
@@ -157,6 +209,30 @@ struct StyleGuide {
             static let chevronHeight: CGFloat = 20
             static let swipeCloseViewHeight: CGFloat = 40
             static let accesoryStackViewHeight: CGFloat = 45
+            
+            static let infoSectionHeaderHeight: Double = 20
+            
+            static let tableViewEstimatedHeight: CGFloat = 33
+            
+            static let accessoryViewBorderWidth: CGFloat = 1.0
+            static let buttonsAreaHeightForScrollLimit: CGFloat = 50.0
+            
+            static let deleteBtnImageInsets: UIEdgeInsets = UIEdgeInsets(top: 12, left: 5, bottom: 12, right: 25)
+                      
+            static let accessoryCornerRadius: CGFloat = 6
+            static let addSubtaskBtnCornerRadius: CGFloat = 10.0
+            
+            static let shortcutBtnLineWidth: CGFloat = 2.0
+            
+            enum ratioToFrameWidth {
+                static let reorderControlWidth: CGFloat = 0.6
+                static let checkCircleHeight: CGFloat = 0.6
+            }
+            
+            enum ratioToScreenWidth {
+                static let hideKeyboardWidth: CGFloat = 0.2
+                static let addSubtaskWidth: CGFloat = 0.4
+            }
         }
         
         enum Colors {
@@ -215,17 +291,37 @@ struct StyleGuide {
         static let alphaShowAnimationValue: CGFloat = 0.3
     }
     
-    enum SlideMenu {
-        //sizes
-        static let leftMargin: CGFloat = 16.0
+    struct SlideMenu {
+        
+        struct Sizes {
+            static let bigRowHeight: Double = 50
+            static let midRowHeight: Double = 40
+            
+            static let leftMargin: CGFloat = 16.0
+            
+            static let mainSectioHeaderHeight: Double = 30.0
+            
+            enum RatioToScreenWidth {
+                static let ratioToScreenExpandWidth: CGFloat = 0.5
+                static let ratioToScreenOffsetToExpand: CGFloat = 0.25
+                static let ratioToScreenWidthFontSizeBigTitle: CGFloat = 0.05
+                static let ratioToScreenWidthFontSizeMiddleTitle: CGFloat = 0.045
+                static let ratioToScreenWidthFontSizeSmallTitle: CGFloat = 0.04
+            }
+        }
 
-        //ratio sizes
-        static let ratioToScreenExpandWidth: CGFloat = 0.5
-        static let ratioToScreenOffsetToExpand: CGFloat = 0.25
-        static let ratioToScreenWidthFontSizeBigTitle: CGFloat = 0.05
-        static let ratioToScreenWidthFontSizeMiddleTitle: CGFloat = 0.045
-        static let ratioToScreenWidthFontSizeSmallTitle: CGFloat = 0.04
-
+        struct CreateShortcut {
+            enum Sizes {
+                static let createBtnImgInsets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 15)
+            }
+        }
+        
+        struct ShortcutItem {
+            enum Sizes {
+                static let cornerRadius: CGFloat = 5.0
+            }
+        }
+        
         //colors
         static let viewBGColor: UIColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         

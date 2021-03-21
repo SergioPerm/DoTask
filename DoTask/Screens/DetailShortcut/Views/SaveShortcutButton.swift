@@ -33,7 +33,7 @@ extension SaveShortcutButton {
     
     private func setup() {
         
-        layer.cornerRadius = 15
+        layer.cornerRadius = StyleGuide.DetailShortcut.SaveBtn.Sizes.cornerRadiud
         backgroundColor = StyleGuide.DetailTask.Colors.addSubtaskbtnColor
         translatesAutoresizingMaskIntoConstraints = false
         
@@ -55,7 +55,7 @@ extension SaveShortcutButton {
         layer.shadowColor = #colorLiteral(red: 0.5, green: 0.5, blue: 0.5, alpha: 1).cgColor
         layer.shadowOpacity = 0.5
         layer.shadowOffset = CGSize(width: 2.0, height: 2.0)
-        layer.shadowRadius = 15
+        layer.shadowRadius = StyleGuide.DetailShortcut.SaveBtn.Sizes.cornerRadiud
         
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapAction(sender:)))
         addGestureRecognizer(tapRecognizer)

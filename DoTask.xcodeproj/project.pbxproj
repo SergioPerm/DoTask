@@ -1488,9 +1488,6 @@
 			isa = PBXGroup;
 			children = (
 				B1D4CCDF256D25A30085C25C /* Assembly */,
-				B1D4CCE0256D25AB0085C25C /* Protocols */,
-				B1D4CCE1256D25B20085C25C /* Models */,
-				B1D4CCE3256D25BE0085C25C /* ViewModels */,
 				B1D4CCE2256D25B90085C25C /* Views */,
 			);
 			path = Settings;
@@ -1504,33 +1501,12 @@
 			path = Assembly;
 			sourceTree = "<group>";
 		};
-		B1D4CCE0256D25AB0085C25C /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Protocols;
-			sourceTree = "<group>";
-		};
-		B1D4CCE1256D25B20085C25C /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		B1D4CCE2256D25B90085C25C /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				B1D4CCE4256D26090085C25C /* SettingsViewController.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		B1D4CCE3256D25BE0085C25C /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		B1D5C4BB252B53DE00C4B988 /* PushNotifications */ = {

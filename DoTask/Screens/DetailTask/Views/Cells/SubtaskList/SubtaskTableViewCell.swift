@@ -18,7 +18,7 @@ class SubtaskTableViewCell: UITableViewCell, DetailTaskCellType {
 
     private weak var heightConstraint: NSLayoutConstraint?
         
-    private let checkViewHeight: CGFloat = 33 * 0.6
+    private let checkViewHeight: CGFloat = StyleGuide.DetailTask.Sizes.tableViewEstimatedHeight * StyleGuide.DetailTask.Sizes.ratioToFrameWidth.checkCircleHeight
     
     // MARK: External properties
     
@@ -94,24 +94,7 @@ class SubtaskTableViewCell: UITableViewCell, DetailTaskCellType {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-        
-//    override func prepareForReuse() {
-//        super.prepareForReuse()
-        //heightConstraint?.constant = 33
-        //updateHeightOnDisplay()
-    //}
             
-//    private func updateHeightOnDisplay() {
-//        if !titleTextView.text.isEmpty {
-//            updateHeightOfRow()
-//        }
-//    }
-//
-//    override func layoutIfNeeded() {
-//        super.layoutIfNeeded()
-//        updateHeightOnDisplay()
-//    }
-    
 }
 
 extension SubtaskTableViewCell {
@@ -146,14 +129,14 @@ extension SubtaskTableViewCell {
         
         reorderButton.setContentHuggingPriority(huggingPriority, for: .vertical)
         
-        heightConstraint = titleTextView.heightAnchor.constraint(equalToConstant: 33)
+        heightConstraint = titleTextView.heightAnchor.constraint(equalToConstant: StyleGuide.DetailTask.Sizes.tableViewEstimatedHeight)
         heightConstraint?.priority = UILayoutPriority(250)
         
         let constraints = [
             doneView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             doneView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            doneView.heightAnchor.constraint(equalToConstant: 33),
-            doneView.widthAnchor.constraint(equalToConstant: 33),
+            doneView.heightAnchor.constraint(equalToConstant: StyleGuide.DetailTask.Sizes.tableViewEstimatedHeight),
+            doneView.widthAnchor.constraint(equalToConstant: StyleGuide.DetailTask.Sizes.tableViewEstimatedHeight),
             checkView.leadingAnchor.constraint(equalTo: doneView.leadingAnchor),
             checkView.centerYAnchor.constraint(equalTo: doneView.centerYAnchor),
             checkView.heightAnchor.constraint(equalToConstant: checkViewHeight),
@@ -166,12 +149,12 @@ extension SubtaskTableViewCell {
             titleTextView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             deleteButton.topAnchor.constraint(equalTo: contentView.topAnchor),
             deleteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            deleteButton.heightAnchor.constraint(equalToConstant: 33),
-            deleteButton.widthAnchor.constraint(equalToConstant: 33),
+            deleteButton.heightAnchor.constraint(equalToConstant: StyleGuide.DetailTask.Sizes.tableViewEstimatedHeight),
+            deleteButton.widthAnchor.constraint(equalToConstant: StyleGuide.DetailTask.Sizes.tableViewEstimatedHeight),
             reorderButton.topAnchor.constraint(equalTo: contentView.topAnchor),
             reorderButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            reorderButton.heightAnchor.constraint(equalToConstant: 33),
-            reorderButton.widthAnchor.constraint(equalToConstant: 33)
+            reorderButton.heightAnchor.constraint(equalToConstant: StyleGuide.DetailTask.Sizes.tableViewEstimatedHeight),
+            reorderButton.widthAnchor.constraint(equalToConstant: StyleGuide.DetailTask.Sizes.tableViewEstimatedHeight)
         ]
         
         NSLayoutConstraint.activate(constraints)

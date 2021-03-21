@@ -11,18 +11,16 @@ import UIKit
 class CardModalTransitionController: NSObject, UIViewControllerTransitioningDelegate {
     
     private let animationDuration: TimeInterval
-    private let estimatedFinalHeight: CGFloat
     private let viewController: UIViewController
     private let interactionView: UIView?
     private let router: RouterType?
     
     private var interactionController: UIPercentDrivenInteractiveTransition?
     
-    init(viewController: UIViewController, interactionView: UIView? = nil, router: RouterType?, estimatedFinalHeight: CGFloat = UIScreen.main.bounds.height * 0.1, animationDuration: TimeInterval = 0.4) {
+    init(viewController: UIViewController, interactionView: UIView? = nil, router: RouterType?, animationDuration: TimeInterval = 0.4) {
         self.viewController = viewController
         self.router = router
         self.animationDuration = animationDuration
-        self.estimatedFinalHeight = estimatedFinalHeight
         self.interactionView = interactionView
         
         super.init()
@@ -30,7 +28,7 @@ class CardModalTransitionController: NSObject, UIViewControllerTransitioningDele
         setupInteraction()
     }
 
-    private lazy var animatorController = CardModalAnimationController(estimatedFinalHeight: estimatedFinalHeight, animationDuration: animationDuration, isPresenting: true)
+    private lazy var animatorController = CardModalAnimationController(animationDuration: animationDuration, isPresenting: true)
 
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         animatorController.isPresenting = true

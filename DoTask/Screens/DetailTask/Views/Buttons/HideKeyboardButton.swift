@@ -28,11 +28,11 @@ class HideKeyboardButton: UIView {
 extension HideKeyboardButton {
     
     private func updateShadow() {
-        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: 10).cgPath
+        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: StyleGuide.DetailTask.Sizes.addSubtaskBtnCornerRadius).cgPath
     }
     
     private func setup() {
-        layer.cornerRadius = 10
+        layer.cornerRadius = StyleGuide.DetailTask.Sizes.addSubtaskBtnCornerRadius
         backgroundColor = StyleGuide.DetailTask.Colors.addSubtaskbtnColor
         
         let label = UILabel()
@@ -52,7 +52,7 @@ extension HideKeyboardButton {
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOpacity = 0.4
         layer.shadowOffset = CGSize(width: -1.0, height: 0.0)
-        layer.shadowRadius = 10
+        layer.shadowRadius = StyleGuide.DetailTask.Sizes.addSubtaskBtnCornerRadius
         
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapAction(sender:)))
         tapRecognizer.delegate = self

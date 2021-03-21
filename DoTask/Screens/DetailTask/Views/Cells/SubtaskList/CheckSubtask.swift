@@ -90,7 +90,7 @@ extension CheckSubtask {
         
         checkShape.fillColor = UIColor.clear.cgColor
         checkShape.strokeColor = StyleGuide.TaskList.Colors.cellMainTitle.cgColor
-        checkShape.lineWidth = 3
+        checkShape.lineWidth = lineWidth
         checkShape.path = path.cgPath
         
         layer.addSublayer(checkShape)

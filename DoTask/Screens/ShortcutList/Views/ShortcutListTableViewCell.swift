@@ -76,7 +76,7 @@ extension ShortcutListTableViewCell {
         selectionStyle = .none
         
         let globalWidth = UIView.globalSafeAreaFrame.width
-        titleLabel.font = titleLabel.font.withSize(globalWidth * StyleGuide.SlideMenu.ratioToScreenWidthFontSizeMiddleTitle)
+        titleLabel.font = titleLabel.font.withSize(globalWidth * StyleGuide.SlideMenu.Sizes.RatioToScreenWidth.ratioToScreenWidthFontSizeMiddleTitle)
         
         contentView.addSubview(colorDotView)
         contentView.addSubview(titleLabel)

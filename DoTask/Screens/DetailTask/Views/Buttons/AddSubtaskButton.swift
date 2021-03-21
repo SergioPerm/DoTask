@@ -29,12 +29,12 @@ class AddSubtaskButton: UIView {
 extension AddSubtaskButton {
     
     private func updateShadow() {
-        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: 10).cgPath
+        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: StyleGuide.DetailTask.Sizes.addSubtaskBtnCornerRadius).cgPath
     }
     
     private func setup() {
         
-        layer.cornerRadius = 10
+        layer.cornerRadius = StyleGuide.DetailTask.Sizes.addSubtaskBtnCornerRadius
         backgroundColor = StyleGuide.DetailTask.Colors.addSubtaskbtnColor
         
         let label = UILabel()
@@ -54,7 +54,7 @@ extension AddSubtaskButton {
         layer.shadowColor = #colorLiteral(red: 0.5, green: 0.5, blue: 0.5, alpha: 1).cgColor
         layer.shadowOpacity = 0.7
         layer.shadowOffset = CGSize(width: 5.0, height: 5.0)
-        layer.shadowRadius = 10
+        layer.shadowRadius = StyleGuide.DetailTask.Sizes.addSubtaskBtnCornerRadius
         
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapAction(sender:)))
         tapRecognizer.delegate = self

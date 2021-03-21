@@ -21,7 +21,7 @@ class DeleteShortcutButton: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        updateShadow()
+        //updateShadow()
     }
 
 }
@@ -33,7 +33,7 @@ extension DeleteShortcutButton {
     
     private func setup() {
         
-        layer.cornerRadius = 15
+        layer.cornerRadius = StyleGuide.DetailShortcut.DeleteBtn.Sizes.cornerRadius
         backgroundColor = #colorLiteral(red: 1, green: 0.461137827, blue: 0.4543734729, alpha: 1)
         translatesAutoresizingMaskIntoConstraints = false
         

@@ -47,7 +47,7 @@ extension ColorDotView {
         dotShape.path = circlePath.cgPath
         dotShape.fillColor = currentColor.cgColor
         dotShape.strokeColor = currentColor.cgColor
-        dotShape.lineWidth = 1.0
+        dotShape.lineWidth = StyleGuide.DetailShortcut.ColorDotView.Sizes.lineWidth
         
         layer.addSublayer(dotShape)
         

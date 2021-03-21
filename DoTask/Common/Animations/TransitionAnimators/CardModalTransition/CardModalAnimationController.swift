@@ -23,15 +23,13 @@ class CardModalAnimationController: NSObject, UIViewControllerAnimatedTransition
         }
     }
     
-    let estimatedFinalHeight: CGFloat
     let animationDuration: TimeInterval
     var isPresenting: Bool
     var dimmView: UIView = UIView()
     var rootVC: UIViewController?
     
-    init(rootVC: UIViewController? = nil, estimatedFinalHeight: CGFloat, animationDuration: TimeInterval, isPresenting: Bool) {
+    init(rootVC: UIViewController? = nil, animationDuration: TimeInterval, isPresenting: Bool) {
         self.rootVC = rootVC
-        self.estimatedFinalHeight = estimatedFinalHeight
         self.animationDuration = animationDuration
         self.isPresenting = isPresenting
     }
@@ -52,6 +50,7 @@ class CardModalAnimationController: NSObject, UIViewControllerAnimatedTransition
         let containerView = transitionContext.containerView
 
         if isPresenting {
+            let originalFrame = toVC.view.frame
             toVC.view.frame.origin.y = fromVC.view.frame.maxY
             containerView.addSubview(toVC.view)
                         
@@ -64,7 +63,8 @@ class CardModalAnimationController: NSObject, UIViewControllerAnimatedTransition
                 
                 self.dimmView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.6600057827)
                 
-                toVC.view.frame.origin.y = self.estimatedFinalHeight
+                toVC.view.frame = originalFrame
+
                 fromVC.view.layer.transform =
                     ViewControlerScale.modelPresentationScale.transform
 

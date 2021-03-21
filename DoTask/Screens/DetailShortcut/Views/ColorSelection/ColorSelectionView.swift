@@ -35,7 +35,7 @@ class ColorSelectionView: UIView {
         return collectionView
     }()
     
-    private let borderShape: CAShapeLayer = CAShapeLayer()
+    private let topBorder: CAShapeLayer = CAShapeLayer()
     
     private var selectedCellViewModel: ColorSelectionItemViewModelType?
     
@@ -70,8 +70,8 @@ extension ColorSelectionView {
         collectionView.dataSource = self
         
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
-        layout.minimumLineSpacing = 0.0
+        layout.sectionInset = StyleGuide.DetailShortcut.ColorSelectionView.Sizes.collectionViewLayoutSectionInset
+        layout.minimumLineSpacing = StyleGuide.DetailShortcut.ColorSelectionView.Sizes.collectionViewLayoutMinLineSpacing
         
         let constraints = [
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -85,12 +85,12 @@ extension ColorSelectionView {
     }
     
     private func updateShapes() {
-        borderShape.removeFromSuperlayer()
+        topBorder.removeFromSuperlayer()
         
-        borderShape.frame = CGRect(x: 0, y: 0, width: frame.width, height: 1)
-        borderShape.backgroundColor = #colorLiteral(red: 0.8463017875, green: 0.8463017875, blue: 0.8463017875, alpha: 1).cgColor
+        topBorder.frame = CGRect(x: 0, y: 0, width: frame.width, height: StyleGuide.DetailShortcut.ColorSelectionView.Sizes.topBorderHeight)
+        topBorder.backgroundColor = #colorLiteral(red: 0.8463017875, green: 0.8463017875, blue: 0.8463017875, alpha: 1).cgColor
         
-        layer.addSublayer(borderShape)
+        layer.addSublayer(topBorder)
     }
     
     func scrollToSelected() {
@@ -123,7 +123,7 @@ extension ColorSelectionView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: 50, height: 50)
+        return StyleGuide.DetailShortcut.ColorSelectionView.Sizes.collectionCellSize
     }
 }
 

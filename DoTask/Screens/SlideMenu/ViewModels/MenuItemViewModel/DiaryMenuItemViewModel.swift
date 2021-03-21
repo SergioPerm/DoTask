@@ -12,7 +12,7 @@ class DiaryMenuItemViewModel: MenuItemViewModelType, MenuItemViewModelMainType {
     
     var menuType: MainMenuType
     
-    var rowHeight: Double = 50
+    var rowHeight: Double = StyleGuide.SlideMenu.Sizes.bigRowHeight
 
     var title: String
     var imageName: String

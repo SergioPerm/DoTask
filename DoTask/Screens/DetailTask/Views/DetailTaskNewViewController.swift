@@ -58,7 +58,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
         accessoryView.translatesAutoresizingMaskIntoConstraints = false
         accessoryView.backgroundColor = .white
         accessoryView.layer.borderColor = StyleGuide.TaskList.Colors.cellMainTitle.cgColor
-        accessoryView.layer.borderWidth = 1.0
+        accessoryView.layer.borderWidth = StyleGuide.DetailTask.Sizes.accessoryViewBorderWidth
         
         return accessoryView
     }()
@@ -144,7 +144,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
         if let userInfo = notification.userInfo {
             let keyboardEndFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
                         
-            let lowerLimitToScroll = keyboardEndFrame.origin.y - accesoryStackView.frame.height - 50
+            let lowerLimitToScroll = keyboardEndFrame.origin.y - accesoryStackView.frame.height - StyleGuide.DetailTask.Sizes.buttonsAreaHeightForScrollLimit
             
             scrollView.limitToScroll = lowerLimitToScroll
         }
@@ -185,8 +185,8 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
     // MARK: View setup
     private func setupView() {
         let globalFrame = UIView.globalSafeAreaFrame
-        view.frame = CGRect(origin: globalFrame.origin, size: CGSize(width: globalFrame.width, height: globalFrame.height - (UIDevice.hasNotch ? 0 : topMargin)))
-        
+    
+        view.frame = CGRect(origin: globalFrame.origin, size: CGSize(width: globalFrame.width, height: globalFrame.height))
         view.clipsToBounds = true
         view.backgroundColor = StyleGuide.DetailTask.Colors.viewBGColor
         let mask = CAShapeLayer()
@@ -338,9 +338,9 @@ extension DetailTaskNewViewController {
         scrollView.addNewSubtask()
     }
     
-    // MARK: -Accessory view actions
+    // MARK: - Accessory view actions
     @objc private func saveTaskAction(sender: UIButton) {
-        if scrollView.currentTitle == "" {
+        if scrollView.currentTitle.isEmpty {
             scrollView.shakeTitle()
             return
         }
@@ -363,7 +363,7 @@ extension DetailTaskNewViewController {
         viewModel.inputs.openShortcuts()
     }
     
-    // MARK: -Close actions
+    // MARK: - Close actions
     
     private func tapToCloseAction() {
         router?.pop(vc: self)

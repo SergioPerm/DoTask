@@ -37,13 +37,11 @@ class ColorCollectionViewCell: UICollectionViewCell {
 
 extension ColorCollectionViewCell {
     private func bindViewModel() {
-        
         drawColorShape()
         
         viewModel?.outputs.selectEvent.subscribe(self, handler: { (this, selected) in
             this.drawColorShape()
         })
-        
     }
     
     private func drawColorShape() {
@@ -59,7 +57,7 @@ extension ColorCollectionViewCell {
         colorShape.path = circlePath.cgPath
         colorShape.fillColor = cellColor.cgColor
         colorShape.strokeColor = cellColor.cgColor
-        colorShape.lineWidth = 1.0
+        colorShape.lineWidth = StyleGuide.DetailShortcut.ColorCollectionViewCell.Sizes.colorCircleLineWidth
         
         layer.addSublayer(colorShape)
         
@@ -69,7 +67,7 @@ extension ColorCollectionViewCell {
             selectShape.path = selectCirclePath.cgPath
             selectShape.fillColor = UIColor.clear.cgColor
             selectShape.strokeColor = UIColor.white.cgColor
-            selectShape.lineWidth = 2.0
+            selectShape.lineWidth = StyleGuide.DetailShortcut.ColorCollectionViewCell.Sizes.colorCircleSelectLineWidth
             
             layer.addSublayer(selectShape)
         }

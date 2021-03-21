@@ -20,6 +20,8 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
     private var taskDateInfoCell: DetailTaskTableItemViewModelType?
     private var taskReminderInfoCell: DetailTaskTableItemViewModelType?
         
+    private let subtaskSectionIndex: Int = 0
+    
     var inputs: DetailTaskViewModelInputs { return self }
     var outputs: DetailTaskViewModelOutputs { return self }
     
@@ -105,21 +107,21 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
     }
   
     func addSubtask() -> IndexPath {
-        tableSections[0].tableCells.append(SubtaskViewModel(subtask: Subtask()))
-        return IndexPath(row: tableSections[0].tableCells.count - 1, section: 0)
+        tableSections[subtaskSectionIndex].tableCells.append(SubtaskViewModel(subtask: Subtask()))
+        return IndexPath(row: tableSections[subtaskSectionIndex].tableCells.count - 1, section: subtaskSectionIndex)
     }
     
     func deleteSubtask(indexPath: IndexPath) {
-        tableSections[0].tableCells.remove(at: indexPath.row)
+        tableSections[subtaskSectionIndex].tableCells.remove(at: indexPath.row)
     }
         
     func moveSubtask(from: Int, to: Int) {
-        tableSections[0].tableCells.insert(tableSections[0].tableCells.remove(at: from), at: to)
+        tableSections[subtaskSectionIndex].tableCells.insert(tableSections[subtaskSectionIndex].tableCells.remove(at: from), at: to)
     }
     
     func saveTask() {
         var priority: Int16 = 0
-        task.subtasks = tableSections[0].tableCells.compactMap {
+        task.subtasks = tableSections[subtaskSectionIndex].tableCells.compactMap {
             if let subtaskViewModel = $0 as? SubtaskViewModelType {
                 var subtask = Subtask()
                 subtask.isDone = subtaskViewModel.outputs.isDone
@@ -259,7 +261,7 @@ extension DetailTaskViewModel {
                         
             guard let taskDateInfoCell = taskDateInfoCell, let taskReminderInfoCell = taskReminderInfoCell else { return }
             
-            let infoSection = DetailTaskTableSectionViewModel(cells: [taskDateInfoCell, taskReminderInfoCell, deleteCell], sectionHeight: 20)
+            let infoSection = DetailTaskTableSectionViewModel(cells: [taskDateInfoCell, taskReminderInfoCell, deleteCell], sectionHeight: StyleGuide.DetailTask.Sizes.infoSectionHeaderHeight)
             tableSections.append(infoSection)
         }
         

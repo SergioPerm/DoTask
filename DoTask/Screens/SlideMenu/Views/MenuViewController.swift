@@ -91,9 +91,6 @@ class MenuViewController: UIViewController, PresentableController, SlideMenuView
     
     var enabled: Bool {
         return currentState == .menuExpanded
-//        didSet {
-//            swipeRecognizer?.isEnabled = enabled
-//        }
     }
     
     weak var parentController: MenuParentControllerType? {
@@ -131,11 +128,11 @@ extension MenuViewController {
         }
         view.addSubview(tableView)
         
-        tableView.frame = CGRect(origin: view.frame.origin, size: CGSize(width: view.frame.width * StyleGuide.SlideMenu.ratioToScreenExpandWidth, height: view.frame.height))
+        tableView.frame = CGRect(origin: view.frame.origin, size: CGSize(width: view.frame.width * StyleGuide.SlideMenu.Sizes.RatioToScreenWidth.ratioToScreenExpandWidth, height: view.frame.height))
          
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
-        tableView.rowHeight = 40
+        tableView.rowHeight = CGFloat(StyleGuide.SlideMenu.Sizes.midRowHeight)
         tableView.backgroundColor = .white
     }
 }
@@ -147,7 +144,7 @@ extension MenuViewController {
         if shouldExpand {
             currentState = .menuExpanded
             parentController?.willMenuExpand()
-            animateCenterPanel(targetPosition: view.frame.width * StyleGuide.SlideMenu.ratioToScreenExpandWidth) { _ in
+            animateCenterPanel(targetPosition: view.frame.width * StyleGuide.SlideMenu.Sizes.RatioToScreenWidth.ratioToScreenExpandWidth) { _ in
                 self.isMove = !self.isMove
             }
         } else {
@@ -178,8 +175,8 @@ extension MenuViewController {
     
     // MARK: Swipe action
     @objc private func handlePanGesture(_ recognizer: UIPanGestureRecognizer) {
-        let offsetToExpand = view.frame.width * StyleGuide.SlideMenu.ratioToScreenOffsetToExpand
-        let expandWidth = view.frame.width * StyleGuide.SlideMenu.ratioToScreenExpandWidth
+        let offsetToExpand = view.frame.width * StyleGuide.SlideMenu.Sizes.RatioToScreenWidth.ratioToScreenOffsetToExpand
+        let expandWidth = view.frame.width * StyleGuide.SlideMenu.Sizes.RatioToScreenWidth.ratioToScreenExpandWidth
         
         let draggingVelocityExpand: CGFloat = 1.5
         let draggingVelocityAfterExpand: CGFloat = 0.3

@@ -13,7 +13,7 @@ protocol DetailTaskViewType: PresentableController {
     var onTimeReminderSelect: ((_ selectedTime: Date, _ vc: TimePickerViewOutputs) -> Void)? { get set }
     var onShortcutSelect: ((_ selectedShortcutUID: String?, _ vc: ShortcutListViewOutputs) -> Void)? { get set }
     
-    var scrollView: DetailTaskScrollViewType { get }
+    var scrollContentView: DetailTaskScrollViewType { get }
 }
 
 

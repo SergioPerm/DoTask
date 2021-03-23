@@ -62,7 +62,7 @@ class DetailTaskScrollView: UIScrollView {
     
     private let titleTextView: TaskTitleTextView = {
         let textView = TaskTitleTextView()
-        textView.font = Font.detailTaskStandartTitle.uiFont
+        textView.font = FontFactory.AvenirNextMedium.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 23))
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.isScrollEnabled = false
         textView.backgroundColor = StyleGuide.DetailTask.Colors.viewBGColor
@@ -154,6 +154,8 @@ extension DetailTaskScrollView {
         subtaskTableView.dataSource = self
         subtaskTableView.delegate = self
     }
+    
+    // MARK: Constraints
     
     private func setupConstraints() {
         var constraints = [

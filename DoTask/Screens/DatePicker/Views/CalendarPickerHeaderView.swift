@@ -54,7 +54,7 @@ class CalendarPickerHeaderView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        monthYearLabel.font = Font.calendarPickerFooterFont.uiFont.withSize(StyleGuide.CalendarDatePicker.ratioToViewWidthFont * frame.width)
+        monthYearLabel.font = FontFactory.HelveticaNeueBold.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 19))
         
         borderBottom.frame = CGRect(x: 0, y: frame.height - borderWidth, width: frame.width, height: borderWidth)
     }

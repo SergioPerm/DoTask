@@ -36,7 +36,7 @@ class DetailTaskCoordinator: NSObject, Coordinator {
             self.selectShortcut(shortcutUID: shortcutUID, shortcutListOutputs: outputs)
         }
         
-        let transition = PopUpModalTransitionController(viewController: vc, interactionView: vc.scrollView, router: router)
+        let transition = PopUpModalTransitionController(viewController: vc, interactionView: vc.scrollContentView, router: router)
                 
         router?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)

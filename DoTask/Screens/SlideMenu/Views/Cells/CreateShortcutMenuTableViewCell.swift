@@ -26,7 +26,7 @@ class CreateShortcutMenuTableViewCell: UITableViewCell, TableViewCellType {
     let title1: UILabel = {
        let label = UILabel()
         label.text = "Create shortcut"
-        label.font = Font.mainMenuCellFont.uiFont
+        label.font = FontFactory.HelveticaNeueBold.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 19))
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
         label.textColor = .gray

@@ -25,7 +25,7 @@ extension SpeechTextInfo {
     private func setup() {
         text = "Release to quick save"
         
-        font = UIFont(name: "AvenirNext", size: StyleGuide.getFontSizeRelativeToScreen(baseSize: 14))
+        font = UIFont(name: "AvenirNext", size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 14))
         textColor = .white
         textAlignment = .center
     }

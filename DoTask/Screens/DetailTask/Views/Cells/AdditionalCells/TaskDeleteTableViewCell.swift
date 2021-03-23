@@ -63,6 +63,8 @@ extension TaskDeleteTableViewCell {
         contentView.addSubview(infoImage)
         contentView.addSubview(infoLabel)
         
+        infoLabel.font = FontFactory.HelveticaNeue.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 17))
+        
         setupConstraints()
         setupActions()
     }
@@ -78,7 +80,7 @@ extension TaskDeleteTableViewCell {
             infoLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
             infoLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             infoLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            infoLabel.heightAnchor.constraint(equalToConstant: 40)
+            infoLabel.heightAnchor.constraint(equalToConstant: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 40))
         ]
         
         NSLayoutConstraint.activate(constraints)

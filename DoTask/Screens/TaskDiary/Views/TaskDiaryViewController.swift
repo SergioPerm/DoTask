@@ -92,12 +92,14 @@ extension TaskDiaryViewController {
         guard let navBar = self.navigationController?.navigationBar else { return }
         navBar.setFlatNavBar()
         
+        let font = FontFactory.AvenirNextBoldItalic.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 27))
+        
         let navTitle = NSMutableAttributedString(string: "Dia", attributes:[
                                                     NSAttributedString.Key.foregroundColor: Color.blueColor.uiColor,
-                                                    NSAttributedString.Key.font: Font.mainTitle.uiFont])
+                                                    NSAttributedString.Key.font: font])
         
         navTitle.append(NSMutableAttributedString(string: "ry", attributes:[
-                                                    NSAttributedString.Key.font: Font.mainTitle2.uiFont,
+                                                    NSAttributedString.Key.font: font,
                                                     NSAttributedString.Key.foregroundColor: Color.pinkColor.uiColor]))
         
         let navLabel = UILabel()

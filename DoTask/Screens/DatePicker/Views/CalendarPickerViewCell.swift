@@ -44,7 +44,7 @@ class CalendarPickerViewCell: UICollectionViewCell {
     var day: CalendarPickerDay? {
         didSet {
             dayLabel.text = day?.number
-            dayLabel.font = dayLabel.font.withSize(UIView.globalSafeAreaFrame.width * StyleGuide.CalendarDatePicker.ratioToScreenWidthCellFont)
+            dayLabel.font = dayLabel.font.withSize(StyleGuide.getSizeRelativeToScreenWidth(baseSize: 17))
             
             updateVisibleStatus()
         }

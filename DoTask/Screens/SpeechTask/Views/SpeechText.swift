@@ -69,7 +69,7 @@ extension SpeechText {
             
         backgroundColor = .clear
         
-        font = UIFont(name: "AvenirNext-Bold", size: StyleGuide.getFontSizeRelativeToScreen(baseSize: 32))
+        font = UIFont(name: "AvenirNext-Bold", size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 32))
         textColor = .white
         textAlignment = .center
     }

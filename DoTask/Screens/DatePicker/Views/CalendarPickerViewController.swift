@@ -66,16 +66,18 @@ class CalendarPickerViewController: UIViewController, PresentableController {
     
     private let rowCount: CGFloat = 6.0
     private var indexOfCellBeforeDragging = 0
-    private lazy var collectionHeight: CGFloat = cellSize.height * rowCount + StyleGuide.CalendarDatePicker.cellsInterItemSpacing * (rowCount - 1) + StyleGuide.CalendarDatePicker.collectionMargins * 2
     
     private lazy var cellSize: CGSize = {
         let padding = (StyleGuide.CalendarDatePicker.collectionMargins * 2) + (StyleGuide.CalendarDatePicker.cellsInterItemSpacing * (StyleGuide.CalendarDatePicker.cellPerRowCount - 1))
         let availableWidthForCells = viewWidth - padding
-        let cellWidth = availableWidthForCells / StyleGuide.CalendarDatePicker.cellPerRowCount
-            
+        var cellWidth = availableWidthForCells / StyleGuide.CalendarDatePicker.cellPerRowCount
+        cellWidth = floor(cellWidth * 10.0) / 10.0
+        
         return CGSize(width: cellWidth, height: cellWidth)
     }()
-                       
+
+    private lazy var collectionHeight: CGFloat = cellSize.height * rowCount + StyleGuide.CalendarDatePicker.cellsInterItemSpacing * (rowCount - 1) + StyleGuide.CalendarDatePicker.collectionMargins * 2
+    
     private var selectedCell: CalendarPickerViewCell? {
         didSet {
             guard let selectedCell = selectedCell else { return }
@@ -300,7 +302,14 @@ extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return cellSize
     }
-            
+     
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+//
+//        let margin = StyleGuide.CalendarDatePicker.collectionMargins
+//
+//        return UIEdgeInsets(top: margin, left: margin, bottom: margin, right: margin)
+//    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! CalendarPickerViewCell
                   

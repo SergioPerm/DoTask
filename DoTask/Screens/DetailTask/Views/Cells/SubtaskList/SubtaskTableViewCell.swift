@@ -65,6 +65,7 @@ class SubtaskTableViewCell: UITableViewCell, DetailTaskCellType {
     let titleTextView: TaskTitleTextView = {
         let textView = TaskTitleTextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.font = FontFactory.AvenirNextMedium.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 17))
         
         return textView
     }()
@@ -107,7 +108,7 @@ extension SubtaskTableViewCell {
         selectionStyle = .none
                 
         titleTextView.placeholderText = "Subtask title"
-        titleTextView.titleFont = FontFactory.TypeWriting.of(size: 15)
+        //titleTextView.titleFont = FontFactory.TypeWriting.of(size: 15)
         
         checkView = CheckSubtask(check: subtaskViewModel?.outputs.isDone ?? false)
         checkView.translatesAutoresizingMaskIntoConstraints = false

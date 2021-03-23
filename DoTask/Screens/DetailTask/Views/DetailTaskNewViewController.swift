@@ -51,7 +51,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
         return origin
     }()
                 
-    var scrollView: DetailTaskScrollViewType
+    var scrollContentView: DetailTaskScrollViewType
         
     private let accessoryView: UIView = {
         let accessoryView = UIView()
@@ -104,7 +104,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
         self.viewModel = viewModel
         self.router = presenter
         self.presentableControllerViewType = presentableControllerViewType
-        self.scrollView = DetailTaskScrollView(viewModel: viewModel)
+        self.scrollContentView = DetailTaskScrollView(viewModel: viewModel)
         
         super.init(nibName: nil, bundle: nil)
     
@@ -146,7 +146,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
                         
             let lowerLimitToScroll = keyboardEndFrame.origin.y - accesoryStackView.frame.height - StyleGuide.DetailTask.Sizes.buttonsAreaHeightForScrollLimit
             
-            scrollView.limitToScroll = lowerLimitToScroll
+            scrollContentView.limitToScroll = lowerLimitToScroll
         }
     }
     
@@ -179,7 +179,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
         
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        scrollView.becomeTextInputResponder()
+        scrollContentView.becomeTextInputResponder()
     }
         
     // MARK: View setup
@@ -196,14 +196,14 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
         
         view.layer.mask = mask
                 
-        scrollView.setCloseHandler(handler: { [weak self] in
+        scrollContentView.setCloseHandler(handler: { [weak self] in
             self?.tapToCloseAction()
         })
         
-        view.addSubview(scrollView)
+        view.addSubview(scrollContentView)
                 
-        view.insertSubview(addSubtaskButton, aboveSubview: scrollView)
-        view.insertSubview(shortcutButton, aboveSubview: scrollView)
+        view.insertSubview(addSubtaskButton, aboveSubview: scrollContentView)
+        view.insertSubview(shortcutButton, aboveSubview: scrollContentView)
         
         shortcutButton.shortcutBtnData = viewModel.outputs.selectedShortcut.value
         
@@ -248,10 +248,10 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
         let globalFrame = UIView.globalSafeAreaFrame
                         
         var constraints = [
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: accessoryView.topAnchor, constant: 0),
+            scrollContentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollContentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollContentView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollContentView.bottomAnchor.constraint(equalTo: accessoryView.topAnchor, constant: 0),
         ]
          
         accesoryBottomConstraint = accessoryView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -view.globalSafeAreaInsets.bottom)
@@ -325,7 +325,7 @@ extension DetailTaskNewViewController {
             guard let strongSelf = self else { return }
             
             if (strongSelf.isViewLoaded && strongSelf.view.window != nil) {
-                strongSelf.scrollView.becomeTextInputResponder()
+                strongSelf.scrollContentView.becomeTextInputResponder()
             }
         }
     }
@@ -335,13 +335,13 @@ extension DetailTaskNewViewController {
 extension DetailTaskNewViewController {
     
     @objc private func subtasksAddAction(sender: UITapGestureRecognizer) {
-        scrollView.addNewSubtask()
+        scrollContentView.addNewSubtask()
     }
     
     // MARK: - Accessory view actions
     @objc private func saveTaskAction(sender: UIButton) {
-        if scrollView.currentTitle.isEmpty {
-            scrollView.shakeTitle()
+        if scrollContentView.currentTitle.isEmpty {
+            scrollContentView.shakeTitle()
             return
         }
         
@@ -350,12 +350,12 @@ extension DetailTaskNewViewController {
     }
     
     private func calendarTapAction() {
-        scrollView.resignTextInputResponders()
+        scrollContentView.resignTextInputResponders()
         viewModel.inputs.openCalendar()
     }
     
     private func reminderTapAction() {
-        scrollView.resignTextInputResponders()
+        scrollContentView.resignTextInputResponders()
         viewModel.inputs.openReminder()
     }
     
@@ -381,6 +381,6 @@ extension DetailTaskNewViewController: UIGestureRecognizerDelegate {
             }
         }
 
-        return scrollView.contentOffset.y <= 0
+        return scrollContentView.contentOffset.y <= 0
     }
 }

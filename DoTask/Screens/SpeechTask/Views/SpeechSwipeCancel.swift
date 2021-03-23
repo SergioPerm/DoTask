@@ -23,7 +23,7 @@ class SpeechSwipeCancel: UIView {
        let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
-        label.font = UIFont(name: "AvenirNext-Regular", size: StyleGuide.getFontSizeRelativeToScreen(baseSize: 14))
+        label.font = UIFont(name: "AvenirNext-Regular", size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 14))
         label.text = "Swipe to left for CANCEL"
         label.textColor = .white
         

@@ -19,7 +19,7 @@ class ShortcutMenuTableViewCell: UITableViewCell, TableViewCellType {
     // MARK: View's properties
     private let title: UILabel = {
        let label = UILabel()
-        label.font = Font.additionalMenuCellFont.uiFont
+        label.font = FontFactory.HelveticaNeueBold.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 17))
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
         label.textColor = .white

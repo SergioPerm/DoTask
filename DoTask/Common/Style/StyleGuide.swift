@@ -40,8 +40,8 @@ struct StyleGuide {
     
     struct TaskList {
         enum Fonts {
-            static let cellMainTitle: UIFont = FontFactory.Regular.of(size: StyleGuide.getFontSizeRelativeToScreen(baseSize: 17))
-            static let cellAdditionalTitle: UIFont = FontFactory.Regular.of(size: StyleGuide.getFontSizeRelativeToScreen(baseSize: 12))
+            static let cellMainTitle: UIFont = FontFactory.AvenirNextMedium.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 17))
+            static let cellAdditionalTitle: UIFont = FontFactory.AvenirNextMedium.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 12))
         }
         
         enum Sizes {
@@ -186,17 +186,22 @@ struct StyleGuide {
         }
     }
     
-    static func getFontSizeRelativeToScreen(baseSize: CGFloat) -> CGFloat {
+    static func getSizeRelativeToScreenWidth(baseSize: CGFloat, maxSize: CGFloat? = nil) -> CGFloat {
         //Current runable device/simulator width find
         let bounds = UIScreen.main.bounds
         let width = bounds.size.width
                 
-        // "14" font size is defult font size
-        let fontSize = baseSize * (width / StyleGuide.baseScreenWidth)
+        let size = baseSize * (width / StyleGuide.baseScreenWidth)
         
-        return fontSize
+        if let maxSize = maxSize {
+            if size > maxSize {
+                return maxSize
+            }
+        }
+        
+        return size
     }
-    
+        
     enum DetailTask {
         
         struct Sizes {
@@ -206,13 +211,13 @@ struct StyleGuide {
             
             //Content
             static let contentSidePadding: CGFloat = 20.0
-            static let chevronHeight: CGFloat = 20
+            static let chevronHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 25)//25
             static let swipeCloseViewHeight: CGFloat = 40
             static let accesoryStackViewHeight: CGFloat = 45
             
             static let infoSectionHeaderHeight: Double = 20
             
-            static let tableViewEstimatedHeight: CGFloat = 33
+            static let tableViewEstimatedHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 38, maxSize: 40)
             
             static let accessoryViewBorderWidth: CGFloat = 1.0
             static let buttonsAreaHeightForScrollLimit: CGFloat = 50.0

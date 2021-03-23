@@ -133,12 +133,14 @@ extension TaskListNavBarTitleView {
         
     private func showStandartTitle(animated: Bool = false) {
         
+        let font = FontFactory.AvenirNextBoldItalic.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 27))
+        
         let navTitle = NSMutableAttributedString(string: "Do", attributes:[
                                                     NSAttributedString.Key.foregroundColor: Color.blueColor.uiColor,
-                                                    NSAttributedString.Key.font: Font.mainTitle.uiFont])
+                                                    NSAttributedString.Key.font: font])
 
         navTitle.append(NSMutableAttributedString(string: "Task", attributes:[
-                                                    NSAttributedString.Key.font: Font.mainTitle.uiFont,
+                                                    NSAttributedString.Key.font: font,
                                                     NSAttributedString.Key.foregroundColor: Color.pinkColor.uiColor]))
 
         if animated {

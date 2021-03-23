@@ -51,7 +51,7 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
         return origin
     }()
                 
-    var scrollView: DetailTaskScrollViewType
+    var scrollContentView: DetailTaskScrollViewType
         
     private let accessoryView: DetailAccessoryView = {
         let accessoryView = DetailAccessoryView()
@@ -128,7 +128,7 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
         self.viewModel = viewModel
         self.router = presenter
         self.presentableControllerViewType = presentableControllerViewType
-        self.scrollView = DetailTaskScrollView(viewModel: viewModel)
+        self.scrollContentView = DetailTaskScrollView(viewModel: viewModel)
         
         super.init(nibName: nil, bundle: nil)
             
@@ -170,7 +170,7 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
                         
             let lowerLimitToScroll = keyboardEndFrame.origin.y - accesoryStackView.frame.height - StyleGuide.DetailTask.Sizes.buttonsAreaHeightForScrollLimit
             
-            scrollView.limitToScroll = lowerLimitToScroll
+            scrollContentView.limitToScroll = lowerLimitToScroll
         }
     }
     
@@ -219,7 +219,7 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        scrollView.updateSizes()
+        scrollContentView.updateSizes()
     }
         
     // MARK: View setup
@@ -236,18 +236,18 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
         
         view.layer.mask = mask
         
-        scrollView.setCloseHandler(handler: { [weak self] in
+        scrollContentView.setCloseHandler(handler: { [weak self] in
             self?.tapToCloseAction()
         })
         
-        view.addSubview(scrollView)
+        view.addSubview(scrollContentView)
                 
         hideKeyboardButton.isHidden = true
                 
-        view.insertSubview(addSubtaskButton, aboveSubview: scrollView)
-        view.insertSubview(hideKeyboardButton, aboveSubview: scrollView)
+        view.insertSubview(addSubtaskButton, aboveSubview: scrollContentView)
+        view.insertSubview(hideKeyboardButton, aboveSubview: scrollContentView)
         
-        view.insertSubview(shortcutButton, aboveSubview: scrollView)
+        view.insertSubview(shortcutButton, aboveSubview: scrollContentView)
         
         shortcutButton.shortcutBtnData = viewModel.outputs.selectedShortcut.value
         
@@ -306,10 +306,10 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
         let globalFrame = UIView.globalSafeAreaFrame
                 
         var constraints = [
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: accessoryView.topAnchor, constant: 0),
+            scrollContentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollContentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollContentView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollContentView.bottomAnchor.constraint(equalTo: accessoryView.topAnchor, constant: 0),
         ]
          
         accesoryBottomConstraint = accessoryView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -view.globalSafeAreaInsets.bottom - 20)
@@ -420,17 +420,17 @@ extension DetailTaskEditViewController {
 extension DetailTaskEditViewController {
     
     @objc private func subtasksAddAction(sender: UITapGestureRecognizer) {
-        scrollView.addNewSubtask()
+        scrollContentView.addNewSubtask()
     }
     
     @objc private func hideKeyboardAction(sender: UITapGestureRecognizer) {
-        scrollView.resignTextInputResponders()
+        scrollContentView.resignTextInputResponders()
     }
     
     // MARK: -Accessory view actions
     @objc private func saveTaskAction(sender: UIButton) {
-        if scrollView.currentTitle == "" {
-            scrollView.shakeTitle()
+        if scrollContentView.currentTitle == "" {
+            scrollContentView.shakeTitle()
             return
         }
         
@@ -443,12 +443,12 @@ extension DetailTaskEditViewController {
     }
     
     private func calendarTapAction() {
-        scrollView.resignTextInputResponders()
+        scrollContentView.resignTextInputResponders()
         viewModel.inputs.openCalendar()
     }
     
     private func reminderTapAction() {
-        scrollView.resignTextInputResponders()
+        scrollContentView.resignTextInputResponders()
         viewModel.inputs.openReminder()
     }
     
@@ -474,6 +474,6 @@ extension DetailTaskEditViewController: UIGestureRecognizerDelegate {
             }
         }
 
-        return scrollView.contentOffset.y <= 0
+        return scrollContentView.contentOffset.y <= 0
     }
 }

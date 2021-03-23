@@ -100,13 +100,11 @@ extension TaskTitleTextView {
         textContainerInset.left = 0
         textContainer.lineFragmentPadding = 0
         
-        font = titleFont ?? Font.detailTaskStandartTitle.uiFont
-        
         isScrollEnabled = false
         bounces = false
         
         placeholderLabel.text = placeholderText
-        placeholderLabel.font = titleFont ?? Font.detailTaskStandartTitle.uiFont
+        placeholderLabel.font = font
         placeholderLabel.sizeToFit()
         addSubview(placeholderLabel)
         placeholderLabel.textColor = UIColor.lightGray

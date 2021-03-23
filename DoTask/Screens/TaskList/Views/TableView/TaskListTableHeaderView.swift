@@ -25,8 +25,7 @@ class TaskListTableHeaderView: UIView {
     
     private let titleLayer: CATextLayer = {
         let textLayer = CATextLayer()
-        textLayer.font = Font.tableHeader.uiFont
-        textLayer.fontSize = 27
+        textLayer.font = FontFactory.AvenirNextBold.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 27))
         textLayer.foregroundColor = StyleGuide.MainColors.blue.cgColor
         textLayer.contentsScale = UIScreen.main.scale
         

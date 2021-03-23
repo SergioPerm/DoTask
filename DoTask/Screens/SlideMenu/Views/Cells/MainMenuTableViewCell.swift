@@ -27,7 +27,7 @@ class MainMenuTableViewCell: UITableViewCell, TableViewCellType {
         let label = UILabel()
         label.textColor = .gray
         label.textAlignment = .left
-        label.font = Font.mainMenuCellFont.uiFont
+        label.font = FontFactory.HelveticaNeueBold.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 19))
         label.minimumScaleFactor = 0.3
         label.translatesAutoresizingMaskIntoConstraints = false
                 

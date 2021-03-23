@@ -37,7 +37,7 @@ class TimePickerViewController: UIViewController, PresentableController {
         let btn = UIButton()
         btn.setTitle("Delete", for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.titleLabel?.font = Font.timePickerBtnFont.uiFont
+        btn.titleLabel?.font = FontFactory.HelveticaNeueBold.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 17))
         btn.setTitleColor(.black, for: .normal)
         
         return btn
@@ -47,7 +47,7 @@ class TimePickerViewController: UIViewController, PresentableController {
         let btn = UIButton()
         btn.setTitle("Set", for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.titleLabel?.font = Font.timePickerBtnFont.uiFont
+        btn.titleLabel?.font = FontFactory.HelveticaNeueBold.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 17))
         btn.setTitleColor(.black, for: .normal)
         
         return btn

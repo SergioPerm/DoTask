@@ -73,12 +73,12 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
         return stackView
     }()
     
-    private let addSubtaskButton: AddSubtaskButton = {
-        let addSubtaskBtn = AddSubtaskButton()
-        addSubtaskBtn.translatesAutoresizingMaskIntoConstraints = false
-
-        return addSubtaskBtn
-    }()
+//    private let addSubtaskButton: AddSubtaskButton = {
+//        let addSubtaskBtn = AddSubtaskButton()
+//        addSubtaskBtn.translatesAutoresizingMaskIntoConstraints = false
+//
+//        return addSubtaskBtn
+//    }()
     
     private let shortcutButton: ShortcutButton = {
         let shortcutBtn = ShortcutButton()
@@ -202,7 +202,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
         
         view.addSubview(scrollContentView)
                 
-        view.insertSubview(addSubtaskButton, aboveSubview: scrollContentView)
+        //view.insertSubview(addSubtaskButton, aboveSubview: scrollContentView)
         view.insertSubview(shortcutButton, aboveSubview: scrollContentView)
         
         shortcutButton.shortcutBtnData = viewModel.outputs.selectedShortcut.value
@@ -235,9 +235,6 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
     // MARK: Actions setup
     private func setupActions() {
         saveBtn.addTarget(self, action: #selector(saveTaskAction(sender:)), for: .touchUpInside)
-
-        let addSubtaskTap = UITapGestureRecognizer(target: self, action: #selector(subtasksAddAction(sender:)))
-        addSubtaskButton.addGestureRecognizer(addSubtaskTap)
         
         let selectShortcutTap = UITapGestureRecognizer(target: self, action: #selector(selectShortcutTapAction(sender:)))
         shortcutButton.addGestureRecognizer(selectShortcutTap)
@@ -245,8 +242,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
     
     // MARK: Constraints setup
     private func setupConstraints() {
-        let globalFrame = UIView.globalSafeAreaFrame
-                        
+                                
         var constraints = [
             scrollContentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollContentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -266,14 +262,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
             accessoryView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             accessoryView.heightAnchor.constraint(equalToConstant: StyleGuide.DetailTask.Sizes.accesoryStackViewHeight)
         ])
-        
-        constraints.append(contentsOf: [
-            addSubtaskButton.heightAnchor.constraint(equalToConstant: 30),
-            addSubtaskButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            addSubtaskButton.bottomAnchor.constraint(equalTo: accessoryView.topAnchor, constant: -10),
-            addSubtaskButton.widthAnchor.constraint(equalToConstant: globalFrame.width * 0.4)
-        ])
-        
+            
         let shortcutWidthConstraint = shortcutButton.widthAnchor.constraint(equalToConstant: 10)
         shortcutWidthConstraint.priority = UILayoutPriority(250)
         
@@ -327,6 +316,10 @@ extension DetailTaskNewViewController {
             if (strongSelf.isViewLoaded && strongSelf.view.window != nil) {
                 strongSelf.scrollContentView.becomeTextInputResponder()
             }
+        }
+        
+        viewModel.outputs.addSubtaskEvent.subscribe(self) { (this, _) in
+            self.scrollContentView.addNewSubtask()
         }
     }
 }

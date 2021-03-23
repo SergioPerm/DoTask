@@ -31,6 +31,7 @@ class ShortcutButton: UIView {
         let label = UILabel()
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = FontFactory.AvenirNextBold.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 17))
         
         return label
     }()
@@ -49,9 +50,8 @@ class ShortcutButton: UIView {
 
 extension ShortcutButton {
     private func setup() {
-        layer.cornerRadius = StyleGuide.DetailTask.Sizes.addSubtaskBtnCornerRadius
-        backgroundColor = StyleGuide.DetailTask.Colors.addSubtaskbtnColor
-                
+        layer.cornerRadius = StyleGuide.DetailTask.Sizes.shortcutSelectCornerRadius
+                        
         addSubview(titleLabel)
                 
         NSLayoutConstraint.activate([

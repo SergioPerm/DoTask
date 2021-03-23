@@ -20,4 +20,6 @@ protocol DetailTaskViewModelOutputs {
     var tableSections: [DetailTaskTableSectionViewModelType] { get }
     var onReturnToEdit: Observable<Bool> { get }
     var asksToDelete: Observable<Bool> { get }
+    
+    var addSubtaskEvent: Event<Bool> { get }
 }

@@ -69,13 +69,13 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
         return stackView
     }()
     
-    private let addSubtaskButton: AddSubtaskButton = {
-        let addSubtaskBtn = AddSubtaskButton()
-        addSubtaskBtn.translatesAutoresizingMaskIntoConstraints = false
-
-            
-        return addSubtaskBtn
-    }()
+//    private let addSubtaskButton: AddSubtaskButton = {
+//        let addSubtaskBtn = AddSubtaskButton()
+//        addSubtaskBtn.translatesAutoresizingMaskIntoConstraints = false
+//
+//
+//        return addSubtaskBtn
+//    }()
     
     private let shortcutButton: ShortcutButton = {
         let shortcutBtn = ShortcutButton()
@@ -244,7 +244,6 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
                 
         hideKeyboardButton.isHidden = true
                 
-        view.insertSubview(addSubtaskButton, aboveSubview: scrollContentView)
         view.insertSubview(hideKeyboardButton, aboveSubview: scrollContentView)
         
         view.insertSubview(shortcutButton, aboveSubview: scrollContentView)
@@ -291,8 +290,8 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
             saveBtn.addTarget(self, action: #selector(saveTaskAction(sender:)), for: .touchUpInside)
         }
         
-        let addSubtaskTap = UITapGestureRecognizer(target: self, action: #selector(subtasksAddAction(sender:)))
-        addSubtaskButton.addGestureRecognizer(addSubtaskTap)
+//        let addSubtaskTap = UITapGestureRecognizer(target: self, action: #selector(subtasksAddAction(sender:)))
+//        addSubtaskButton.addGestureRecognizer(addSubtaskTap)
         
         let hideKeyboardTap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboardAction(sender:)))
         hideKeyboardButton.addGestureRecognizer(hideKeyboardTap)
@@ -316,7 +315,7 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
         accesoryLeadingConstraint = accessoryView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10)
         accesoryTrailingConstraint = accessoryView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
         
-        addSubtaskBtnTrailingConstraint = addSubtaskButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
+//        addSubtaskBtnTrailingConstraint = addSubtaskButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
         
         constraints.append(contentsOf: [
             accesoryStackView.topAnchor.constraint(equalTo: accessoryView.topAnchor),
@@ -333,18 +332,15 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
             hideKeyboardButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             hideKeyboardButton.heightAnchor.constraint(equalToConstant: 30),
             hideKeyboardButton.bottomAnchor.constraint(equalTo: accessoryView.topAnchor, constant: -10),
-            hideKeyboardButton.widthAnchor.constraint(equalToConstant: globalFrame.width * StyleGuide.DetailTask.Sizes.ratioToScreenWidth.hideKeyboardWidth),
-            addSubtaskButton.heightAnchor.constraint(equalToConstant: 30),
-            addSubtaskBtnTrailingConstraint,
-            addSubtaskButton.bottomAnchor.constraint(equalTo: accessoryView.topAnchor, constant: -10),
-            addSubtaskButton.widthAnchor.constraint(equalToConstant: globalFrame.width * StyleGuide.DetailTask.Sizes.ratioToScreenWidth.addSubtaskWidth)
+            hideKeyboardButton.widthAnchor.constraint(equalToConstant: globalFrame.width * StyleGuide.DetailTask.Sizes.ratioToScreenWidth.hideKeyboardWidth)
         ])
         
         let shortcutWidthConstraint = shortcutButton.widthAnchor.constraint(equalToConstant: 10)
         shortcutWidthConstraint.priority = UILayoutPriority(250)
         
+        let shortcutHeight = StyleGuide.getSizeRelativeToScreenWidth(baseSize: 35)
         constraints.append(contentsOf: [
-            shortcutButton.heightAnchor.constraint(equalToConstant: 30),
+            shortcutButton.heightAnchor.constraint(equalToConstant: shortcutHeight),
             shortcutButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             shortcutButton.bottomAnchor.constraint(equalTo: accessoryView.topAnchor, constant: -10),
             shortcutWidthConstraint
@@ -412,6 +408,10 @@ extension DetailTaskEditViewController {
                 
                 self?.present(deleteActionSheet, animated: true, completion: nil)
             }
+        }
+        
+        viewModel.outputs.addSubtaskEvent.subscribe(self) { (this, _) in
+            self.scrollContentView.addNewSubtask()
         }
     }
 }

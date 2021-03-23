@@ -46,6 +46,7 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
 
         self.importanceLevel = Int(task.importanceLevel)
         self.asksToDelete = Observable(false)
+        self.addSubtaskEvent = Event<Bool>()
         
         setShortcut(shortcutUID: shortcutUID)
         setupSections()
@@ -225,6 +226,8 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
     var onReturnToEdit: Observable<Bool> = Observable(true)
     
     var asksToDelete: Observable<Bool>
+    
+    var addSubtaskEvent: Event<Bool>
 }
 
 // MARK: Setup Sections
@@ -239,6 +242,14 @@ extension DetailTaskViewModel {
         let subtasksSection = DetailTaskTableSectionViewModel(cells: subtasks, sectionHeight: 0)
         
         tableSections.append(subtasksSection)
+        
+        var cells: [DetailTaskTableItemViewModelType] = []
+        
+        let addSubtaskCell = AddSubtaskViewModel { [weak self] in
+            self?.addSubtaskEvent.raise(true)
+        }
+        
+        cells.append(addSubtaskCell)
         
         if !isNewTask {
             taskDateInfoCell = TaskDateViewModel(taskDate: task.taskDate) { [weak self] in
@@ -258,13 +269,14 @@ extension DetailTaskViewModel {
             let deleteCell = TaskDeleteViewModel { [weak self] in
                 self?.asksToDelete.value = true
             }
-                        
+                                    
             guard let taskDateInfoCell = taskDateInfoCell, let taskReminderInfoCell = taskReminderInfoCell else { return }
             
-            let infoSection = DetailTaskTableSectionViewModel(cells: [taskDateInfoCell, taskReminderInfoCell, deleteCell], sectionHeight: StyleGuide.DetailTask.Sizes.infoSectionHeaderHeight)
-            tableSections.append(infoSection)
+            cells.append(contentsOf: [taskDateInfoCell, taskReminderInfoCell, deleteCell])
         }
         
+        let infoSection = DetailTaskTableSectionViewModel(cells: cells, sectionHeight: StyleGuide.DetailTask.Sizes.infoSectionHeaderHeight)
+        tableSections.append(infoSection)        
     }
 }
 

@@ -167,6 +167,10 @@
 		B19957BA25F5081900F883D8 /* SpeechTextInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19957B925F5081900F883D8 /* SpeechTextInfo.swift */; };
 		B19957BD25F5166600F883D8 /* SpeechSwipeCancel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19957BC25F5166600F883D8 /* SpeechSwipeCancel.swift */; };
 		B19A3FC925FA247E003B31EE /* CircleCrossGradientBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19A3FC825FA247E003B31EE /* CircleCrossGradientBtn.swift */; };
+		B1A2A3FC260A17400073FE8D /* AddSubtaskViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A2A3FB260A17400073FE8D /* AddSubtaskViewModelInputs.swift */; };
+		B1A2A3FE260A17610073FE8D /* AddSubtaskViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A2A3FD260A17610073FE8D /* AddSubtaskViewModelType.swift */; };
+		B1A2A400260A17850073FE8D /* AddSubtaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A2A3FF260A17850073FE8D /* AddSubtaskViewModel.swift */; };
+		B1A2A402260A18100073FE8D /* AddSubtaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A2A401260A18100073FE8D /* AddSubtaskTableViewCell.swift */; };
 		B1A303D625AC9EFA00BFAE68 /* DeleteShortcutButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A303D525AC9EFA00BFAE68 /* DeleteShortcutButton.swift */; };
 		B1A4E3EB25EFAFDB00F65463 /* SpeechRecorderTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A4E3EA25EFAFDB00F65463 /* SpeechRecorderTransitionController.swift */; };
 		B1A4E3EE25EFB0E900F65463 /* SpeechRecorderAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A4E3ED25EFB0E900F65463 /* SpeechRecorderAnimationController.swift */; };
@@ -450,6 +454,10 @@
 		B19957B925F5081900F883D8 /* SpeechTextInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTextInfo.swift; sourceTree = "<group>"; };
 		B19957BC25F5166600F883D8 /* SpeechSwipeCancel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechSwipeCancel.swift; sourceTree = "<group>"; };
 		B19A3FC825FA247E003B31EE /* CircleCrossGradientBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleCrossGradientBtn.swift; sourceTree = "<group>"; };
+		B1A2A3FB260A17400073FE8D /* AddSubtaskViewModelInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubtaskViewModelInputs.swift; sourceTree = "<group>"; };
+		B1A2A3FD260A17610073FE8D /* AddSubtaskViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubtaskViewModelType.swift; sourceTree = "<group>"; };
+		B1A2A3FF260A17850073FE8D /* AddSubtaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubtaskViewModel.swift; sourceTree = "<group>"; };
+		B1A2A401260A18100073FE8D /* AddSubtaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubtaskTableViewCell.swift; sourceTree = "<group>"; };
 		B1A303D525AC9EFA00BFAE68 /* DeleteShortcutButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteShortcutButton.swift; sourceTree = "<group>"; };
 		B1A4E3EA25EFAFDB00F65463 /* SpeechRecorderTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecorderTransitionController.swift; sourceTree = "<group>"; };
 		B1A4E3ED25EFB0E900F65463 /* SpeechRecorderAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecorderAnimationController.swift; sourceTree = "<group>"; };
@@ -899,6 +907,7 @@
 				B14C996C25C6A50B00E36A94 /* TaskDateTableViewCell.swift */,
 				B11C75B125C81CD7004D6639 /* TaskReminderTableViewCell.swift */,
 				B1F5DFF825D00FB9000FC8D3 /* TaskDeleteTableViewCell.swift */,
+				B1A2A401260A18100073FE8D /* AddSubtaskTableViewCell.swift */,
 			);
 			path = AdditionalCells;
 			sourceTree = "<group>";
@@ -949,6 +958,7 @@
 				B11C75AD25C81AFE004D6639 /* TaskReminderViewModel.swift */,
 				B14C995825C691A600E36A94 /* DetailTaskTableSectionViewModel.swift */,
 				B1F10C0225D012A800153336 /* TaskDeleteViewModel.swift */,
+				B1A2A3FF260A17850073FE8D /* AddSubtaskViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -956,6 +966,7 @@
 		B15EA21025CFFE8F002816E6 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				B1A2A3FA260A17190073FE8D /* AddSubtask */,
 				B1F10BFB25D0123A00153336 /* TaskDelete */,
 				B11C75A125C817FC004D6639 /* TaskReminder */,
 				B14C994325C68B0C00E36A94 /* TaskDate */,
@@ -1301,6 +1312,15 @@
 				B1D5DEAB2523667500124DAD /* FontFactory.swift */,
 			);
 			path = Style;
+			sourceTree = "<group>";
+		};
+		B1A2A3FA260A17190073FE8D /* AddSubtask */ = {
+			isa = PBXGroup;
+			children = (
+				B1A2A3FB260A17400073FE8D /* AddSubtaskViewModelInputs.swift */,
+				B1A2A3FD260A17610073FE8D /* AddSubtaskViewModelType.swift */,
+			);
+			path = AddSubtask;
 			sourceTree = "<group>";
 		};
 		B1A4E3E925EFAFA000F65463 /* SpeechRecorderAnimation */ = {
@@ -2133,8 +2153,10 @@
 				B1C39D67256BCB340005C4B6 /* CalendarPickerAssembly.swift in Sources */,
 				B1D79B0225CD3BBA009DB9BF /* FlipTransitionController.swift in Sources */,
 				B1E0653225651EC100948AB5 /* CalendarPickerViewModel.swift in Sources */,
+				B1A2A400260A17850073FE8D /* AddSubtaskViewModel.swift in Sources */,
 				B1D5C4BE252B540000C4B988 /* NotificationTaskObserver.swift in Sources */,
 				B1D79B0A25CD462D009DB9BF /* AnimationHelper.swift in Sources */,
+				B1A2A3FC260A17400073FE8D /* AddSubtaskViewModelInputs.swift in Sources */,
 				B18349E7256AEACB00D0D096 /* RouterType.swift in Sources */,
 				B1E06534256524EF00948AB5 /* Observable.swift in Sources */,
 				B13920142592329A0087D0E9 /* SubtaskViewModel.swift in Sources */,
@@ -2193,6 +2215,7 @@
 				B10DF889252C629C000FF924 /* Calendar.swift in Sources */,
 				B1B4CA9A25C18A8700AF5F61 /* TaskListViewModel.swift in Sources */,
 				B18522A325F2481D00BBC9D1 /* SpeakWave.swift in Sources */,
+				B1A2A3FE260A17610073FE8D /* AddSubtaskViewModelType.swift in Sources */,
 				B15C9B7825695B9E00A809B1 /* DetailTaskViewModelOutputs.swift in Sources */,
 				B1E30EE425A6FBEE0036979D /* MenuViewModelInputs.swift in Sources */,
 				B1A9141B252063FA0021E15C /* TaskListDataSourceObserver.swift in Sources */,
@@ -2284,6 +2307,7 @@
 				B1D79AE125CC18A1009DB9BF /* TaskDiaryPeriodItemViewModelType.swift in Sources */,
 				B14C997425C6D6A500E36A94 /* PopUpModalAnimationController.swift in Sources */,
 				B1D79AFE25CD3259009DB9BF /* TaskDiaryViewPresentable.swift in Sources */,
+				B1A2A402260A18100073FE8D /* AddSubtaskTableViewCell.swift in Sources */,
 				B19957BD25F5166600F883D8 /* SpeechSwipeCancel.swift in Sources */,
 				B13E077F25A995B300020F5E /* CreateShortcutMenuItemViewModel.swift in Sources */,
 				B1D4CCE7256D26700085C25C /* SettingsAssembly.swift in Sources */,

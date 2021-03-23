@@ -215,7 +215,7 @@ struct StyleGuide {
             static let swipeCloseViewHeight: CGFloat = 40
             static let accesoryStackViewHeight: CGFloat = 45
             
-            static let infoSectionHeaderHeight: Double = 20
+            static let infoSectionHeaderHeight: Double = 2
             
             static let tableViewEstimatedHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 38, maxSize: 40)
             
@@ -226,6 +226,7 @@ struct StyleGuide {
                       
             static let accessoryCornerRadius: CGFloat = 6
             static let addSubtaskBtnCornerRadius: CGFloat = 10.0
+            static let shortcutSelectCornerRadius: CGFloat = 14.0
             
             static let shortcutBtnLineWidth: CGFloat = 2.0
             

@@ -16,7 +16,7 @@ class CalendarAccessory: UIView {
     
     private var dayLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 10, weight: .heavy)
+        label.font = UIFont.systemFont(ofSize: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 10), weight: .heavy)
         label.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         label.textAlignment = .center
         

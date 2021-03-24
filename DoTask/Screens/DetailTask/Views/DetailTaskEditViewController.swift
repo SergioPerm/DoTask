@@ -100,11 +100,7 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
     private var calendarBtn: CalendarAccessory?
     private var alarmBtn: AlarmAccessory?
     
-    private let saveBtn: UIButton = {
-        let btn = UIButton()
-        btn.setImage(R.image.detailTask.saveTask(), for: .normal)
-        return btn
-    }()
+    private let saveBtn: SaveAccessory = SaveAccessory()
     
     private let deleteBtn: UIButton = {
         let btn = UIButton()
@@ -165,10 +161,11 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
     }
     
     private func updateTextViewLowerLimit(notification: NSNotification) {
+
         if let userInfo = notification.userInfo {
             let keyboardEndFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-                        
-            let lowerLimitToScroll = keyboardEndFrame.origin.y - accesoryStackView.frame.height - StyleGuide.DetailTask.Sizes.buttonsAreaHeightForScrollLimit
+            
+            let lowerLimitToScroll = keyboardEndFrame.origin.y - accesoryStackView.frame.height - StyleGuide.DetailTask.Sizes.buttonsAreaHeightForScrollLimit - StyleGuide.DetailTask.Sizes.addSubtaskLabelHeight
             
             scrollContentView.limitToScroll = lowerLimitToScroll
         }
@@ -287,12 +284,10 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
         if viewModel.outputs.isDone {
             deleteBtn.addTarget(self, action: #selector(deleteTaskAction(sender:)), for: .touchUpInside)
         } else {
-            saveBtn.addTarget(self, action: #selector(saveTaskAction(sender:)), for: .touchUpInside)
+            let saveBtnTap = UITapGestureRecognizer(target: self, action: #selector(saveTaskAction(sender:)))
+            saveBtn.addGestureRecognizer(saveBtnTap)
         }
-        
-//        let addSubtaskTap = UITapGestureRecognizer(target: self, action: #selector(subtasksAddAction(sender:)))
-//        addSubtaskButton.addGestureRecognizer(addSubtaskTap)
-        
+                
         let hideKeyboardTap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboardAction(sender:)))
         hideKeyboardButton.addGestureRecognizer(hideKeyboardTap)
         

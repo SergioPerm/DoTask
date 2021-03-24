@@ -20,6 +20,7 @@ class ShowInMainListView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Show in main list"
+        label.font = FontFactory.Helvetica.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 20))
         
         return label
     }()

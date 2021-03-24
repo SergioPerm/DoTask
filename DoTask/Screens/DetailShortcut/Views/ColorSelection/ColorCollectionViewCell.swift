@@ -27,9 +27,9 @@ class ColorCollectionViewCell: UICollectionViewCell {
     private let selectShape: CAShapeLayer = CAShapeLayer()
     
     // MARK: Initializers
-                
-    override func layoutIfNeeded() {
-        super.layoutIfNeeded()
+                    
+    override func layoutSubviews() {
+        super.layoutSubviews()
         drawColorShape()
     }
     

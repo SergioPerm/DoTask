@@ -86,17 +86,24 @@ struct StyleGuide {
     struct ShortcutList {
         struct Sizes {
             static let tableRowHeight: CGFloat = 50
+            static let frameTopMargin: CGFloat = 80
+            
+            enum ratioToParentFrame {
+                static let shortcutDotRadius: CGFloat = 0.17
+            }
         }
     }
     
     struct DetailShortcut {
         struct Sizes {
-            enum RatioToScrennHeight {
+                        
+            enum RatioToScreenHeight {
                 static let topMargin: CGFloat = 0.1
             }
             
             enum RatioToScreenWidth {
                 static let btnWidth: CGFloat = 0.25
+                static let rowHeight: CGFloat = 0.15
             }
         }
         
@@ -105,7 +112,6 @@ struct StyleGuide {
                 static let collectionViewLayoutSectionInset: UIEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
                 static let collectionViewLayoutMinLineSpacing: CGFloat = 0.0
                 static let topBorderHeight: CGFloat = 1.0
-                static let collectionCellSize: CGSize = CGSize(width: 50, height: 50)
             }
         }
         
@@ -213,11 +219,12 @@ struct StyleGuide {
             static let contentSidePadding: CGFloat = 20.0
             static let chevronHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 25)//25
             static let swipeCloseViewHeight: CGFloat = 40
-            static let accesoryStackViewHeight: CGFloat = 45
+            static let accesoryStackViewHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 50)
             
             static let infoSectionHeaderHeight: Double = 2
             
             static let tableViewEstimatedHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 38, maxSize: 40)
+            static let addSubtaskLabelHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 45)
             
             static let accessoryViewBorderWidth: CGFloat = 1.0
             static let buttonsAreaHeightForScrollLimit: CGFloat = 50.0
@@ -226,7 +233,7 @@ struct StyleGuide {
                       
             static let accessoryCornerRadius: CGFloat = 6
             static let addSubtaskBtnCornerRadius: CGFloat = 10.0
-            static let shortcutSelectCornerRadius: CGFloat = 14.0
+            static let shortcutSelectCornerRadius: CGFloat = getSizeRelativeToScreenWidth(baseSize: 18)
             
             static let shortcutBtnLineWidth: CGFloat = 2.0
             

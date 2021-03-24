@@ -67,7 +67,7 @@ extension MainMenuTableViewCell {
             return
         }
         title.text = viewModel.title
-        icon.image = UIImage(named: viewModel.imageName)
+        icon.image = R.image.menu.mainList()
         
         viewModel.selectedItem.bind { [weak self] selected in
             if selected {

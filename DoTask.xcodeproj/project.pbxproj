@@ -56,6 +56,7 @@
 		B139A75B258224B5000BAE55 /* Storyboarded.swift in Sources */ = {isa = PBXBuildFile; fileRef = B139A75A258224B5000BAE55 /* Storyboarded.swift */; };
 		B139A76025822527000BAE55 /* testStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B139A75F25822527000BAE55 /* testStoryboard.storyboard */; };
 		B139A76325822555000BAE55 /* TestScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B139A76225822555000BAE55 /* TestScrollViewController.swift */; };
+		B13D4F01260B5EFD0059D93A /* SaveAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13D4F00260B5EFD0059D93A /* SaveAccessory.swift */; };
 		B13E076B25A9905100020F5E /* MenuItemSectionViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13E076A25A9905100020F5E /* MenuItemSectionViewModelType.swift */; };
 		B13E076F25A9915600020F5E /* TableViewCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13E076E25A9915600020F5E /* TableViewCellType.swift */; };
 		B13E077425A9922100020F5E /* MenuCellFactoryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13E077325A9922100020F5E /* MenuCellFactoryType.swift */; };
@@ -171,6 +172,7 @@
 		B1A2A3FE260A17610073FE8D /* AddSubtaskViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A2A3FD260A17610073FE8D /* AddSubtaskViewModelType.swift */; };
 		B1A2A400260A17850073FE8D /* AddSubtaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A2A3FF260A17850073FE8D /* AddSubtaskViewModel.swift */; };
 		B1A2A402260A18100073FE8D /* AddSubtaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A2A401260A18100073FE8D /* AddSubtaskTableViewCell.swift */; };
+		B1A2A405260A29200073FE8D /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = B1A2A404260A29200073FE8D /* Lottie */; };
 		B1A303D625AC9EFA00BFAE68 /* DeleteShortcutButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A303D525AC9EFA00BFAE68 /* DeleteShortcutButton.swift */; };
 		B1A4E3EB25EFAFDB00F65463 /* SpeechRecorderTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A4E3EA25EFAFDB00F65463 /* SpeechRecorderTransitionController.swift */; };
 		B1A4E3EE25EFB0E900F65463 /* SpeechRecorderAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A4E3ED25EFB0E900F65463 /* SpeechRecorderAnimationController.swift */; };
@@ -343,6 +345,7 @@
 		B139A75A258224B5000BAE55 /* Storyboarded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storyboarded.swift; sourceTree = "<group>"; };
 		B139A75F25822527000BAE55 /* testStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = testStoryboard.storyboard; sourceTree = "<group>"; };
 		B139A76225822555000BAE55 /* TestScrollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestScrollViewController.swift; sourceTree = "<group>"; };
+		B13D4F00260B5EFD0059D93A /* SaveAccessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveAccessory.swift; sourceTree = "<group>"; };
 		B13E076A25A9905100020F5E /* MenuItemSectionViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemSectionViewModelType.swift; sourceTree = "<group>"; };
 		B13E076E25A9915600020F5E /* TableViewCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCellType.swift; sourceTree = "<group>"; };
 		B13E077325A9922100020F5E /* MenuCellFactoryType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCellFactoryType.swift; sourceTree = "<group>"; };
@@ -574,6 +577,7 @@
 			files = (
 				B1EC8C9D260322F400FECE7F /* SnapKit in Frameworks */,
 				B1EC8CAC260326DF00FECE7F /* Rswift in Frameworks */,
+				B1A2A405260A29200073FE8D /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1978,6 +1982,7 @@
 				B18C91C125334D74004DFB73 /* ImportanceAccessory.swift */,
 				B1294492253469D4002FD1EF /* CalendarAccessory.swift */,
 				B12944942534A807002FD1EF /* AlarmAccessory.swift */,
+				B13D4F00260B5EFD0059D93A /* SaveAccessory.swift */,
 			);
 			path = Accessory;
 			sourceTree = "<group>";
@@ -2014,6 +2019,7 @@
 			packageProductDependencies = (
 				B1EC8C9C260322F400FECE7F /* SnapKit */,
 				B1EC8CAB260326DF00FECE7F /* Rswift */,
+				B1A2A404260A29200073FE8D /* Lottie */,
 			);
 			productName = Tasker;
 			productReference = B1A913EC252056FA0021E15C /* DoTask.app */;
@@ -2047,6 +2053,7 @@
 				B1EC8C9B260322F400FECE7F /* XCRemoteSwiftPackageReference "SnapKit" */,
 				B1EC8CA8260325FC00FECE7F /* XCRemoteSwiftPackageReference "R.swift" */,
 				B1EC8CAA260326DF00FECE7F /* XCRemoteSwiftPackageReference "R.swift" */,
+				B1A2A403260A29200073FE8D /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			productRefGroup = B1A913ED252056FA0021E15C /* Products */;
 			projectDirPath = "";
@@ -2232,6 +2239,7 @@
 				B19957BA25F5081900F883D8 /* SpeechTextInfo.swift in Sources */,
 				B1A4E3EB25EFAFDB00F65463 /* SpeechRecorderTransitionController.swift in Sources */,
 				B15B7D0225D1489E00EC1D98 /* DropNavigationTransitionController.swift in Sources */,
+				B13D4F01260B5EFD0059D93A /* SaveAccessory.swift in Sources */,
 				B1D4CCE9256D36EA0085C25C /* UIButton.swift in Sources */,
 				B18349F1256AEC7000D0D096 /* TaskListAssembly.swift in Sources */,
 				B1C5F80D2566551E0040EB3C /* CalendarPickerViewModelInputs.swift in Sources */,
@@ -2565,6 +2573,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		B1A2A403260A29200073FE8D /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.2.1;
+			};
+		};
 		B1EC8C9B260322F400FECE7F /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -2592,6 +2608,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		B1A2A404260A29200073FE8D /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B1A2A403260A29200073FE8D /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
 		B1EC8C9C260322F400FECE7F /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B1EC8C9B260322F400FECE7F /* XCRemoteSwiftPackageReference "SnapKit" */;

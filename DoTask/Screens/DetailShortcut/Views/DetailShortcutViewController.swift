@@ -18,7 +18,6 @@ class DetailShortcutViewController: UIViewController, PresentableController {
     private var viewModel: DetailShortcutViewModelType
     
     // MARK: View's properties
-    //private let placeholderLabel: UILabel = UILabel()
     
     private let labelView: UIView = {
         let view = UIView()
@@ -30,6 +29,7 @@ class DetailShortcutViewController: UIViewController, PresentableController {
     private let nameTextField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.font = FontFactory.Helvetica.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 20))
         
         return textField
     }()
@@ -92,7 +92,7 @@ extension DetailShortcutViewController {
         
         guard let globalView = UIView.globalView else { return }
         
-        let topMargin = globalView.frame.height * StyleGuide.DetailShortcut.Sizes.RatioToScrennHeight.topMargin
+        let topMargin = globalView.frame.height * StyleGuide.DetailShortcut.Sizes.RatioToScreenHeight.topMargin
         viewFrame = CGRect(x: 0, y: topMargin, width: globalView.frame.width, height: globalView.frame.height - topMargin)
         view.frame = viewFrame
         
@@ -136,19 +136,22 @@ extension DetailShortcutViewController {
     }
             
     private func setupConstraints() {
+        guard let globalView = UIView.globalView else { return }
+        let rowHeight = StyleGuide.DetailShortcut.Sizes.RatioToScreenWidth.rowHeight * globalView.frame.width
+        
         var constraints = [
             colorDotView.topAnchor.constraint(equalTo: labelView.topAnchor),
             colorDotView.bottomAnchor.constraint(equalTo: labelView.bottomAnchor),
-            colorDotView.widthAnchor.constraint(equalToConstant: 7),
+            colorDotView.widthAnchor.constraint(equalToConstant: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 7)),
             colorDotView.leadingAnchor.constraint(equalTo: labelView.leadingAnchor),
             colorDotView.trailingAnchor.constraint(equalTo: nameTextField.leadingAnchor, constant: -20),
-            nameTextField.heightAnchor.constraint(equalToConstant: 50),
+            nameTextField.heightAnchor.constraint(equalToConstant: rowHeight),
             nameTextField.centerYAnchor.constraint(equalTo: labelView.centerYAnchor),
             nameTextField.trailingAnchor.constraint(equalTo: labelView.trailingAnchor)
         ]
         
         constraints.append(contentsOf: [
-            showInMainListView.heightAnchor.constraint(equalToConstant: 50),
+            showInMainListView.heightAnchor.constraint(equalToConstant: rowHeight),
             showInMainListView.topAnchor.constraint(equalTo: labelView.bottomAnchor, constant: 5),
             showInMainListView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
             showInMainListView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25)
@@ -158,14 +161,14 @@ extension DetailShortcutViewController {
             labelView.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
             labelView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
             labelView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
-            labelView.heightAnchor.constraint(equalToConstant: 50)
+            labelView.heightAnchor.constraint(equalToConstant: rowHeight)
         ])
         
         colorSelectionBottomConstraint = colorSelectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -view.globalSafeAreaInsets.bottom - 10)
         
         constraints.append(contentsOf: [
             colorSelectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            colorSelectionView.heightAnchor.constraint(equalToConstant: 50),
+            colorSelectionView.heightAnchor.constraint(equalToConstant: rowHeight),
             colorSelectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             colorSelectionBottomConstraint
         ])

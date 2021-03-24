@@ -14,25 +14,25 @@ class DetailShortcutViewModel: DetailShortcutViewModelType, DetailShortcutViewMo
     private var dataSource: ShortcutListDataSource
 
     private var presetColors: [String] = [
-        R.color.shortcutDetail.lightBlue()!.toHexString(),
-        R.color.shortcutDetail.dullPurple()!.toHexString(),
-        R.color.shortcutDetail.pink()!.toHexString(),
-        R.color.shortcutDetail.yellow()!.toHexString(),
-        R.color.shortcutDetail.green()!.toHexString(),
-        R.color.shortcutDetail.red()!.toHexString(),
-        R.color.shortcutDetail.orange()!.toHexString(),
-        R.color.shortcutDetail.purple()!.toHexString(),
-        R.color.shortcutDetail.lightGreen()!.toHexString(),
-        R.color.shortcutDetail.dullPurple()!.toHexString(),
-        R.color.shortcutDetail.dullGreen()!.toHexString(),
-        R.color.shortcutDetail.darkBlue()!.toHexString(),
-        R.color.shortcutDetail.blue()!.toHexString(),
-        R.color.shortcutDetail.black()!.toHexString(),
-        R.color.shortcutDetail.brown()!.toHexString(),
-        R.color.shortcutDetail.dullPink()!.toHexString(),
-        R.color.shortcutDetail.dullRed()!.toHexString(),
-        R.color.shortcutDetail.green()!.toHexString(),
-        R.color.shortcutDetail.silver()!.toHexString()
+        R.color.shortcutDetail.colorSelection.lightBlue()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.dullPurple()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.pink()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.yellow()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.green()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.red()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.orange()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.purple()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.lightGreen()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.dullPurple()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.dullGreen()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.darkBlue()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.blue()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.black()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.brown()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.dullPink()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.dullRed()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.green()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.silver()!.toHexString()
     ]
     
     var inputs: DetailShortcutViewModelInputs { return self }
@@ -42,7 +42,12 @@ class DetailShortcutViewModel: DetailShortcutViewModelType, DetailShortcutViewMo
         self.shortcut = dataSource.shortcutByIdentifier(identifier: shortcutUID) ?? Shortcut()
         self.dataSource = dataSource
         
+        if self.shortcut.isNew {
+            self.shortcut.color = presetColors[2]
+        }
+        
         self.selectedColor = Observable(shortcut.color)
+        
         self.title = shortcut.name
     }
     

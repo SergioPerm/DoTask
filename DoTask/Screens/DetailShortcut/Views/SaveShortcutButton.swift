@@ -40,6 +40,7 @@ extension SaveShortcutButton {
         let label = UILabel()
         label.text = "Save"
         label.textColor = UIColor.white
+        label.font = FontFactory.HelveticaNeue.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 19))
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         

@@ -39,6 +39,7 @@ extension DeleteShortcutButton {
         
         let label = UILabel()
         label.text = "Delete"
+        label.font = FontFactory.Helvetica.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 17))
         label.textColor = UIColor.white
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false

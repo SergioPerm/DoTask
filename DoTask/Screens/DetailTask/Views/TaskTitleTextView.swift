@@ -13,7 +13,6 @@ class TaskTitleTextView: UITextView {
     weak var parentScrollView: DetailTaskScrollViewType?
 
     var placeholderText: String = ""
-    var titleFont: UIFont?
     
     var strikeTroughText: Bool = false {
         didSet {
@@ -24,6 +23,8 @@ class TaskTitleTextView: UITextView {
     private let placeholderLabel: UILabel = UILabel()
     private var previousCaretRect: CGRect = .zero
     private var previousTextViewFrame: CGRect = .zero
+    
+    private var isActive: Bool = false
     
     init() {
         super.init(frame: .zero, textContainer: nil)
@@ -51,14 +52,15 @@ class TaskTitleTextView: UITextView {
     
     override func becomeFirstResponder() -> Bool {
         let result = super.becomeFirstResponder()
-        addKeyboardObserver()
-        
+        isActive = true
+
         return result
     }
-    
+
     override func resignFirstResponder() -> Bool {
         let result = super.resignFirstResponder()
-        removeKeyboardObserver()
+        isActive = false
+        
         return result
     }
 }
@@ -121,12 +123,17 @@ extension TaskTitleTextView {
     }
             
     @objc private func textDidChange(notification: NSNotification) {
-        if notification.name != UITextView.textDidBeginEditingNotification {
-            updateParentScrollViewOffset()
-        }
+        updateParentScrollViewOffset()
     }
     
     func updateParentScrollViewOffset() {
+        
+        if !isActive { return }
+        
+        if parentScrollView?.limitToScroll == 0.0 {
+            return
+        }
+        
         placeholderLabel.isHidden = !text.isEmpty
         
         //resize to content
@@ -136,7 +143,7 @@ extension TaskTitleTextView {
 
         let currentTextViewRect = caretRect(for: currentTextPosition)
         let currentTextViewRectAtMainView = convert(currentTextViewRect, to: window)
-        
+
         var scrollViewContentOffset = parentScrollView.contentOffset
  
         if currentTextViewRectAtMainView.maxY > parentScrollView.limitToScroll {
@@ -165,10 +172,14 @@ extension TaskTitleTextView {
     private func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(textDidChange(notification:)), name: UITextView.textDidChangeNotification, object: self)
         NotificationCenter.default.addObserver(self, selector: #selector(textDidChange(notification:)), name: UITextView.textDidBeginEditingNotification, object: self)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShowNotification(notification:)), name: UIResponder.keyboardDidShowNotification, object: nil)
     }
     
     private func deleteObservers() {
         NotificationCenter.default.removeObserver(self, name: UITextView.textDidChangeNotification, object: self)
         NotificationCenter.default.removeObserver(self, name: UITextView.textDidBeginEditingNotification, object: self)
+        
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
     }
 }

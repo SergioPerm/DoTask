@@ -72,14 +72,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
         
         return stackView
     }()
-    
-//    private let addSubtaskButton: AddSubtaskButton = {
-//        let addSubtaskBtn = AddSubtaskButton()
-//        addSubtaskBtn.translatesAutoresizingMaskIntoConstraints = false
-//
-//        return addSubtaskBtn
-//    }()
-    
+        
     private let shortcutButton: ShortcutButton = {
         let shortcutBtn = ShortcutButton()
         shortcutBtn.translatesAutoresizingMaskIntoConstraints = false
@@ -93,11 +86,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
     private var calendarBtn: CalendarAccessory?
     private var alarmBtn: AlarmAccessory?
     
-    private let saveBtn: UIButton = {
-        let btn = UIButton()
-        btn.setImage(R.image.detailTask.saveTask(), for: .normal)
-        return btn
-    }()
+    private let saveBtn: SaveAccessory = SaveAccessory()
     
     // MARK: Init
     init(viewModel: DetailTaskViewModelType, presenter: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
@@ -143,8 +132,8 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
     private func updateTextViewLowerLimit(notification: NSNotification) {
         if let userInfo = notification.userInfo {
             let keyboardEndFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-                        
-            let lowerLimitToScroll = keyboardEndFrame.origin.y - accesoryStackView.frame.height - StyleGuide.DetailTask.Sizes.buttonsAreaHeightForScrollLimit
+            
+            let lowerLimitToScroll = keyboardEndFrame.origin.y - accesoryStackView.frame.height - StyleGuide.DetailTask.Sizes.buttonsAreaHeightForScrollLimit - StyleGuide.DetailTask.Sizes.addSubtaskLabelHeight
             
             scrollContentView.limitToScroll = lowerLimitToScroll
         }
@@ -202,7 +191,6 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
         
         view.addSubview(scrollContentView)
                 
-        //view.insertSubview(addSubtaskButton, aboveSubview: scrollContentView)
         view.insertSubview(shortcutButton, aboveSubview: scrollContentView)
         
         shortcutButton.shortcutBtnData = viewModel.outputs.selectedShortcut.value
@@ -234,7 +222,8 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
         
     // MARK: Actions setup
     private func setupActions() {
-        saveBtn.addTarget(self, action: #selector(saveTaskAction(sender:)), for: .touchUpInside)
+        let saveBtnTap = UITapGestureRecognizer(target: self, action: #selector(saveTaskAction(sender:)))
+        saveBtn.addGestureRecognizer(saveBtnTap)
         
         let selectShortcutTap = UITapGestureRecognizer(target: self, action: #selector(selectShortcutTapAction(sender:)))
         shortcutButton.addGestureRecognizer(selectShortcutTap)
@@ -267,7 +256,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
         shortcutWidthConstraint.priority = UILayoutPriority(250)
         
         constraints.append(contentsOf: [
-            shortcutButton.heightAnchor.constraint(equalToConstant: 30),
+            shortcutButton.heightAnchor.constraint(equalToConstant: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 35)),
             shortcutButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             shortcutButton.bottomAnchor.constraint(equalTo: accessoryView.topAnchor, constant: -10),
             shortcutWidthConstraint

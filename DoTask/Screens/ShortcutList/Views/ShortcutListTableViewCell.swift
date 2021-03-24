@@ -12,15 +12,14 @@ class ShortcutListTableViewCell: UITableViewCell {
 
     var viewModel: ShortcutViewModelType? {
         didSet {
-            guard let viewModel = viewModel else {
+            guard let _ = viewModel else {
                 color = UIColor.clear
                 titleLabel.text = ""
                 
                 return
             }
-            
-            color = UIColor(hexString: viewModel.outputs.color)
-            titleLabel.text = viewModel.outputs.title
+    
+            bindViewModel()
         }
     }
     
@@ -38,9 +37,9 @@ class ShortcutListTableViewCell: UITableViewCell {
     }()
     
     private let colorDotView: UIView = {
-       let view = UIView()
+        let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        
+                
         return view
     }()
     
@@ -67,17 +66,43 @@ class ShortcutListTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-        
+                
 }
 
 extension ShortcutListTableViewCell {
         
+    private func bindViewModel() {
+        
+        guard let viewModel = viewModel else { return }
+        
+        color = UIColor(hexString: viewModel.outputs.color)
+        titleLabel.text = viewModel.outputs.title
+        
+        drawDot()
+    }
+    
+    private func drawDot() {
+        dotShape.removeFromSuperlayer()
+        
+        let rowHeight = StyleGuide.ShortcutList.Sizes.tableRowHeight
+        let radius = StyleGuide.ShortcutList.Sizes.ratioToParentFrame.shortcutDotRadius * rowHeight
+        
+        let path = UIBezierPath(ovalIn: CGRect(x: rowHeight/2 - radius, y: rowHeight/2 - radius, width: radius * 2, height: radius * 2))
+        
+        dotShape.path = path.cgPath
+        
+        dotShape.fillColor = color.cgColor
+        dotShape.strokeColor = color.cgColor
+               
+        colorDotView.layer.addSublayer(dotShape)
+    }
+    
     private func setup() {
         selectionStyle = .none
         
         let globalWidth = UIView.globalSafeAreaFrame.width
         titleLabel.font = titleLabel.font.withSize(globalWidth * StyleGuide.SlideMenu.Sizes.RatioToScreenWidth.ratioToScreenWidthFontSizeMiddleTitle)
-        
+                
         contentView.addSubview(colorDotView)
         contentView.addSubview(titleLabel)
         

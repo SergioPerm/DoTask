@@ -80,7 +80,7 @@ extension AddSubtaskTableViewCell {
             addLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
             addLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             addLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            addLabel.heightAnchor.constraint(equalToConstant: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 45))
+            addLabel.heightAnchor.constraint(equalToConstant: StyleGuide.DetailTask.Sizes.addSubtaskLabelHeight)
         ]
         
         NSLayoutConstraint.activate(constraints)

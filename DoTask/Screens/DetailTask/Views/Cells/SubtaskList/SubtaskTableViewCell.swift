@@ -51,6 +51,7 @@ class SubtaskTableViewCell: UITableViewCell, DetailTaskCellType {
     func setActive() {
         let _ = titleTextView.becomeFirstResponder()
         titleTextView.selectedTextRange = titleTextView.textRange(from: titleTextView.endOfDocument, to: titleTextView.endOfDocument)
+        titleTextView.updateParentScrollViewOffset()
     }
     
     private var checkView: CheckSubtask = CheckSubtask()
@@ -66,6 +67,7 @@ class SubtaskTableViewCell: UITableViewCell, DetailTaskCellType {
         let textView = TaskTitleTextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.font = FontFactory.AvenirNextMedium.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 17))
+        textView.textColor = .systemGray
         
         return textView
     }()
@@ -108,7 +110,6 @@ extension SubtaskTableViewCell {
         selectionStyle = .none
                 
         titleTextView.placeholderText = "Subtask title"
-        //titleTextView.titleFont = FontFactory.TypeWriting.of(size: 15)
         
         checkView = CheckSubtask(check: subtaskViewModel?.outputs.isDone ?? false)
         checkView.translatesAutoresizingMaskIntoConstraints = false
@@ -173,10 +174,10 @@ extension SubtaskTableViewCell {
         
     private func updateTextViewStyle() {
         guard let viewModel = subtaskViewModel else {
-            titleTextView.textColor = .black
+            titleTextView.textColor = .systemGray
             return
         }
-        titleTextView.textColor = viewModel.outputs.isDone ? .gray : .black
+        titleTextView.textColor = viewModel.outputs.isDone ? .gray : .systemGray
         titleTextView.strikeTroughText = viewModel.outputs.isDone
     }
     

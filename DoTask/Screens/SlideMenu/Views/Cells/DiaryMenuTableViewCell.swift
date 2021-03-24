@@ -67,7 +67,7 @@ extension DiaryMenuTableViewCell {
         }
         
         title.text = viewModel.title
-        icon.image = UIImage(named: viewModel.imageName)
+        icon.image = R.image.menu.diaryIcon()
     }
     
     private func setup() {

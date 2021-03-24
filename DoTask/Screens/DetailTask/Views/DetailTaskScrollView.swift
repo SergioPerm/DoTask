@@ -239,8 +239,8 @@ extension DetailTaskScrollView {
         
         if let viewModel = viewModel {
             if viewModel.outputs.tableSections.count > 1 {
-                let padding: CGFloat = 10.0
-                tableMaxY = currentTableViewFrameAtMainView.maxY - (StyleGuide.DetailTask.Sizes.accesoryStackViewHeight + StyleGuide.DetailTask.Sizes.buttonsAreaHeightForScrollLimit + padding * 2)
+                //let padding: CGFloat = 10.0
+                tableMaxY = currentTableViewFrameAtMainView.maxY - (StyleGuide.DetailTask.Sizes.accesoryStackViewHeight + StyleGuide.DetailTask.Sizes.buttonsAreaHeightForScrollLimit - StyleGuide.DetailTask.Sizes.addSubtaskLabelHeight)
             } else {
                 tableMaxY = currentTableViewFrameAtMainView.maxY
             }
@@ -307,7 +307,6 @@ extension DetailTaskScrollView {
         } completion: { (finished) in
             let activeCell = self.subtaskTableView.cellForRow(at: newIndexPath) as! SubtaskTableViewCell
             activeCell.setActive()
-            self.updateScrollSizeAfterChangeSubtasks(addRowHeight: activeCell.frame.height)
         }
     }
 }

@@ -80,6 +80,12 @@ class ShortcutListViewController: UIViewController, PresentableController, Short
 extension ShortcutListViewController {
     private func setup() {
         
+        guard let globalView = UIView.globalView else { return }
+        let globalFrame = UIView.globalSafeAreaFrame
+        let topMargin = StyleGuide.ShortcutList.Sizes.frameTopMargin
+        
+        view.frame = CGRect(x: 0, y: topMargin, width: globalFrame.width, height: globalView.frame.height - topMargin)
+        
         view.backgroundColor = .white
         
         tableView.delegate = self

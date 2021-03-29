@@ -46,7 +46,7 @@ class TaskListTableHeaderView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        titleLabel.sizeToFit()
+        
         //titleLabel.frame = CGRect.init(x: 0, y: 5, width: frame.width, height: StyleGuide.TaskList.Sizes.headerTitleHeight)
     }
     
@@ -83,6 +83,7 @@ extension TaskListTableHeaderView {
         
         if let title = viewModel?.outputs.title {
             titleLabel.text = "  \(title)"
+            titleLabel.sizeToFit()
         }
         
         if let textColor = viewModel?.outputs.titleHexColor {

@@ -1742,7 +1742,8 @@
 		B1E30EEF25A711520036979D /* DataSource */ = {
 			isa = PBXGroup;
 			children = (
-				B1E30EF125A711CA0036979D /* CoreData */,
+				B1E30EF225A711E90036979D /* ShortcutListDataSource */,
+				B1E30EF025A711850036979D /* TaskDataSource */,
 			);
 			path = DataSource;
 			sourceTree = "<group>";
@@ -1754,15 +1755,6 @@
 				B1A914152520636E0021E15C /* TaskListDataSourceCoreData.swift */,
 			);
 			path = TaskDataSource;
-			sourceTree = "<group>";
-		};
-		B1E30EF125A711CA0036979D /* CoreData */ = {
-			isa = PBXGroup;
-			children = (
-				B1E30EF225A711E90036979D /* ShortcutListDataSource */,
-				B1E30EF025A711850036979D /* TaskDataSource */,
-			);
-			path = CoreData;
 			sourceTree = "<group>";
 		};
 		B1E30EF225A711E90036979D /* ShortcutListDataSource */ = {

@@ -54,14 +54,14 @@ class CardModalAnimationController: NSObject, UIViewControllerAnimatedTransition
             toVC.view.frame.origin.y = fromVC.view.frame.maxY
             containerView.addSubview(toVC.view)
                         
-            dimmView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+            dimmView.backgroundColor = R.color.animations.dimmIn()
             dimmView.frame = fromVC.view.bounds
             fromVC.view.addSubview(dimmView)
             fromVC.view.bringSubviewToFront(dimmView)
             
             UIView.animate(withDuration: animationDuration, animations: {
                 
-                self.dimmView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.6600057827)
+                self.dimmView.backgroundColor = R.color.animations.dimmOut()
                 
                 toVC.view.frame = originalFrame
 
@@ -84,7 +84,7 @@ class CardModalAnimationController: NSObject, UIViewControllerAnimatedTransition
                 fromVC.view.layer.cornerRadius = 0
                 toVC.view.layer.cornerRadius = 0
                 
-                self.dimmView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+                self.dimmView.backgroundColor = R.color.animations.dimmIn()
             }, completion: { _ in
                 if !transitionContext.transitionWasCancelled {
                     self.dimmView.removeFromSuperview()

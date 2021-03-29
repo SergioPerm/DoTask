@@ -212,7 +212,7 @@ extension CalendarPickerViewController {
         
         view.frame.origin = origin
         
-        view.backgroundColor = StyleGuide.CalendarDatePicker.viewBackgroundColor
+        view.backgroundColor = R.color.datePicker.background()
         
         view.layer.cornerRadius = StyleGuide.CalendarDatePicker.viewCornerRadius
         view.clipsToBounds = true

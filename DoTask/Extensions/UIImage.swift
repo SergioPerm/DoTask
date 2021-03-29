@@ -45,6 +45,5 @@ extension UIImage {
             return nil
         }
     }
-
     
 }

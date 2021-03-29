@@ -61,7 +61,7 @@ extension CheckSubtask {
         circleShape.path = circlePath.cgPath
         circleShape.lineWidth = lineWidth
         circleShape.lineCap = .round
-        circleShape.strokeColor = StyleGuide.TaskList.Colors.cellMainTitle.cgColor
+        circleShape.strokeColor = R.color.taskList.cellMainTitle()!.cgColor
         circleShape.fillColor = UIColor.clear.cgColor
         
         layer.addSublayer(circleShape)
@@ -89,7 +89,7 @@ extension CheckSubtask {
         path.addLine(to: CGPoint(x: bounds.width - lineWidth, y: lineWidth * 2))
         
         checkShape.fillColor = UIColor.clear.cgColor
-        checkShape.strokeColor = StyleGuide.TaskList.Colors.cellMainTitle.cgColor
+        checkShape.strokeColor = R.color.taskList.cellMainTitle()!.cgColor
         checkShape.lineWidth = lineWidth
         checkShape.path = path.cgPath
         

@@ -71,9 +71,9 @@ extension MainMenuTableViewCell {
         
         viewModel.selectedItem.bind { [weak self] selected in
             if selected {
-                self?.backgroundColor = #colorLiteral(red: 0.7875365811, green: 0.9482855393, blue: 1, alpha: 0.71)
+                self?.backgroundColor = R.color.menu.selectedItem()
             } else {
-                self?.backgroundColor = .white
+                self?.backgroundColor = R.color.menu.background()
             }
         }
         

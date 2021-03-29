@@ -34,12 +34,12 @@ extension SaveShortcutButton {
     private func setup() {
         
         layer.cornerRadius = StyleGuide.DetailShortcut.SaveBtn.Sizes.cornerRadiud
-        backgroundColor = StyleGuide.DetailTask.Colors.addSubtaskbtnColor
+        backgroundColor = R.color.shortcutDetail.saveShortcutBtn()
         translatesAutoresizingMaskIntoConstraints = false
         
         let label = UILabel()
         label.text = "Save"
-        label.textColor = UIColor.white
+        label.textColor = R.color.shortcutDetail.saveShortcutBtnText()
         label.font = FontFactory.HelveticaNeue.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 19))
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -53,7 +53,7 @@ extension SaveShortcutButton {
         ])
         
         clipsToBounds = false
-        layer.shadowColor = #colorLiteral(red: 0.5, green: 0.5, blue: 0.5, alpha: 1).cgColor
+        layer.shadowColor = R.color.shortcutDetail.saveShortcutBtnShadow()!.cgColor
         layer.shadowOpacity = 0.5
         layer.shadowOffset = CGSize(width: 2.0, height: 2.0)
         layer.shadowRadius = StyleGuide.DetailShortcut.SaveBtn.Sizes.cornerRadiud

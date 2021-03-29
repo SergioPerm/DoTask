@@ -84,18 +84,16 @@ extension SpeechRecorderAnimationController {
         let speechSwipeCancelViewFrame = speechSwipeCancel.frame
         
         //off shadow for speechVC
-        addBtnView.layer.shadowColor = UIColor.clear.cgColor
+        addBtnView.layer.shadowColor = R.color.commonColors.clear()!.cgColor
         
         let snapshotSpeechText = UIImageView(image: toImage(view: speechText, isOpaque: false))
         
         guard let snapshotAddBtn = addBtnView.snapshotView(afterScreenUpdates: true),
               let snapshotSpeakWave = speakWaveView.snapshotView(afterScreenUpdates: true),
-//              let snapshotSpeechText = UIImageView(image: toImage(view: speechText)),//speechText.snapshotView(afterScreenUpdates: true),
               let snapshotSpeechInfoText = speechInfoText.snapshotView(afterScreenUpdates: true),
               let snapshotSpeechSwipeCancel = speechSwipeCancel.snapshotView(afterScreenUpdates: true)
               else { return }
                 
-        
         containerSnapshotAddBtn = snapshotAddBtn
         containerSnapshotSpeakWave = snapshotSpeakWave
         containerSnapshotSpeechText = snapshotSpeechText

@@ -99,7 +99,7 @@ extension TaskReminderTableViewCell {
         viewModel?.outputs.timeInfo.bind { [weak self] timeInfo in
             if let timeInfo = timeInfo {
                 self?.infoLabel.text = timeInfo
-                self?.infoImage.image = self?.infoImage.image?.maskWithColor(color: StyleGuide.MainColors.blue)
+                self?.infoImage.image = self?.infoImage.image?.maskWithColor(color: R.color.commonColors.blue()!)
             } else {
                 self?.infoLabel.text = "Set reminder"
                 self?.infoImage.image = self?.infoImage.image?.maskWithColor(color: .gray)

@@ -39,6 +39,7 @@ class TaskListPeriodItemViewModel: TaskListPeriodItemViewModelType, TaskListPeri
         self.taskTimePeriod = taskTimePeriod
         self.timePeriodName = taskTimePeriod.name
         self.taskListMode = taskListMode
+        self.doneCounterEvent = Event<DoneCounter?>()
     }
     
     // MARK: Inputs
@@ -77,10 +78,36 @@ class TaskListPeriodItemViewModel: TaskListPeriodItemViewModelType, TaskListPeri
         taskListMode = mode
     }
     
+    func setDoneCounter(counter: DoneCounter) {
+        self.doneCounter = counter
+        self.doneCounterEvent.raise(counter)
+    }
+    
     // MARK: Outputs
     
     var title: String {
         return timePeriodName
+    }
+    
+    var titleHexColor: String {
+        
+        var hexColor = R.color.commonColors.blue()!.toHexString()
+        
+        switch taskTimePeriod.dailyName {
+        case .today:
+            hexColor = R.color.taskList.todayHeaderColor()!.toHexString()
+        case .tommorow:
+            hexColor = R.color.taskList.tomorrowHeaderColor()!.toHexString()
+        case .currentWeek:
+            hexColor = R.color.taskList.currentWeekHeaderColor()!.toHexString()
+        case .later:
+            hexColor = R.color.taskList.laterHeaderColor()!.toHexString()
+        case .none:
+            hexColor = R.color.commonColors.blue()!.toHexString()
+        }
+        
+        return hexColor
+        
     }
     
     var tasks: [TaskListItemType] = []
@@ -111,6 +138,9 @@ class TaskListPeriodItemViewModel: TaskListPeriodItemViewModelType, TaskListPeri
         
         return nil
     }
+    
+    var doneCounter: DoneCounter?
+    var doneCounterEvent: Event<DoneCounter?>
 }
 
 extension TaskListPeriodItemViewModel {

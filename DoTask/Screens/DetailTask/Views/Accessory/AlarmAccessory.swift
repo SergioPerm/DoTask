@@ -109,8 +109,8 @@ extension AlarmAccessory {
         //Shape
         alarmShape = CAShapeLayer()
         
-        alarmShape.fillColor = alarmIsSet ? UIColor.yellow.cgColor : UIColor.clear.cgColor
-        alarmShape.strokeColor = alarmIsSet ? UIColor.black.cgColor : #colorLiteral(red: 0.8865944131, green: 0.8865944131, blue: 0.8865944131, alpha: 1).cgColor
+        alarmShape.fillColor = alarmIsSet ? R.color.detailTask.accessoryAlarm()!.cgColor : R.color.commonColors.clear()!.cgColor
+        alarmShape.strokeColor = alarmIsSet ? R.color.detailTask.accessoryAlarmStroke()!.cgColor : R.color.detailTask.accessoryStrokeHide()!.cgColor
         alarmShape.lineWidth = 1.5
         alarmShape.lineCap = .round
         alarmShape.path = path.cgPath

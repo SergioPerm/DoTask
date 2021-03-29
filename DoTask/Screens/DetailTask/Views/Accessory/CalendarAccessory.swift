@@ -105,7 +105,7 @@ extension CalendarAccessory {
         calendarShape = CAShapeLayer()
 
         calendarShape.fillColor = UIColor.clear.cgColor
-        calendarShape.strokeColor = Color.blueColor.uiColor.cgColor
+        calendarShape.strokeColor = R.color.commonColors.blue()!.cgColor
         calendarShape.lineWidth = 1
         calendarShape.lineCap = .round
         calendarShape.path = rectPath.cgPath
@@ -115,7 +115,7 @@ extension CalendarAccessory {
     
     private func setup() {
         addSubview(dayLabel)
-        dayLabel.textColor = Color.blueColor.uiColor
+        dayLabel.textColor = R.color.commonColors.blue()
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapAction(sender:)))
         addGestureRecognizer(tapGesture)

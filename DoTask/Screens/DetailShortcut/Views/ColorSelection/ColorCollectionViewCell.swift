@@ -66,7 +66,7 @@ extension ColorCollectionViewCell {
             
             selectShape.path = selectCirclePath.cgPath
             selectShape.fillColor = UIColor.clear.cgColor
-            selectShape.strokeColor = UIColor.white.cgColor
+            selectShape.strokeColor = R.color.shortcutDetail.selectColorBorder()!.cgColor
             selectShape.lineWidth = StyleGuide.DetailShortcut.ColorCollectionViewCell.Sizes.colorCircleSelectLineWidth
             
             layer.addSublayer(selectShape)

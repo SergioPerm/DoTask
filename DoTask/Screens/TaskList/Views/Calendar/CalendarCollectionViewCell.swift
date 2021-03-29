@@ -27,7 +27,7 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         let radius: CGFloat = frame.width/2
         circleLayer.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 2.0 * radius, height: 2.0 * radius), cornerRadius: radius).cgPath
         circleLayer.position = CGPoint(x: radius - radius, y: radius - radius)
-        circleLayer.fillColor = Color.blueColor.uiColor.cgColor
+        circleLayer.fillColor = R.color.calendar.selectCellFill()!.cgColor
         
         return circleLayer
     }()
@@ -40,8 +40,8 @@ class CalendarCollectionViewCell: UICollectionViewCell {
                                         
         circleLayer.position = CGPoint(x: 0.0, y: 0.0)
         circleLayer.lineWidth = StyleGuide.TaskList.Calendar.Sizes.currentDayLayerLineWidth
-        circleLayer.strokeColor = Color.blueColor.uiColor.cgColor
-        circleLayer.fillColor = Color.clearColor.uiColor.cgColor
+        circleLayer.strokeColor = R.color.calendar.currentDayStroke()!.cgColor
+        circleLayer.fillColor = R.color.calendar.currentDayFill()!.cgColor
          
         return circleLayer
     }()
@@ -59,7 +59,7 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.5
-        label.textColor = StyleGuide.MainColors.blue
+        label.textColor = R.color.commonColors.blue()!
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -146,11 +146,11 @@ extension CalendarCollectionViewCell {
         guard let viewModel = viewModel else { return }
         
         if !viewModel.outputs.isWithinDisplayedMonth {
-            dayLabel.textColor = #colorLiteral(red: 0.8125689471, green: 0.8125689471, blue: 0.8125689471, alpha: 1)
+            dayLabel.textColor = R.color.calendar.outDayText()
         } else if viewModel.outputs.isSelected {
-            dayLabel.textColor = Color.whiteColor.uiColor
+            dayLabel.textColor = R.color.calendar.selectText()
         } else {
-            dayLabel.textColor = viewModel.outputs.isWeekend ? Color.pinkColor.uiColor : Color.blueColor.uiColor
+            dayLabel.textColor = viewModel.outputs.isWeekend ? R.color.calendar.dayTextWeekEnd() : R.color.calendar.dayTextWeek()
         }
     }
     

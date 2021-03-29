@@ -39,7 +39,7 @@ class PopUpModalAnimationController: NSObject, UIViewControllerAnimatedTransitio
             toVC.view.frame.origin.y = fromVC.view.frame.maxY
             containerView.addSubview(toVC.view)
                         
-            dimmView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+            dimmView.backgroundColor = R.color.animations.dimmIn()
             dimmView.frame = rootVC.view.frame
             
             if fromVC.presentingViewController == nil {
@@ -51,7 +51,7 @@ class PopUpModalAnimationController: NSObject, UIViewControllerAnimatedTransitio
             }
                         
             UIView.animate(withDuration: animationDuration, animations: {
-                self.dimmView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.6600057827)
+                self.dimmView.backgroundColor = R.color.animations.dimmOut()
                 
                 toVC.view.frame.origin.y = self.estimatedFinalHeight
                 toVC.view.frame.size.height = UIScreen.main.bounds.height - self.estimatedFinalHeight
@@ -68,7 +68,7 @@ class PopUpModalAnimationController: NSObject, UIViewControllerAnimatedTransitio
                 fromVC.view.frame.origin.y = UIScreen.main.bounds.maxY
                 snapshot?.frame.origin.y = UIScreen.main.bounds.maxY
                   
-                self.dimmView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+                self.dimmView.backgroundColor = R.color.animations.dimmIn()
             }, completion: { _ in
                 fromVC.view.isHidden = false
                 snapshot?.removeFromSuperview()

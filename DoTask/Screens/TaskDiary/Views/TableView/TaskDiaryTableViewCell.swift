@@ -36,7 +36,7 @@ class TaskDiaryTableViewCell: UITableViewCell {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = StyleGuide.TaskList.Colors.cellMainTitle
+        label.textColor = R.color.taskList.cellMainTitle()!
         label.font = StyleGuide.TaskList.Fonts.cellMainTitle
         label.numberOfLines = 0
         label.lineBreakMode = .byTruncatingTail
@@ -47,7 +47,7 @@ class TaskDiaryTableViewCell: UITableViewCell {
     
     private let dateLabel: UILabel = {
         let label = UILabel()
-        label.textColor = StyleGuide.TaskList.Colors.cellAdditionalTitle
+        label.textColor = R.color.taskList.additionalTitle()!
         label.font = StyleGuide.TaskList.Fonts.cellAdditionalTitle
         label.numberOfLines = 1
         label.lineBreakMode = .byTruncatingTail
@@ -58,7 +58,7 @@ class TaskDiaryTableViewCell: UITableViewCell {
     
     private let timeLabel: UILabel = {
         let label = UILabel()
-        label.textColor = StyleGuide.TaskList.Colors.cellAdditionalTitle
+        label.textColor = R.color.taskList.additionalTitle()!
         label.font = StyleGuide.TaskList.Fonts.cellAdditionalTitle
         label.numberOfLines = 1
         label.lineBreakMode = .byTruncatingTail
@@ -153,7 +153,7 @@ extension TaskDiaryTableViewCell {
                 let importanceColor = UIColor(hexString: hexColor)
                 self?.backView.layer.backgroundColor = importanceColor.cgColor
             } else {
-                self?.backView.layer.backgroundColor = UIColor.white.cgColor
+                self?.backView.layer.backgroundColor = R.color.diaryTask.background()!.cgColor
             }
         }
         
@@ -166,10 +166,10 @@ extension TaskDiaryTableViewCell {
                     self?.checkView.layer.backgroundColor = shortcutColor.withAlphaComponent(0.11).cgColor
                 }
             } else {
-                self?.shortcutColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.8470588235)
+                self?.shortcutColor = R.color.commonUI.checkTask.border()
                 self?.importanceView.backgroundColor = .clear
-                self?.checkView.layer.borderColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.8470588235).cgColor
-                self?.checkView.layer.backgroundColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.1099601066)
+                self?.checkView.layer.borderColor = R.color.commonUI.checkTask.border()!.cgColor
+                self?.checkView.layer.backgroundColor = R.color.commonUI.checkTask.background()!.cgColor
             }
             
             self?.drawCheckMark()
@@ -302,8 +302,8 @@ extension TaskDiaryTableViewCell {
         path.addLine(to: CGPoint(x: checkMarkSize/2 - checkMarkSize/12, y: checkMarkSize - checkMarkSize/5))
         path.addLine(to: CGPoint(x: checkMarkSize - checkMarkSize/4, y: checkMarkSize/4))
         
-        shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.strokeColor = shortcutColor?.cgColor ?? #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.8470588235).cgColor
+        shapeLayer.fillColor = R.color.commonColors.clear()!.cgColor
+        shapeLayer.strokeColor = shortcutColor?.cgColor ?? R.color.commonUI.checkTask.border()!.cgColor
         shapeLayer.lineCap = .round
         shapeLayer.lineJoin = .round
         shapeLayer.lineWidth = StyleGuide.TaskList.Sizes.checkMarkLineWidth

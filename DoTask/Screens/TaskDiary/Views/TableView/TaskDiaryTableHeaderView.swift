@@ -15,8 +15,8 @@ class TaskDiaryTableHeaderView: UIView {
         
         label.font = FontFactory.AvenirNextBold.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 27))
         
-        label.textColor = #colorLiteral(red: 0.2392156863, green: 0.6235294118, blue: 0.9960784314, alpha: 1)
-        label.backgroundColor = UIColor.white
+        label.textColor = R.color.diaryTask.tableHeaderText()
+        label.backgroundColor = R.color.diaryTask.background()
         
         return label
     }()

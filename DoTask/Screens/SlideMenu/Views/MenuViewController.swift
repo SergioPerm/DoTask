@@ -114,7 +114,7 @@ class MenuViewController: UIViewController, PresentableController, SlideMenuView
 
 extension MenuViewController {
     private func setup() {
-        view.backgroundColor = StyleGuide.SlideMenu.viewBGColor
+        view.backgroundColor = R.color.menu.background()
                 
         tableView = UITableView()
         tableView.dataSource = self

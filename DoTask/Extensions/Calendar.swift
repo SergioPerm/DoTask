@@ -12,7 +12,7 @@ extension Calendar {
     
     var taskCalendar: Calendar {
         get {
-            var calendar = Calendar(identifier: .iso8601)
+            var calendar = Calendar(identifier: .gregorian)
             calendar.timeZone = TimeZone.autoupdatingCurrent
             return calendar
         }

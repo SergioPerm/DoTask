@@ -13,8 +13,8 @@ class SpeakWave: UIView {
     private lazy var gradient: CAGradientLayer = {
         let gradientLayer = CAGradientLayer()
         
-        let color1 = StyleGuide.SpeechTask.SpeakWave.Colors.gradientColor1.cgColor
-        let color2 = StyleGuide.SpeechTask.SpeakWave.Colors.gradientColor2.cgColor
+        let color1 = R.color.speechTask.gradient1()!.cgColor
+        let color2 = R.color.speechTask.gradient2()!.cgColor
                 
         gradientLayer.colors = [color1, color2]
         
@@ -26,7 +26,7 @@ class SpeakWave: UIView {
     
     private let zoomLayer: CAShapeLayer = {
         let layer = CAShapeLayer()
-        layer.backgroundColor = StyleGuide.SpeechTask.SpeakWave.Colors.zoomLayerColor.cgColor
+        layer.backgroundColor = R.color.speechTask.zoomColor()!.cgColor
         
         return layer
     }()

@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  DoTask
 //
-//  Created by kluv on 27/09/2020.
+//  Created by kluv on 27/09/2020.x
 //  Copyright © 2020 itotdel. All rights reserved.
 //
 
@@ -16,7 +16,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-                
+ 
+        let path = FileManager
+            .default
+            .urls(for: .applicationSupportDirectory, in: .userDomainMask)
+            .last?
+            .absoluteString
+            .replacingOccurrences(of: "file://", with: "")
+            .removingPercentEncoding
+
+        print("Core Data DB Path :: \(path ?? "Not found")")
+        
         PushNotificationService.shared.checkAuthorization()
 
         let router = Router(rootViewController: UIViewController())
@@ -31,8 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window?.rootViewController = router.rootViewController
         window?.makeKeyAndVisible()
-        
-        
+         
         return true
     }
 }

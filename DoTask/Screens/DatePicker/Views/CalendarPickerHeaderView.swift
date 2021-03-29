@@ -12,7 +12,7 @@ class CalendarPickerHeaderView: UIView {
 
     var borderBottom: CALayer = CALayer()
     let borderWidth: CGFloat = StyleGuide.CalendarDatePicker.borderWidth
-    let borderColor = StyleGuide.CalendarDatePicker.borderColor.cgColor
+    let borderColor = R.color.datePicker.border()!.cgColor
     
     @IBOutlet var contentView: UIView!
     @IBOutlet weak var monthYearLabel: UILabel!

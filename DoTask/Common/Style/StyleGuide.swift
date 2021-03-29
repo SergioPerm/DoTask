@@ -11,12 +11,7 @@ import UIKit
 struct StyleGuide {
    
     static let baseScreenWidth: CGFloat = 375
-    
-    enum MainColors {
-        static let blue: UIColor = #colorLiteral(red: 0.2369126672, green: 0.6231006994, blue: 1, alpha: 1)
-        static let pink: UIColor = #colorLiteral(red: 1, green: 0.2117647059, blue: 0.6509803922, alpha: 0.8470588235)
-    }
-    
+        
     struct CommonViews {
         struct CheckTask {
             enum Sizes {
@@ -40,13 +35,14 @@ struct StyleGuide {
     
     struct TaskList {
         enum Fonts {
-            static let cellMainTitle: UIFont = FontFactory.AvenirNextMedium.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 17))
-            static let cellAdditionalTitle: UIFont = FontFactory.AvenirNextMedium.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 12))
+            static let cellMainTitle: UIFont = FontFactory.AvenirNextMedium.of(size: getSizeRelativeToScreenWidth(baseSize: 17))
+            static let cellAdditionalTitle: UIFont = FontFactory.AvenirNextMedium.of(size: getSizeRelativeToScreenWidth(baseSize: 12))
         }
         
         enum Sizes {
-            static let headerHeight: CGFloat = 40.0
+            static let headerHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 40.0)// 40.0
             static let headerTitleHeight: CGFloat = 30.0
+            static let counterHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 20.0)
             static let checkMarkSize: CGSize = CGSize(width: 24, height: 24)
             static let checkMarkLineWidth: CGFloat = 4.0
             
@@ -54,12 +50,7 @@ struct StyleGuide {
             static let capRowHeightCalendar: Int = 70
             static let capRowHeightLittle: Int = 5
         }
-        
-        enum Colors {
-            static let cellMainTitle: UIColor = #colorLiteral(red: 0.2369126672, green: 0.6231006994, blue: 1, alpha: 1)
-            static let cellAdditionalTitle: UIColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
-        }
-        
+                
         struct Calendar {
             enum Sizes {
                 static let currentDayLayerLineWidth: CGFloat = 4.0
@@ -168,21 +159,8 @@ struct StyleGuide {
                     static let micWidthRatioToGradient: CGFloat = 0.5
                 }
             }
-            
-            enum Colors {
-                static let gradientColor1: UIColor = #colorLiteral(red: 1, green: 0.7027073819, blue: 0.9019589665, alpha: 1)
-                static let gradientColor2: UIColor = #colorLiteral(red: 1, green: 0.2117647059, blue: 0.6509803922, alpha: 1)
-                static let zoomLayerColor: UIColor = #colorLiteral(red: 1, green: 0.8026864087, blue: 0.9260444804, alpha: 1)
-            }
         }
-        
-        struct SpeachText {
-            enum Colors {
-                static let textColor: UIColor = .white
-                static let backgroundColor: UIColor = .clear
-            }
-        }
-        
+                
         struct SpeechSwipe {
             struct Sizes {
                 enum Ratio {
@@ -193,7 +171,6 @@ struct StyleGuide {
     }
     
     static func getSizeRelativeToScreenWidth(baseSize: CGFloat, maxSize: CGFloat? = nil) -> CGFloat {
-        //Current runable device/simulator width find
         let bounds = UIScreen.main.bounds
         let width = bounds.size.width
                 
@@ -217,7 +194,7 @@ struct StyleGuide {
             
             //Content
             static let contentSidePadding: CGFloat = 20.0
-            static let chevronHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 25)//25
+            static let chevronHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 25)
             static let swipeCloseViewHeight: CGFloat = 40
             static let accesoryStackViewHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 50)
             
@@ -247,15 +224,6 @@ struct StyleGuide {
                 static let addSubtaskWidth: CGFloat = 0.4
             }
         }
-        
-        enum Colors {
-            //colors
-            static let addSubtaskbtnColor: UIColor = #colorLiteral(red: 0.3027490342, green: 0.7100013522, blue: 1, alpha: 1)
-            static let chevronTintColor: UIColor = #colorLiteral(red: 0.8901960784, green: 0.8901960784, blue: 0.8901960784, alpha: 1)
-            static let viewBGColor: UIColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        }
-        
-
     }
     
     enum CalendarDatePicker {
@@ -276,10 +244,6 @@ struct StyleGuide {
         static let viewCornerRadius: CGFloat = 8.0
         static let borderWidth: CGFloat = 1.0
         
-        //colors
-        static let viewBackgroundColor: UIColor = .white
-        static let borderColor: UIColor = #colorLiteral(red: 0.8892104444, green: 0.8892104444, blue: 0.8892104444, alpha: 1)
-        
         //animation values
         static let scaleShowAnimationValue: CGFloat = 0.95
         static let alphaShowAnimationValue: CGFloat = 0.3
@@ -295,10 +259,7 @@ struct StyleGuide {
         static let viewCornerRadius: CGFloat = 8.0
         static let pickerRowHeightComponent: CGFloat = 100
         static let pickerWidthComponent: CGFloat = 60
-        
-        //colors
-        static let pickerTextColor: UIColor = #colorLiteral(red: 0.2369126672, green: 0.6231006994, blue: 1, alpha: 1)
-        
+                
         //animation values
         static let scaleShowAnimationValue: CGFloat = 0.95
         static let alphaShowAnimationValue: CGFloat = 0.3
@@ -334,9 +295,6 @@ struct StyleGuide {
                 static let cornerRadius: CGFloat = 5.0
             }
         }
-        
-        //colors
-        static let viewBGColor: UIColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         
         //frames
         static let seetingsButtonFrame: CGRect = {

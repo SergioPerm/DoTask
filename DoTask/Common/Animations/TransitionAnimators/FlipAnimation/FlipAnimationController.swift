@@ -59,7 +59,7 @@ extension FlipAnimationController {
         let containerView = transitionContext.containerView
                
         let bgView = UIView(frame: toVC.view.frame)
-        bgView.backgroundColor = StyleGuide.MainColors.blue
+        bgView.backgroundColor = R.color.commonColors.blue()!
                 
         var transform: CATransform3D = CATransform3DIdentity
         transform.m43 = (toVC.view.frame.width * -1) / 2

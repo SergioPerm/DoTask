@@ -16,8 +16,8 @@ class CalendarDayWithTasksLayer: CAShapeLayer {
         let circleLayer = CAShapeLayer()
         let radius: CGFloat = frame.height/4
         circleLayer.path = UIBezierPath(roundedRect: CGRect(x: 0, y: frame.height/4, width: (2.0 * radius), height: 2.0 * radius), cornerRadius: radius).cgPath
-        circleLayer.strokeColor = Color.blueColor.uiColor.cgColor
-        circleLayer.fillColor = Color.blueColor.uiColor.cgColor
+        circleLayer.strokeColor = R.color.calendar.selectCellFill()!.cgColor
+        circleLayer.fillColor = R.color.calendar.selectCellFill()!.cgColor
         
         return circleLayer
     }()
@@ -41,8 +41,8 @@ class CalendarDayWithTasksLayer: CAShapeLayer {
         checkLayer.path = path.cgPath
         checkLayer.lineWidth = StyleGuide.TaskList.Calendar.Sizes.dayWithDoneTasksLayerLineWidth
         checkLayer.lineCap = .round
-        checkLayer.fillColor =  #colorLiteral(red: 0.364339892, green: 0.7325225515, blue: 0.4118772155, alpha: 1).cgColor
-        checkLayer.strokeColor = #colorLiteral(red: 0.364339892, green: 0.7325225515, blue: 0.4118772155, alpha: 1).cgColor
+        checkLayer.fillColor =  R.color.calendar.done()!.cgColor
+        checkLayer.strokeColor = R.color.calendar.done()!.cgColor
         
         return checkLayer
     }()
@@ -70,15 +70,15 @@ extension CalendarDayWithTasksLayer {
     func setSelect(selected: Bool) {
         
         if selected {
-            dayWithTasksLayer.fillColor = Color.whiteColor.uiColor.cgColor
-            dayWithTasksLayer.strokeColor = Color.whiteColor.uiColor.cgColor
-            dayWithDoneTasksLayer.fillColor = Color.whiteColor.uiColor.cgColor
-            dayWithDoneTasksLayer.strokeColor = Color.whiteColor.uiColor.cgColor
+            dayWithTasksLayer.fillColor = R.color.calendar.selectText()!.cgColor
+            dayWithTasksLayer.strokeColor = R.color.calendar.selectText()!.cgColor
+            dayWithDoneTasksLayer.fillColor = R.color.calendar.selectText()!.cgColor
+            dayWithDoneTasksLayer.strokeColor = R.color.calendar.selectText()!.cgColor
         } else {
-            dayWithTasksLayer.fillColor = Color.blueColor.uiColor.cgColor
-            dayWithTasksLayer.strokeColor = Color.blueColor.uiColor.cgColor
-            dayWithDoneTasksLayer.fillColor = #colorLiteral(red: 0.364339892, green: 0.7325225515, blue: 0.4118772155, alpha: 1).cgColor
-            dayWithDoneTasksLayer.strokeColor = #colorLiteral(red: 0.364339892, green: 0.7325225515, blue: 0.4118772155, alpha: 1).cgColor
+            dayWithTasksLayer.fillColor = R.color.calendar.selectCellFill()!.cgColor
+            dayWithTasksLayer.strokeColor = R.color.calendar.selectCellFill()!.cgColor
+            dayWithDoneTasksLayer.fillColor = R.color.calendar.done()!.cgColor
+            dayWithDoneTasksLayer.strokeColor = R.color.calendar.done()!.cgColor
         }
         
     }

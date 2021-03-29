@@ -11,6 +11,9 @@ import UIKit
 class TaskListTableHeaderView: UIView {
 
     var viewModel: TaskListPeriodItemViewModelType? {
+        willSet {
+            viewModel?.outputs.doneCounterEvent.unsubscribe(self)
+        }
         didSet {
             bindViewModel()
         }
@@ -18,25 +21,22 @@ class TaskListTableHeaderView: UIView {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = UIColor.white
+        label.backgroundColor = R.color.taskList.background()
+        label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
-    
-    private let titleLayer: CATextLayer = {
-        let textLayer = CATextLayer()
-        textLayer.font = FontFactory.AvenirNextBold.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 27))
-        textLayer.foregroundColor = StyleGuide.MainColors.blue.cgColor
-        textLayer.contentsScale = UIScreen.main.scale
+             
+    private let counter: TaskCounter = {
+        let counter = TaskCounter()
+        counter.translatesAutoresizingMaskIntoConstraints = false
         
-        return textLayer
+        return counter
     }()
-        
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        addSubview(titleLabel)
-        titleLabel.layer.addSublayer(titleLayer)
+        setup()
     }
     
     required init?(coder: NSCoder) {
@@ -45,27 +45,68 @@ class TaskListTableHeaderView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-                
-        titleLabel.frame = CGRect.init(x: 0, y: 0, width: frame.width, height: StyleGuide.TaskList.Sizes.headerTitleHeight)
-        titleLayer.frame = titleLabel.bounds
+
+        titleLabel.sizeToFit()
+        //titleLabel.frame = CGRect.init(x: 0, y: 5, width: frame.width, height: StyleGuide.TaskList.Sizes.headerTitleHeight)
     }
     
 }
 
 extension TaskListTableHeaderView {
+    
+    private func setup() {
+        addSubview(titleLabel)
+        
+        addSubview(counter)
+        counter.isHidden = true
+                
+        let titleWidthConstraint = titleLabel.widthAnchor.constraint(equalToConstant: 10)
+        titleWidthConstraint.priority = UILayoutPriority(250)
+        
+        let constraints: [NSLayoutConstraint] = [
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 5),
+            titleWidthConstraint,
+            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
+            counter.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: 15),
+            counter.widthAnchor.constraint(equalToConstant: 50),
+            counter.heightAnchor.constraint(equalToConstant: StyleGuide.TaskList.Sizes.counterHeight),
+            counter.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor)
+        ]
+        
+        NSLayoutConstraint.activate(constraints)
+    }
+    
     private func bindViewModel() {
+                
+        counter.isHidden = true
         
         if let title = viewModel?.outputs.title {
-            titleLayer.string = "  \(title)"
+            titleLabel.text = "  \(title)"
         }
         
+        if let textColor = viewModel?.outputs.titleHexColor {
+            titleLabel.textColor = UIColor(hexString: textColor)
+        }
+                
         guard let viewModel = viewModel else { return }
 
         if viewModel.outputs.taskListMode == .calendar {
-            titleLayer.fontSize = 19
+            titleLabel.font = FontFactory.AvenirNextBold.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 19))
         } else {
-            titleLayer.fontSize = 27
+            titleLabel.font = FontFactory.AvenirNextBold.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 27))
         }
         
+        if let doneCounter = viewModel.outputs.doneCounter {
+            counter.isHidden = false
+            counter.updateCount(counter: doneCounter)
+        }
+        
+        viewModel.outputs.doneCounterEvent.subscribe(self) { (this, doneCounter) in
+            if let doneCounter = doneCounter {
+                this.counter.updateCount(counter: doneCounter)
+            }
+        }
+                
     }
 }

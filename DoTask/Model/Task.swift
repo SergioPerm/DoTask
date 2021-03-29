@@ -19,6 +19,7 @@ struct Task {
     var lon: Double?
     var isNew: Bool = false
     var isDone: Bool
+    var sortDate: Date
     
     var importanceLevel: Int16 {
         didSet {
@@ -37,12 +38,13 @@ struct Task {
         self.title = ""
         self.reminderGeo = false
         self.reminderDate = false
-        self.taskDate = Date()
+        self.taskDate = Date().startOfDay()
         self.isNew = true
         self.importanceLevel = 0
         self.mainTaskListOrder = self.taskDate == nil ? 1 : 0
         self.subtasks = []
         self.isDone = false
+        self.sortDate = Date()
     }
     
     init(with task: TaskManaged) {
@@ -56,6 +58,7 @@ struct Task {
         self.importanceLevel = task.importanceLevel
         self.mainTaskListOrder = task.mainTaskListOrder
         self.isDone = task.isDone
+        self.sortDate = task.sortDate
         
         let subtasksManaged = task.subtasks.allObjects as! [SubtaskManaged]
                 

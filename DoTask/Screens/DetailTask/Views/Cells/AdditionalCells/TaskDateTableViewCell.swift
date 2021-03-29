@@ -101,7 +101,7 @@ extension TaskDateTableViewCell {
         viewModel?.outputs.dateInfo.bind { [weak self] dateInfo in
             if let dateInfo = dateInfo {
                 self?.infoLabel.text = dateInfo
-                self?.infoImage.image = self?.infoImage.image?.maskWithColor(color: StyleGuide.MainColors.blue)
+                self?.infoImage.image = self?.infoImage.image?.maskWithColor(color: R.color.commonColors.blue()!)
             } else {
                 self?.infoLabel.text = "Set date"
                 self?.infoImage.image = self?.infoImage.image?.maskWithColor(color: .gray)

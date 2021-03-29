@@ -135,13 +135,15 @@ extension TaskListViewController {
         calendarView.viewModel = viewModel.outputs.calendarViewModel
         view.addSubview(calendarView)
         
+        
+        view.backgroundColor = .white
         // TableView
         tableView.dataSource = self
         tableView.delegate = self
         
         view.addSubview(tableView)
         
-        tableView.frame = view.frame
+        //tableView.frame = CGRect(x: 25, y: view.frame.origin.y, width: view.frame.width - 50, height: view.frame.height)//view.frame
         
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = 600
@@ -182,7 +184,7 @@ extension TaskListViewController {
         //Menu btn
         let menuBtn = BarButtonItem()
                 
-        menuBtn.setImage(R.image.mainNavBar.menu()?.maskWithColor(color: StyleGuide.MainColors.blue), for: .normal)
+        menuBtn.setImage(R.image.mainNavBar.menu()?.maskWithColor(color: R.color.commonColors.blue()!), for: .normal)
         
         let imageInset = StyleGuide.TaskList.NavBar.Sizes.insetImageNavBarBtn
         
@@ -197,7 +199,7 @@ extension TaskListViewController {
         //Calendar btn
         let calendarButton = BarButtonItem()
         
-        calendarButton.setImage(R.image.mainNavBar.calendar()?.maskWithColor(color: StyleGuide.MainColors.blue), for: .normal)
+        calendarButton.setImage(R.image.mainNavBar.calendar()?.maskWithColor(color: R.color.commonColors.blue()!), for: .normal)
         calendarButton.imageEdgeInsets = UIEdgeInsets(top: imageInset, left: imageInset, bottom: imageInset, right: imageInset)
         calendarButton.addTarget(self, action: #selector(openCalendarViewAction(sender:)), for: .touchUpInside)
         calendarButton.frame = CGRect(x: 0, y: 0, width: navBar.frame.height, height: navBar.frame.height)
@@ -233,8 +235,8 @@ extension TaskListViewController {
         ]
         
         constraints.append(contentsOf: [
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         

@@ -21,8 +21,8 @@ class ShortcutButton: UIView {
             } else {
                 backgroundColor = .white
                 layer.borderWidth = StyleGuide.DetailTask.Sizes.shortcutBtnLineWidth
-                layer.borderColor = #colorLiteral(red: 0.1782667621, green: 0.58700389, blue: 1, alpha: 1).cgColor
-                titleLabel.textColor = #colorLiteral(red: 0.1782667621, green: 0.58700389, blue: 1, alpha: 1)
+                layer.borderColor = R.color.detailTask.shortcutBtn()!.cgColor
+                titleLabel.textColor = R.color.detailTask.shortcutBtn()
             }
         }
     }
@@ -63,7 +63,7 @@ extension ShortcutButton {
         titleLabel.text = "Shortcut"
         backgroundColor = .white
         layer.borderWidth = StyleGuide.DetailTask.Sizes.shortcutBtnLineWidth
-        layer.borderColor = #colorLiteral(red: 0.1782667621, green: 0.58700389, blue: 1, alpha: 1).cgColor
-        titleLabel.textColor = #colorLiteral(red: 0.1782667621, green: 0.58700389, blue: 1, alpha: 1)
+        layer.borderColor = R.color.detailTask.shortcutBtn()!.cgColor
+        titleLabel.textColor = R.color.detailTask.shortcutBtn()
     }
 }

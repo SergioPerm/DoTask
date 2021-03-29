@@ -13,6 +13,10 @@ enum DailyName: String, CaseIterable {
     case tommorow = "TOMORROW"
     case currentWeek = "CURRENT WEEK"
     case later = "LATER"
+    
+    func haveDoneCounter() -> Bool {
+        return self == .today ? true : false
+    }
 }
 
 extension Date {
@@ -60,27 +64,33 @@ extension Date {
             return self
         }
     }
+            
+    var endOfWeek: Date? {
+        let gregorian = Calendar(identifier: .gregorian)
+        guard let sunday = gregorian.date(from: gregorian.dateComponents([.yearForWeekOfYear, .weekOfYear], from: self)) else { return nil }
+        return gregorian.date(byAdding: .day, value: 7, to: sunday)
+    }
     
-    func dailyNameForTask() -> String {
+    func dailyNameForTask() -> DailyName {
         let calendar = Calendar.current.taskCalendar
         let currentDate = calendar.startOfDay(for: Date())
         
         if self < currentDate {
-            return DailyName.today.rawValue
+            return DailyName.today
         }
         
         let isCurrentDay = calendar.isDateInToday(self)
         let isTomorrowDay = calendar.isDateInTomorrow(self)
         
         if isCurrentDay {
-            return DailyName.today.rawValue
+            return DailyName.today
         } else if isTomorrowDay {
-            return DailyName.tommorow.rawValue
+            return DailyName.tommorow
         } else if calendar.isDate(self, equalTo: Date(), toGranularity: .weekOfMonth) {
-            return DailyName.currentWeek.rawValue
+            return DailyName.currentWeek
         }
         
-        return DailyName.later.rawValue
+        return DailyName.later
     }
     
     func localDate() -> Date {

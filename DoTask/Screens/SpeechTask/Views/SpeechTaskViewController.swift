@@ -110,7 +110,7 @@ extension SpeechTaskViewController {
     }
     
     private func setup() {
-        view.backgroundColor = StyleGuide.MainColors.blue
+        view.backgroundColor = R.color.commonColors.blue()!
         
         longTapRecognizer.addTarget(self, action: #selector(tapAction(sender:)))
         view.addGestureRecognizer(longTapRecognizer)

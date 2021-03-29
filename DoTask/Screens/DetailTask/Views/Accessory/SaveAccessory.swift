@@ -11,7 +11,7 @@ import UIKit
 class SaveAccessory: UIView {
 
     private let saveImage: UIImageView = {
-        let image = UIImageView(image: R.image.detailTask.saveTask()?.maskWithColor(color: StyleGuide.MainColors.blue))
+        let image = UIImageView(image: R.image.detailTask.saveTask()?.maskWithColor(color: R.color.commonColors.blue()!))
         image.contentMode = .scaleAspectFit
          
         return image

@@ -87,10 +87,10 @@ extension ShowInMainListView {
         let borderHeight = StyleGuide.DetailShortcut.ShowInMainList.Sizes.borderHeight
         
         topBorderShape.frame = CGRect(x: 0, y: 0, width: frame.width, height: borderHeight)
-        topBorderShape.backgroundColor = #colorLiteral(red: 0.8463017875, green: 0.8463017875, blue: 0.8463017875, alpha: 1).cgColor
+        topBorderShape.backgroundColor = R.color.shortcutDetail.borderColor()!.cgColor
         
         bottomBorderShape.frame = CGRect(x: 0, y: frame.height - borderHeight, width: frame.width, height: borderHeight)
-        bottomBorderShape.backgroundColor = #colorLiteral(red: 0.8463017875, green: 0.8463017875, blue: 0.8463017875, alpha: 1).cgColor
+        bottomBorderShape.backgroundColor = R.color.shortcutDetail.borderColor()!.cgColor
         
         layer.addSublayer(topBorderShape)
         layer.addSublayer(bottomBorderShape)

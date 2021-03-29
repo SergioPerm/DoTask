@@ -44,7 +44,7 @@ class DetailTaskScrollView: UIScrollView {
         chevron = UIImageView(image: R.image.detailTask.chevron())
         chevron.contentMode = .scaleAspectFit
         chevron.translatesAutoresizingMaskIntoConstraints = false
-        chevron.tintColor = StyleGuide.DetailTask.Colors.chevronTintColor
+        chevron.tintColor = R.color.detailTask.chevron()
         
         swipeView.addSubview(chevron)
         
@@ -65,7 +65,7 @@ class DetailTaskScrollView: UIScrollView {
         textView.font = FontFactory.AvenirNextMedium.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 23))
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.isScrollEnabled = false
-        textView.backgroundColor = StyleGuide.DetailTask.Colors.viewBGColor
+        textView.backgroundColor = R.color.detailTask.background()
         textView.textColor = .systemGray
         
         return textView

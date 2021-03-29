@@ -38,7 +38,7 @@ extension DetailAccessoryView {
         layer.cornerRadius = StyleGuide.DetailTask.Sizes.accessoryCornerRadius
         
         clipsToBounds = false
-        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowColor = R.color.detailTask.accessoryShadow()!.cgColor
         layer.shadowOpacity = 0.2
         layer.shadowOffset = CGSize(width: 0.0, height: 6.0)
         layer.shadowRadius = StyleGuide.DetailTask.Sizes.accessoryCornerRadius

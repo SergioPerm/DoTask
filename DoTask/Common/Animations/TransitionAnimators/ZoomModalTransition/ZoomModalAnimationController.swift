@@ -45,7 +45,7 @@ class ZoomModalAnimationController: NSObject, UIViewControllerAnimatedTransition
         
         if isPresenting {
                     
-            dimmView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+            dimmView.backgroundColor = R.color.animations.dimmIn()
             dimmView.frame = fromVC.view.bounds
             fromVC.view.addSubview(dimmView)
             fromVC.view.bringSubviewToFront(dimmView)
@@ -55,7 +55,7 @@ class ZoomModalAnimationController: NSObject, UIViewControllerAnimatedTransition
             containerView.addSubview(toVC.view)
             
             UIView.animate(withDuration: animationDuration) {
-                self.dimmView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.3694176804)
+                self.dimmView.backgroundColor = R.color.animations.dimmOut()
                 
                 toVC.view.alpha = 1.0
                 toVC.view.layer.transform = ViewControlerScale.reset.transform
@@ -69,13 +69,11 @@ class ZoomModalAnimationController: NSObject, UIViewControllerAnimatedTransition
             containerView.addSubview(fromVC.view)
             
             UIView.animate(withDuration: animationDuration) {
-                self.dimmView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+                self.dimmView.backgroundColor = R.color.animations.dimmIn()
                 fromVC.view.layer.transform = ViewControlerScale.modelPresentationScale.transform
                 fromVC.view.alpha = 0.0
             } completion: { (finished) in
-                //if !transitionContext.transitionWasCancelled {
-                    self.dimmView.removeFromSuperview()
-                //}
+                self.dimmView.removeFromSuperview()
                 transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
             }
         }

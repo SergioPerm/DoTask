@@ -30,7 +30,7 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
         self.task = dataSource.taskModelByIdentifier(identifier: taskUID) ?? Task()
         
         if self.task.isNew {
-            self.task.taskDate = taskDate
+            self.task.taskDate = taskDate?.startOfDay()
         }
         
         self.dataSource = dataSource
@@ -68,14 +68,16 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
     }
     
     func setTaskDate(date: Date?) {
+        
         if task.reminderDate, let taskDate = task.taskDate, let newDate = date {
             //set time for selected date
             let hour = Calendar.current.taskCalendar.component(.hour, from: taskDate)
             let minute = Calendar.current.taskCalendar.component(.minute, from: taskDate)
             task.taskDate = Calendar.current.taskCalendar.date(bySettingHour: hour, minute: minute, second: 0, of: newDate)
         } else {
-            task.taskDate = date
             setReminder(date: nil)
+                        
+            task.taskDate = date
         }
         selectedDate.value = date
         

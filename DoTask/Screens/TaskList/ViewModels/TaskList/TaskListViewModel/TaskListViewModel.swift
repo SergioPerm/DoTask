@@ -46,8 +46,10 @@ class TaskListViewModel: TaskListViewModelType, TaskListViewModelInputs, TaskLis
         		
         tableViewFRCHelper.delegate = self
         
-        setupCalendarViewModel()
+        //dataSource.clearData()
         
+        setupCalendarViewModel()
+                
         loadData()
         PushNotificationService.shared.attachObserver(self)
     }
@@ -173,6 +175,13 @@ extension TaskListViewModel {
                 return
             }
             
+//            guard let dailyName = periodItem.outputs.dailyName else { return }
+//            if dailyName.haveDoneCounter() {
+//                if let counter = dataSource.getDoneCounterForPeriod(dailyPeriod: dailyName) {
+//                    periodItem.inputs.setDoneCounter(counter: counter)
+//                }
+//            }
+            
             timePeriod.tasks.forEach { task in
                 periodItem.inputs.insert(task: TaskListItemViewModel(task: task, setDoneTaskHandler: changeDoneTask(taskUID:done:)))
                 
@@ -182,11 +191,27 @@ extension TaskListViewModel {
 
         }
         
+        updateCounter()
+        
         if taskListMode.value == .calendar {
             updateTasksInfoInCalendar()
         }
     }
      
+    private func updateCounter() {
+        guard let periodItem = periodItems.first(where: {
+            $0.outputs.dailyName?.haveDoneCounter() == true
+        }) else {
+            return
+        }
+        
+        if let dailyName = periodItem.outputs.dailyName {
+            if let counter = dataSource.getDoneCounterForPeriod(dailyPeriod: dailyName) {
+                periodItem.inputs.setDoneCounter(counter: counter)
+            }
+        }
+    }
+    
     private func recreatePeriodItemsWireframe() {
         periodItems.removeAll()
         
@@ -337,6 +362,7 @@ extension TaskListViewModel: TaskListDataSourceObserver {
     func tasksDidChange() {
         tableViewFRCHelper.applyChanges()
         view?.tableViewEndUpdates()
+        updateCounter()
     }
     
     func taskInserted(at newIndexPath: IndexPath) {

@@ -147,12 +147,12 @@ class TimePickerViewController: UIViewController, PresentableController {
         
         view.frame = CGRect(origin: viewOrigin, size: CGSize(width: viewWidth, height: viewHeight))
                 
-        view.layer.backgroundColor = Color.whiteColor.uiColor.cgColor
+        view.layer.backgroundColor = R.color.timePicker.background()!.cgColor
         view.layer.cornerRadius = StyleGuide.TimePicker.viewCornerRadius
         
         timePicker.frame = CGRect(x: 0, y: viewHeight/2, width: viewWidth, height: viewWidth)
         timePicker.translatesAutoresizingMaskIntoConstraints = false
-        timePicker.setValue(Color.clearColor.uiColor, forKey: "magnifierLineColor")
+        timePicker.setValue(R.color.commonColors.clear(), forKey: "magnifierLineColor")
         
         timePicker.delegate = self
         timePicker.dataSource = self
@@ -320,7 +320,7 @@ extension TimePickerViewController: UIPickerViewDelegate {
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         let pickerLabel = UILabel()
-        pickerLabel.textColor = StyleGuide.TimePicker.pickerTextColor
+        pickerLabel.textColor = R.color.timePicker.textColor()
         
         if let timeComponent = TimeComponent.init(rawValue: component) {
             pickerLabel.text = getTextForComponentFromRow(timeComponent: timeComponent, row: row)

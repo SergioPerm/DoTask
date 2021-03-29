@@ -11,7 +11,7 @@ import UIKit
 extension UINavigationBar {
     func setFlatNavBar() {
         if #available(iOS 13.0, *) {
-            self.standardAppearance.backgroundColor = UIColor.white
+            self.standardAppearance.backgroundColor = R.color.mainNavBar.backgorund()
             self.standardAppearance.backgroundEffect = nil
             self.standardAppearance.shadowImage = UIImage()
             self.standardAppearance.shadowColor = .clear

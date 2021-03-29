@@ -136,12 +136,12 @@ extension TaskListNavBarTitleView {
         let font = FontFactory.AvenirNextBoldItalic.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 27))
         
         let navTitle = NSMutableAttributedString(string: "Do", attributes:[
-                                                    NSAttributedString.Key.foregroundColor: Color.blueColor.uiColor,
+                                                    NSAttributedString.Key.foregroundColor: R.color.commonColors.blue()!,
                                                     NSAttributedString.Key.font: font])
 
         navTitle.append(NSMutableAttributedString(string: "Task", attributes:[
                                                     NSAttributedString.Key.font: font,
-                                                    NSAttributedString.Key.foregroundColor: Color.pinkColor.uiColor]))
+                                                    NSAttributedString.Key.foregroundColor: R.color.commonColors.pink()!]))
 
         if animated {
             animateTitle(newTitle: navTitle)
@@ -154,7 +154,7 @@ extension TaskListNavBarTitleView {
     private func showMonthTitle(monthName: String, animated: Bool = false) {
         
         let navTitle = NSMutableAttributedString(string: monthName, attributes:[
-                                                                NSAttributedString.Key.foregroundColor: UIColor.black,
+                                                    NSAttributedString.Key.foregroundColor: R.color.mainNavBar.monthText()!,
                                                                 NSAttributedString.Key.font: UIFont(name: "AvenirNext-Bold", size: 21) ?? UIFont.systemFont(ofSize: 21)])
         
         if animated {

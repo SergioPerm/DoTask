@@ -115,8 +115,8 @@ extension ImportanceAccessory {
         //Shape
         warningShape = CAShapeLayer()
         
-        warningShape.fillColor = UIColor.clear.cgColor
-        warningShape.strokeColor = #colorLiteral(red: 0.8865944131, green: 0.8865944131, blue: 0.8865944131, alpha: 1).cgColor
+        warningShape.fillColor = R.color.commonColors.clear()!.cgColor
+        warningShape.strokeColor = R.color.detailTask.accessoryStrokeHide()!.cgColor
         warningShape.lineWidth = 1
         warningShape.lineCap = .round
         warningShape.path = rectPath.cgPath
@@ -165,21 +165,21 @@ extension ImportanceAccessory {
         
         switch importanceLevel {
         case .noImportant:
-            warningShape.strokeColor = #colorLiteral(red: 0.8865944131, green: 0.8865944131, blue: 0.8865944131, alpha: 1).cgColor
-            warningShape.fillColor = UIColor.clear.cgColor
-            marksShape.strokeColor = #colorLiteral(red: 0.8865944131, green: 0.8865944131, blue: 0.8865944131, alpha: 1).cgColor
+            warningShape.strokeColor = R.color.detailTask.accessoryStrokeHide()!.cgColor
+            warningShape.fillColor = R.color.commonColors.clear()!.cgColor
+            marksShape.strokeColor = R.color.detailTask.accessoryStrokeHide()!.cgColor
         case .important:
-            warningShape.strokeColor = #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1).cgColor
-            warningShape.fillColor = #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1).cgColor
-            marksShape.strokeColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1).cgColor
+            warningShape.strokeColor = R.color.detailTask.accesseryWarningImportant()!.cgColor
+            warningShape.fillColor = R.color.detailTask.accesseryWarningImportant()!.cgColor
+            marksShape.strokeColor = R.color.detailTask.background()!.cgColor
         case .veryImportant:
-            warningShape.strokeColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1).cgColor
-            warningShape.fillColor = #colorLiteral(red: 0.9372549057, green: 0.7798047149, blue: 0.2104026425, alpha: 1).cgColor
-            marksShape.strokeColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1).cgColor
+            warningShape.strokeColor = R.color.detailTask.accesseryWarningVeryImportantStroke()!.cgColor
+            warningShape.fillColor = R.color.detailTask.accesseryWarningVeryImportantFill()!.cgColor
+            marksShape.strokeColor = R.color.detailTask.background()!.cgColor
         case .fuckedUpImportant:
-            warningShape.strokeColor = #colorLiteral(red: 0.9372549057, green: 0.1278472226, blue: 0.1422514355, alpha: 1).cgColor
-            warningShape.fillColor = #colorLiteral(red: 0.9372549057, green: 0.1278472226, blue: 0.1422514355, alpha: 1).cgColor
-            marksShape.strokeColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1).cgColor
+            warningShape.strokeColor = R.color.detailTask.accesseryWarningFuckImportant()!.cgColor
+            warningShape.fillColor = R.color.detailTask.accesseryWarningFuckImportant()!.cgColor
+            marksShape.strokeColor = R.color.detailTask.background()!.cgColor
         }
         
         marksShape.lineWidth = dotMark

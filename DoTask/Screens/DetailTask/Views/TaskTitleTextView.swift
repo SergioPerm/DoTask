@@ -109,7 +109,7 @@ extension TaskTitleTextView {
         placeholderLabel.font = font
         placeholderLabel.sizeToFit()
         addSubview(placeholderLabel)
-        placeholderLabel.textColor = UIColor.lightGray
+        placeholderLabel.textColor = R.color.detailTask.placeholder()
         placeholderLabel.isHidden = !text.isEmpty
     }
         

@@ -88,7 +88,7 @@ extension ColorSelectionView {
         topBorder.removeFromSuperlayer()
         
         topBorder.frame = CGRect(x: 0, y: 0, width: frame.width, height: StyleGuide.DetailShortcut.ColorSelectionView.Sizes.topBorderHeight)
-        topBorder.backgroundColor = #colorLiteral(red: 0.8463017875, green: 0.8463017875, blue: 0.8463017875, alpha: 1).cgColor
+        topBorder.backgroundColor = R.color.shortcutDetail.borderColor()!.cgColor
         
         layer.addSublayer(topBorder)
     }

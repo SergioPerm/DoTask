@@ -13,7 +13,7 @@ class ShortcutListTableViewCell: UITableViewCell {
     var viewModel: ShortcutViewModelType? {
         didSet {
             guard let _ = viewModel else {
-                color = UIColor.clear
+                color = R.color.commonColors.clear()!
                 titleLabel.text = ""
                 
                 return

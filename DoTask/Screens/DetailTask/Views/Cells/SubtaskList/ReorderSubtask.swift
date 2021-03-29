@@ -47,7 +47,7 @@ extension ReorderSubtask {
         controlShape.path = linePath.cgPath
         controlShape.lineWidth = lineWidth
         controlShape.lineCap = .round
-        controlShape.strokeColor = UIColor.gray.cgColor
+        controlShape.strokeColor = R.color.detailTask.reorderSubtask()!.cgColor
         
         layer.addSublayer(controlShape)
     }

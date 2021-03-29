@@ -29,13 +29,14 @@ extension TaskManaged {
     @NSManaged public var mainTaskListOrder: Int16
     @NSManaged public var shortcut: ShortcutManaged?
     @NSManaged public var subtasks: NSSet
+    @NSManaged public var sortDate: Date
     
     @objc var dailyName: String? {
         guard let taskDate = self.taskDate else {
             return "LATER"
         }
         
-        return taskDate.dailyNameForTask()
+        return taskDate.dailyNameForTask().rawValue
     }
     
     @objc var doneDay: Date? {

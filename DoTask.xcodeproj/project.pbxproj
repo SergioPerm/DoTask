@@ -11,7 +11,7 @@
 		B110991325FA283300E7CDB1 /* DiaryMenuItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B110991225FA283300E7CDB1 /* DiaryMenuItemViewModel.swift */; };
 		B111F66725B06EE90086A0AC /* ShortcutListAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B111F66625B06EE90086A0AC /* ShortcutListAssembly.swift */; };
 		B111F66A25B06FC20086A0AC /* ShortcutListViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B111F66925B06FC20086A0AC /* ShortcutListViewType.swift */; };
-		B114840025309EA100216541 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11483FF25309EA100216541 /* Color.swift */; };
+		B11769CB2610B6FC006391F0 /* TaskCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11769CA2610B6FC006391F0 /* TaskCounter.swift */; };
 		B117AECB253217880046AAE9 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = B117AECA253217880046AAE9 /* String.swift */; };
 		B11C75A525C81A1C004D6639 /* TaskRemiderViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11C75A425C81A1C004D6639 /* TaskRemiderViewModelType.swift */; };
 		B11C75A825C81A31004D6639 /* TaskReminderViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11C75A725C81A31004D6639 /* TaskReminderViewModelInputs.swift */; };
@@ -300,7 +300,7 @@
 		B110991225FA283300E7CDB1 /* DiaryMenuItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryMenuItemViewModel.swift; sourceTree = "<group>"; };
 		B111F66625B06EE90086A0AC /* ShortcutListAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutListAssembly.swift; sourceTree = "<group>"; };
 		B111F66925B06FC20086A0AC /* ShortcutListViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutListViewType.swift; sourceTree = "<group>"; };
-		B11483FF25309EA100216541 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		B11769CA2610B6FC006391F0 /* TaskCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCounter.swift; sourceTree = "<group>"; };
 		B117AECA253217880046AAE9 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		B11C75A425C81A1C004D6639 /* TaskRemiderViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRemiderViewModelType.swift; sourceTree = "<group>"; };
 		B11C75A725C81A31004D6639 /* TaskReminderViewModelInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskReminderViewModelInputs.swift; sourceTree = "<group>"; };
@@ -985,6 +985,7 @@
 			children = (
 				B1DC539625E3CB1D00140F17 /* Cells */,
 				B17B8FBF25CC0E1A00663F97 /* TaskListTableHeaderView.swift */,
+				B11769CA2610B6FC006391F0 /* TaskCounter.swift */,
 			);
 			path = TableView;
 			sourceTree = "<group>";
@@ -1360,7 +1361,6 @@
 				B18349E0256AEA5A00D0D096 /* Coordinators */,
 				B18349EE256AEBD200D0D096 /* Screens */,
 				B189A99525249AB700EAC6A0 /* Temp */,
-				B1D5DEAA2523666A00124DAD /* Resources */,
 				B1603C582521EA740022BE49 /* Extensions */,
 				B1E30EEF25A711520036979D /* DataSource */,
 				B1A9140D252062070021E15C /* Model */,
@@ -1557,14 +1557,6 @@
 				B1D5C4BD252B540000C4B988 /* NotificationTaskObserver.swift */,
 			);
 			path = Protocols;
-			sourceTree = "<group>";
-		};
-		B1D5DEAA2523666A00124DAD /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				B11483FF25309EA100216541 /* Color.swift */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		B1D5DEB0252386E300124DAD /* DatePicker */ = {
@@ -2235,7 +2227,6 @@
 				B1D5DECD2523884700124DAD /* CalendarPickerHeaderView.swift in Sources */,
 				B1687F6525DC00BE009D3DE2 /* CalendarMonth.swift in Sources */,
 				B1D79AEF25CC19CB009DB9BF /* TaskDiaryItemViewModelType.swift in Sources */,
-				B114840025309EA100216541 /* Color.swift in Sources */,
 				B19957BA25F5081900F883D8 /* SpeechTextInfo.swift in Sources */,
 				B1A4E3EB25EFAFDB00F65463 /* SpeechRecorderTransitionController.swift in Sources */,
 				B15B7D0225D1489E00EC1D98 /* DropNavigationTransitionController.swift in Sources */,
@@ -2254,6 +2245,7 @@
 				B188593C25F73E2700C4C440 /* SpeechTaskViewModelOutputs.swift in Sources */,
 				B17B8FC025CC0E1A00663F97 /* TaskListTableHeaderView.swift in Sources */,
 				B15B7D0525D148E200EC1D98 /* DropNavigationAnimationController.swift in Sources */,
+				B11769CB2610B6FC006391F0 /* TaskCounter.swift in Sources */,
 				B15BFA18259877F2003959B8 /* CheckSubtask.swift in Sources */,
 				B15C9B7A25695BB800A809B1 /* DetailTaskViewModel.swift in Sources */,
 				B182306A258119DD009ABCE1 /* DetailTaskViewType.swift in Sources */,

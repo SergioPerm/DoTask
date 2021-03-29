@@ -95,12 +95,12 @@ extension TaskDiaryViewController {
         let font = FontFactory.AvenirNextBoldItalic.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 27))
         
         let navTitle = NSMutableAttributedString(string: "Dia", attributes:[
-                                                    NSAttributedString.Key.foregroundColor: Color.blueColor.uiColor,
+                                                    NSAttributedString.Key.foregroundColor: R.color.commonColors.blue()!,
                                                     NSAttributedString.Key.font: font])
         
         navTitle.append(NSMutableAttributedString(string: "ry", attributes:[
                                                     NSAttributedString.Key.font: font,
-                                                    NSAttributedString.Key.foregroundColor: Color.pinkColor.uiColor]))
+                                                    NSAttributedString.Key.foregroundColor: R.color.commonColors.pink()!]))
         
         let navLabel = UILabel()
         navLabel.attributedText = navTitle
@@ -118,7 +118,7 @@ extension TaskDiaryViewController {
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = 600
         tableView.backgroundColor = .white
-        tableView.layer.backgroundColor = UIColor.white.cgColor
+        tableView.layer.backgroundColor = R.color.diaryTask.background()!.cgColor
         tableView.showsVerticalScrollIndicator = false
         
         let rotateButton = UIButton(type: .custom)

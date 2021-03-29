@@ -225,7 +225,7 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
         view.frame = CGRect(origin: globalFrame.origin, size: CGSize(width: globalFrame.width, height: globalFrame.height))
         
         view.clipsToBounds = true
-        view.backgroundColor = StyleGuide.DetailTask.Colors.viewBGColor
+        view.backgroundColor = R.color.detailTask.background()
         let mask = CAShapeLayer()
         
         let cornerRadius = StyleGuide.DetailTask.Sizes.viewCornerRadius

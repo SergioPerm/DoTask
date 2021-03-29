@@ -24,8 +24,8 @@ class CheckTask: UIView {
 extension CheckTask {
     private func setup() {
         layer.borderWidth = StyleGuide.CommonViews.CheckTask.Sizes.borderWidth
-        layer.borderColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.8470588235).cgColor
+        layer.borderColor = R.color.commonUI.checkTask.border()!.cgColor
         layer.cornerRadius = StyleGuide.CommonViews.CheckTask.Sizes.cornerRadius
-        layer.backgroundColor = #colorLiteral(red: 1, green: 0.2130734228, blue: 0.6506573371, alpha: 0.1099601066)
+        layer.backgroundColor = R.color.commonUI.checkTask.background()!.cgColor
     }
 }

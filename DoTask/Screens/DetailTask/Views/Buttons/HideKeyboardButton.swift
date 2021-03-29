@@ -33,7 +33,7 @@ extension HideKeyboardButton {
     
     private func setup() {
         layer.cornerRadius = StyleGuide.DetailTask.Sizes.addSubtaskBtnCornerRadius
-        backgroundColor = StyleGuide.DetailTask.Colors.addSubtaskbtnColor
+        backgroundColor = R.color.detailTask.hideKeyboardBtn()
         
         let label = UILabel()
         label.text = "⌨️"
@@ -49,7 +49,7 @@ extension HideKeyboardButton {
         ])
         
         clipsToBounds = false
-        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowColor = R.color.detailTask.hideKeyboardBtnShadow()!.cgColor
         layer.shadowOpacity = 0.4
         layer.shadowOffset = CGSize(width: -1.0, height: 0.0)
         layer.shadowRadius = StyleGuide.DetailTask.Sizes.addSubtaskBtnCornerRadius

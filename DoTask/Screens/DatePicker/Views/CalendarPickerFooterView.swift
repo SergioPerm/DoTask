@@ -14,7 +14,7 @@ class CalendarPickerFooterView: UIView {
     var borderMiddle: CALayer = CALayer()
     var borderMiddleVertical: CALayer = CALayer()
     let borderWidth: CGFloat = StyleGuide.CalendarDatePicker.borderWidth
-    let borderColor: CGColor = StyleGuide.CalendarDatePicker.borderColor.cgColor
+    let borderColor: CGColor = R.color.datePicker.border()!.cgColor
     
     @IBOutlet var contentView: UIView!
     @IBOutlet weak var currentDateLabel: UILabel!

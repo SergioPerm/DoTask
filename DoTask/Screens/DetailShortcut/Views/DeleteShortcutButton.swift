@@ -34,13 +34,13 @@ extension DeleteShortcutButton {
     private func setup() {
         
         layer.cornerRadius = StyleGuide.DetailShortcut.DeleteBtn.Sizes.cornerRadius
-        backgroundColor = #colorLiteral(red: 1, green: 0.461137827, blue: 0.4543734729, alpha: 1)
+        backgroundColor = R.color.shortcutDetail.deleteShortcutBtn()
         translatesAutoresizingMaskIntoConstraints = false
         
         let label = UILabel()
         label.text = "Delete"
         label.font = FontFactory.Helvetica.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 17))
-        label.textColor = UIColor.white
+        label.textColor = R.color.shortcutDetail.deleteShortcutBtnText()
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         

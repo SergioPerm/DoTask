@@ -24,7 +24,7 @@ class SpeechTextInfo: UILabel {
 extension SpeechTextInfo {
     private func setup() {
         text = "Release to quick save"
-        
+ 
         font = UIFont(name: "AvenirNext", size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 14))
         textColor = .white
         textAlignment = .center

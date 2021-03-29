@@ -57,7 +57,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
         let accessoryView = UIView()
         accessoryView.translatesAutoresizingMaskIntoConstraints = false
         accessoryView.backgroundColor = .white
-        accessoryView.layer.borderColor = StyleGuide.TaskList.Colors.cellMainTitle.cgColor
+        accessoryView.layer.borderColor = R.color.taskList.cellMainTitle()!.cgColor
         accessoryView.layer.borderWidth = StyleGuide.DetailTask.Sizes.accessoryViewBorderWidth
         
         return accessoryView
@@ -177,7 +177,7 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
     
         view.frame = CGRect(origin: globalFrame.origin, size: CGSize(width: globalFrame.width, height: globalFrame.height))
         view.clipsToBounds = true
-        view.backgroundColor = StyleGuide.DetailTask.Colors.viewBGColor
+        view.backgroundColor = R.color.detailTask.background()
         let mask = CAShapeLayer()
         
         let cornerRadius = StyleGuide.DetailTask.Sizes.viewCornerRadius

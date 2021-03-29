@@ -22,7 +22,7 @@ class CalendarPickerViewCell: UICollectionViewCell {
         let radius: CGFloat = frame.width/2
         circleLayer.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 2.0 * radius, height: 2.0 * radius), cornerRadius: radius).cgPath
         circleLayer.position = CGPoint(x: radius - radius, y: radius - radius)
-        circleLayer.fillColor = Color.blueColor.uiColor.cgColor
+        circleLayer.fillColor = R.color.datePicker.selectCellFill()!.cgColor
         
         return circleLayer
     }()
@@ -33,8 +33,8 @@ class CalendarPickerViewCell: UICollectionViewCell {
         circleLayer.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: (2.0 * radius) - 4, height: (2.0 * radius)-4), cornerRadius: radius).cgPath
         circleLayer.position = CGPoint(x: radius - radius + 2, y: radius - radius + 2)
         circleLayer.lineWidth = 2
-        circleLayer.strokeColor = Color.blueColor.uiColor.cgColor
-        circleLayer.fillColor = Color.clearColor.uiColor.cgColor
+        circleLayer.strokeColor = R.color.datePicker.currentDayStroke()!.cgColor
+        circleLayer.fillColor = R.color.calendar.currentDayFill()!.cgColor
          
         return circleLayer
     }()
@@ -62,18 +62,18 @@ extension CalendarPickerViewCell {
         guard let day = day else { return }
               
         if !day.isWithinDisplayedMonth {
-            dayLabel.textColor = #colorLiteral(red: 0.8125689471, green: 0.8125689471, blue: 0.8125689471, alpha: 1)
+            dayLabel.textColor = R.color.datePicker.outDayText()
             return
         }
                 
         if day.pastDate {
-            dayLabel.textColor = day.isWeekend ? #colorLiteral(red: 0.8125689471, green: 0.6125979116, blue: 0.7837017068, alpha: 1) : #colorLiteral(red: 0.6921151378, green: 0.6921151378, blue: 0.6921151378, alpha: 1)
+            dayLabel.textColor = day.isWeekend ? R.color.datePicker.pastDayTextWeekEnd() : R.color.datePicker.pastDayTextWeek()
         } else {
-            dayLabel.textColor = day.isWeekend ? Color.pinkColor.uiColor : Color.blueColor.uiColor
+            dayLabel.textColor = day.isWeekend ? R.color.datePicker.dayTextWeekEnd() : R.color.datePicker.dayTextWeek()
         }
         
         if day.isSelected {
-            dayLabel.textColor = Color.whiteColor.uiColor
+            dayLabel.textColor = R.color.calendar.selectText()
             layer.sublayers?.insert(selectLayer, at: 0)
         }
         

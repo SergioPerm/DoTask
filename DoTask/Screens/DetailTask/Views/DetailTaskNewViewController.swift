@@ -140,6 +140,11 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
     }
     
     private func updateBottomLayoutConstraintWithNotification(notification: NSNotification, keyboardShow: Bool) {
+        
+        if isBeingDismissed {
+            return
+        }
+        
         let userInfo = notification.userInfo!
         
         let animationDuration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
@@ -156,7 +161,8 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
                        options: [.beginFromCurrentState, animationCurve],
                        animations: {
                         self.view.layoutIfNeeded()
-        }, completion: nil)
+                       }, completion: nil)
+        
     }
     
     // MARK: View Life-Cycle

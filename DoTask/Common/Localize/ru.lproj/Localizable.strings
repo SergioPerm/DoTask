@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  DoTask
+
+  Created by Сергей Лепинин on 29.03.2021.
+  Copyright © 2021 itotdel. All rights reserved.
+*/
+
+"DAILY_TODAY" = "СЕГОДНЯ";
+"TOMORROW" = "ЗАВТРА";
+"CURRENT_WEEK" = "НА НЕДЕЛЕ";
+"LATER" = "ПОТОМ";
+
+"CAP_EMPTY_DAY" = "Список задач пуст, зажмите + ";

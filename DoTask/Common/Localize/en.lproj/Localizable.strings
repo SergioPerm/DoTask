@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  DoTask
+
+  Created by Сергей Лепинин on 29.03.2021.
+  Copyright © 2021 itotdel. All rights reserved.
+*/
+
+"DAILY_TODAY" = "TODAY";
+"TOMORROW" = "TOMORROW";
+"CURRENT_WEEK" = "CURRENT WEEK";
+"LATER" = "LATER";
+
+"CAP_EMPTY_DAY" = "The day is empty";

@@ -174,14 +174,7 @@ extension TaskListViewModel {
             }) else {
                 return
             }
-            
-//            guard let dailyName = periodItem.outputs.dailyName else { return }
-//            if dailyName.haveDoneCounter() {
-//                if let counter = dataSource.getDoneCounterForPeriod(dailyPeriod: dailyName) {
-//                    periodItem.inputs.setDoneCounter(counter: counter)
-//                }
-//            }
-            
+                        
             timePeriod.tasks.forEach { task in
                 periodItem.inputs.insert(task: TaskListItemViewModel(task: task, setDoneTaskHandler: changeDoneTask(taskUID:done:)))
                 
@@ -219,7 +212,7 @@ extension TaskListViewModel {
             DailyName.allCases.forEach({
                 var taskTimePeriod = TaskTimePeriod()
                 taskTimePeriod.dailyName = $0
-                taskTimePeriod.name = $0.rawValue
+                taskTimePeriod.name = $0.localized()
                 
                 let periodItem = TaskListPeriodItemViewModel(taskTimePeriod: taskTimePeriod, taskListMode: taskListMode.value)
                 

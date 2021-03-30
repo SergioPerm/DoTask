@@ -80,7 +80,7 @@ extension TaskDeleteTableViewCell {
             infoLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
             infoLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             infoLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            infoLabel.heightAnchor.constraint(equalToConstant: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 40))
+            infoLabel.heightAnchor.constraint(equalToConstant: StyleGuide.DetailTask.Sizes.additionalCellLabelHeight)
         ]
         
         NSLayoutConstraint.activate(constraints)

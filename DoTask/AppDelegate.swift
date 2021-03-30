@@ -27,6 +27,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         print("Core Data DB Path :: \(path ?? "Not found")")
         
+        do {
+            try R.validate()
+        } catch {
+            fatalError()
+        }
+        
         PushNotificationService.shared.checkAuthorization()
 
         let router = Router(rootViewController: UIViewController())

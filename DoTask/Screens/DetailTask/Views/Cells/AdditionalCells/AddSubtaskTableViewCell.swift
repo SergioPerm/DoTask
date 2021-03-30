@@ -70,7 +70,7 @@ extension AddSubtaskTableViewCell {
     }
     
     private func setupConstraints() {
-        
+                
         let constraints = [
             arrowImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             arrowImage.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -82,7 +82,7 @@ extension AddSubtaskTableViewCell {
             addLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             addLabel.heightAnchor.constraint(equalToConstant: StyleGuide.DetailTask.Sizes.addSubtaskLabelHeight)
         ]
-        
+
         NSLayoutConstraint.activate(constraints)
         
     }

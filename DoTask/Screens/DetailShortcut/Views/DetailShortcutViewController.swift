@@ -136,8 +136,8 @@ extension DetailShortcutViewController {
     }
             
     private func setupConstraints() {
-        guard let globalView = UIView.globalView else { return }
-        let rowHeight = StyleGuide.DetailShortcut.Sizes.RatioToScreenWidth.rowHeight * globalView.frame.width
+                
+        let rowHeight: CGFloat = StyleGuide.DetailShortcut.Sizes.rowHeight//StyleGuide.DetailShortcut.Sizes.RatioToScreenWidth.rowHeight * globalView.frame.width
         
         var constraints = [
             colorDotView.topAnchor.constraint(equalTo: labelView.topAnchor),

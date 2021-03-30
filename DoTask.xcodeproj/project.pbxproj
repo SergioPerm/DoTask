@@ -189,6 +189,8 @@
 		B1A9142525209CC60021E15C /* TaskManaged+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A9142325209CC60021E15C /* TaskManaged+CoreDataProperties.swift */; };
 		B1A914292520AB640021E15C /* TaskListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A914282520AB640021E15C /* TaskListView.swift */; };
 		B1A9142B2520B2AD0021E15C /* TaskListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A9142A2520B2AD0021E15C /* TaskListViewController.swift */; };
+		B1A91E7F2613330200EC3153 /* CGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A91E7E2613330200EC3153 /* CGFloat.swift */; };
+		B1A91E8226133ECA00EC3153 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A91E8126133ECA00EC3153 /* SettingsTableViewCell.swift */; };
 		B1B4CA9325C159B900AF5F61 /* TaskListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B4CA9225C159B900AF5F61 /* TaskListItemViewModel.swift */; };
 		B1B4CA9A25C18A8700AF5F61 /* TaskListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B4CA9925C18A8700AF5F61 /* TaskListViewModel.swift */; };
 		B1B4CA9D25C18F9600AF5F61 /* TaskListItemViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B4CA9C25C18F9600AF5F61 /* TaskListItemViewModelInputs.swift */; };
@@ -240,6 +242,7 @@
 		B1DC539425E3C8BA00140F17 /* TaskListItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DC539325E3C8BA00140F17 /* TaskListItemType.swift */; };
 		B1DC539B25E3CB4F00140F17 /* TaskListCellFactoryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DC539A25E3CB4F00140F17 /* TaskListCellFactoryType.swift */; };
 		B1DC53A125E3CC2E00140F17 /* TaskListCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DC53A025E3CC2E00140F17 /* TaskListCellFactory.swift */; };
+		B1E02A302611F9CF003489BD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1E02A322611F9CF003489BD /* Localizable.strings */; };
 		B1E0653025651A8300948AB5 /* CalendarPickerViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E0652F25651A8300948AB5 /* CalendarPickerViewModelType.swift */; };
 		B1E0653225651EC100948AB5 /* CalendarPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E0653125651EC100948AB5 /* CalendarPickerViewModel.swift */; };
 		B1E06534256524EF00948AB5 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E06533256524EF00948AB5 /* Observable.swift */; };
@@ -366,6 +369,9 @@
 		B141728525C1546200EF0D85 /* TaskListItemViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListItemViewModelType.swift; sourceTree = "<group>"; };
 		B141728C25C154C100EF0D85 /* TaskListPeriodItemViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPeriodItemViewModelType.swift; sourceTree = "<group>"; };
 		B141728F25C154EE00EF0D85 /* TaskListPeriodItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPeriodItemViewModel.swift; sourceTree = "<group>"; };
+		B144C769261202AA00B1746E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B144C76B2612034F00B1746E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		B144C76D2612035000B1746E /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		B14C994425C68B4300E36A94 /* TaskDateViewModelInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDateViewModelInputs.swift; sourceTree = "<group>"; };
 		B14C994725C68BB900E36A94 /* TaskDateViewModelOutputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDateViewModelOutputs.swift; sourceTree = "<group>"; };
 		B14C994A25C68C0900E36A94 /* TaskDateViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDateViewModelType.swift; sourceTree = "<group>"; };
@@ -468,7 +474,6 @@
 		B1A913EF252056FA0021E15C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B1A913F9252056FA0021E15C /* Tasker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Tasker.xcdatamodel; sourceTree = "<group>"; };
 		B1A913FB252056FC0021E15C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B1A913FE252056FC0021E15C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B1A91400252056FC0021E15C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B1A9140725205DE20021E15C /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
 		B1A914152520636E0021E15C /* TaskListDataSourceCoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListDataSourceCoreData.swift; sourceTree = "<group>"; };
@@ -479,6 +484,8 @@
 		B1A9142325209CC60021E15C /* TaskManaged+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskManaged+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B1A914282520AB640021E15C /* TaskListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListView.swift; sourceTree = "<group>"; };
 		B1A9142A2520B2AD0021E15C /* TaskListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListViewController.swift; sourceTree = "<group>"; };
+		B1A91E7E2613330200EC3153 /* CGFloat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloat.swift; sourceTree = "<group>"; };
+		B1A91E8126133ECA00EC3153 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		B1B4CA9225C159B900AF5F61 /* TaskListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListItemViewModel.swift; sourceTree = "<group>"; };
 		B1B4CA9925C18A8700AF5F61 /* TaskListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListViewModel.swift; sourceTree = "<group>"; };
 		B1B4CA9C25C18F9600AF5F61 /* TaskListItemViewModelInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListItemViewModelInputs.swift; sourceTree = "<group>"; };
@@ -530,6 +537,8 @@
 		B1DC539325E3C8BA00140F17 /* TaskListItemType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListItemType.swift; sourceTree = "<group>"; };
 		B1DC539A25E3CB4F00140F17 /* TaskListCellFactoryType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListCellFactoryType.swift; sourceTree = "<group>"; };
 		B1DC53A025E3CC2E00140F17 /* TaskListCellFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListCellFactory.swift; sourceTree = "<group>"; };
+		B1E02A312611F9CF003489BD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B1E02A332611F9D3003489BD /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B1E0652F25651A8300948AB5 /* CalendarPickerViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerViewModelType.swift; sourceTree = "<group>"; };
 		B1E0653125651EC100948AB5 /* CalendarPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerViewModel.swift; sourceTree = "<group>"; };
 		B1E06533256524EF00948AB5 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
@@ -1008,6 +1017,7 @@
 				B1EF666425A4D8BA0050FF1C /* UIColor.swift */,
 				B17F3E1125A5ADC400C4D5A1 /* UICollectionViewCell.swift */,
 				B17B8FBC25CC063C00663F97 /* UINavigationBar.swift */,
+				B1A91E7E2613330200EC3153 /* CGFloat.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1165,6 +1175,7 @@
 		B1804BB6255A8CC9007FECCF /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				B1E02A1D2611EA1E003489BD /* Localize */,
 				B1A2A3F9260A0B1A0073FE8D /* Style */,
 				B1EF596E25F245A300238AF2 /* Animations */,
 				B131899A25EBD3A9008C63A0 /* UI */,
@@ -1446,6 +1457,23 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
+		B1A91E8026133EB300EC3153 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				B1A91E8126133ECA00EC3153 /* SettingsTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		B1A91E8326137AA800EC3153 /* SettingsMain */ = {
+			isa = PBXGroup;
+			children = (
+				B1D4CCDF256D25A30085C25C /* Assembly */,
+				B1D4CCE2256D25B90085C25C /* Views */,
+			);
+			path = SettingsMain;
+			sourceTree = "<group>";
+		};
 		B1AC73F12593300A009029C9 /* SubtaskList */ = {
 			isa = PBXGroup;
 			children = (
@@ -1520,8 +1548,7 @@
 		B1D4CCDE256D25940085C25C /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				B1D4CCDF256D25A30085C25C /* Assembly */,
-				B1D4CCE2256D25B90085C25C /* Views */,
+				B1A91E8326137AA800EC3153 /* SettingsMain */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1537,6 +1564,7 @@
 		B1D4CCE2256D25B90085C25C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B1A91E8026133EB300EC3153 /* Cells */,
 				B1D4CCE4256D26090085C25C /* SettingsViewController.swift */,
 			);
 			path = Views;
@@ -1711,6 +1739,29 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
+		B1E02A1B2611E7A0003489BD /* SettingsDataSource */ = {
+			isa = PBXGroup;
+			children = (
+				B1E02A1C2611E7AD003489BD /* Protocols */,
+			);
+			path = SettingsDataSource;
+			sourceTree = "<group>";
+		};
+		B1E02A1C2611E7AD003489BD /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		B1E02A1D2611EA1E003489BD /* Localize */ = {
+			isa = PBXGroup;
+			children = (
+				B1E02A322611F9CF003489BD /* Localizable.strings */,
+			);
+			path = Localize;
+			sourceTree = "<group>";
+		};
 		B1E065352565374100948AB5 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -1742,6 +1793,7 @@
 		B1E30EEF25A711520036979D /* DataSource */ = {
 			isa = PBXGroup;
 			children = (
+				B1E02A1B2611E7A0003489BD /* SettingsDataSource */,
 				B1E30EF225A711E90036979D /* ShortcutListDataSource */,
 				B1E30EF025A711850036979D /* TaskDataSource */,
 			);
@@ -2030,6 +2082,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				ru,
 				Base,
 			);
 			mainGroup = B1A913E3252056FA0021E15C;
@@ -2058,6 +2111,7 @@
 				B1D5DECA2523884700124DAD /* CalendarPickerHeaderView.xib in Resources */,
 				B1D5DEC92523884700124DAD /* CalendarPickerViewCell.xib in Resources */,
 				B139A76025822527000BAE55 /* testStoryboard.storyboard in Resources */,
+				B1E02A302611F9CF003489BD /* Localizable.strings in Resources */,
 				B189A99725249ACA00EAC6A0 /* testView.xib in Resources */,
 				B1D5DEC82523884700124DAD /* CalendarPickerFooterView.xib in Resources */,
 			);
@@ -2117,6 +2171,7 @@
 				B1F10C0325D012A800153336 /* TaskDeleteViewModel.swift in Sources */,
 				B1FB9BD32588B41E00E54E1B /* TaskTitleTextView.swift in Sources */,
 				B18C91BE2532FA8D004DFB73 /* UIDevice.swift in Sources */,
+				B1A91E7F2613330200EC3153 /* CGFloat.swift in Sources */,
 				B15479D225DBB38D00B70945 /* TaskListPeriodItemViewModelInputs.swift in Sources */,
 				B141727625C1520F00EF0D85 /* TaskListViewModelInputs.swift in Sources */,
 				B141728D25C154C100EF0D85 /* TaskListPeriodItemViewModelType.swift in Sources */,
@@ -2255,6 +2310,7 @@
 				B1A9142525209CC60021E15C /* TaskManaged+CoreDataProperties.swift in Sources */,
 				B192163D2590697200B3FC07 /* SubTaskTableViewCell.swift in Sources */,
 				B1EC8CB62603301800FECE7F /* R.generated.swift in Sources */,
+				B1A91E8226133ECA00EC3153 /* SettingsTableViewCell.swift in Sources */,
 				B1E30EEA25A70F7F0036979D /* MenuViewModelType.swift in Sources */,
 				B1EF664325A4B1DD0050FF1C /* ColorDotView.swift in Sources */,
 				B188594425F73FBA00C4C440 /* SpeechTaskViewModel.swift in Sources */,
@@ -2365,9 +2421,20 @@
 		B1A913FD252056FC0021E15C /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				B1A913FE252056FC0021E15C /* Base */,
+				B144C769261202AA00B1746E /* Base */,
+				B144C76B2612034F00B1746E /* en */,
+				B144C76D2612035000B1746E /* ru */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		B1E02A322611F9CF003489BD /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B1E02A312611F9CF003489BD /* en */,
+				B1E02A332611F9D3003489BD /* ru */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -2377,6 +2444,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -2439,6 +2507,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

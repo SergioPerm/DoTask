@@ -206,12 +206,12 @@ extension SubtaskTableViewCell {
         }
     }
     
-    func getHeight() -> CGFloat {
-        let newSize = titleTextView.sizeThatFits(CGSize(width: titleTextView.frame.width,
-                                                    height: CGFloat.greatestFiniteMagnitude))
-        
-        return newSize.height
-    }
+//    func getHeight() -> CGFloat {
+//        let newSize = titleTextView.sizeThatFits(CGSize(width: titleTextView.frame.width,
+//                                                    height: CGFloat.greatestFiniteMagnitude))
+//
+//        return newSize.height
+//    }
     
 }
 

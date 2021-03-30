@@ -60,7 +60,6 @@ class ShortcutListViewController: UIViewController, PresentableController, Short
         self.presentableControllerViewType = presentableControllerViewType
         
         super.init(nibName: nil, bundle: nil)
-        setupNotifications()
     }
     
     required init?(coder: NSCoder) {
@@ -74,6 +73,11 @@ class ShortcutListViewController: UIViewController, PresentableController, Short
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupNotifications()
     }
 }
 
@@ -151,6 +155,10 @@ extension ShortcutListViewController {
     
     private func updateBottomLayoutConstraintWithNotification(notification: NSNotification, keyboardShow: Bool) {
                 
+        if isBeingDismissed {
+            return
+        }
+        
         let userInfo = notification.userInfo!
         
         let animationDuration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue

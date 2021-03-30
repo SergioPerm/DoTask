@@ -10,7 +10,9 @@ import UIKit
 
 struct StyleGuide {
    
+    //iphone 8
     static let baseScreenWidth: CGFloat = 375
+    static let baseScreenHeight: CGFloat = 667
         
     struct CommonViews {
         struct CheckTask {
@@ -91,6 +93,8 @@ struct StyleGuide {
             enum RatioToScreenHeight {
                 static let topMargin: CGFloat = 0.1
             }
+            
+            static let rowHeight: CGFloat = getSizeRelativeToScreenHeight(baseSize: 48).rounded(.toNearestOrAwayFromZero)//CGFloat(ceil(Double(getSizeRelativeToScreenHeight(baseSize: 48))))
             
             enum RatioToScreenWidth {
                 static let btnWidth: CGFloat = 0.25
@@ -184,6 +188,21 @@ struct StyleGuide {
         
         return size
     }
+    
+    static func getSizeRelativeToScreenHeight(baseSize: CGFloat, maxSize: CGFloat? = nil) -> CGFloat {
+        let bounds = UIScreen.main.bounds
+        let height = bounds.size.height
+                
+        let size = baseSize * (height / StyleGuide.baseScreenHeight)
+        
+        if let maxSize = maxSize {
+            if size > maxSize {
+                return maxSize
+            }
+        }
+        
+        return size
+    }
         
     enum DetailTask {
         
@@ -196,12 +215,14 @@ struct StyleGuide {
             static let contentSidePadding: CGFloat = 20.0
             static let chevronHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 25)
             static let swipeCloseViewHeight: CGFloat = 40
-            static let accesoryStackViewHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 50)
+            static let accesoryStackViewHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 50).rounded(.toNearestOrAwayFromZero)//CGFloat(ceil(Double(getSizeRelativeToScreenWidth(baseSize: 50))))
+            
+            static let additionalCellLabelHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 40).rounded(.toNearestOrAwayFromZero)//CGFloat(ceil(Double(getSizeRelativeToScreenWidth(baseSize: 40))))
             
             static let infoSectionHeaderHeight: Double = 2
             
-            static let tableViewEstimatedHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 38, maxSize: 40)
-            static let addSubtaskLabelHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 45)
+            static let tableViewEstimatedHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 38, maxSize: 40).rounded(.toNearestOrAwayFromZero)
+            static let addSubtaskLabelHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 45).rounded(.toNearestOrAwayFromZero)//CGFloat(ceil(Double(getSizeRelativeToScreenWidth(baseSize: 45))))
             
             static let accessoryViewBorderWidth: CGFloat = 1.0
             static let buttonsAreaHeightForScrollLimit: CGFloat = 50.0

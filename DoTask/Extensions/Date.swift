@@ -9,13 +9,17 @@
 import Foundation
 
 enum DailyName: String, CaseIterable {
-    case today = "TODAY"
+    case today = "DAILY_TODAY"
     case tommorow = "TOMORROW"
-    case currentWeek = "CURRENT WEEK"
+    case currentWeek = "CURRENT_WEEK"
     case later = "LATER"
     
     func haveDoneCounter() -> Bool {
         return self == .today ? true : false
+    }
+    
+    func localized() -> String {
+        return NSLocalizedString(self.rawValue, comment: "")
     }
 }
 

@@ -182,7 +182,7 @@ extension DetailTaskScrollView {
             titleTextView.topAnchor.constraint(equalTo: swipeCloseView.bottomAnchor)
         ])
         
-        subtaskTableViewHeightConstraint = subtaskTableView.heightAnchor.constraint(equalToConstant: .greatestFiniteMagnitude)
+        subtaskTableViewHeightConstraint = subtaskTableView.heightAnchor.constraint(equalToConstant: 2000)
         subtaskTableViewHeightConstraint.priority = UILayoutPriority(250)
         
         let subtaskTableViewBottomConstraint = subtaskTableView.bottomAnchor.constraint(equalTo: scrollContentView.bottomAnchor, constant: -50)

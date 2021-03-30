@@ -216,6 +216,11 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        //scrollContentView.updateSizes()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         scrollContentView.updateSizes()
     }
         

@@ -24,6 +24,8 @@ class TaskDiaryViewModel: TaskDiaryViewModelType, TaskDiaryViewModelInputs, Task
                 
         self.dataSource.observer = self
         
+        dataSource.setOnlyDoneTasksMode()
+        
         tableViewFRCHelper.delegate = self
         loadData()
     }

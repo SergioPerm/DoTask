@@ -28,4 +28,7 @@ protocol DetailTaskViewModelInputs: class {
     func openCalendar()
     func openReminder()
     func openShortcuts()
+    
+    func setTaskUID(UID: String?)
+    func setFilter(filter: TaskListFilter)
 }

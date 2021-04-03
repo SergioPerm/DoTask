@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "DITranquillity",
+        "repositoryURL": "https://github.com/ivlevAstef/DITranquillity",
+        "state": {
+          "branch": null,
+          "revision": "e0129f38113e897e1e287a0098c0b536c493efa8",
+          "version": "4.2.0"
+        }
+      },
+      {
         "package": "Lottie",
         "repositoryURL": "https://github.com/airbnb/lottie-ios.git",
         "state": {
@@ -53,6 +62,15 @@
           "branch": null,
           "revision": "f79d4ecbf8bc4e1579fbd86c3e1d652fb6876c53",
           "version": "0.9.2"
+        }
+      },
+      {
+        "package": "SwiftLazy",
+        "repositoryURL": "https://github.com/ivlevAstef/SwiftLazy.git",
+        "state": {
+          "branch": null,
+          "revision": "70f0b50542d97212b8bad18075a500537c244abc",
+          "version": "1.1.8"
         }
       },
       {

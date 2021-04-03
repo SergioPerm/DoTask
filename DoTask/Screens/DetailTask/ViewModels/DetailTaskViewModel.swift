@@ -22,38 +22,64 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
         
     private let subtaskSectionIndex: Int = 0
     
+    private var filter: TaskListFilter?
+    
     var inputs: DetailTaskViewModelInputs { return self }
     var outputs: DetailTaskViewModelOutputs { return self }
     
-    init(taskUID: String?, shortcutUID: String?, taskDate: Date?, dataSource: TaskListDataSource) {
-                
-        self.task = dataSource.taskModelByIdentifier(identifier: taskUID) ?? Task()
+    init(dataSource: TaskListDataSource) {
+        self.task = Task()
         
         if self.task.isNew {
-            self.task.taskDate = taskDate?.startOfDay()
+            self.task.taskDate = Date().startOfDay()
         }
         
         self.dataSource = dataSource
         
         self.selectedDate = Observable(task.taskDate)
         self.selectedTime = Observable(task.reminderDate ? task.taskDate : nil)
+        self.selectedShortcut = Observable(ShortcutData(title: nil, colorHex: nil))
         
-        if let shortcut =  self.task.shortcut {
-            self.selectedShortcut = Observable(ShortcutData(title: shortcut.name, colorHex: shortcut.color))
-        } else {
-            self.selectedShortcut = Observable(ShortcutData(title: nil, colorHex: nil))
-        }
-
         self.importanceLevel = Int(task.importanceLevel)
         self.asksToDelete = Observable(false)
         self.addSubtaskEvent = Event<Bool>()
-        
-        setShortcut(shortcutUID: shortcutUID)
-        setupSections()
     }
     
     
     // MARK: INPUTS
+    
+    func setTaskUID(UID: String?) {
+        task = dataSource.taskModelByIdentifier(identifier: UID) ?? Task()
+        
+        if task.isNew {
+            task.taskDate = Date().startOfDay()
+        }
+        
+        selectedDate = Observable(task.taskDate)
+        selectedTime = Observable(task.reminderDate ? task.taskDate : nil)
+        
+        if let shortcut = task.shortcut {
+            selectedShortcut = Observable(ShortcutData(title: shortcut.name, colorHex: shortcut.color))
+        } else {
+            selectedShortcut = Observable(ShortcutData(title: nil, colorHex: nil))
+        }
+        
+        importanceLevel = Int(task.importanceLevel)
+    }
+    
+    func setFilter(filter: TaskListFilter) {
+        if task.isNew {
+            task.taskDate = filter.dayFilter?.startOfDay() ?? Date().startOfDay()
+        }
+        
+        if let _ = filter.dayFilter {
+            selectedDate = Observable(task.taskDate)
+            selectedTime = Observable(task.reminderDate ? task.taskDate : nil)
+        }
+        
+        setShortcut(shortcutUID: filter.shortcutFilter)
+        setupSections()
+    }
     
     func setCalendarHandler(onCalendarSelect: ((Date?, CalendarPickerViewOutputs) -> Void)?) {
         self.onCalendarSelect = onCalendarSelect

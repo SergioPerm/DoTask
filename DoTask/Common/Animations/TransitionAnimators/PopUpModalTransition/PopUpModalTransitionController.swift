@@ -13,7 +13,7 @@ class PopUpModalTransitionController: NSObject, UIViewControllerTransitioningDel
     private let animationDuration: TimeInterval
     private let estimatedFinalHeight: CGFloat
     private let viewController: UIViewController
-    private let interactionView: UIView?
+    private weak var interactionView: UIView?
     private let router: RouterType?
     
     private var interactionController: UIPercentDrivenInteractiveTransition?

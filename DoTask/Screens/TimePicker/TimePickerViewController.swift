@@ -25,7 +25,7 @@ enum TimeComponent: Int {
     case all
 }
 
-class TimePickerViewController: UIViewController, PresentableController {
+class TimePickerViewController: UIViewController, TimePickerViewType {
     
     var presentableControllerViewType: PresentableControllerViewType
     var router: RouterType?
@@ -72,21 +72,25 @@ class TimePickerViewController: UIViewController, PresentableController {
     private var hours:[Int] = []
     private var minutes:[Int] = []
     
-    // MARK: Handlers
+    // MARK: TimePickerViewType
     
     var deleteReminderHandler: (() -> Void)?
     var setReminderHandler: ((_ setTime: Date) -> Void)?
     
+    func setBaseTime(time: Date?) {
+        baseTime = time ?? Date()
+        selectedDate.day = time ?? Date()
+    }
+    
     // MARK: Initializers
     
-    init(baseTime: Date?, presenter: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
-        
-        self.router = presenter
+    init(router: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
+        self.router = router
         self.presentableControllerViewType = presentableControllerViewType
         
-        self.baseTime = baseTime ?? Date()
+        self.baseTime = Date()
         
-        selectedDate.day = baseTime ?? Date()
+        selectedDate.day = Date()
         selectedDate.hour = 0
         selectedDate.minute = 0
         

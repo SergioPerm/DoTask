@@ -25,6 +25,7 @@ protocol TaskListDataSource {
     func clearData()
   
     func applyFilters(filter: TaskListFilter)
+    func setOnlyDoneTasksMode()
     
     func getFirstTaskDate() -> Date?
     func getTasksByDate() -> [Date:CalendarDayStatus]

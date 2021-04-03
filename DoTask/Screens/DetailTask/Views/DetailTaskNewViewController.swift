@@ -89,9 +89,9 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
     private let saveBtn: SaveAccessory = SaveAccessory()
     
     // MARK: Init
-    init(viewModel: DetailTaskViewModelType, presenter: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
+    init(viewModel: DetailTaskViewModelType, router: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
         self.viewModel = viewModel
-        self.router = presenter
+        self.router = router
         self.presentableControllerViewType = presentableControllerViewType
         self.scrollContentView = DetailTaskScrollView(viewModel: viewModel)
         
@@ -270,6 +270,16 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
         
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // MARK: DetailTaskViewType Methods
+    func setTaskUID(UID: String?) {
+        viewModel.inputs.setTaskUID(UID: UID)
+    }
+    
+    func setFilter(filter: TaskListFilter) {
+        viewModel.inputs.setFilter(filter: filter)
+    }
+    
 }
 
 // MARK: Bind viewModel
@@ -314,7 +324,7 @@ extension DetailTaskNewViewController {
         }
         
         viewModel.outputs.addSubtaskEvent.subscribe(self) { (this, _) in
-            self.scrollContentView.addNewSubtask()
+            this.scrollContentView.addNewSubtask()
         }
     }
 }

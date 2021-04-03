@@ -18,20 +18,18 @@ class TaskListDataSourceCoreData: NSObject {
     
     // for observe showInMainList property in shortcut
     private var shortcutFecthResultsController: NSFetchedResultsController<ShortcutManaged> = NSFetchedResultsController()
-    private let notificationCenter = PushNotificationService.shared
+    private let notificationCenter: PushNotificationService = AppDI.resolve()
     
     // MARK: Filters
     
     private var shortcutFilter: String?
-    private var onlyFinishedTasksFilter: Bool
+    private var onlyFinishedTasksFilter: Bool = false
     private var dayFilter: Date?
     
     // MARK: Init
     
-    init(context: NSManagedObjectContext, shortcutFilter: String?, onlyFinishedTasksFilter: Bool = false) {
-        self.context = context
-        self.shortcutFilter = shortcutFilter
-        self.onlyFinishedTasksFilter = onlyFinishedTasksFilter
+    init(coreDataService: CoreDataService) {
+        self.context = coreDataService.context
         
         super.init()
         
@@ -46,6 +44,11 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
     func applyFilters(filter: TaskListFilter) {
         self.shortcutFilter = filter.shortcutFilter
         self.dayFilter = filter.dayFilter
+        setupFetchResultsController()
+    }
+    
+    func setOnlyDoneTasksMode() {
+        onlyFinishedTasksFilter = true
         setupFetchResultsController()
     }
     
@@ -104,6 +107,8 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
         fetchRequest.predicate = predicate
         fetchRequest.sortDescriptors = [sortDescriptor]
         
+        var firstDate = Date()
+        
         do {
             let tasks = try context.fetch(fetchRequest)
             
@@ -111,10 +116,12 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
                 return nil
             }
             
-            return tasks[0].taskDate
+            firstDate = tasks[0].taskDate ?? Date()
         } catch {
             fatalError()
         }
+        
+        return firstDate
     }
     
     // MARK: Get task model by UID

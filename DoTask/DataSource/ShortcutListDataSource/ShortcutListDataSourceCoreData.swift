@@ -17,8 +17,8 @@ class ShortcutListDataSourceCoreData: NSObject {
     weak var observer: ShortcutListDataSourceObserver?
     private let fetchedResultsController: NSFetchedResultsController<ShortcutManaged>
     
-    init(context: NSManagedObjectContext) {
-        self.context = context
+    init(coreDataService: CoreDataService) {
+        self.context = coreDataService.context
         
         // Setting up fetchedResultsController
         let fetchRequest: NSFetchRequest<ShortcutManaged> = ShortcutManaged.fetchRequest()

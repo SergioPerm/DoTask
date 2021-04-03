@@ -7,8 +7,8 @@
 //
 import UIKit
 
-class CalendarPickerViewController: UIViewController, PresentableController {
-    
+class CalendarPickerViewController: UIViewController, CalendarPickerViewType {
+   
     var presentableControllerViewType: PresentableControllerViewType
     var router: RouterType?
     var persistentType: PersistentViewControllerType?
@@ -16,11 +16,7 @@ class CalendarPickerViewController: UIViewController, PresentableController {
     // MARK: ViewModel
     
     let viewModel: CalendarPickerViewModelType
-    
-    // MARK: Vars
-    
-    private var selectedDate: Date?
-    
+        
     // MARK: Views
     
     private lazy var globalFrame = UIView.globalSafeAreaFrame
@@ -90,18 +86,22 @@ class CalendarPickerViewController: UIViewController, PresentableController {
             
     private let calendar = Calendar.current.taskCalendar
     
-    // MARK: Handlers
+    // MARK: CalendarPickerViewType
     
     var cancelDatePickerHandler: (() -> Void)?
     var saveDatePickerHandler: (() -> Void)?
     var selectedDateChangedHandler: ((Date?) -> Void)?
     
+    func setSelectDay(date: Date?) {
+        guard let date = date else { return }
+        viewModel.inputs.setSelectedDay(date: date)
+    }
+    
     // MARK: Initializers
     
-    init(selectedDate: Date?, viewModel: CalendarPickerViewModelType, presenter: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
-        self.router = presenter
+    init(viewModel: CalendarPickerViewModelType, router: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
+        self.router = router
         self.presentableControllerViewType = presentableControllerViewType
-        self.selectedDate = selectedDate
         self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
@@ -175,8 +175,6 @@ extension CalendarPickerViewController {
         }
         
         self.viewModel.outputs.selectedDate.bind { [weak self] selectedDate in
-            self?.selectedDate = selectedDate
-            
             guard let strongSelf = self else { return }
             guard let selectedDate = selectedDate else {
                 strongSelf.footerView.currentDateLabel.text = "No selected date"
@@ -302,14 +300,7 @@ extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return cellSize
     }
-     
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-//
-//        let margin = StyleGuide.CalendarDatePicker.collectionMargins
-//
-//        return UIEdgeInsets(top: margin, left: margin, bottom: margin, right: margin)
-//    }
-    
+         
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! CalendarPickerViewCell
                   

@@ -17,48 +17,55 @@ class DetailTaskCoordinator: NSObject, Coordinator {
     private var shortcutUID: String?
     private var taskDate: Date?
     
-    init(presenter: RouterType?, taskUID: String?, shortcutUID: String?, taskDate: Date?) {
-        self.router = presenter
+    init(router: RouterType?, taskUID: String?, shortcutUID: String?, taskDate: Date?) {
+        self.router = router
         self.taskUID = taskUID
         self.shortcutUID = shortcutUID
         self.taskDate = taskDate
     }
     
     func start() {
-        let vc = DetailTaskAssembly.createInstance(taskUID: taskUID, shortcutUID: shortcutUID, taskDate: taskDate, presenter: router)
+        let vc: DetailTaskViewType = taskUID == nil ? AppDI.resolve(withTag: DetailTaskNewViewController.self) : AppDI.resolve(withTag: DetailTaskEditViewController.self)
+        
+        vc.setTaskUID(UID: taskUID)
+        vc.setFilter(filter: TaskListFilter(shortcutFilter: shortcutUID, dayFilter: taskDate))
+        
         vc.onCalendarSelect = { date, outputs in
             self.openCalendar(date: date, calendarOutputs: outputs)
         }
         vc.onTimeReminderSelect = { date, outputs in
             self.openReminder(date: date, reminderOutputs: outputs)
         }
-        vc.onShortcutSelect = { shortcutUID, outputs in
-            self.selectShortcut(shortcutUID: shortcutUID, shortcutListOutputs: outputs)
+        vc.onShortcutSelect = { [weak self] shortcutUID, outputs in
+            self?.selectShortcut(shortcutUID: shortcutUID, shortcutListOutputs: outputs)
         }
-        
+
         let transition = PopUpModalTransitionController(viewController: vc, interactionView: vc.scrollContentView, router: router)
-                
+
         router?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
         }, transition: transition)
     }
     
     func selectShortcut(shortcutUID: String?, shortcutListOutputs: ShortcutListViewOutputs) {
-        let vc = ShortcutListAssembly.createInstance(presenter: router)
-        
+        let vc: ShortcutListViewType = AppDI.resolve()
+
         vc.selectShortcutHandler = { [weak shortcutListOutputs] uid in
             shortcutListOutputs?.selectedShortcutUID = uid
         }
-        
+
         let transition = CardModalTransitionController(viewController: vc, interactionView: vc.tableView, router: router)
-        
+
         router?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
         }, transition: transition)
     }
     
     func openCalendar(date: Date?, calendarOutputs: CalendarPickerViewOutputs) {
-        let vc = CalendarPickerAssembly.createInstance(date: date, presenter: router)
+        let vc: CalendarPickerViewType = AppDI.resolve()//CalendarPickerAssembly.createInstance(date: date, presenter: router)
+        
+        vc.setSelectDay(date: date)
+        
         vc.saveDatePickerHandler = { [weak calendarOutputs] in
             calendarOutputs?.comletionAfterCloseCalendar()
         }
@@ -78,7 +85,10 @@ class DetailTaskCoordinator: NSObject, Coordinator {
     }
     
     func openReminder(date: Date?, reminderOutputs: TimePickerViewOutputs) {
-        let vc = TimePickerAssembly.createInstance(date: date, presenter: router)
+        let vc: TimePickerViewType = AppDI.resolve()//TimePickerAssembly.createInstance(date: date, presenter: router)
+        
+        vc.setBaseTime(time: date)
+        
         vc.deleteReminderHandler = { [weak reminderOutputs] in
             reminderOutputs?.selectedReminderTime = nil
             reminderOutputs?.completionAfterCloseTimePicker()

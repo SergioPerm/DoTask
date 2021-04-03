@@ -10,13 +10,11 @@ import Foundation
 import UserNotifications
 
 class PushNotificationService: NSObject {
-    
-    static let shared = PushNotificationService()
-    
+        
     let notificationCenter = UNUserNotificationCenter.current()
         
     private lazy var notificationObservers = [NotificationTaskObserver]()
-    
+        
     override init() {
         super.init()
         notificationCenter.delegate = self
@@ -66,7 +64,7 @@ class PushNotificationService: NSObject {
     func attachObserver(_ observer: NotificationTaskObserver) {
         notificationObservers.append(observer)
     }
-    
+        
 }
 
 extension PushNotificationService: UNUserNotificationCenterDelegate {

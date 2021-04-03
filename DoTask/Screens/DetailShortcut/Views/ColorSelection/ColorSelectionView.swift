@@ -123,9 +123,7 @@ extension ColorSelectionView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let globalFrame = UIView.globalSafeAreaFrame
-        let side = StyleGuide.DetailShortcut.Sizes.rowHeight//StyleGuide.DetailShortcut.Sizes.RatioToScreenWidth.rowHeight * globalFrame.width
-        
+        let side = StyleGuide.DetailShortcut.Sizes.rowHeight
         return CGSize(width: side, height: side)
     }
 }

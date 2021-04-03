@@ -14,8 +14,8 @@ class SettingsViewController: UIViewController, PresentableController {
     var router: RouterType?
     var persistentType: PersistentViewControllerType?
     
-    init(presenter: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
-        self.router = presenter
+    init(router: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
+        self.router = router
         self.presentableControllerViewType = presentableControllerViewType
         super.init(nibName: nil, bundle: nil)
     }

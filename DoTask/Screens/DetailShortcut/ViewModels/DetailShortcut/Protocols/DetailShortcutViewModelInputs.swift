@@ -9,6 +9,7 @@
 import UIKit
 
 protocol DetailShortcutViewModelInputs {
+    func setShortcutUID(UID: String?)
     func setColor(colorHex: String)
     func setTitle(title: String)
     func toggleshowInMainListSetting()

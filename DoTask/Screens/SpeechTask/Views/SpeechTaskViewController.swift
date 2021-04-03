@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-class SpeechTaskViewController: UIViewController, PresentableController {
+class SpeechTaskViewController: UIViewController, SpeechTaskViewType {
             
     var presentableControllerViewType: PresentableControllerViewType
     var router: RouterType?
@@ -21,7 +21,7 @@ class SpeechTaskViewController: UIViewController, PresentableController {
         }
     }
     
-    private var longTapRecognizer: UILongPressGestureRecognizer
+    var longTapRecognizer: UILongPressGestureRecognizer?
     
     private let speakWave: SpeakWave = {
         let view = SpeakWave()
@@ -56,11 +56,10 @@ class SpeechTaskViewController: UIViewController, PresentableController {
     private var trailingSwipeToCancelConstraint: NSLayoutConstraint = NSLayoutConstraint()
     private var prevPointOnSwipe: CGFloat = 0.0
     
-    init(viewModel: SpeechTaskViewModelType, router: RouterType?, recognizer: UILongPressGestureRecognizer, presentableControllerViewType: PresentableControllerViewType, persistentType: PersistentViewControllerType? = nil) {
+    init(viewModel: SpeechTaskViewModelType, router: RouterType?, presentableControllerViewType: PresentableControllerViewType, persistentType: PersistentViewControllerType? = nil) {
         self.viewModel = viewModel
         self.router = router
         self.presentableControllerViewType = presentableControllerViewType
-        self.longTapRecognizer = recognizer
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -112,8 +111,10 @@ extension SpeechTaskViewController {
     private func setup() {
         view.backgroundColor = R.color.commonColors.blue()!
         
-        longTapRecognizer.addTarget(self, action: #selector(tapAction(sender:)))
-        view.addGestureRecognizer(longTapRecognizer)
+        if let longTapRecognizer = longTapRecognizer {
+            longTapRecognizer.addTarget(self, action: #selector(tapAction(sender:)))
+            view.addGestureRecognizer(longTapRecognizer)
+        }
                         
         [crossBtn, speakWave, speechText, infoText, swipeToCancel].forEach({
             self.view.addSubview($0)
@@ -207,7 +208,9 @@ extension SpeechTaskViewController {
     }
     
     private func popSpeech() {
-        longTapRecognizer.removeTarget(self, action: #selector(tapAction(sender:)))
+        if let longTapRecognizer = longTapRecognizer {
+            longTapRecognizer.removeTarget(self, action: #selector(tapAction(sender:)))
+        }
         router?.pop(vc: self)
     }
     

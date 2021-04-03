@@ -8,8 +8,14 @@
 
 import UIKit
 
-class DetailShortcutViewController: UIViewController, PresentableController {
+class DetailShortcutViewController: UIViewController, DetailShortcutViewType {
     
+    var shortcutUID: String? {
+        didSet {
+            viewModel.inputs.setShortcutUID(UID: shortcutUID)
+        }
+    }
+        
     var presentableControllerViewType: PresentableControllerViewType
     var router: RouterType?
     var persistentType: PersistentViewControllerType?

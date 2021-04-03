@@ -68,15 +68,7 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
         
         return stackView
     }()
-    
-//    private let addSubtaskButton: AddSubtaskButton = {
-//        let addSubtaskBtn = AddSubtaskButton()
-//        addSubtaskBtn.translatesAutoresizingMaskIntoConstraints = false
-//
-//
-//        return addSubtaskBtn
-//    }()
-    
+        
     private let shortcutButton: ShortcutButton = {
         let shortcutBtn = ShortcutButton()
         shortcutBtn.translatesAutoresizingMaskIntoConstraints = false
@@ -120,9 +112,9 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
     }()
     
     // MARK: Init
-    init(viewModel: DetailTaskViewModelType, presenter: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
+    init(viewModel: DetailTaskViewModelType, router: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
         self.viewModel = viewModel
-        self.router = presenter
+        self.router = router
         self.presentableControllerViewType = presentableControllerViewType
         self.scrollContentView = DetailTaskScrollView(viewModel: viewModel)
         
@@ -216,7 +208,6 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //scrollContentView.updateSizes()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -304,19 +295,17 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
     private func setupConstraints() {
         let globalFrame = UIView.globalSafeAreaFrame
                 
-        var constraints = [
+        var constraints: [NSLayoutConstraint] = [
             scrollContentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollContentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollContentView.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollContentView.bottomAnchor.constraint(equalTo: accessoryView.topAnchor, constant: 0),
+            scrollContentView.bottomAnchor.constraint(equalTo: accessoryView.topAnchor, constant: 0)
         ]
          
         accesoryBottomConstraint = accessoryView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -view.globalSafeAreaInsets.bottom - 20)
         accesoryLeadingConstraint = accessoryView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10)
         accesoryTrailingConstraint = accessoryView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
-        
-//        addSubtaskBtnTrailingConstraint = addSubtaskButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
-        
+                
         constraints.append(contentsOf: [
             accesoryStackView.topAnchor.constraint(equalTo: accessoryView.topAnchor),
             accesoryStackView.leadingAnchor.constraint(equalTo: accessoryView.leadingAnchor),
@@ -357,6 +346,16 @@ class DetailTaskEditViewController: UIViewController, DetailTaskViewType, Presen
         NSLayoutConstraint.activate(constraints)
         
     }
+    
+    // MARK: DetailTaskViewType Methods
+    func setTaskUID(UID: String?) {
+        viewModel.inputs.setTaskUID(UID: UID)
+    }
+    
+    func setFilter(filter: TaskListFilter) {
+        viewModel.inputs.setFilter(filter: filter)
+    }
+    
 }
 
 // MARK: Bind viewModel
@@ -411,7 +410,7 @@ extension DetailTaskEditViewController {
         }
         
         viewModel.outputs.addSubtaskEvent.subscribe(self) { (this, _) in
-            self.scrollContentView.addNewSubtask()
+            this.scrollContentView.addNewSubtask()
         }
     }
 }

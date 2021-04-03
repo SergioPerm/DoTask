@@ -13,6 +13,21 @@ class DetailShortcutViewModel: DetailShortcutViewModelType, DetailShortcutViewMo
     private var shortcut: Shortcut
     private var dataSource: ShortcutListDataSource
 
+    private var shortcutUID: String? {
+        didSet {
+            if let shortcutUID = shortcutUID {
+                self.shortcut = dataSource.shortcutByIdentifier(identifier: shortcutUID) ?? Shortcut()
+                
+                if self.shortcut.isNew {
+                    self.shortcut.color = presetColors[2]
+                }
+                
+                self.selectedColor = Observable(shortcut.color)
+                self.title = shortcut.name
+            }
+        }
+    }
+    
     private var presetColors: [String] = [
         R.color.shortcutDetail.colorSelection.lightBlue()!.toHexString(),
         R.color.shortcutDetail.colorSelection.dullPurple()!.toHexString(),
@@ -38,18 +53,24 @@ class DetailShortcutViewModel: DetailShortcutViewModelType, DetailShortcutViewMo
     var inputs: DetailShortcutViewModelInputs { return self }
     var outputs: DetailShortcutViewModelOutputs { return self }
 
-    init(shortcutUID: String?, dataSource: ShortcutListDataSource) {
-        self.shortcut = dataSource.shortcutByIdentifier(identifier: shortcutUID) ?? Shortcut()
+    init(dataSource: ShortcutListDataSource) {
+        self.shortcut = Shortcut()
         self.dataSource = dataSource
-        
-        if self.shortcut.isNew {
-            self.shortcut.color = presetColors[2]
-        }
-        
         self.selectedColor = Observable(shortcut.color)
-        
-        self.title = shortcut.name
     }
+    
+//    init(shortcutUID: String?, dataSource: ShortcutListDataSource) {
+//        self.shortcut = dataSource.shortcutByIdentifier(identifier: shortcutUID) ?? Shortcut()
+//        self.dataSource = dataSource
+//
+//        if self.shortcut.isNew {
+//            self.shortcut.color = presetColors[2]
+//        }
+//
+//        self.selectedColor = Observable(shortcut.color)
+//
+//        self.title = shortcut.name
+//    }
     
     // MARK: Inputs
     
@@ -80,10 +101,14 @@ class DetailShortcutViewModel: DetailShortcutViewModelType, DetailShortcutViewMo
         }
     }
 
+    func setShortcutUID(UID: String?) {
+        self.shortcutUID = UID
+    }
+    
     // MARK: OUTPUTS
     
     var selectedColor: Observable<String>
-    var title: String
+    var title: String = ""
     var showInMainListSetting: Bool {
         return shortcut.showInMainList
     }

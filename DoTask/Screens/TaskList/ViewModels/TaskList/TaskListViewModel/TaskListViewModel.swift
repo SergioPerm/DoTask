@@ -22,7 +22,7 @@ class TaskListViewModel: TaskListViewModelType, TaskListViewModelInputs, TaskLis
     
     private var dataSource: TaskListDataSource
             
-    weak var view: TaskListView?
+    weak var view: TaskListViewObservable?
     
     var inputs: TaskListViewModelInputs { return self }
     var outputs: TaskListViewModelOutputs { return self }
@@ -51,7 +51,8 @@ class TaskListViewModel: TaskListViewModelType, TaskListViewModelInputs, TaskLis
         setupCalendarViewModel()
                 
         loadData()
-        PushNotificationService.shared.attachObserver(self)
+        let pushNotificationService: PushNotificationService = AppDI.resolve()
+        pushNotificationService.attachObserver(self)
     }
     
     // MARK: Inputs

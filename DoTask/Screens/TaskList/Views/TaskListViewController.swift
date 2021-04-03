@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TaskListViewController: UIViewController, PresentableController {
+class TaskListViewController: UIViewController, TaskListViewType {
     
     var presentableControllerViewType: PresentableControllerViewType
     var router: RouterType?
@@ -270,7 +270,10 @@ extension TaskListViewController {
         }
         
         viewModel.inputs.setFilter(filter: filter)
-        tableView.reloadData()
+        
+        if isViewLoaded {
+            tableView.reloadData()
+        }
     }
 }
 
@@ -337,7 +340,7 @@ extension TaskListViewController: UITableViewDelegate {
 
 // MARK: TaskListView
 
-extension TaskListViewController: TaskListView {
+extension TaskListViewController: TaskListViewObservable {
     func editTask(taskUID: String) {
         if let editAction = editTaskAction {
             editAction(taskUID, nil, nil)

@@ -46,7 +46,6 @@ class TaskListTableHeaderView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        
         //titleLabel.frame = CGRect.init(x: 0, y: 5, width: frame.width, height: StyleGuide.TaskList.Sizes.headerTitleHeight)
     }
     

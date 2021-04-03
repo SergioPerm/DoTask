@@ -26,6 +26,7 @@ class Router: NSObject, RouterType {
     }
     
     func pop(vc: PresentableController) {
+            
         presentableControllers = presentableControllers.filter { $0! != vc as UIViewController }
                 
         switch vc.presentableControllerViewType {

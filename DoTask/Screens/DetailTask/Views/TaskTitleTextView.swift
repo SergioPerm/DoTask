@@ -33,7 +33,6 @@ class TaskTitleTextView: UITextView {
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        addObservers()
     }
         
     deinit {
@@ -161,13 +160,13 @@ extension TaskTitleTextView {
         updateParentScrollViewOffset()
     }
     
-    private func addKeyboardObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShowNotification(notification:)), name: UIResponder.keyboardDidShowNotification, object: nil)
-    }
-    
-    private func removeKeyboardObserver() {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
-    }
+//    private func addKeyboardObserver() {
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShowNotification(notification:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+//    }
+//
+//    private func removeKeyboardObserver() {
+//        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
+//    }
     
     private func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(textDidChange(notification:)), name: UITextView.textDidChangeNotification, object: self)

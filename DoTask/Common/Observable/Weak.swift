@@ -25,6 +25,10 @@ final class Weak<T: AnyObject> {
             id = nil
         }
     }
+    
+    func getValue() -> T? {
+        return value
+    }
 }
 
 extension Weak: Hashable {

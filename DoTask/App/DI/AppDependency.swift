@@ -17,6 +17,13 @@ class AppDependency: DIPart {
         }.as(RouterType.self).lifetime(.perContainer(.weak))
         
         container.register(MainCoordinator.init(presenter:))
+        
+        container.register(LocalizeService.init)
+            .as(LocalizeServiceType.self).lifetime(.perRun(.strong))
+        container.register(LocalizeService.init)
+            .as(LocalizeServiceSettingsType.self).lifetime(.perRun(.strong))
+        
+        container.register(SettingService.init).lifetime(.perRun(.strong))
                
     }
 }

@@ -15,6 +15,7 @@ struct DoneCounter {
 
 protocol TaskListPeriodItemViewModelOutputs {
     var title: String { get }
+    var localizedTitle: LocalizableStringResource? { get }
     var titleHexColor: String { get }
     var dailyName: DailyName? { get }
     var tasks: [TaskListItemType] { get }

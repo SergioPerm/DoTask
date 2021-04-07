@@ -51,6 +51,9 @@ struct StyleGuide {
             static let capRowHeightMain: Int = 110
             static let capRowHeightCalendar: Int = 70
             static let capRowHeightLittle: Int = 5
+            
+            static let tableSideMargins: CGFloat = 5.0
+            static let tableHeaderLeftMargin: CGFloat = 15.0
         }
                 
         struct Calendar {
@@ -322,5 +325,13 @@ struct StyleGuide {
             let globalSafeFrame = UIView.globalSafeAreaFrame
             return CGRect(x: 25, y: globalSafeFrame.origin.y + 10, width: 25, height: 25)
         }()
+    }
+    
+    struct Settings {
+        struct Sizes {
+            static let cellHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 50).rounded(.toNearestOrAwayFromZero)
+            static let iconSize: CGFloat = getSizeRelativeToScreenWidth(baseSize: 25).rounded(.toNearestOrAwayFromZero)
+            static let controlSize: CGFloat = getSizeRelativeToScreenWidth(baseSize: 15).rounded(.toNearestOrAwayFromZero)
+        }
     }
 }

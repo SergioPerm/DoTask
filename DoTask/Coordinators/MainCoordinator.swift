@@ -90,10 +90,11 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
     
     func openSettings(menu: SlideMenuViewType?) {
         menu?.toggleMenu()
-        let vc: SettingsViewController = AppDI.resolve()
-        router?.push(vc: vc, completion: { [weak self] in
-            self?.parentCoordinator?.childDidFinish(self)
-        }, transition: nil)
+        
+        let child = SettingsCoordinator(router: router)
+        child.parentCoordinator = self
+        childCoordinators.append(child)
+        child.start()
     }
     
     func editTask(taskUID: String?, shortcutUID: String?, taskDate: Date?) {

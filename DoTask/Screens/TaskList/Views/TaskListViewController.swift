@@ -83,6 +83,7 @@ class TaskListViewController: UIViewController, TaskListViewType {
         super.viewDidLoad()
         setupView()
     }
+    
 }
 
 extension TaskListViewController {
@@ -234,9 +235,11 @@ extension TaskListViewController {
             calendarView.heightAnchor.constraint(equalToConstant: calendarView.frame.height)
         ]
         
+        let tableMargin = StyleGuide.TaskList.Sizes.tableSideMargins
+        
         constraints.append(contentsOf: [
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: tableMargin),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -tableMargin),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         

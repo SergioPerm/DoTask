@@ -12,10 +12,7 @@ final class Event<Args> {
     
     private var handlers: [Weak<AnyObject>: (Args) -> Void] = [:]
 
-    func subscribe<Subscriber: AnyObject>(
-        _ subscriber: Subscriber,
-        handler: @escaping (Subscriber, Args) -> Void) {
-
+    func subscribe<Subscriber: AnyObject>(_ subscriber: Subscriber, handler: @escaping (Subscriber, Args) -> Void) {
         let key = Weak<AnyObject>(subscriber)
 
         handlers = handlers.filter { $0.key.isAlive }

@@ -12,3 +12,15 @@
 "LATER" = "ПОТОМ";
 
 "CAP_EMPTY_DAY" = "Список задач пуст, зажмите + ";
+
+"SETTINGS_TITLE" = "Настройки";
+
+"SETTINGS_LANGUAGE" = "Язык";
+"SETTINGS_TASK" = "Задачи";
+"SETTINGS_SPOTLIGHT" = "Spotlight";
+
+"ru_Language" = "Русский";
+"en_Language" = "English";
+
+"ON" = "Вкл.";
+"OFF" = "Выкл.";

@@ -19,8 +19,8 @@ class TaskListTableHeaderView: UIView {
         }
     }
     
-    private let titleLabel: UILabel = {
-        let label = UILabel()
+    private let titleLabel: LocalizableLabel = {
+        let label = LocalizableLabel()
         label.backgroundColor = R.color.taskList.background()
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -63,7 +63,7 @@ extension TaskListTableHeaderView {
         titleWidthConstraint.priority = UILayoutPriority(250)
         
         let constraints: [NSLayoutConstraint] = [
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: StyleGuide.TaskList.Sizes.tableHeaderLeftMargin),
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 5),
             titleWidthConstraint,
             titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
@@ -80,9 +80,13 @@ extension TaskListTableHeaderView {
                 
         counter.isHidden = true
         
-        if let title = viewModel?.outputs.title {
-            titleLabel.text = "  \(title)"
-            titleLabel.sizeToFit()
+//        if let title = viewModel?.outputs.title {
+//            titleLabel.text = "  \(title)"
+//            titleLabel.sizeToFit()
+//        }
+        
+        if let localizeTitle = viewModel?.outputs.localizedTitle {
+            titleLabel.localizableString = localizeTitle
         }
         
         if let textColor = viewModel?.outputs.titleHexColor {

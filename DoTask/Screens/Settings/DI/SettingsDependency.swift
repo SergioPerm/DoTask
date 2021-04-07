@@ -11,9 +11,13 @@ import DITranquillity
 
 class SettingsDependency: DIPart {
     static func load(container: DIContainer) {
+        
+        container.register(SettingsViewModel.init(settingsService:))
+            .as(SettingsViewModelType.self)
+        
         container.register{
-            SettingsViewController(router: $0, presentableControllerViewType: .navigationStack)
-        }
+            SettingsViewController(viewModel: $0, router: $1, presentableControllerViewType: .navigationStack)
+        }.as(SettingsViewType.self)
     }
 }
 

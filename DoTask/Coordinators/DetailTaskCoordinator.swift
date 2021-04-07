@@ -82,6 +82,10 @@ class DetailTaskCoordinator: NSObject, Coordinator {
         router?.push(vc: vc, completion: { [weak self] in
             self?.parentCoordinator?.childDidFinish(self)
         }, transition: transition)
+        
+
+        
+        
     }
     
     func openReminder(date: Date?, reminderOutputs: TimePickerViewOutputs) {

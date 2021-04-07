@@ -27,20 +27,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             .removingPercentEncoding
 
         print("Core Data DB Path :: \(path ?? "Not found")")
+                
+        AppDI.reg()
         
+        #if DEBUG
         do {
             try R.validate()
         } catch {
             fatalError()
         }
-        
-        AppDI.reg()
+        #endif
         
         let pushNotificationService: PushNotificationService = AppDI.resolve()
         pushNotificationService.checkAuthorization()
         
-        let router: RouterType = AppDI.resolve()//Router(rootViewController: UIViewController())
-        coordinator = AppDI.resolve()//MainCoordinator(presenter: router)
+        let router: RouterType = AppDI.resolve()
+        coordinator = AppDI.resolve()
         coordinator?.start()
         
         window = UIWindow(frame: UIScreen.main.bounds)
@@ -51,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window?.rootViewController = router.rootViewController
         window?.makeKeyAndVisible()
-                 
+                         
         return true
     }
 }

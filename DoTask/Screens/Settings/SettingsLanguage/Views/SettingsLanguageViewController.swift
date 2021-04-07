@@ -1,30 +1,26 @@
 //
-//  SettingsViewController.swift
+//  SettingsLanguageViewController.swift
 //  DoTask
 //
-//  Created by kluv on 24/11/2020.
-//  Copyright © 2020 itotdel. All rights reserved.
+//  Created by Сергей Лепинин on 06.04.2021.
+//  Copyright © 2021 itotdel. All rights reserved.
 //
 
 import UIKit
 
-class SettingsViewController: UIViewController, SettingsViewType {
+class SettingsLanguageViewController: UIViewController, PresentableController {
     
-    //SettingsViewType
-    var settingLanguageHandler: (() -> Void)?
-    var settingTasksHandler: (() -> Void)?
-    var settingSpotlightHandler: (() -> Void)?
-    
-    private let viewModel: SettingsViewModelType
+    private let viewModel: SettingsLanguageViewModelType
     
     var presentableControllerViewType: PresentableControllerViewType
     var router: RouterType?
     var persistentType: PersistentViewControllerType?
     
-    init(viewModel: SettingsViewModelType, router: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
+    init(viewModel: SettingsLanguageViewModelType, router: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
         self.viewModel = viewModel
         self.router = router
         self.presentableControllerViewType = presentableControllerViewType
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -44,7 +40,6 @@ class SettingsViewController: UIViewController, SettingsViewType {
         tableView.sectionFooterHeight = 0
         
         tableView.dataSource = self
-        tableView.delegate = self
         
         tableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: SettingsTableViewCell.className)
         
@@ -62,26 +57,15 @@ class SettingsViewController: UIViewController, SettingsViewType {
         let settingsNavBarTitleView = SettingsNavBarTitle(frame: navBarTitleFrame)
         navigationItem.titleView = settingsNavBarTitleView
     }
-
-}
-
-extension SettingsViewController: UITableViewDelegate {
     
 }
 
-extension SettingsViewController: UITableViewDataSource {
+extension SettingsLanguageViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.outputs.settingsItems.count
+        1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTableViewCell.className) as? SettingsTableViewCell else {
-            return UITableViewCell()
-        }
-        
-        cell.viewModel = viewModel.outputs.settingsItems[indexPath.row]
-        
-        return cell
+        return UITableViewCell()
     }
-    
 }

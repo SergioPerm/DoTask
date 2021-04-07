@@ -27,7 +27,7 @@ class DetailShortcutViewModel: DetailShortcutViewModelType, DetailShortcutViewMo
             }
         }
     }
-    
+
     private var presetColors: [String] = [
         R.color.shortcutDetail.colorSelection.lightBlue()!.toHexString(),
         R.color.shortcutDetail.colorSelection.dullPurple()!.toHexString(),
@@ -58,20 +58,7 @@ class DetailShortcutViewModel: DetailShortcutViewModelType, DetailShortcutViewMo
         self.dataSource = dataSource
         self.selectedColor = Observable(shortcut.color)
     }
-    
-//    init(shortcutUID: String?, dataSource: ShortcutListDataSource) {
-//        self.shortcut = dataSource.shortcutByIdentifier(identifier: shortcutUID) ?? Shortcut()
-//        self.dataSource = dataSource
-//
-//        if self.shortcut.isNew {
-//            self.shortcut.color = presetColors[2]
-//        }
-//
-//        self.selectedColor = Observable(shortcut.color)
-//
-//        self.title = shortcut.name
-//    }
-    
+        
     // MARK: Inputs
     
     func setColor(colorHex: String) {

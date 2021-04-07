@@ -89,6 +89,10 @@ class TaskListPeriodItemViewModel: TaskListPeriodItemViewModelType, TaskListPeri
         return timePeriodName
     }
     
+    var localizedTitle: LocalizableStringResource? {
+        return taskTimePeriod.localizedTitle
+    }
+    
     var titleHexColor: String {
         
         var hexColor = R.color.commonColors.blue()!.toHexString()

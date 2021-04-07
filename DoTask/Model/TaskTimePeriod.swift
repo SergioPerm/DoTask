@@ -21,6 +21,10 @@ struct TaskTimePeriod {
         }
     }
     
+    var localizedTitle: LocalizableStringResource? {
+        return dailyName?.localizedString()
+    }
+    
     init() {
         self.name = ""
         self.tasks = []

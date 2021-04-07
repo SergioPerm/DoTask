@@ -13,6 +13,19 @@ enum DailyName: String, CaseIterable {
     case tommorow = "TOMORROW"
     case currentWeek = "CURRENT_WEEK"
     case later = "LATER"
+
+    func localizedString() -> LocalizableStringResource {
+        switch self {
+        case .today:
+            return LocalizableStringResource(stringResource: R.string.localizable.daily_TODAY)
+        case .tommorow:
+            return LocalizableStringResource(stringResource: R.string.localizable.tomorroW)
+        case .currentWeek:
+            return LocalizableStringResource(stringResource: R.string.localizable.current_WEEK)
+        case .later:
+            return LocalizableStringResource(stringResource: R.string.localizable.lateR)
+        }
+    }
     
     func haveDoneCounter() -> Bool {
         return self == .today ? true : false

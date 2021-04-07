@@ -12,3 +12,15 @@
 "LATER" = "LATER";
 
 "CAP_EMPTY_DAY" = "The day is empty";
+
+"SETTINGS_TITLE" = "Settings";
+
+"SETTINGS_LANGUAGE" = "Language";
+"SETTINGS_TASK" = "Tasks";
+"SETTINGS_SPOTLIGHT" = "Spotlight";
+
+"ru_Language" = "Русский";
+"en_Language" = "English";
+
+"ON" = "On";
+"OFF" = "Off";

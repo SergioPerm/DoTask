@@ -60,12 +60,12 @@ extension MenuViewModel {
     private func setupSections() {
         let settingsSection = MenuItemSectionViewModel(cells: [SettingsMenuItemViewModel()], sectionHeight: Double.leastNormalMagnitude)
 
-        let selectedCellViewModel = MainMenuItemViewModel(title: "Task list", imageName: "colorFlat", selected: true, menuType: .mainList)
+        let selectedCellViewModel = MainMenuItemViewModel(title: LocalizableStringResource(stringResource: R.string.localizable.task_LIST), imageName: "colorFlat", selected: true, menuType: .mainList)
         selectedViewModel = selectedCellViewModel
                 
         let mainItemsSection = MenuItemSectionViewModel(cells: [
             selectedCellViewModel,
-            DiaryMenuItemViewModel(title: "Task diary", imageName: "diary", menuType: .diaryList)
+            DiaryMenuItemViewModel(title: LocalizableStringResource(stringResource: R.string.localizable.task_DIARY), imageName: "diary", menuType: .diaryList)
         ], sectionHeight: StyleGuide.SlideMenu.Sizes.mainSectioHeaderHeight)
         
         let createShortcutSection = MenuItemSectionViewModel(cells: [createShortcutViewModel], sectionHeight: 0)

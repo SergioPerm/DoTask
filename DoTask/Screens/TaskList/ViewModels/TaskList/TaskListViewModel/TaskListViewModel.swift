@@ -40,7 +40,7 @@ class TaskListViewModel: TaskListViewModelType, TaskListViewModelInputs, TaskLis
         self.taskDiaryMode = Observable(false)
         self.periodItems = []
         self.taskListMode = Observable(TaskListMode.list)
-        self.calendarMonth = Observable(nil)
+        self.calendarMonth = Observable(Date())
         
         self.dataSource.observer = self
         		
@@ -123,7 +123,7 @@ class TaskListViewModel: TaskListViewModelType, TaskListViewModelInputs, TaskLis
         return calendarViewModel?.outputs.selectedDay?.outputs.date
     }
     
-    var calendarMonth: Observable<String?>
+    var calendarMonth: Observable<Date>
     
 }
 
@@ -133,7 +133,7 @@ extension TaskListViewModel {
         let firstTaskDate = dataSource.getFirstTaskDate() ?? Date()
         let calendarVM = CalendarViewModel(startDate: firstTaskDate)
         calendarVM.selectedDateHandler = setCalendarDate(date:)
-        calendarVM.setCalendarMonthHandler = setCalendarMonth(monthName:)
+        calendarVM.setCalendarMonthHandler = setCalendarMonth(date:)
         
         calendarViewModel = calendarVM
     }
@@ -159,8 +159,8 @@ extension TaskListViewModel {
         }
     }
     
-    private func setCalendarMonth(monthName: String?) {
-        calendarMonth.value = monthName
+    private func setCalendarMonth(date: Date) {
+        calendarMonth.value = date
     }
     
     private func loadData() {

@@ -15,5 +15,5 @@ protocol TaskListViewModelOutputs {
     var taskListMode: Observable<TaskListMode> { get }
     var calendarViewModel: CalendarViewModelType? { get }
     var calendarSelectedDate: Date? { get }
-    var calendarMonth: Observable<String?> { get }
+    var calendarMonth: Observable<Date> { get }
 }

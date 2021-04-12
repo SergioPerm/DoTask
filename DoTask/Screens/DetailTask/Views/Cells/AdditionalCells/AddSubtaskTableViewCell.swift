@@ -20,12 +20,12 @@ class AddSubtaskTableViewCell: UITableViewCell, DetailTaskCellType {
         return imgView
     }()
     
-    private let addLabel: UILabel = {
-        let label = UILabel()
+    private let addLabel: LocalizableLabel = {
+        let label = LocalizableLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .gray
         label.textAlignment = .left
-        label.text = "Add subtask"
+        label.localizableString = LocalizableStringResource(stringResource: R.string.localizable.add_SUBTASK)
         label.isUserInteractionEnabled = true
         
         return label

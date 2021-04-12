@@ -15,10 +15,10 @@ class MainMenuItemViewModel: MenuItemViewModelType, MenuItemViewModelMainType, M
     var selectedItem: Observable<Bool>
     var rowHeight: Double = StyleGuide.SlideMenu.Sizes.bigRowHeight
 
-    var title: String
+    var title: LocalizableStringResource
     var imageName: String
     
-    init(title: String, imageName: String, selected: Bool = false, menuType: MainMenuType) {
+    init(title: LocalizableStringResource, imageName: String, selected: Bool = false, menuType: MainMenuType) {
         self.title = title
         self.imageName = imageName
         self.selectedItem = Observable(selected)

@@ -20,43 +20,31 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="86E-2d-Upl">
                                 <rect key="frame" x="12.5" y="296.5" width="350" height="74"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Настройка языка12312" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lHT-pD-2Sc">
-                                        <rect key="frame" x="63" y="26.5" width="182" height="21"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" priority="750" constant="10" id="UGS-2f-Cme"/>
-                                        </constraints>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="Показывать в общем списке 12312312312312312312313123123123123" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="TaZ-36-NCb">
+                                        <rect key="frame" x="15" y="26.5" width="261" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="0.0"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </label>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="calendar.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="cpi-MY-RmG">
-                                        <rect key="frame" x="15" y="21" width="33" height="32"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="33" id="J1X-6p-aOW"/>
-                                            <constraint firstAttribute="height" constant="33" id="lSS-6M-jcE"/>
-                                        </constraints>
-                                    </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Russian123" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="shl-sY-kWS">
-                                        <rect key="frame" x="255" y="26.5" width="80" height="21"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" priority="750" constant="10" id="ZQl-zD-Hn8"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h9O-bJ-ErH">
+                                        <rect key="frame" x="286" y="21.5" width="51" height="31"/>
+                                    </switch>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemTealColor"/>
                                 <constraints>
-                                    <constraint firstItem="shl-sY-kWS" firstAttribute="leading" secondItem="lHT-pD-2Sc" secondAttribute="trailing" constant="10" id="73U-MS-ZkQ"/>
+                                    <constraint firstAttribute="trailing" secondItem="h9O-bJ-ErH" secondAttribute="trailing" constant="15" id="9UE-Y6-h7h"/>
+                                    <constraint firstItem="TaZ-36-NCb" firstAttribute="leading" secondItem="86E-2d-Upl" secondAttribute="leading" constant="15" id="Aa7-uh-vBz"/>
                                     <constraint firstAttribute="height" constant="74" id="BAC-QF-oB4"/>
-                                    <constraint firstItem="lHT-pD-2Sc" firstAttribute="centerY" secondItem="86E-2d-Upl" secondAttribute="centerY" id="LFg-oL-NRa"/>
-                                    <constraint firstItem="shl-sY-kWS" firstAttribute="centerY" secondItem="86E-2d-Upl" secondAttribute="centerY" id="Nsn-Ji-2Kh"/>
-                                    <constraint firstAttribute="trailing" secondItem="shl-sY-kWS" secondAttribute="trailing" constant="15" id="hHN-0s-veo"/>
-                                    <constraint firstItem="cpi-MY-RmG" firstAttribute="leading" secondItem="86E-2d-Upl" secondAttribute="leading" constant="15" id="mJK-yT-VMw"/>
-                                    <constraint firstItem="lHT-pD-2Sc" firstAttribute="leading" secondItem="cpi-MY-RmG" secondAttribute="trailing" constant="15" id="vum-Ul-GKh"/>
+                                    <constraint firstItem="TaZ-36-NCb" firstAttribute="top" secondItem="86E-2d-Upl" secondAttribute="top" constant="26.5" id="Ceo-Av-QoA"/>
+                                    <constraint firstItem="h9O-bJ-ErH" firstAttribute="leading" secondItem="TaZ-36-NCb" secondAttribute="trailing" constant="10" id="EJR-xj-8TR"/>
+                                    <constraint firstAttribute="bottom" secondItem="TaZ-36-NCb" secondAttribute="bottom" constant="26.5" id="hSE-Si-lmK"/>
                                     <constraint firstAttribute="width" constant="350" id="wdE-eV-5az"/>
-                                    <constraint firstItem="cpi-MY-RmG" firstAttribute="centerY" secondItem="86E-2d-Upl" secondAttribute="centerY" id="zdX-AE-rpn"/>
+                                    <constraint firstItem="h9O-bJ-ErH" firstAttribute="centerY" secondItem="86E-2d-Upl" secondAttribute="centerY" id="zrY-Vz-cGg"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -74,7 +62,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="calendar.circle" catalog="system" width="128" height="121"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

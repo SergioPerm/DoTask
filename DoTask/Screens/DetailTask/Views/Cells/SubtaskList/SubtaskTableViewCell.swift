@@ -109,7 +109,7 @@ extension SubtaskTableViewCell {
         
         selectionStyle = .none
                 
-        titleTextView.placeholderText = "Subtask title"
+        titleTextView.placeholderText = LocalizableStringResource(stringResource: R.string.localizable.new_SUBTASK_PLACEHOLDER)
         
         checkView = CheckSubtask(check: subtaskViewModel?.outputs.isDone ?? false)
         checkView.translatesAutoresizingMaskIntoConstraints = false
@@ -205,13 +205,6 @@ extension SubtaskTableViewCell {
             delegate.deleteSubtask(subtaskViewModel, cell: self)
         }
     }
-    
-//    func getHeight() -> CGFloat {
-//        let newSize = titleTextView.sizeThatFits(CGSize(width: titleTextView.frame.width,
-//                                                    height: CGFloat.greatestFiniteMagnitude))
-//
-//        return newSize.height
-//    }
     
 }
 

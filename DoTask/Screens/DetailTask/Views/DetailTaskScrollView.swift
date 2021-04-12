@@ -136,7 +136,7 @@ extension DetailTaskScrollView {
         titleTextView.delegate = self
         titleTextView.text = viewModel.outputs.title
         titleTextView.parentScrollView = self
-        titleTextView.placeholderText = "Task title"
+        titleTextView.placeholderText = LocalizableStringResource(stringResource: R.string.localizable.new_TITLE_PLACEHOLDER)
         
         scrollContentView.addSubview(titleTextView)
         scrollContentView.addSubview(subtaskTableView)

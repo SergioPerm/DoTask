@@ -9,7 +9,7 @@
 import UIKit
 
 class SettingsNavBarTitle: UIView {
-
+    
     private let titleLabel: LocalizableLabel = {
         let label = LocalizableLabel()
         label.textAlignment = .center
@@ -44,5 +44,9 @@ extension SettingsNavBarTitle {
         addSubview(titleLabel)
         
         titleLabel.localizableString = LocalizableStringResource(stringResource: R.string.localizable.settings_TITLE)
+    }
+    
+    func setTitle(localizeString: LocalizableStringResource?) {
+        titleLabel.localizableString = localizeString
     }
 }

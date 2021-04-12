@@ -23,8 +23,8 @@ class MainMenuTableViewCell: UITableViewCell, TableViewCellType {
         return view
     }()
     
-    let title: UILabel = {
-        let label = UILabel()
+    let title: LocalizableLabel = {
+        let label = LocalizableLabel()
         label.textColor = .gray
         label.textAlignment = .left
         label.font = FontFactory.HelveticaNeueBold.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 19))
@@ -62,11 +62,11 @@ class MainMenuTableViewCell: UITableViewCell, TableViewCellType {
 extension MainMenuTableViewCell {
     private func bindViewModel() {
         guard let viewModel = viewModel else {
-            title.text = ""
+            title.localizableString = nil
             icon.image = nil
             return
         }
-        title.text = viewModel.title
+        title.localizableString = viewModel.title
         icon.image = R.image.menu.mainList()
         
         viewModel.selectedItem.bind { [weak self] selected in

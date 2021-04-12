@@ -14,7 +14,7 @@ enum MainMenuType {
 }
 
 protocol MenuItemViewModelMainType {
-    var title: String { get }
+    var title: LocalizableStringResource { get }
     var imageName: String { get }
     var menuType: MainMenuType { get }
 }

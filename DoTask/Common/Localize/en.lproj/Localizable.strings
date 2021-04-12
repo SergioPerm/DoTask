@@ -14,6 +14,7 @@
 "CAP_EMPTY_DAY" = "The day is empty";
 
 "SETTINGS_TITLE" = "Settings";
+"SETTINGS_LANGUAGE_TITLE" = "Languages";
 
 "SETTINGS_LANGUAGE" = "Language";
 "SETTINGS_TASK" = "Tasks";
@@ -24,3 +25,14 @@
 
 "ON" = "On";
 "OFF" = "Off";
+
+"TASK_LIST" = "Tasks list";
+"TASK_DIARY" = "Tasks diary";
+
+"CREATE_SHORTCUT" = "Create shortcut";
+"NEW_TITLE_SHORTCUT" = "New shortcut";
+"SHOW_IN_MAINLIST" = "Show in main list";
+
+"NEW_TITLE_PLACEHOLDER" = "New task";
+"NEW_SUBTASK_PLACEHOLDER" = "New subtask";
+"ADD_SUBTASK" = "Add subtask";

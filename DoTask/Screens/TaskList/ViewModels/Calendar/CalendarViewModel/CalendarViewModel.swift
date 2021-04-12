@@ -24,6 +24,7 @@ class CalendarViewModel: CalendarViewModelType, CalendarViewModelInputs, Calenda
     private var startDate: Date
     
     private let calendar = Calendar.current.taskCalendar
+    private let settingsService: SettingService = AppDI.resolve()
     
     private lazy var dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
@@ -31,7 +32,7 @@ class CalendarViewModel: CalendarViewModelType, CalendarViewModelInputs, Calenda
     }()
     
     var selectedDateHandler: ((_: Date) -> Void)?
-    var setCalendarMonthHandler: ((_: String?) -> Void)?
+    var setCalendarMonthHandler: ((_: Date) -> Void)?
     
     enum CalendarDataError: Error {
       case metadataGeneration
@@ -84,10 +85,14 @@ class CalendarViewModel: CalendarViewModelType, CalendarViewModelInputs, Calenda
     }
     
     func setSelectedMonth(monthViewModel: CalendarMonthViewModelType) {
-        let monthName = dateFormatter.monthSymbols[monthViewModel.month - 1]
+        guard let monthDate = calendar.date(bySetting: .month, value: monthViewModel.month, of: Date()) else { return }
         
+//        dateFormatter.locale = Locale(identifier: settingsService.getSettings().language.rawValue)
+//        dateFormatter.setLocalizedDateFormatFromTemplate("MMMM")
+//        let monthName = dateFormatter.string(from: monthDate).capitalizingFirstLetter()
+                
         if let setCalendarMonthAction = setCalendarMonthHandler {
-            setCalendarMonthAction(monthName)
+            setCalendarMonthAction(monthDate)
         }
     }
     

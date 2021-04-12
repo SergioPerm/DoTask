@@ -10,6 +10,15 @@ import UIKit
 
 class SettingsLanguageTableViewCell: UITableViewCell {
 
+    weak var viewModel: SettingsLanguageItemViewModelType? {
+        willSet {
+            viewModel?.outputs.selectChangeEvent.unsubscribe(self)
+        }
+        didSet {
+            bindViewModel()
+        }
+    }
+    
     private let icon: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -46,7 +55,22 @@ class SettingsLanguageTableViewCell: UITableViewCell {
 }
 
 extension SettingsLanguageTableViewCell {
+    private func bindViewModel() {
+        guard let viewModel = viewModel else { return }
+        
+        icon.image = UIImage(data: viewModel.outputs.iconData)
+        languageTitle.localizableString = viewModel.outputs.itemTitle
+        checkmark.isHidden = !viewModel.outputs.select
+        
+        viewModel.outputs.selectChangeEvent.subscribe(self) { (this, select) in
+            self.checkmark.isHidden = !select
+        }
+    }
+    
     private func setup() {
+        
+        selectionStyle = .none
+        
         contentView.addSubview(icon)
         contentView.addSubview(languageTitle)
         contentView.addSubview(checkmark)

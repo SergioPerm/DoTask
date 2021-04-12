@@ -59,7 +59,7 @@ class SettingsTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
-
+    
 }
 
 extension SettingsTableViewCell {
@@ -76,6 +76,8 @@ extension SettingsTableViewCell {
     
     private func setup() {
                 
+        selectionStyle = .none
+        
         contentView.addSubview(icon)
         contentView.addSubview(settingsTitle)
         contentView.addSubview(settingsValue)
@@ -99,7 +101,7 @@ extension SettingsTableViewCell {
             make.height.equalTo(cellHeight)
             make.width.equalTo(10).priority(.low)
         })
-        
+
         settingsTitle.snp.contentCompressionResistanceHorizontalPriority = 751
 
         settingsValue.snp.makeConstraints({ make in
@@ -109,12 +111,19 @@ extension SettingsTableViewCell {
             make.width.equalTo(10).priority(.low)
             make.right.equalTo(arrow.snp.left).offset(-15)
         })
-        
+
         arrow.snp.makeConstraints({ make in
             make.height.equalTo(arrowSize)
             make.width.equalTo(arrowSize)
             make.centerY.equalToSuperview()
             make.right.equalToSuperview().offset(-25)
         })
+        
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapHandler(sender:)))
+        contentView.addGestureRecognizer(tapRecognizer)
+    }
+    
+    @objc private func tapHandler(sender: UITapGestureRecognizer) {
+        viewModel?.inputs.selectItem()
     }
 }

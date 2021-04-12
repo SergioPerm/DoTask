@@ -14,6 +14,7 @@
 "CAP_EMPTY_DAY" = "Список задач пуст, зажмите + ";
 
 "SETTINGS_TITLE" = "Настройки";
+"SETTINGS_LANGUAGE_TITLE" = "Языки";
 
 "SETTINGS_LANGUAGE" = "Язык";
 "SETTINGS_TASK" = "Задачи";
@@ -24,3 +25,14 @@
 
 "ON" = "Вкл.";
 "OFF" = "Выкл.";
+
+"TASK_LIST" = "Задачи";
+"TASK_DIARY" = "Дневник";
+
+"CREATE_SHORTCUT" = "Создать ярлык";
+"NEW_TITLE_SHORTCUT" = "Новый ярлык";
+"SHOW_IN_MAINLIST" = "Показывать в общем списке";
+
+"NEW_TITLE_PLACEHOLDER" = "Новая задача";
+"NEW_SUBTASK_PLACEHOLDER" = "Новая подзадача";
+"ADD_SUBTASK" = "Добавить подзадачу";

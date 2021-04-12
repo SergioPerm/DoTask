@@ -8,24 +8,41 @@
 
 import Foundation
 
+protocol SettingsLanguageItemViewModelInputs {
+    func setSelected(select: Bool)
+}
+
 protocol SettingsLanguageItemViewModelOutputs {
     var iconData: Data { get }
     var itemTitle: LocalizableStringResource { get }
     var select: Bool { get }
+    var language: SettingService.CurrentLanguage { get }
+    
+    var selectChangeEvent: Event<Bool> { get }
 }
 
-protocol SettingsLanguageItemViewModelType {
+protocol SettingsLanguageItemViewModelType: class {
+    var inputs: SettingsLanguageItemViewModelInputs { get }
     var outputs: SettingsLanguageItemViewModelOutputs { get }
 }
 
-class SettingsLanguageItemViewModel: SettingsLanguageItemViewModelType, SettingsLanguageItemViewModelOutputs {
+class SettingsLanguageItemViewModel: SettingsLanguageItemViewModelType, SettingsLanguageItemViewModelInputs, SettingsLanguageItemViewModelOutputs {
     
     private let item: SettingsLanguageItem
     
+    var inputs: SettingsLanguageItemViewModelInputs { return self }
     var outputs: SettingsLanguageItemViewModelOutputs { return self }
     
     init(item: SettingsLanguageItem) {
         self.item = item
+        
+        self.selectChangeEvent = Event<Bool>()
+    }
+    
+    // MARK: Inputs
+    
+    func setSelected(select: Bool) {
+        selectChangeEvent.raise(select)
     }
     
     // MARK: Outputs
@@ -40,6 +57,12 @@ class SettingsLanguageItemViewModel: SettingsLanguageItemViewModelType, Settings
     
     var select: Bool {
         return item.select
+    }
+    
+    var selectChangeEvent: Event<Bool>
+    
+    var language: SettingService.CurrentLanguage {
+        return item.language
     }
     
 }

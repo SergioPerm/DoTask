@@ -122,10 +122,8 @@ extension TaskListViewController {
             }
         }
         
-        viewModel.outputs.calendarMonth.bind { [weak self] monthName in
-            if let monthName = monthName {
-                self?.navBarTitle?.showMonth(monthName: monthName)
-            }
+        viewModel.outputs.calendarMonth.bind { [weak self] date in
+            self?.navBarTitle?.showMonth(date: date)
         }
     }
     
@@ -143,16 +141,13 @@ extension TaskListViewController {
         tableView.delegate = self
         
         view.addSubview(tableView)
-        
-        //tableView.frame = CGRect(x: 25, y: view.frame.origin.y, width: view.frame.width - 50, height: view.frame.height)//view.frame
-        
+                
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = 600
         tableView.backgroundColor = .white
         tableView.showsVerticalScrollIndicator = false
         tableView.sectionFooterHeight = 0
 
-        
         taskListCellFactory = TaskListCellFactory()
   
         let addBtn = TaskAddButton {

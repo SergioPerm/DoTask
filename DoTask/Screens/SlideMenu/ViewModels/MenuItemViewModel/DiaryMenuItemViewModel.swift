@@ -14,10 +14,10 @@ class DiaryMenuItemViewModel: MenuItemViewModelType, MenuItemViewModelMainType {
     
     var rowHeight: Double = StyleGuide.SlideMenu.Sizes.bigRowHeight
 
-    var title: String
+    var title: LocalizableStringResource
     var imageName: String
     
-    init(title: String, imageName: String, menuType: MainMenuType) {
+    init(title: LocalizableStringResource, imageName: String, menuType: MainMenuType) {
         self.title = title
         self.imageName = imageName
         self.menuType = menuType

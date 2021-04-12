@@ -12,4 +12,5 @@ struct SettingsLanguageItem {
     let iconData: Data
     let title: LocalizableStringResource
     let select: Bool
+    let language: SettingService.CurrentLanguage
 }

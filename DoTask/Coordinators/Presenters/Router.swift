@@ -149,13 +149,13 @@ extension Router {
 extension Router: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
         // Ensure the view controller is popping
-        guard let poppedViewController = navigationController.transitionCoordinator?.viewController(forKey: .from),
-            !navigationController.viewControllers.contains(poppedViewController) else {
-            return
-        }
-        
-        if let presentableController = poppedViewController as? PresentableController {
-            pop(vc: presentableController)
-        }
+//        guard let poppedViewController = navigationController.transitionCoordinator?.viewController(forKey: .from),
+//            !navigationController.viewControllers.contains(poppedViewController) else {
+//            return
+//        }
+//
+//        if let presentableController = poppedViewController as? PresentableController {
+//            pop(vc: presentableController)
+//        }
     }
 }

@@ -22,7 +22,15 @@ class SettingsCoordinator: NSObject, Coordinator {
     func start() {
         let vc: SettingsViewType = AppDI.resolve()
         
-        vc.settingLanguageHandler = {
+        vc.settingLanguageHandler = { [weak self] in
+            self?.openLanguageSetting()
+        }
+        
+        vc.settingTasksHandler = {
+            
+        }
+        
+        vc.settingSpotlightHandler = {
             
         }
         
@@ -32,6 +40,7 @@ class SettingsCoordinator: NSObject, Coordinator {
     }
     
     func openLanguageSetting() {
-        
+        let vc: SettingsLanguageViewType = AppDI.resolve()
+        router?.push(vc: vc, completion: nil, transition: nil)
     }
 }

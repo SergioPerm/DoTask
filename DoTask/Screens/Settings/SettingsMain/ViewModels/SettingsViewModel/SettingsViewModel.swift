@@ -8,23 +8,49 @@
 
 import Foundation
 
+protocol SettingsViewModelInputs {
+    func setLanguageHandler(handler: (() -> Void)?)
+    func setTasksHandler(handler: (() -> Void)?)
+    func setSpotlightHandler(handler: (() -> Void)?)
+}
+
 protocol SettingsViewModelOutputs {
     var settingsItems: [SettingsItemViewModelType] { get }
 }
 
 protocol SettingsViewModelType {
+    var inputs: SettingsViewModelInputs { get }
     var outputs: SettingsViewModelOutputs { get }
 }
 
-class SettingsViewModel: SettingsViewModelType, SettingsViewModelOutputs {
+class SettingsViewModel: SettingsViewModelType, SettingsViewModelOutputs, SettingsViewModelInputs {
     
     private let settingsService: SettingService
     
+    private var languageHandler: (() -> Void)?
+    private var tasksHandler: (() -> Void)?
+    private var spotlightHandler: (() -> Void)?
+    
+    var inputs: SettingsViewModelInputs { return self }
     var outputs: SettingsViewModelOutputs { return self }
     
     init(settingsService: SettingService) {
         self.settingsService = settingsService
         loadData()
+    }
+    
+    // MARK: Inputs:
+    
+    func setLanguageHandler(handler: (() -> Void)?) {
+        languageHandler = handler
+    }
+    
+    func setTasksHandler(handler: (() -> Void)?) {
+        tasksHandler = handler
+    }
+    
+    func setSpotlightHandler(handler: (() -> Void)?) {
+        spotlightHandler = handler
     }
     
     // MARK: Outputs
@@ -49,8 +75,10 @@ extension SettingsViewModel {
         let spotlightSettings = SettingsMainItem(iconData: R.image.settings.spotlight()!.pngData()!, title: LocalizableStringResource(stringResource: R.string.localizable.settings_SPOTLIGHT), singleValueItem: true, valueTitle: spotlightValueLocalizeString)
         
         
-        settingsItems.append(SettingsItemViewModel(settingsItem: languageSettings, selectAction: {
-            // open language vc
+        settingsItems.append(SettingsItemViewModel(settingsItem: languageSettings, selectAction: { [weak self] in
+            if let action = self?.languageHandler {
+                action()
+            }
         }))
         
         settingsItems.append(SettingsItemViewModel(settingsItem: taskSettings, selectAction: {

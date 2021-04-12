@@ -41,9 +41,7 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
         let vc: DetailShortcutViewType = AppDI.resolve()//DetailShortcutAssembly.createInstance(shortcutUID: shortcutUID, router: router)
         vc.shortcutUID = shortcutUID
         
-        router?.push(vc: vc, completion: { [weak self] in
-            self?.parentCoordinator?.childDidFinish(self)
-        }, transition: CardModalTransitionController(viewController: vc, router: router))
+        router?.push(vc: vc, completion: nil, transition: CardModalTransitionController(viewController: vc, router: router))
     }
     
     func openTaskDiary(menu: SlideMenuViewType?) {
@@ -55,9 +53,7 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
 
         let transition = FlipTransitionController()
 
-        router?.push(vc: vc, completion: { [weak self] in
-            self?.parentCoordinator?.childDidFinish(self)
-        }, transition: transition)
+        router?.push(vc: vc, completion: nil, transition: transition)
     }
     
     func openTaskList(menu: SlideMenuViewType?, shortcutFilter: String? = nil) {
@@ -79,9 +75,7 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
             self.speechTask(recognizer: recognizer, shortcutUID: shortcutUID, taskDate: taskDate)
         }
 
-        router?.push(vc: vc, completion: { [weak self] in
-            self?.parentCoordinator?.childDidFinish(self)
-        }, transition: nil)
+        router?.push(vc: vc, completion: nil, transition: nil)
         
         if let menuParent = vc as? MenuParentControllerType {
             menu?.parentController = menuParent
@@ -109,9 +103,7 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
 //
 //        let transition = SpeechRecorderTransitionController()
 //
-//        router?.push(vc: vc, completion: {[weak self] in
-//            self?.parentCoordinator?.childDidFinish(self)
-//        }, transition: transition)
+//        router?.push(vc: vc, completion: nil, transition: transition)
     }
     
 }

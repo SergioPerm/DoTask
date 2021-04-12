@@ -23,14 +23,14 @@ class SettingService {
             }
         }
         
-//        func getImageData() -> Data {
-//            switch self {
-//            case .en:
-//                
-//            case .ru:
-//                
-//            }
-//        }
+        func getImageData() -> Data {
+            switch self {
+            case .en:
+                return R.image.settings.en()!.pngData()!
+            case .ru:
+                return R.image.settings.ru()!.pngData()!
+            }
+        }
         
         func getAllLanguages() -> [CurrentLanguage] {
             return CurrentLanguage.allCases
@@ -48,7 +48,7 @@ class SettingService {
         let showDoneTasks: Bool
     }
     
-    struct Settings: Codable {
+    struct Settings: Codable, PropertyIterator {
     
         var language: CurrentLanguage
         var task: TaskSetting
@@ -56,8 +56,8 @@ class SettingService {
                 
         init() {
             //DEFAULT SETTINGS
-            if let currentLanguage = CurrentLanguage(rawValue: Locale.current.languageCode!) {
-                self.language = currentLanguage
+            if let regionCode = Locale.current.regionCode {
+                self.language = CurrentLanguage(rawValue: regionCode.lowercased())!
             } else {
                 self.language = .en
             }
@@ -88,8 +88,7 @@ class SettingService {
         if let saveSettings = defaults.object(forKey: "appSettings") as? Data {
             let decoder = JSONDecoder()
             if let loadedSettings = try? decoder.decode(Settings.self, from: saveSettings) {
-                print(loadedSettings)
-                print("test ok")
+                self.currentSettings = loadedSettings
             }
         }
     }

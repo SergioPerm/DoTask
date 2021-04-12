@@ -10,7 +10,7 @@ import UIKit
 
 protocol TaskListNavBarTitle {
     func showMainTitle()
-    func showMonth(monthName: String)
+    func showMonth(date: Date)
     func setShortcut(shortcut: ShortcutData?)
     func setTaskListMode(taskListMode: TaskListMode)
 }
@@ -35,14 +35,14 @@ class TaskListNavBarTitleView: UIView {
     }
     private var taskListMode: TaskListMode
         
-    private let titleLabel: UILabel = {
-        let label = UILabel()
+    private let titleLabel: LocalizableLabel = {
+        let label = LocalizableLabel()
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
-    
+        
     private let parentView: UIView = {
         let view = UIView()
         view.backgroundColor = .clear
@@ -132,7 +132,6 @@ extension TaskListNavBarTitleView {
     }
         
     private func showStandartTitle(animated: Bool = false) {
-        
         let font = FontFactory.AvenirNextBoldItalic.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 27))
         
         let navTitle = NSMutableAttributedString(string: "Do", attributes:[
@@ -148,21 +147,17 @@ extension TaskListNavBarTitleView {
         } else {
             titleLabel.attributedText = navTitle
         }
-        
     }
         
-    private func showMonthTitle(monthName: String, animated: Bool = false) {
-        
-        let navTitle = NSMutableAttributedString(string: monthName, attributes:[
-                                                    NSAttributedString.Key.foregroundColor: R.color.mainNavBar.monthText()!,
-                                                                NSAttributedString.Key.font: UIFont(name: "AvenirNext-Bold", size: 21) ?? UIFont.systemFont(ofSize: 21)])
-        
+    private func showMonthTitle(date: Date, animated: Bool = false) {
+        titleLabel.font = FontFactory.AvenirNextBold.of(size: 21)
+        titleLabel.textColor = R.color.mainNavBar.monthText()!
+                
         if animated {
-            animateTitle(newTitle: navTitle)
+            animateTitle(date: date)
         } else {
-            titleLabel.attributedText = navTitle
+            titleLabel.setDateWithFormat(date: date, format: "MMMM")
         }
-        
     }
     
     private func animateTitle(newTitle: NSAttributedString) {
@@ -173,6 +168,23 @@ extension TaskListNavBarTitleView {
         } completion: { (finished) in
             self.parentView.frame.origin.y = -20
             self.titleLabel.attributedText = newTitle
+            
+            UIView.animate(withDuration: 0.075, delay: 0.0, options: .beginFromCurrentState) {
+                self.parentView.frame.origin.y = 0
+                self.parentView.layer.opacity = 1.0
+            } completion: { (finished) in
+            }
+        }
+    }
+    
+    private func animateTitle(date: Date) {
+        
+        UIView.animate(withDuration: 0.075) {
+            self.parentView.frame.origin.y = 20
+            self.parentView.layer.opacity = 0.0
+        } completion: { (finished) in
+            self.parentView.frame.origin.y = -20
+            self.titleLabel.setDateWithFormat(date: date, format: "MMMM")
             
             UIView.animate(withDuration: 0.075, delay: 0.0, options: .beginFromCurrentState) {
                 self.parentView.frame.origin.y = 0
@@ -214,8 +226,8 @@ extension TaskListNavBarTitleView: TaskListNavBarTitle {
         self.shortcut = shortcut
     }
     
-    func showMonth(monthName: String) {
-        showMonthTitle(monthName: monthName, animated: true)
+    func showMonth(date: Date) {
+        showMonthTitle(date: date, animated: true)
     }
     
     func showMainTitle() {

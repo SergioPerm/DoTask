@@ -13,7 +13,7 @@ protocol CreateShortcutMenuTableViewCellDelegate {
 }
 
 class CreateShortcutMenuTableViewCell: UITableViewCell, TableViewCellType {
-
+    
     var viewModel: CreateShortcutMenuItemViewModel? {
         didSet {
             
@@ -23,9 +23,9 @@ class CreateShortcutMenuTableViewCell: UITableViewCell, TableViewCellType {
     var cellDelegate: CreateShortcutMenuTableViewCellDelegate?
     
     // MARK: View's properties
-    let title1: UILabel = {
-       let label = UILabel()
-        label.text = "Create shortcut"
+    let title1: LocalizableLabel = {
+        let label = LocalizableLabel()
+        label.localizableString = LocalizableStringResource(stringResource: R.string.localizable.create_SHORTCUT)
         label.font = FontFactory.HelveticaNeueBold.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 19))
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
@@ -34,7 +34,7 @@ class CreateShortcutMenuTableViewCell: UITableViewCell, TableViewCellType {
     }()
     
     let title2: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.text = "+"
         label.font = UIFont(name: "HelveticaNeue-Bold", size: 22) ?? UIFont.systemFont(ofSize: 22, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -57,10 +57,10 @@ class CreateShortcutMenuTableViewCell: UITableViewCell, TableViewCellType {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
     
@@ -70,24 +70,24 @@ class CreateShortcutMenuTableViewCell: UITableViewCell, TableViewCellType {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setup()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-
+    
+    
 }
 
 extension CreateShortcutMenuTableViewCell {
     private func setup() {
         selectionStyle = .none
-
+        
         let globalWidth = UIView.globalSafeAreaFrame.width
         title1.font = title1.font.withSize(globalWidth * StyleGuide.SlideMenu.Sizes.RatioToScreenWidth.ratioToScreenWidthFontSizeSmallTitle)
-                
+        
         contentView.addSubview(title1)
         contentView.addSubview(createShortcutBtn)
-
+        
         let widthConstraint = title1.widthAnchor.constraint(equalToConstant: 150)
         let constraints = [
             title1.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: StyleGuide.SlideMenu.Sizes.leftMargin),
@@ -100,11 +100,11 @@ extension CreateShortcutMenuTableViewCell {
             createShortcutBtn.heightAnchor.constraint(equalToConstant: 15),
             createShortcutBtn.widthAnchor.constraint(equalToConstant: 30)
         ]
-
+        
         createShortcutBtn.imageEdgeInsets = StyleGuide.SlideMenu.CreateShortcut.Sizes.createBtnImgInsets
         
         contentView.backgroundColor = .clear
-
+        
         widthConstraint.priority = UILayoutPriority(rawValue: 250)
         title1.setContentHuggingPriority(.defaultLow, for: .horizontal)
         

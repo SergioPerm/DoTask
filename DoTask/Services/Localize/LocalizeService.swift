@@ -14,9 +14,9 @@ struct LocalizableStringResource {
     let tableName: String
     let bundle: Bundle
     let locales: [String]
-    
+
     let comment: String?
-    
+
     public init(stringResource: Rswift.StringResource) {
         self.key = stringResource.key
         self.tableName = stringResource.tableName
@@ -33,15 +33,23 @@ protocol LocalizableEntity {
 protocol LocalizeServiceType: class {
     func subscribe(subscriber: UIView, whenChangeLocale: @escaping (_ locale: String) -> Void)
     func unsubscribe(subscriber: UIView)
-    func localizeString(forKey: String) -> String
+    func localizeString(forKey: String, locale: String) -> String
+    
+    var currentLocal: SettingService.CurrentLanguage? { get }
 }
 
 protocol LocalizeServiceSettingsType {
-    func changeLocale()
+    func changeLocale(localeCode: String)
 }
 
 class LocalizeService: LocalizeServiceType {
     private var subscribers: [UIView: (_ locale: String) -> Void] = [:]
+    var currentLocal: SettingService.CurrentLanguage?
+        
+    init() {
+        let settings: SettingService = AppDI.resolve()
+        self.currentLocal = settings.getSettings().language
+    }
     
     func subscribe(subscriber: UIView, whenChangeLocale: @escaping (_ locale: String) -> Void) {
         subscribers[subscriber] = whenChangeLocale
@@ -51,18 +59,28 @@ class LocalizeService: LocalizeServiceType {
         subscribers[subscriber] = nil
     }
     
-    func localizeString(forKey: String) -> String {
-        //default Locale.current.languageCode
-        let bundlePath = Bundle.main.path(forResource: "ru", ofType: "lproj")
+    func localizeString(forKey: String, locale: String) -> String {
+        if !locale.isEmpty {
+            if let newLocal = SettingService.CurrentLanguage(rawValue: locale) {
+                currentLocal = newLocal
+            }
+        }
+        
+        guard let currentLocal = currentLocal else { return ""}
+        
+        let bundlePath = Bundle.main.path(forResource: currentLocal.rawValue, ofType: "lproj")
         guard let path = bundlePath else { return "" }
         guard let localBundle = Bundle(path: path) else { return "" }
         
         return localBundle.localizedString(forKey: forKey, value: "", table: nil)
     }
+
 }
 
 extension LocalizeService: LocalizeServiceSettingsType {
-    func changeLocale() {
-        
+    func changeLocale(localeCode: String) {
+        subscribers.forEach({
+            $0.value(localeCode)
+        })
     }
 }

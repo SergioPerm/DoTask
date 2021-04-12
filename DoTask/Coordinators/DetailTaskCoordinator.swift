@@ -56,13 +56,11 @@ class DetailTaskCoordinator: NSObject, Coordinator {
 
         let transition = CardModalTransitionController(viewController: vc, interactionView: vc.tableView, router: router)
 
-        router?.push(vc: vc, completion: { [weak self] in
-            self?.parentCoordinator?.childDidFinish(self)
-        }, transition: transition)
+        router?.push(vc: vc, completion: nil, transition: transition)
     }
     
     func openCalendar(date: Date?, calendarOutputs: CalendarPickerViewOutputs) {
-        let vc: CalendarPickerViewType = AppDI.resolve()//CalendarPickerAssembly.createInstance(date: date, presenter: router)
+        let vc: CalendarPickerViewType = AppDI.resolve()
         
         vc.setSelectDay(date: date)
         
@@ -78,18 +76,11 @@ class DetailTaskCoordinator: NSObject, Coordinator {
         }
                 
         let transition = ZoomModalTransitionController()
-        
-        router?.push(vc: vc, completion: { [weak self] in
-            self?.parentCoordinator?.childDidFinish(self)
-        }, transition: transition)
-        
-
-        
-        
+        router?.push(vc: vc, completion: nil, transition: transition)
     }
     
     func openReminder(date: Date?, reminderOutputs: TimePickerViewOutputs) {
-        let vc: TimePickerViewType = AppDI.resolve()//TimePickerAssembly.createInstance(date: date, presenter: router)
+        let vc: TimePickerViewType = AppDI.resolve()
         
         vc.setBaseTime(time: date)
         
@@ -104,9 +95,7 @@ class DetailTaskCoordinator: NSObject, Coordinator {
         
         let transition = ZoomModalTransitionController()
         
-        router?.push(vc: vc, completion: { [weak self] in
-            self?.parentCoordinator?.childDidFinish(self)
-        }, transition: transition)
+        router?.push(vc: vc, completion: nil, transition: transition)
     }
     
 }

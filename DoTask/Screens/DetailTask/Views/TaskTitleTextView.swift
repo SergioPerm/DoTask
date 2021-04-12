@@ -12,7 +12,7 @@ class TaskTitleTextView: UITextView {
     
     weak var parentScrollView: DetailTaskScrollViewType?
 
-    var placeholderText: String = ""
+    var placeholderText: LocalizableStringResource?
     
     var strikeTroughText: Bool = false {
         didSet {
@@ -20,7 +20,7 @@ class TaskTitleTextView: UITextView {
         }
     }
     
-    private let placeholderLabel: UILabel = UILabel()
+    private let placeholderLabel: LocalizableLabel = LocalizableLabel()
     private var previousCaretRect: CGRect = .zero
     private var previousTextViewFrame: CGRect = .zero
     
@@ -104,7 +104,7 @@ extension TaskTitleTextView {
         isScrollEnabled = false
         bounces = false
         
-        placeholderLabel.text = placeholderText
+        placeholderLabel.localizableString = placeholderText
         placeholderLabel.font = font
         placeholderLabel.sizeToFit()
         addSubview(placeholderLabel)

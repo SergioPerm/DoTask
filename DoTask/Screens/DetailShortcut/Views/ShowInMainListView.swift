@@ -16,11 +16,14 @@ class ShowInMainListView: UIView {
         }
     }
     
-    private let label: UILabel = {
-        let label = UILabel()
+    private let label: LocalizableLabel = {
+        let label = LocalizableLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Show in main list"
-        label.font = FontFactory.Helvetica.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 20))
+        label.localizableString = LocalizableStringResource(stringResource: R.string.localizable.show_IN_MAINLIST)
+        label.font = FontFactory.AvenirNextMedium.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 21))
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.5
+        label.numberOfLines = 0
         
         return label
     }()
@@ -63,8 +66,9 @@ extension ShowInMainListView {
         addSubview(label)
         addSubview(toggleSwitch)
         
-        let labelTrailing = label.trailingAnchor.constraint(equalTo: toggleSwitch.leadingAnchor)
-        labelTrailing.priority = UILayoutPriority(250)
+        let labelTrailing = label.trailingAnchor.constraint(equalTo: toggleSwitch.leadingAnchor, constant: -10)
+        
+        label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         
         let constraints = [
             label.leadingAnchor.constraint(equalTo: leadingAnchor),

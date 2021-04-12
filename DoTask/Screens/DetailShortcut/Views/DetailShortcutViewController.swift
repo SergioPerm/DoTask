@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class DetailShortcutViewController: UIViewController, DetailShortcutViewType {
     
@@ -35,9 +36,18 @@ class DetailShortcutViewController: UIViewController, DetailShortcutViewType {
     private let nameTextField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.font = FontFactory.Helvetica.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 20))
+        textField.font = FontFactory.AvenirNextMedium.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 23))
         
         return textField
+    }()
+    
+    private let placeholderLabel: LocalizableLabel = {
+        let label = LocalizableLabel()
+        label.font = FontFactory.AvenirNextMedium.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 23))
+        label.textColor = R.color.shortcutDetail.placeholder()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
     }()
     
     private let colorDotView: ColorDotView = ColorDotView()
@@ -46,8 +56,7 @@ class DetailShortcutViewController: UIViewController, DetailShortcutViewType {
     private let deleteShortcutBtn: DeleteShortcutButton = DeleteShortcutButton()
     private let colorSelectionView: ColorSelectionView = ColorSelectionView()
     
-    private var colorSelectionBottomConstraint: NSLayoutConstraint = NSLayoutConstraint()
-    
+    private var colorSelectionBottomConstraint: Constraint?
     private var viewFrame: CGRect = .zero
     
     // MARK: Initializers
@@ -104,10 +113,12 @@ extension DetailShortcutViewController {
         
         view.backgroundColor = .white
                 
+        nameTextField.addSubview(placeholderLabel)
+        
         labelView.addSubview(colorDotView)
         labelView.addSubview(nameTextField)
         
-        nameTextField.placeholder = "New shortcut"
+        placeholderLabel.localizableString = LocalizableStringResource(stringResource: R.string.localizable.new_TITLE_SHORTCUT)
         
         view.addSubview(labelView)
         view.addSubview(showInMainListView)
@@ -121,7 +132,6 @@ extension DetailShortcutViewController {
             self.viewModel.inputs.toggleshowInMainListSetting()
         }
         
-        nameTextField.text = viewModel.outputs.title
         nameTextField.addTarget(self, action: #selector(textFieldEditAction(sender:)), for: .editingChanged)
         
         showInMainListView.showInMainList = viewModel.outputs.showInMainListSetting
@@ -143,56 +153,64 @@ extension DetailShortcutViewController {
             
     private func setupConstraints() {
                 
-        let rowHeight: CGFloat = StyleGuide.DetailShortcut.Sizes.rowHeight//StyleGuide.DetailShortcut.Sizes.RatioToScreenWidth.rowHeight * globalView.frame.width
+        let rowHeight: CGFloat = StyleGuide.DetailShortcut.Sizes.rowHeight
         
-        var constraints = [
-            colorDotView.topAnchor.constraint(equalTo: labelView.topAnchor),
-            colorDotView.bottomAnchor.constraint(equalTo: labelView.bottomAnchor),
-            colorDotView.widthAnchor.constraint(equalToConstant: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 7)),
-            colorDotView.leadingAnchor.constraint(equalTo: labelView.leadingAnchor),
-            colorDotView.trailingAnchor.constraint(equalTo: nameTextField.leadingAnchor, constant: -20),
-            nameTextField.heightAnchor.constraint(equalToConstant: rowHeight),
-            nameTextField.centerYAnchor.constraint(equalTo: labelView.centerYAnchor),
-            nameTextField.trailingAnchor.constraint(equalTo: labelView.trailingAnchor)
-        ]
+        colorDotView.snp.makeConstraints({ make in
+            make.top.bottom.leading.equalToSuperview()
+            make.width.equalTo(StyleGuide.getSizeRelativeToScreenWidth(baseSize: 7))
+            make.right.equalTo(nameTextField.snp.left).offset(-20)
+        })
         
-        constraints.append(contentsOf: [
-            showInMainListView.heightAnchor.constraint(equalToConstant: rowHeight),
-            showInMainListView.topAnchor.constraint(equalTo: labelView.bottomAnchor, constant: 5),
-            showInMainListView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
-            showInMainListView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25)
-        ])
+        nameTextField.snp.makeConstraints({ make in
+            make.height.equalTo(rowHeight)
+            make.centerY.right.equalToSuperview()
+        })
         
-        constraints.append(contentsOf: [
-            labelView.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
-            labelView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
-            labelView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
-            labelView.heightAnchor.constraint(equalToConstant: rowHeight)
-        ])
+        placeholderLabel.snp.makeConstraints({ make in
+            make.centerY.equalTo(nameTextField.snp.centerY)
+            make.height.equalToSuperview().multipliedBy(0.8)
+            make.left.right.equalToSuperview()
+        })
         
-        colorSelectionBottomConstraint = colorSelectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -view.globalSafeAreaInsets.bottom - 10)
+        showInMainListView.snp.makeConstraints({ make in
+            make.height.equalTo(rowHeight)
+            make.top.equalTo(labelView.snp.bottom).offset(5)
+            make.left.equalToSuperview().offset(25)
+            make.right.equalToSuperview().offset(-25)
+        })
         
-        constraints.append(contentsOf: [
-            colorSelectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            colorSelectionView.heightAnchor.constraint(equalToConstant: rowHeight),
-            colorSelectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            colorSelectionBottomConstraint
-        ])
+        labelView.snp.makeConstraints({ make in
+            make.height.equalTo(rowHeight)
+            make.top.equalToSuperview().offset(30)
+            make.left.equalToSuperview().offset(25)
+            make.right.equalToSuperview().offset(-25)
+        })
         
+        colorSelectionView.snp.makeConstraints({ make in
+            self.colorSelectionBottomConstraint = make.bottom.equalTo(view.snp.bottom)
+                .offset(-view.globalSafeAreaInsets.bottom - 10)
+                .constraint
+            
+            make.height.equalTo(rowHeight)
+            make.left.right.equalToSuperview()
+        })
+                
         let btnWidthRatioToScreenWidth = StyleGuide.DetailShortcut.Sizes.RatioToScreenWidth.btnWidth
         
-        constraints.append(contentsOf: [
-            saveShortcutBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            saveShortcutBtn.bottomAnchor.constraint(equalTo: colorSelectionView.topAnchor, constant: -10),
-            saveShortcutBtn.widthAnchor.constraint(equalToConstant: UIView.globalSafeAreaFrame.width * btnWidthRatioToScreenWidth),
-            saveShortcutBtn.heightAnchor.constraint(equalToConstant: 30),
-            deleteShortcutBtn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            deleteShortcutBtn.bottomAnchor.constraint(equalTo: colorSelectionView.topAnchor, constant: -10),
-            deleteShortcutBtn.widthAnchor.constraint(equalToConstant: UIView.globalSafeAreaFrame.width * btnWidthRatioToScreenWidth),
-            deleteShortcutBtn.heightAnchor.constraint(equalToConstant: 30)
-        ])
+        saveShortcutBtn.snp.makeConstraints({ make in
+            make.left.equalToSuperview().offset(10)
+            make.bottom.equalTo(colorSelectionView.snp.top).offset(-10)
+            make.width.equalTo(UIView.globalSafeAreaFrame.width * btnWidthRatioToScreenWidth)
+            make.height.equalTo(30)
+        })
         
-        NSLayoutConstraint.activate(constraints)
+        deleteShortcutBtn.snp.makeConstraints({ make in
+            make.right.equalToSuperview().offset(-10)
+            make.bottom.equalTo(colorSelectionView.snp.top).offset(-10)
+            make.width.equalTo(UIView.globalSafeAreaFrame.width * btnWidthRatioToScreenWidth)
+            make.height.equalTo(30)
+        })
+        
     }
 }
 
@@ -200,6 +218,9 @@ extension DetailShortcutViewController {
 
 extension DetailShortcutViewController {
     private func bindViewModel() {
+        nameTextField.text = viewModel.outputs.title
+        placeholderLabel.isHidden = !viewModel.outputs.title.isEmpty
+        
         colorSelectionView.presetColors = viewModel.outputs.getAllColors()
         
         viewModel.outputs.selectedColor.bind { [weak self] colorHex in
@@ -257,14 +278,14 @@ extension DetailShortcutViewController {
         let animationDuration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
         let keyboardEndFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         let convertedKeyboardEndFrame = globalView.convert(keyboardEndFrame, from: globalView.window)
-        //let convertedKeyboardEndFrame = view.convert(keyboardEndFrame, from: view.window)
+
         let rawAnimationCurve = (notification.userInfo![UIResponder.keyboardAnimationCurveUserInfoKey] as! NSNumber).uint32Value << 16
         let animationCurve = UIView.AnimationOptions.init(rawValue: UInt(rawAnimationCurve))
                 
         if keyboardShow {
-            colorSelectionBottomConstraint.constant = (convertedKeyboardEndFrame.minY - viewFrame.minY) - view.bounds.maxY
+            colorSelectionBottomConstraint?.update(offset: (convertedKeyboardEndFrame.minY - viewFrame.minY) - view.bounds.maxY)
         } else {
-            colorSelectionBottomConstraint.constant = -view.globalSafeAreaInsets.bottom
+            colorSelectionBottomConstraint?.update(offset: -view.globalSafeAreaInsets.bottom)
         }
                 
         UIView.animate(withDuration: animationDuration,
@@ -281,6 +302,7 @@ extension DetailShortcutViewController {
 
 extension DetailShortcutViewController: UITextFieldDelegate {
     @objc private func textFieldEditAction(sender: Any?) {
+        placeholderLabel.isHidden = !nameTextField.text!.isEmpty
         viewModel.inputs.setTitle(title: nameTextField.text!)
     }
 }

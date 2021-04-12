@@ -79,14 +79,13 @@ extension TaskListTableHeaderView {
     private func bindViewModel() {
                 
         counter.isHidden = true
-        
-//        if let title = viewModel?.outputs.title {
-//            titleLabel.text = "  \(title)"
-//            titleLabel.sizeToFit()
-//        }
-        
+                
         if let localizeTitle = viewModel?.outputs.localizedTitle {
             titleLabel.localizableString = localizeTitle
+        }
+        
+        if let date = viewModel?.outputs.date {
+            titleLabel.setDateWithFormat(date: date, format: "dd MMMM")
         }
         
         if let textColor = viewModel?.outputs.titleHexColor {

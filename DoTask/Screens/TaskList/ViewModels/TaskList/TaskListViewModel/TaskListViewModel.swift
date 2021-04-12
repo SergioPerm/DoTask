@@ -235,6 +235,7 @@ extension TaskListViewModel {
                  
                 var taskTimePeriod = TaskTimePeriod()
                 taskTimePeriod.name = dateFormatter.string(from: dayFilter)
+                taskTimePeriod.date = dayFilter
                 
                 let periodItem = TaskListPeriodItemViewModel(taskTimePeriod: taskTimePeriod, taskListMode: taskListMode.value)
                 

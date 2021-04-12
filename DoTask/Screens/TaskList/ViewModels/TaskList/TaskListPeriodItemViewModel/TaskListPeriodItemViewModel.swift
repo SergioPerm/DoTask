@@ -90,7 +90,11 @@ class TaskListPeriodItemViewModel: TaskListPeriodItemViewModelType, TaskListPeri
     }
     
     var localizedTitle: LocalizableStringResource? {
-        return taskTimePeriod.localizedTitle
+        return taskListMode == .calendar ? nil : taskTimePeriod.localizedTitle
+    }
+    
+    var date: Date? {
+        return taskListMode == .calendar ? taskTimePeriod.date : nil
     }
     
     var titleHexColor: String {

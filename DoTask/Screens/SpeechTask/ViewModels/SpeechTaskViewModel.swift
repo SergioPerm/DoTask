@@ -14,20 +14,21 @@ class SpeechTaskViewModel: NSObject, SpeechTaskViewModelType, SpeechTaskViewMode
     private let dataSource: TaskListDataSource
     
     // MARK: Audio
-    private var recordQueue: DispatchQueue?
-    
+
     private var audioEngine: AVAudioEngine?
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
     private var inputNode: AVAudioInputNode?
     
     private var speechSentenses: [String] = []
+    private var localizeService: LocalizeServiceType
     
     var inputs: SpeechTaskViewModelInputs { return self }
     var outputs: SpeechTaskViewModelOutputs { return self }
     
-    init(dataSource: TaskListDataSource) {
+    init(dataSource: TaskListDataSource, localizeService: LocalizeServiceType) {
         self.dataSource = dataSource
+        self.localizeService = localizeService
         self.speechTextChangeEvent = Event<String>()
         self.volumeLevel = Event<Float>()
     }
@@ -35,7 +36,6 @@ class SpeechTaskViewModel: NSObject, SpeechTaskViewModelType, SpeechTaskViewMode
     // MARK: Inputs
     
     func startRecording() {
-        
         SFSpeechRecognizer.requestAuthorization { requestStatus in
             
             switch requestStatus {
@@ -52,21 +52,18 @@ class SpeechTaskViewModel: NSObject, SpeechTaskViewModelType, SpeechTaskViewMode
             }
             
         }
-        
-        
-        recordQueue = DispatchQueue(label: "audio.cocurent.queue", qos: .userInteractive, attributes: .concurrent)
-        
-        recordQueue?.async { [unowned self] in
-            self.record()
-        }
+    
+        record()
     }
     
     func saveTask(taskTitle: String) {
-        var newTask = Task()
-        newTask.title = taskTitle
-        newTask.taskDate = Date()
-
-        dataSource.addTask(from: newTask)
+        if !taskTitle.trimmingCharacters(in: .whitespaces).isEmpty {
+            var newTask = Task()
+            newTask.title = taskTitle
+            newTask.taskDate = Date()
+            
+            dataSource.addTask(from: newTask)
+        }
         
         stopAudio()
     }
@@ -85,15 +82,13 @@ class SpeechTaskViewModel: NSObject, SpeechTaskViewModelType, SpeechTaskViewMode
 extension SpeechTaskViewModel {
     
     private func stopAudio() {
-        recordQueue?.sync { [unowned self] in
-            self.recognitionRequest?.endAudio()
-            self.recognitionTask?.finish()
-            self.recognitionRequest = nil
-            self.recognitionTask = nil
-            self.audioEngine?.inputNode.removeTap(onBus: 0)
-            self.audioEngine?.stop()
-            self.audioEngine = nil
-        }
+        recognitionRequest?.endAudio()
+        recognitionTask?.finish()
+        recognitionRequest = nil
+        recognitionTask = nil
+        audioEngine?.inputNode.removeTap(onBus: 0)
+        audioEngine?.stop()
+        audioEngine = nil
     }
     
     private func getFullSpeechText() -> String {
@@ -143,12 +138,12 @@ extension SpeechTaskViewModel {
         if audioEngine == nil {
             audioEngine = AVAudioEngine()
         }
-        
+                
         inputNode = audioEngine?.inputNode
         
         recognitionTask?.cancel()
         
-        let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "ru_RU"))
+        let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: localizeService.currentLocal?.rawValue ?? "en"))
         
         recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
         
@@ -214,23 +209,20 @@ extension SpeechTaskViewModel {
                 confidence = result.bestTranscription.segments[0].confidence
             }
             
+            print(confidence)
             if !strongSelf.speechSentenses.isEmpty {
                 var currentSentese = strongSelf.speechSentenses.removeLast()
                 currentSentese = transcribedString
                 strongSelf.speechSentenses.append(currentSentese)
-
-                //0.1 is min confidence for recognize words
-                if confidence > 0.1 {
-                    strongSelf.speechSentenses.append("")
-                }
             } else {
                 strongSelf.speechSentenses.append(transcribedString)
             }
 
             let speechText = strongSelf.getFullSpeechText()
             
+            print(speechText)
             DispatchQueue.main.async { [weak self] in
-                self?.speechTextChangeEvent.raise(speechText)
+                self?.speechTextChangeEvent.raise(speechText.trimmingCharacters(in: .whitespaces))
             }
             
             if error != nil {
@@ -245,8 +237,6 @@ extension SpeechTaskViewModel {
 
 extension SpeechTaskViewModel: SFSpeechRecognizerDelegate {
     func speechRecognizer(_ speechRecognizer: SFSpeechRecognizer, availabilityDidChange available: Bool) {
-        if available {
-            speechTextChangeEvent.raise("Speak..")
-        }
+        print("speech \(available)")
     }
 }

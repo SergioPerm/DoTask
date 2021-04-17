@@ -68,7 +68,7 @@ extension TaskListTableHeaderView {
             titleWidthConstraint,
             titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
             counter.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: 15),
-            counter.widthAnchor.constraint(equalToConstant: 50),
+            counter.widthAnchor.constraint(equalToConstant: StyleGuide.TaskList.Sizes.counterWidth),
             counter.heightAnchor.constraint(equalToConstant: StyleGuide.TaskList.Sizes.counterHeight),
             counter.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor)
         ]

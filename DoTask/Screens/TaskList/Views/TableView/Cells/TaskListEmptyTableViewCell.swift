@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class TaskListEmptyTableViewCell: UITableViewCell, TableViewCellType {
 
@@ -24,16 +25,17 @@ class TaskListEmptyTableViewCell: UITableViewCell, TableViewCellType {
         return view
     }()
     
-    private let infoLabel: UILabel = {
-        let label = UILabel()
+    private let infoLabel: LocalizableLabel = {
+        let label = LocalizableLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.textColor = .gray
+        label.numberOfLines = 0
         
         return label
     }()
     
-    private var infoViewHeightConstrains: NSLayoutConstraint = NSLayoutConstraint()
+    private var infoViewHeightConstraint: Constraint?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -51,53 +53,39 @@ extension TaskListEmptyTableViewCell {
     private func bindViewModel() {
         guard let viewModel = viewModel else { return }
         
-        if viewModel.info == "" {
-            infoLabel.removeFromSuperview()
-        } else {
-            if infoLabel.superview == nil {
-                infoView.addSubview(infoLabel)
-                setupLabelConstraints()
-            }
-            infoLabel.text = viewModel.info
+        infoLabel.removeFromSuperview()
+
+        if viewModel.info != nil {
+            infoLabel.localizableString = viewModel.info
+            infoView.addSubview(infoLabel)
+            setupLabelConstraints()
         }
                 
         let rowHeight = CGFloat(viewModel.rowHeight)
 
-        infoViewHeightConstrains.constant = rowHeight
+        infoViewHeightConstraint?.update(offset: rowHeight)
+        
         layoutIfNeeded()
     }
     
     private func setup() {
-                
         selectionStyle = .none
-        
         contentView.addSubview(infoView)
-        infoView.addSubview(infoLabel)
-        
-        infoLabel.text = ""
-        
-        infoViewHeightConstrains = infoView.heightAnchor.constraint(equalToConstant: 1)
-        infoViewHeightConstrains.priority = UILayoutPriority(250)
-        
-        let constraints: [NSLayoutConstraint] = [
-            infoView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            infoView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            infoView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            infoView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            infoViewHeightConstrains
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
-        
-        setupLabelConstraints()
+                        
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
+        infoView.snp.makeConstraints({ make in
+            self.infoViewHeightConstraint = make.height.equalTo(1.0).priority(.low).constraint
+            make.left.top.right.bottom.equalToSuperview()
+        })
     }
     
     private func setupLabelConstraints() {
-        let constraints: [NSLayoutConstraint] = [
-            infoLabel.centerXAnchor.constraint(equalTo: infoView.centerXAnchor),
-            infoLabel.centerYAnchor.constraint(equalTo: infoView.centerYAnchor)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
+        infoLabel.snp.makeConstraints({ make in
+            make.centerY.centerX.equalToSuperview()
+            make.width.equalTo(UIView.globalSafeAreaFrame.width * 0.7)
+        })
     }
 }

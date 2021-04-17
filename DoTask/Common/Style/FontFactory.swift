@@ -11,6 +11,7 @@ import UIKit
 enum FontFactory: String {
     case AvenirNextMedium = "AvenirNext-Medium"
     case AvenirNext = "AvenirNext"
+    case AvenirNextRegular = "AvenirNext-Regular"
     case AvenirNextBold = "AvenirNext-Bold"
     case AvenirNextBoldItalic = "AvenirNext-BoldItalic"
     

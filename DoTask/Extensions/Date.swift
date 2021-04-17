@@ -85,7 +85,7 @@ extension Date {
     var endOfWeek: Date? {
         let gregorian = Calendar(identifier: .gregorian)
         guard let sunday = gregorian.date(from: gregorian.dateComponents([.yearForWeekOfYear, .weekOfYear], from: self)) else { return nil }
-        return gregorian.date(byAdding: .day, value: 7, to: sunday)
+        return gregorian.date(byAdding: .day, value: 7, to: sunday)?.endOfDay()
     }
     
     func dailyNameForTask() -> DailyName {
@@ -98,12 +98,12 @@ extension Date {
         
         let isCurrentDay = calendar.isDateInToday(self)
         let isTomorrowDay = calendar.isDateInTomorrow(self)
-        
+                
         if isCurrentDay {
             return DailyName.today
         } else if isTomorrowDay {
             return DailyName.tommorow
-        } else if calendar.isDate(self, equalTo: Date(), toGranularity: .weekOfMonth) {
+        } else if self < Date().endOfWeek! {
             return DailyName.currentWeek
         }
         

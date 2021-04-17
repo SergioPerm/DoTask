@@ -154,6 +154,7 @@ extension DetailShortcutViewController {
     private func setupConstraints() {
                 
         let rowHeight: CGFloat = StyleGuide.DetailShortcut.Sizes.rowHeight
+        let colorBarHeight: CGFloat = StyleGuide.DetailShortcut.Sizes.colorSelectionBarHeight
         
         colorDotView.snp.makeConstraints({ make in
             make.top.bottom.leading.equalToSuperview()
@@ -191,7 +192,7 @@ extension DetailShortcutViewController {
                 .offset(-view.globalSafeAreaInsets.bottom - 10)
                 .constraint
             
-            make.height.equalTo(rowHeight)
+            make.height.equalTo(colorBarHeight)
             make.left.right.equalToSuperview()
         })
                 

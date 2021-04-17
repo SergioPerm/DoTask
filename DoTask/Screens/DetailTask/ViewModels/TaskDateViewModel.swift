@@ -11,13 +11,7 @@ import Foundation
 class TaskDateViewModel: DetailTaskTableItemViewModelType, TaskDateViewModelType, TaskDateViewModelInputs, TaskDateViewModelOutputs {
 
     private let openCalendarHandler: () -> Void
-    
-    private var dateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd MMMM yyyy"
-        return dateFormatter
-    }()
-    
+        
     var inputs: TaskDateViewModelInputs { return self }
     var outputs: TaskDateViewModelOutputs { return self }
     
@@ -25,7 +19,7 @@ class TaskDateViewModel: DetailTaskTableItemViewModelType, TaskDateViewModelType
         self.openCalendarHandler = openCalendarHandler
         
         if let taskDate = taskDate {
-            self.dateInfo = Observable(dateFormatter.string(from: taskDate))
+            self.dateInfo = Observable(taskDate)
         } else {
             self.dateInfo = Observable(nil)
         }
@@ -40,7 +34,7 @@ class TaskDateViewModel: DetailTaskTableItemViewModelType, TaskDateViewModelType
     func setDate(date: Date?) {
         
         if let taskDate = date {
-            dateInfo.value = dateFormatter.string(from: taskDate)
+            dateInfo.value = taskDate//dateFormatter.string(from: taskDate)
         } else {
             dateInfo.value = nil
         }
@@ -48,6 +42,6 @@ class TaskDateViewModel: DetailTaskTableItemViewModelType, TaskDateViewModelType
     
     // MARK: Outputs
     
-    var dateInfo: Observable<String?>
+    var dateInfo: Observable<Date?>
     
 }

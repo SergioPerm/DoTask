@@ -12,6 +12,7 @@ protocol SettingsViewModelInputs {
     func setLanguageHandler(handler: (() -> Void)?)
     func setTasksHandler(handler: (() -> Void)?)
     func setSpotlightHandler(handler: (() -> Void)?)
+    func reloadData()
 }
 
 protocol SettingsViewModelOutputs {
@@ -53,6 +54,10 @@ class SettingsViewModel: SettingsViewModelType, SettingsViewModelOutputs, Settin
         spotlightHandler = handler
     }
     
+    func reloadData() {
+        loadData()
+    }
+    
     // MARK: Outputs
     
     var settingsItems: [SettingsItemViewModelType] = []
@@ -81,8 +86,10 @@ extension SettingsViewModel {
             }
         }))
         
-        settingsItems.append(SettingsItemViewModel(settingsItem: taskSettings, selectAction: {
-            //
+        settingsItems.append(SettingsItemViewModel(settingsItem: taskSettings, selectAction: { [weak self] in
+            if let action = self?.tasksHandler {
+                action()
+            }
         }))
         
         settingsItems.append(SettingsItemViewModel(settingsItem: spotlightSettings, selectAction: {

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class SettingsLanguageViewController: UIViewController, SettingsLanguageViewType {
     
@@ -15,6 +16,8 @@ class SettingsLanguageViewController: UIViewController, SettingsLanguageViewType
     var presentableControllerViewType: PresentableControllerViewType
     var router: RouterType?
     var persistentType: PersistentViewControllerType?
+    
+    private let tableView = UITableView()
     
     init(viewModel: SettingsLanguageViewModelType, router: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
         self.viewModel = viewModel
@@ -31,7 +34,16 @@ class SettingsLanguageViewController: UIViewController, SettingsLanguageViewType
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let tableView = UITableView()
+        setup()
+        setupConstraints()
+        setupNavBar()
+    }
+    
+}
+
+extension SettingsLanguageViewController {
+    private func setup() {
+        
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         tableView.separatorStyle = .none
@@ -45,11 +57,15 @@ class SettingsLanguageViewController: UIViewController, SettingsLanguageViewType
         tableView.register(SettingsLanguageTableViewCell.self, forCellReuseIdentifier: SettingsLanguageTableViewCell.className)
         
         view.addSubview(tableView)
-        
+    }
+    
+    private func setupConstraints() {
         tableView.snp.makeConstraints({ make in
             make.edges.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0))
         })
-        
+    }
+    
+    private func setupNavBar() {
         guard let navBar = self.navigationController?.navigationBar else { return }
         
         navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 44)))]
@@ -59,25 +75,14 @@ class SettingsLanguageViewController: UIViewController, SettingsLanguageViewType
         settingsNavBarTitleView.setTitle(localizeString: LocalizableStringResource(stringResource: R.string.localizable.settings_LANGUAGE))
         navigationItem.titleView = settingsNavBarTitleView
         
-        let backButton = UIButton(type: .custom)
-        
-        let imageInset = StyleGuide.Settings.Sizes.insetImageNavBarBtn
-        
-        backButton.imageEdgeInsets = imageInset//UIEdgeInsets(top: imageInset, left: imageInset, bottom: imageInset, right: imageInset)
-        backButton.setImage(R.image.settings.backButton(), for: .normal)
-        backButton.contentMode = .scaleAspectFit
+        let backButton = NavigationBackButton()
         backButton.addTarget(self, action: #selector(closeSettings(sender:)), for: .touchUpInside)
         backButton.frame = CGRect(x: 0, y: 0, width: navBar.frame.height, height: navBar.frame.height)
-        
         let barButtonItem = UIBarButtonItem(customView: backButton)
         
         navigationItem.leftBarButtonItem = barButtonItem
-    
     }
     
-}
-
-extension SettingsLanguageViewController {
     @objc private func closeSettings(sender: UIBarButtonItem) {
         router?.pop(vc: self)
     }

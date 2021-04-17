@@ -24,8 +24,8 @@ class TaskReminderTableViewCell: UITableViewCell, DetailTaskCellType {
         return imgView
     }()
     
-    private let infoLabel: UILabel = {
-        let label = UILabel()
+    private let infoLabel: LocalizableLabel = {
+        let label = LocalizableLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .gray
         label.textAlignment = .left
@@ -96,12 +96,12 @@ extension TaskReminderTableViewCell {
     }
     
     private func bindViewModel() {
-        viewModel?.outputs.timeInfo.bind { [weak self] timeInfo in
-            if let timeInfo = timeInfo {
-                self?.infoLabel.text = timeInfo
+        viewModel?.outputs.timeInfo.bind { [weak self] time in
+            if let  time =  time {
+                self?.infoLabel.setDateWithFormat(date: time, format: "HH:mm")
                 self?.infoImage.image = self?.infoImage.image?.maskWithColor(color: R.color.commonColors.blue()!)
             } else {
-                self?.infoLabel.text = "Set reminder"
+                self?.infoLabel.localizableString = LocalizableStringResource(stringResource: R.string.localizable.set_RIMENDER)
                 self?.infoImage.image = self?.infoImage.image?.maskWithColor(color: .gray)
             }
         }

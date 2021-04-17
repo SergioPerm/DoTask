@@ -24,6 +24,7 @@ class TaskListItemViewModel: TaskListItemViewModelType, TaskListItemViewModelInp
         return timeFormatter
     }()
     
+    private var task: Task
     private var taskUID: String
     
     var inputs: TaskListItemViewModelInputs { return self }
@@ -32,6 +33,7 @@ class TaskListItemViewModel: TaskListItemViewModelType, TaskListItemViewModelInp
     private let changeDoneTaskHandler: ((_ taskUID: String, _ done: Bool) -> Void)
     
     init(task: Task, setDoneTaskHandler: @escaping ((_ taskUID: String, _ done: Bool) -> Void)) {
+        self.task = task
         self.title = Observable(task.title)
         
         if let taskDate = task.taskDate {
@@ -60,6 +62,7 @@ class TaskListItemViewModel: TaskListItemViewModelType, TaskListItemViewModelInp
     }
     
     func reuse(task: Task) {
+        self.task = task
         taskUID = task.uid
         
         title.value = task.title
@@ -104,6 +107,14 @@ class TaskListItemViewModel: TaskListItemViewModelType, TaskListItemViewModelInp
     
     func getTaskUID() -> String {
         return taskUID
+    }
+    
+    var overDue: Bool {
+        if let taskDate = task.taskDate {
+            return taskDate < Date().startOfDay()
+        } else {
+            return false
+        }
     }
     
 }

@@ -12,7 +12,15 @@ class ShortcutButton: UIView {
 
     var shortcutBtnData: ShortcutData {
         didSet {
-            titleLabel.text = shortcutBtnData.title ?? "Shortcut"
+            
+            if let shortcutText = shortcutBtnData.title {
+                titleLabel.attributedText = NSMutableAttributedString(string: shortcutText, attributes:[
+                                                                        NSAttributedString.Key.foregroundColor: R.color.detailTask.shortcutBtn()!,
+                                                                        NSAttributedString.Key.font: FontFactory.AvenirNextBold.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 17))])
+            } else {
+                titleLabel.localizableString = LocalizableStringResource(stringResource: R.string.localizable.shortcuT)
+            }
+
             if let btnHexColor = shortcutBtnData.colorHex {
                 let color = UIColor(hexString: btnHexColor)
                 backgroundColor = color
@@ -27,8 +35,8 @@ class ShortcutButton: UIView {
         }
     }
     
-    private let titleLabel: UILabel = {
-        let label = UILabel()
+    private let titleLabel: LocalizableLabel = {
+        let label = LocalizableLabel()
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = FontFactory.AvenirNextBold.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 17))
@@ -60,7 +68,7 @@ extension ShortcutButton {
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10)
         ])
         
-        titleLabel.text = "Shortcut"
+        titleLabel.localizableString = LocalizableStringResource(stringResource: R.string.localizable.shortcuT)
         backgroundColor = .white
         layer.borderWidth = StyleGuide.DetailTask.Sizes.shortcutBtnLineWidth
         layer.borderColor = R.color.detailTask.shortcutBtn()!.cgColor

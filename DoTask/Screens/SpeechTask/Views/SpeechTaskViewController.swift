@@ -22,6 +22,8 @@ class SpeechTaskViewController: UIViewController, SpeechTaskViewType {
     }
     
     var longTapRecognizer: UILongPressGestureRecognizer?
+    var shortcutUID: String?
+    var taskDate: Date?
     
     private let speakWave: SpeakWave = {
         let view = SpeakWave()
@@ -41,7 +43,6 @@ class SpeechTaskViewController: UIViewController, SpeechTaskViewType {
     
     private let infoText: SpeechTextInfo = {
         let label = SpeechTextInfo()
-        label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
@@ -97,7 +98,7 @@ class SpeechTaskViewController: UIViewController, SpeechTaskViewType {
 extension SpeechTaskViewController {
  
     private func bindViewModel() {
-        
+                
         viewModel.outputs.speechTextChangeEvent.subscribe(self) { this, speechText in
             this.speechText.setSpeechText(text: speechText)
         }
@@ -132,16 +133,16 @@ extension SpeechTaskViewController {
         let swipeToCancelHeightConstraint = swipeToCancel.heightAnchor.constraint(equalToConstant: 10)
         swipeToCancelHeightConstraint.priority = UILayoutPriority(250)
         
-        trailingSwipeToCancelConstraint = swipeToCancel.trailingAnchor.constraint(equalTo: crossBtn.leadingAnchor, constant: -30)
+        trailingSwipeToCancelConstraint = swipeToCancel.trailingAnchor.constraint(equalTo: crossBtn.leadingAnchor, constant: -40)
         
         let leadingSwipeToCancel = swipeToCancel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30)
         leadingSwipeToCancel.priority = UILayoutPriority(250)
         
         let constraints = [
             speechText.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            speechText.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
+            speechText.topAnchor.constraint(equalTo: view.topAnchor, constant: 50),
             speechText.widthAnchor.constraint(equalToConstant: globalFrame.width * StyleGuide.SpeechTask.Sizes.RatioToScreenWidth.speakWaveWidth),
-            speechText.bottomAnchor.constraint(equalTo: speakWave.topAnchor, constant: -20),
+            speechText.bottomAnchor.constraint(equalTo: speakWave.topAnchor),
             infoText.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             infoText.widthAnchor.constraint(equalToConstant: globalFrame.width * StyleGuide.SpeechTask.Sizes.RatioToScreenWidth.speakWaveWidth),
             infoText.topAnchor.constraint(equalTo: speakWave.bottomAnchor, constant: 50),

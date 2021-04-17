@@ -20,12 +20,12 @@ class TaskDeleteTableViewCell: UITableViewCell, DetailTaskCellType {
         return imgView
     }()
     
-    private let infoLabel: UILabel = {
-        let label = UILabel()
+    private let infoLabel: LocalizableLabel = {
+        let label = LocalizableLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .red
         label.textAlignment = .left
-        label.text = "Delete"
+        label.localizableString = LocalizableStringResource(stringResource: R.string.localizable.deletE)
         label.isUserInteractionEnabled = true
         
         return label

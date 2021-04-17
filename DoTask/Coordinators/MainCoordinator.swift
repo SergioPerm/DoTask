@@ -99,11 +99,14 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
     }
     
     func speechTask(recognizer: UILongPressGestureRecognizer, shortcutUID: String?, taskDate: Date?) {
-//        let vc = SpeechTaskAssembly.createInstance(router: router, recognizer: recognizer, shortcutFilter: shortcutUID)
-//
-//        let transition = SpeechRecorderTransitionController()
-//
-//        router?.push(vc: vc, completion: nil, transition: transition)
+        let vc: SpeechTaskViewType = AppDI.resolve()
+        
+        vc.longTapRecognizer = recognizer
+        vc.shortcutUID = shortcutUID
+        vc.taskDate = taskDate
+        
+        let transition = SpeechRecorderTransitionController()
+        router?.push(vc: vc, completion: nil, transition: transition)
     }
     
 }

@@ -200,7 +200,7 @@ extension TaskListViewModel {
         }
         
         if let dailyName = periodItem.outputs.dailyName {
-            if let counter = dataSource.getDoneCounterForPeriod(dailyPeriod: dailyName) {
+            if let counter = dataSource.getDoneCounterForPeriod(dailyPeriod: dailyName, taskListFilter: nil) {
                 periodItem.inputs.setDoneCounter(counter: counter)
             }
         }

@@ -31,7 +31,7 @@ class SettingsLanguageTableViewCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
         label.textAlignment = .left
-        label.font = FontFactory.AvenirNextMedium.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 20))
+        label.font = FontFactory.AvenirNextMedium.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 18))
         
         return label
     }()
@@ -80,14 +80,14 @@ extension SettingsLanguageTableViewCell {
         let arrowSize = StyleGuide.Settings.Sizes.controlSize
         
         icon.snp.makeConstraints({ make in
-            make.left.equalTo(25)
+            make.left.equalTo(20)
             make.centerY.equalToSuperview()
             make.width.equalTo(iconSize)
             make.height.equalTo(iconSize)
         })
         
         languageTitle.snp.makeConstraints({ make in
-            make.left.equalTo(icon.snp.right).offset(15)
+            make.left.equalTo(icon.snp.right).offset(10)
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
             make.height.equalTo(cellHeight)
@@ -100,7 +100,7 @@ extension SettingsLanguageTableViewCell {
             make.height.equalTo(arrowSize)
             make.width.equalTo(arrowSize)
             make.centerY.equalToSuperview()
-            make.right.equalToSuperview().offset(-25)
+            make.right.equalToSuperview().offset(-20)
         })
     }
 }

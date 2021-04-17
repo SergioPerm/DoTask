@@ -480,16 +480,28 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
         return predicate
     }
     
-    func getDoneCounterForPeriod(dailyPeriod: DailyName) -> DoneCounter? {
+    func getDoneCounterForPeriod(dailyPeriod: DailyName, taskListFilter: TaskListFilter? = nil) -> DoneCounter? {
         if !dailyPeriod.haveDoneCounter() {
             return nil
         }
         
         let fetchTasksForPeriod: NSFetchRequest<TaskManaged> = TaskManaged.fetchRequest()
         let donePredicate = NSPredicate(format: "isDone == %@", NSNumber(value: true))
+        
+        let showInMainListPredicate = NSPredicate(format: "shortcut.showInMainList == %@ OR shortcut == nil", NSNumber(value: true))
                 
         var predicates: [NSPredicate] = [getPredicateForDailyPeriod(dailyPeriod: dailyPeriod)]
-        predicates.append(contentsOf: [donePredicate])
+        predicates.append(showInMainListPredicate)
+        predicates.append(donePredicate)
+        
+        
+//        if let filter = taskListFilter {
+//            if let shortcutUID = filter.shortcutFilter {
+//                predicates.append(NSPredicate(format: "shortcut.identificator == %@", shortcutUID))
+//            }
+//        } else {
+//
+//        }
         
         fetchTasksForPeriod.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         
@@ -662,7 +674,7 @@ extension TaskListDataSourceCoreData {
         if let shortcutFilter = shortcutFilter {
             guard let shortcutManaged = shortcutByIdentifier(identifier: shortcutFilter) else { return }
             predicates.append(NSPredicate(format: "shortcut == %@", shortcutManaged))
-        } else {
+        } else if !onlyFinishedTasksFilter  {
             predicates.append(NSPredicate(format: "shortcut.showInMainList == %@ OR shortcut == nil", NSNumber(value: true)))
         }
         
@@ -679,7 +691,6 @@ extension TaskListDataSourceCoreData {
         }
                 
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-        //fetchRequest.fetchBatchSize = 20
         
         // Initialize Fetched Results Controller
         self.fetchedResultsController = NSFetchedResultsController<TaskManaged>(fetchRequest: fetchRequest, managedObjectContext: self.context, sectionNameKeyPath: sectionNameKeyPath, cacheName: nil)

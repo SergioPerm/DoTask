@@ -14,15 +14,25 @@ struct LocalizableStringResource {
     let tableName: String
     let bundle: Bundle
     let locales: [String]
-
+    var staticString: String?
+    
     let comment: String?
 
-    public init(stringResource: Rswift.StringResource) {
+    init(stringResource: Rswift.StringResource) {
         self.key = stringResource.key
         self.tableName = stringResource.tableName
         self.bundle = stringResource.bundle
         self.locales = stringResource.locales
         self.comment = stringResource.comment
+    }
+    
+    init(withStaticString: String) {
+        self.key = ""
+        self.tableName = ""
+        self.bundle = Bundle()
+        self.locales = []
+        self.comment = ""
+        self.staticString = withStaticString
     }
 }
 

@@ -123,7 +123,7 @@ extension ColorSelectionView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let side = StyleGuide.DetailShortcut.Sizes.rowHeight
+        let side = StyleGuide.DetailShortcut.Sizes.colorSelectionBarHeight
         return CGSize(width: side, height: side)
     }
 }

@@ -37,12 +37,16 @@ extension DeleteShortcutButton {
         backgroundColor = R.color.shortcutDetail.deleteShortcutBtn()
         translatesAutoresizingMaskIntoConstraints = false
         
-        let label = UILabel()
-        label.text = "Delete"
+        let label = LocalizableLabel()
+        label.localizableString = LocalizableStringResource(stringResource: R.string.localizable.deletE)
         label.font = FontFactory.Helvetica.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 17))
         label.textColor = R.color.shortcutDetail.deleteShortcutBtnText()
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.5
+        label.numberOfLines = 1
+        label.baselineAdjustment = .alignCenters
         
         addSubview(label)
         

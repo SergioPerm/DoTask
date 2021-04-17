@@ -15,7 +15,7 @@ class CalendarPickerHeaderView: UIView {
     let borderColor = R.color.datePicker.border()!.cgColor
     
     @IBOutlet var contentView: UIView!
-    @IBOutlet weak var monthYearLabel: UILabel!
+    @IBOutlet weak var monthYearLabel: LocalizableLabel!
     
     override init(frame: CGRect) {
         super.init(frame: frame)

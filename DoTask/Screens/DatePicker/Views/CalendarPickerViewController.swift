@@ -177,23 +177,12 @@ extension CalendarPickerViewController {
         self.viewModel.outputs.selectedDate.bind { [weak self] selectedDate in
             guard let strongSelf = self else { return }
             guard let selectedDate = selectedDate else {
-                strongSelf.footerView.currentDateLabel.text = "No selected date"
+                strongSelf.footerView.currentDateLabel.localizableString = LocalizableStringResource(stringResource: R.string.localizable.no_SELECTED_DATE)
                 strongSelf.footerView.clearDateButton.isHidden = true
                 return
             }
-
-            let dateComponents = strongSelf.calendar.component(.day, from: selectedDate)
-            let numberFormatter = NumberFormatter()
             
-            numberFormatter.numberStyle = .ordinal
-            
-            guard let day = numberFormatter.string(from: dateComponents as NSNumber) else { return }
-            
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MMMM"
-            let dateString = "\(dateFormatter.string(from: selectedDate)) \(day)"
-            
-            strongSelf.footerView.currentDateLabel.text = dateString
+            strongSelf.footerView.currentDateLabel.setDateWithFormat(date: selectedDate, format: "dd MMM")
             strongSelf.footerView.clearDateButton.isHidden = false
         }
     }
@@ -267,9 +256,7 @@ extension CalendarPickerViewController {
 //MARK: - Common
 extension CalendarPickerViewController {
     func setDataForHeaderView(for currentDate: Date) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "LLLL YYYY"
-        headerView.monthYearLabel.text = dateFormatter.string(from: currentDate).capitalizingFirstLetter()
+        headerView.monthYearLabel.setDateWithFormat(date: currentDate, format: "LLLL YYYY")
     }
 }
 

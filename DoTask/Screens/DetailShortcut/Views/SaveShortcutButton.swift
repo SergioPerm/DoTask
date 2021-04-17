@@ -37,13 +37,17 @@ extension SaveShortcutButton {
         backgroundColor = R.color.shortcutDetail.saveShortcutBtn()
         translatesAutoresizingMaskIntoConstraints = false
         
-        let label = UILabel()
-        label.text = "Save"
+        let label = LocalizableLabel()
+        label.localizableString = LocalizableStringResource(stringResource: R.string.localizable.savE)
         label.textColor = R.color.shortcutDetail.saveShortcutBtnText()
         label.font = FontFactory.HelveticaNeue.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 19))
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
-        
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.5
+        label.numberOfLines = 1
+        label.baselineAdjustment = .alignCenters
+          
         addSubview(label)
         
         NSLayoutConstraint.activate([

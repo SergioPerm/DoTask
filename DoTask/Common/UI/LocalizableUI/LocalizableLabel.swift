@@ -34,8 +34,13 @@ class LocalizableLabel: UILabel {
                 return
             }
             
-            localizeKey = localizableString.key
-            setValue(localizeService.localizeString(forKey: localizableString.key, locale: ""), forKey: "text")
+            if let staticString = localizableString.staticString {
+                localizeKey = nil
+                setValue(staticString, forKey: "text")
+            } else {
+                localizeKey = localizableString.key
+                setValue(localizeService.localizeString(forKey: localizableString.key, locale: ""), forKey: "text")
+            }
         }
     }
     
@@ -62,7 +67,7 @@ class LocalizableLabel: UILabel {
 }
 
 extension LocalizableLabel {
-    func setDateWithFormat(date: Date, format: String) {
+    func setDateWithFormat(date: Date?, format: String?) {
         self.date = date
         self.dateFormat = format
         

@@ -11,13 +11,7 @@ import Foundation
 class TaskReminderViewModel: DetailTaskTableItemViewModelType, TaskReminderViewModelType, TaskReminderViewModelInputs, TaskReminderViewModelOutputs {
     
     private let openReminderHandler: () -> Void
-    
-    private var dateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm"
-        return dateFormatter
-    }()
-    
+        
     var inputs: TaskReminderViewModelInputs { return self }
     var outputs: TaskReminderViewModelOutputs { return self }
     
@@ -25,7 +19,7 @@ class TaskReminderViewModel: DetailTaskTableItemViewModelType, TaskReminderViewM
         self.openReminderHandler = openReminderHandler
         
         if let taskTime = taskTime {
-            self.timeInfo = Observable(dateFormatter.string(from: taskTime))
+            self.timeInfo = Observable(taskTime)
         } else {
             self.timeInfo = Observable(nil)
         }
@@ -35,7 +29,7 @@ class TaskReminderViewModel: DetailTaskTableItemViewModelType, TaskReminderViewM
     
     func setTime(time: Date?) {
         if let taskTime = time {
-            timeInfo.value = dateFormatter.string(from: taskTime)
+            timeInfo.value = taskTime
         } else {
             timeInfo.value = nil
         }
@@ -47,6 +41,6 @@ class TaskReminderViewModel: DetailTaskTableItemViewModelType, TaskReminderViewM
     
     // MARK: Outputs
     
-    var timeInfo: Observable<String?>
+    var timeInfo: Observable<Date?>
     
 }

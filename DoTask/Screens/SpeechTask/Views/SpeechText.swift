@@ -7,10 +7,22 @@
 //
 
 import UIKit
+import SnapKit
 
 class SpeechText: UITextView {
     
     private let placeholderText = ""
+    
+    private let speakLabel: LocalizableLabel = {
+        let label = LocalizableLabel()
+        label.textAlignment = .center
+        label.font = FontFactory.AvenirNextBold.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 32))
+        label.textColor = .white
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.localizableString = LocalizableStringResource(stringResource: R.string.localizable.speaK)
+        
+        return label
+    }()
     
     init() {
         super.init(frame: .zero, textContainer: nil)
@@ -26,32 +38,23 @@ class SpeechText: UITextView {
 extension SpeechText {
     
     func setSpeechText(text: String) {
-        if !text.isEmpty {
-            self.text = text
+        if !speakLabel.isHidden {
+            speakLabel.isHidden = true
+            textAlignment = .left
             updateTextFont()
         }
         
-        textAlignment = .left
+        let contentOffset = contentSize.height - frame.height
+        
+        if contentOffset > 0 {
+            setContentOffset(CGPoint(x: 0, y: contentOffset), animated: true)
+        }
+        
+        self.text = text
     }
     
     func updateTextFont() {
-        if bounds.size.equalTo(CGSize.zero) {
-            return
-        }
-
-        guard let textFont = font else { return }
-        
-        let textViewSize = frame.size
-        let fixedWidth = textViewSize.width
-        let expectSize = sizeThatFits(CGSize(width: fixedWidth, height: CGFloat(MAXFLOAT)))
-
-        var expectFont = textFont
-        if (expectSize.height > textViewSize.height) {
-            while (sizeThatFits(CGSize(width: fixedWidth, height: CGFloat(MAXFLOAT))).height > textViewSize.height) {
-                expectFont = textFont.withSize(font!.pointSize - 1)
-                font = expectFont
-            }
-        }
+        font = FontFactory.AvenirNext.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 23))
     }
         
     func isEmpty() -> Bool {
@@ -62,16 +65,21 @@ extension SpeechText {
     }
     
     private func setup() {
-        text = placeholderText
-        
         isEditable = false
         showsVerticalScrollIndicator = false
             
         backgroundColor = .clear
         
-        font = UIFont(name: "AvenirNext-Bold", size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 32))
         textColor = .white
         textAlignment = .center
+        
+        addSubview(speakLabel)
+        
+        speakLabel.snp.makeConstraints({ make in
+            make.centerY.centerX.equalToSuperview()
+            make.width.equalToSuperview()
+            make.height.equalToSuperview()
+        })
     }
 }
 

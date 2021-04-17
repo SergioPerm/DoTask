@@ -11,6 +11,8 @@ import DITranquillity
 
 class SettingsDependency: DIPart {
     static func load(container: DIContainer) {
+        
+        //Main settings
         container.register(SettingsViewModel.init(settingsService:))
             .as(SettingsViewModelType.self)
         
@@ -18,12 +20,37 @@ class SettingsDependency: DIPart {
             SettingsViewController(viewModel: $0, router: $1, presentableControllerViewType: .navigationStack)
         }.as(SettingsViewType.self)
                 
+        //Languages
         container.register(SettingsLanguageViewModel.init(settingsService:localizeService:))
             .as(SettingsLanguageViewModelType.self)
         
         container.register{
             SettingsLanguageViewController(viewModel: $0, router: $1, presentableControllerViewType: .navigationStack)
         }.as(SettingsLanguageViewType.self)
+        
+        //Tasks
+        container.register(SettingsTasksViewModel.init(settingsService:shortcutDataSource:))
+            .as(SettingsTasksViewModelType.self)
+        
+        container.register({
+            SettingsTasksViewController.init(viewModel: $0, router: $1, presentableControllerViewType: .navigationStack)
+        }).as(SettingsTasksViewType.self)
+        
+        //Task new time
+        container.register(SettingsTasksNewTimeViewModel.init(settingsService:))
+            .as(SettingsTasksNewTimeViewModelType.self)
+        
+        container.register({
+            SettingsTasksNewTimeViewController(viewModel: $0, router: $1, presentableControllerViewType: .navigationStack)
+        }).as(SettingsTasksNewTimeViewType.self)
+        
+        //Default shortcut
+        container.register(SettingsTasksShortcutViewModel.init(settingsService:shortcutDataSource:))
+            .as(SettingsTasksShortcutViewModelType.self)
+        
+        container.register({
+            SettingsTasksShortcutViewController(viewModel: $0, router: $1, presentableControllerViewType: .navigationStack)
+        }).as(SettingsTasksShortcutViewType.self)
     }
 }
 

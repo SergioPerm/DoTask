@@ -23,7 +23,7 @@ class ShowInMainListView: UIView {
         label.font = FontFactory.AvenirNextMedium.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 21))
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.5
-        label.numberOfLines = 0
+        label.numberOfLines = 1
         
         return label
     }()

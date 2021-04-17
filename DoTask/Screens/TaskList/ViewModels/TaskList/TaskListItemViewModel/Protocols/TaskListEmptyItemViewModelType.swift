@@ -9,6 +9,6 @@
 import Foundation
 
 protocol TaskListEmptyItemViewModelType: class, TaskListItemType {
-    var info: String { get }
+    var info: LocalizableStringResource? { get }
     var rowHeight: Int { get }
 }

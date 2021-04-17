@@ -24,8 +24,8 @@ class TaskDateTableViewCell: UITableViewCell, DetailTaskCellType {
         return imgView
     }()
     
-    private let infoLabel: UILabel = {
-        let label = UILabel()
+    private let infoLabel: LocalizableLabel = {
+        let label = LocalizableLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .gray
         label.textAlignment = .left
@@ -84,12 +84,12 @@ extension TaskDateTableViewCell {
     }
     
     private func bindViewModel() {
-        viewModel?.outputs.dateInfo.bind { [weak self] dateInfo in
-            if let dateInfo = dateInfo {
-                self?.infoLabel.text = dateInfo
+        viewModel?.outputs.dateInfo.bind { [weak self] date in
+            if let date = date {
+                self?.infoLabel.setDateWithFormat(date: date, format: "dd MMMM yyyy")
                 self?.infoImage.image = self?.infoImage.image?.maskWithColor(color: R.color.commonColors.blue()!)
             } else {
-                self?.infoLabel.text = "Set date"
+                self?.infoLabel.localizableString = LocalizableStringResource(stringResource: R.string.localizable.set_DATE)
                 self?.infoImage.image = self?.infoImage.image?.maskWithColor(color: .gray)
             }
         }

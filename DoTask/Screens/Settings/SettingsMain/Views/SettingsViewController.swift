@@ -31,6 +31,8 @@ class SettingsViewController: UIViewController, SettingsViewType {
     
     private let viewModel: SettingsViewModelType
     
+    private let tableView: UITableView = UITableView()
+    
     var presentableControllerViewType: PresentableControllerViewType
     var router: RouterType?
     var persistentType: PersistentViewControllerType?
@@ -49,7 +51,20 @@ class SettingsViewController: UIViewController, SettingsViewType {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let tableView = UITableView()
+        setup()
+        setupConstraints()
+        setupNavBar()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.inputs.reloadData()
+        tableView.reloadData()
+    }
+}
+
+extension SettingsViewController {
+    private func setup() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         tableView.separatorStyle = .none
@@ -62,11 +77,15 @@ class SettingsViewController: UIViewController, SettingsViewType {
         tableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: SettingsTableViewCell.className)
         
         view.addSubview(tableView)
-        
+    }
+    
+    private func setupConstraints() {
         tableView.snp.makeConstraints({ make in
             make.edges.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0))
         })
-        
+    }
+    
+    private func setupNavBar() {
         guard let navBar = self.navigationController?.navigationBar else { return }
         
         navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 44)))]
@@ -75,24 +94,14 @@ class SettingsViewController: UIViewController, SettingsViewType {
         let settingsNavBarTitleView = SettingsNavBarTitle(frame: navBarTitleFrame)
         navigationItem.titleView = settingsNavBarTitleView
         
-        let backButton = UIButton(type: .custom)
-        
-        let imageInsets = StyleGuide.Settings.Sizes.insetImageNavBarBtn
-        
-        backButton.imageEdgeInsets = imageInsets//UIEdgeInsets(top: imageInset, left: imageInset, bottom: imageInset, right: imageInset)
-        backButton.setImage(R.image.settings.backButton(), for: .normal)
-        //backButton.contentMode = .scaleAspectFit
+        let backButton = NavigationBackButton()
         backButton.addTarget(self, action: #selector(closeSettings(sender:)), for: .touchUpInside)
         backButton.frame = CGRect(x: 0, y: 0, width: navBar.frame.height, height: navBar.frame.height)
-        
         let barButtonItem = UIBarButtonItem(customView: backButton)
         
         navigationItem.leftBarButtonItem = barButtonItem
     }
-
-}
-
-extension SettingsViewController {
+    
     @objc private func closeSettings(sender: UIBarButtonItem) {
         router?.pop(vc: self)
     }

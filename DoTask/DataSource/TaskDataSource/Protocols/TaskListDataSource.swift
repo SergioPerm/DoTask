@@ -30,5 +30,5 @@ protocol TaskListDataSource {
     func getFirstTaskDate() -> Date?
     func getTasksByDate() -> [Date:CalendarDayStatus]
     
-    func getDoneCounterForPeriod(dailyPeriod: DailyName) -> DoneCounter?
+    func getDoneCounterForPeriod(dailyPeriod: DailyName, taskListFilter: TaskListFilter?) -> DoneCounter?
 }

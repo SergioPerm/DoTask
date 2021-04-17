@@ -19,12 +19,12 @@ class SpeechSwipeCancel: UIView {
         return imageView
     }()
     
-    private let textLabel: UILabel = {
-       let label = UILabel()
+    private let textLabel: LocalizableLabel = {
+        let label = LocalizableLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
-        label.font = UIFont(name: "AvenirNext-Regular", size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 14))
-        label.text = "Swipe to left for CANCEL"
+        label.font = FontFactory.AvenirNextRegular.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 14))
+        label.localizableString = LocalizableStringResource(stringResource: R.string.localizable.swipe_LEFT_CANCEL)
         label.textColor = .white
         
         return label

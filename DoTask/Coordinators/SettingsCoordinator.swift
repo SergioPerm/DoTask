@@ -26,8 +26,8 @@ class SettingsCoordinator: NSObject, Coordinator {
             self?.openLanguageSetting()
         }
         
-        vc.settingTasksHandler = {
-            
+        vc.settingTasksHandler = { [weak self] in
+            self?.openTasksSetting()
         }
         
         vc.settingSpotlightHandler = {
@@ -41,6 +41,32 @@ class SettingsCoordinator: NSObject, Coordinator {
     
     func openLanguageSetting() {
         let vc: SettingsLanguageViewType = AppDI.resolve()
+        router?.push(vc: vc, completion: nil, transition: nil)
+    }
+    
+    func openTasksSetting() {
+        let vc: SettingsTasksViewType = AppDI.resolve()
+        
+        vc.settingNewTaskTimeHandler = { [weak self] in
+            self?.openNewTaskTimeSetting()
+        }
+        
+        vc.settingDefaultShortcutHandler = {[weak self] in
+            self?.openDefaultShortcutSetting()
+        }
+        
+        router?.push(vc: vc, completion: nil, transition: nil)
+    }
+    
+    func openNewTaskTimeSetting() {
+        let vc: SettingsTasksNewTimeViewType = AppDI.resolve()
+        
+        router?.push(vc: vc, completion: nil, transition: nil)
+    }
+    
+    func openDefaultShortcutSetting() {
+        let vc: SettingsTasksShortcutViewType = AppDI.resolve()
+        
         router?.push(vc: vc, completion: nil, transition: nil)
     }
 }

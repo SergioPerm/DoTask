@@ -49,7 +49,7 @@ extension TaskCounter {
     private func setup() {
         
         gradient.frame = frame
-        gradient.cornerRadius = 10
+        gradient.cornerRadius = StyleGuide.getSizeRelativeToScreenWidth(baseSize: 10)
         layer.addSublayer(gradient)
         addSubview(label)
         

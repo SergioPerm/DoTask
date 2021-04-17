@@ -143,6 +143,12 @@ extension TaskListTableViewCell {
             self?.dateLabel.text = date
         }
         
+        if viewModel.outputs.overDue {
+            dateLabel.textColor = R.color.taskList.overDueText()!
+        } else {
+            dateLabel.textColor = R.color.taskList.additionalTitle()!
+        }
+        
         viewModel.outputs.reminderTime.bind { [weak self] time in
             self?.timeLabel.text = time
         }

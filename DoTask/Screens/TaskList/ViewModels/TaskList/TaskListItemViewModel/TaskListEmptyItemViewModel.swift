@@ -10,7 +10,7 @@ import Foundation
 
 class TaskListEmptyItemViewModel: TaskListEmptyItemViewModelType {
         
-    var info: String = ""
+    var info: LocalizableStringResource?
     var rowHeight: Int = 0
     
 }

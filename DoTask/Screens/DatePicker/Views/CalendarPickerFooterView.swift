@@ -17,10 +17,10 @@ class CalendarPickerFooterView: UIView {
     let borderColor: CGColor = R.color.datePicker.border()!.cgColor
     
     @IBOutlet var contentView: UIView!
-    @IBOutlet weak var currentDateLabel: UILabel!
+    @IBOutlet weak var currentDateLabel: LocalizableLabel!
     @IBOutlet weak var clearDateButton: UIButton!
-    @IBOutlet weak var cancelButton: UIButton!
-    @IBOutlet weak var saveButton: UIButton!
+    @IBOutlet weak var cancelButton: LocalizableButton!
+    @IBOutlet weak var saveButton: LocalizableButton!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,6 +39,9 @@ class CalendarPickerFooterView: UIView {
         addSubview(contentView)
         self.addConstraints()
         self.addBorders()
+        
+        cancelButton.localizableString = LocalizableStringResource(stringResource: R.string.localizable.canceL)
+        saveButton.localizableString = LocalizableStringResource(stringResource: R.string.localizable.savE)
     }
     
     func addConstraints() {

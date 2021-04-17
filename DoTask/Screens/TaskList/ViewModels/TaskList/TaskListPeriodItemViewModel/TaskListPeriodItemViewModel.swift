@@ -169,10 +169,8 @@ extension TaskListPeriodItemViewModel {
             if let capMode = capMode {
                 taskListItem.rowHeight = capMode.getRowHeight()
                 
-                if capMode == .LittleSpaceCap {
-                    taskListItem.info = ""
-                } else {
-                    taskListItem.info = "The day is empty"
+                if capMode != .LittleSpaceCap {
+                    taskListItem.info = LocalizableStringResource(stringResource: R.string.localizable.cap_EMPTY_DAY)
                 }
             }
             

@@ -18,8 +18,6 @@ class AppDependency: DIPart {
         
         container.register(MainCoordinator.init(presenter:))
         
-//        container.register(LocalizeService.init)
-//            .as(LocalizeServiceType.self).lifetime(.single)
         container.register(LocalizeService.init)
             .as(LocalizeServiceType.self).as(LocalizeServiceSettingsType.self).lifetime(.perRun(.strong))
         

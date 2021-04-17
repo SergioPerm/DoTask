@@ -11,7 +11,7 @@
 "CURRENT_WEEK" = "CURRENT WEEK";
 "LATER" = "LATER";
 
-"CAP_EMPTY_DAY" = "The day is empty";
+"CAP_EMPTY_DAY" = "Press or hold + to create a new task";
 
 "SETTINGS_TITLE" = "Settings";
 "SETTINGS_LANGUAGE_TITLE" = "Languages";
@@ -20,11 +20,24 @@
 "SETTINGS_TASK" = "Tasks";
 "SETTINGS_SPOTLIGHT" = "Spotlight";
 
+"SETTINGS_TASK_NEW_TIME" = "New task";
+"SETTINGS_TASK_SHORTCUT" = "Default shortcut";
+"SETTINGS_TASK_SHOW_DONE" = "Show completed tasks";
+"SETTINGS_TASK_TRANSFER_OVERDUE" = "Transfer overdue";
+
+"FIRST_IN_DAY" = "First in day";
+"LAST_IN_DAY" = "Last in day";
+
 "ru_Language" = "Русский";
 "en_Language" = "English";
 
 "ON" = "On";
 "OFF" = "Off";
+
+"YES" = "Yes";
+"NO" = "No";
+
+"LAST_SHORTCUT" = "Last used";
 
 "TASK_LIST" = "Tasks list";
 "TASK_DIARY" = "Tasks diary";
@@ -32,7 +45,19 @@
 "CREATE_SHORTCUT" = "Create shortcut";
 "NEW_TITLE_SHORTCUT" = "New shortcut";
 "SHOW_IN_MAINLIST" = "Show in main list";
+"SAVE" = "Save";
+"DELETE" = "Delete";
 
 "NEW_TITLE_PLACEHOLDER" = "New task";
 "NEW_SUBTASK_PLACEHOLDER" = "New subtask";
 "ADD_SUBTASK" = "Add subtask";
+"SET_DATE" = "Set date";
+"SET_RIMENDER" = "Set reminder";
+"SHORTCUT" = "Shortcut";
+
+"NO_SELECTED_DATE" = "No selected date";
+"CANCEL" = "Cancel";
+
+"SPEAK" = "Speak";
+"RELEASE_TO_SAVE" = "Release to quick save";
+"SWIPE_LEFT_CANCEL" = "Swipe to left for CANCEL";

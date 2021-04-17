@@ -15,5 +15,6 @@ protocol TaskListItemViewModelOutputs {
     var importantColor: Observable<String?> { get }
     var shortcutColor: Observable<String?> { get }
     var isDone: Observable<Bool> { get }
+    var overDue: Bool { get }
     func getTaskUID() -> String
 }

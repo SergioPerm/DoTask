@@ -42,13 +42,14 @@ struct StyleGuide {
         }
         
         enum Sizes {
-            static let headerHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 40.0)// 40.0
+            static let headerHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 40.0)
             static let headerTitleHeight: CGFloat = 30.0
-            static let counterHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 20.0)
+            static let counterHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 23.0)
+            static let counterWidth: CGFloat = getSizeRelativeToScreenWidth(baseSize: 50.0)
             static let checkMarkSize: CGSize = CGSize(width: 24, height: 24)
             static let checkMarkLineWidth: CGFloat = 4.0
             
-            static let capRowHeightMain: Int = 110
+            static let capRowHeightMain: Int = 130
             static let capRowHeightCalendar: Int = 70
             static let capRowHeightLittle: Int = 5
             
@@ -97,10 +98,11 @@ struct StyleGuide {
                 static let topMargin: CGFloat = 0.1
             }
             
-            static let rowHeight: CGFloat = getSizeRelativeToScreenHeight(baseSize: 48).rounded(.toNearestOrAwayFromZero)//CGFloat(ceil(Double(getSizeRelativeToScreenHeight(baseSize: 48))))
+            static let rowHeight: CGFloat = getSizeRelativeToScreenHeight(baseSize: 48).rounded(.toNearestOrAwayFromZero)
+            static let colorSelectionBarHeight: CGFloat = getSizeRelativeToScreenHeight(baseSize: 55, maxSize: 60).rounded(.toNearestOrAwayFromZero)
             
             enum RatioToScreenWidth {
-                static let btnWidth: CGFloat = 0.25
+                static let btnWidth: CGFloat = 0.30
                 static let rowHeight: CGFloat = 0.15
             }
         }

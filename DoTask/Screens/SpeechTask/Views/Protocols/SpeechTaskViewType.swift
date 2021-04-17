@@ -10,4 +10,6 @@ import UIKit
 
 protocol SpeechTaskViewType: PresentableController {
     var longTapRecognizer: UILongPressGestureRecognizer? { get set }
+    var shortcutUID: String? { get set }
+    var taskDate: Date? { get set }
 }

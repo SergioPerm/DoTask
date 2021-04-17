@@ -37,15 +37,38 @@ class SettingService {
         }
     }
 
-    enum NewTaskTime: String, Codable {
+    enum NewTaskTime: String, Codable, CaseIterable {
         case startDay
         case endDay
+        
+        func getLocalize() -> LocalizableStringResource {
+            switch self {
+            case .startDay:
+                return LocalizableStringResource(stringResource: R.string.localizable.first_IN_DAY)
+            case .endDay:
+                return LocalizableStringResource(stringResource: R.string.localizable.last_IN_DAY)
+            }
+        }
+        
+        func getImageData() -> Data {
+            switch self {
+            case .startDay:
+                return R.image.settings.firstInDay()!.pngData()!
+            case .endDay:
+                return R.image.settings.lastInDay()!.pngData()!
+            }
+        }
+        
+        func getAllItems() -> [NewTaskTime] {
+            return NewTaskTime.allCases
+        }
     }
 
     struct TaskSetting: Codable {
-        let newTaskTime: NewTaskTime
-        let defaultShortcut: String
-        let showDoneTasks: Bool
+        var newTaskTime: NewTaskTime
+        var defaultShortcut: String?
+        var showDoneTasksInToday: Bool
+        var transferOverdueTasksToToday: Bool
     }
     
     struct Settings: Codable, PropertyIterator {
@@ -62,7 +85,7 @@ class SettingService {
                 self.language = .en
             }
 
-            self.task = TaskSetting(newTaskTime: .endDay, defaultShortcut: "", showDoneTasks: false)
+            self.task = TaskSetting(newTaskTime: .endDay, defaultShortcut: "", showDoneTasksInToday: false, transferOverdueTasksToToday: false)
             self.spotlight = true
         }
     
@@ -73,6 +96,8 @@ class SettingService {
     
     init() {
         self.currentSettings = Settings()
+               
+        saveCurrentSettings()
         
         if defaults.object(forKey: "appSettings") == nil {
             //Write default settings

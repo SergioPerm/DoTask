@@ -132,6 +132,10 @@ extension TaskListNavBarTitleView {
     }
         
     private func showStandartTitle(animated: Bool = false) {
+        
+        //reset date mode in localize label
+        titleLabel.setDateWithFormat(date: nil, format: nil)
+        
         let font = FontFactory.AvenirNextBoldItalic.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 27))
         
         let navTitle = NSMutableAttributedString(string: "Do", attributes:[

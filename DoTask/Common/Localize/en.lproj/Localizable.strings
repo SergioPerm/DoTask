@@ -15,6 +15,7 @@
 
 "SETTINGS_TITLE" = "Settings";
 "SETTINGS_LANGUAGE_TITLE" = "Languages";
+"SETTINGS_SHORTCUT_TITLE" = "Default shortcut";
 
 "SETTINGS_LANGUAGE" = "Language";
 "SETTINGS_TASK" = "Tasks";

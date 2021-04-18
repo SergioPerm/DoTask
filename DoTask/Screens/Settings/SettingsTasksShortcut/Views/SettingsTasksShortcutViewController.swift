@@ -35,7 +35,9 @@ class SettingsTasksShortcutViewController: UIViewController, SettingsTasksShortc
         
         setup()
         setupConstraints()
+        setupNavbar()
     }
+
 }
 
 extension SettingsTasksShortcutViewController {
@@ -48,6 +50,7 @@ extension SettingsTasksShortcutViewController {
         tableView.sectionFooterHeight = 0
         
         tableView.dataSource = self
+        tableView.delegate = self
         
         tableView.register(SettingsTasksShortcutTableViewCell.self, forCellReuseIdentifier: SettingsTasksShortcutTableViewCell.className)
         
@@ -58,6 +61,34 @@ extension SettingsTasksShortcutViewController {
         tableView.snp.makeConstraints({ make in
             make.edges.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0))
         })
+    }
+    
+    private func setupNavbar() {
+        guard let navBar = self.navigationController?.navigationBar else { return }
+        
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 44)))]
+        
+        let navBarTitleFrame = CGRect(x: 0, y: 0, width: UIView.globalSafeAreaFrame.width * 0.4, height: navBar.frame.height)
+        let settingsNavBarTitleView = SettingsNavBarTitle(frame: navBarTitleFrame)
+        settingsNavBarTitleView.setTitle(localizeString: LocalizableStringResource(stringResource: R.string.localizable.settings_SHORTCUT_TITLE))
+        navigationItem.titleView = settingsNavBarTitleView
+        
+        let backButton = NavigationBackButton()
+        backButton.addTarget(self, action: #selector(closeSettings(sender:)), for: .touchUpInside)
+        backButton.frame = CGRect(x: 0, y: 0, width: navBar.frame.height, height: navBar.frame.height)
+        let barButtonItem = UIBarButtonItem(customView: backButton)
+        
+        navigationItem.leftBarButtonItem = barButtonItem
+    }
+    
+    @objc private func closeSettings(sender: UIBarButtonItem) {
+        router?.pop(vc: self)
+    }
+}
+
+extension SettingsTasksShortcutViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel.inputs.setSelected(index: indexPath.row)
     }
 }
 

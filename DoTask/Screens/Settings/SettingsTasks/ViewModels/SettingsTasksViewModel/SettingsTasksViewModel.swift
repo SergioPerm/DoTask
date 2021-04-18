@@ -13,6 +13,7 @@ protocol SettingsTasksViewModelInputs {
     func setDefaultShortcutHandler(handler: (() -> Void)?)
     func setShowCompletedTasksHandler(handler: (() -> Void)?)
     func setTransferOverdueHandler(handler: (() -> Void)?)
+    func reloadData()
 }
 
 protocol SettingsTasksViewModelOutputs {
@@ -59,6 +60,10 @@ class SettingsTasksViewModel: SettingsTasksViewModelType, SettingsTasksViewModel
     
     func setTransferOverdueHandler(handler: (() -> Void)?) {
         transferOverdueHandler = handler
+    }
+    
+    func reloadData() {
+        loadData()
     }
     
     //MARK: Outputs

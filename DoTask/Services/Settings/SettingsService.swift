@@ -85,7 +85,7 @@ class SettingService {
                 self.language = .en
             }
 
-            self.task = TaskSetting(newTaskTime: .endDay, defaultShortcut: "", showDoneTasksInToday: false, transferOverdueTasksToToday: false)
+            self.task = TaskSetting(newTaskTime: .endDay, defaultShortcut: nil, showDoneTasksInToday: false, transferOverdueTasksToToday: false)
             self.spotlight = true
         }
     

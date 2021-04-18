@@ -15,6 +15,7 @@
 
 "SETTINGS_TITLE" = "Настройки";
 "SETTINGS_LANGUAGE_TITLE" = "Языки";
+"SETTINGS_SHORTCUT_TITLE" = "Ярлык по-умолчанию";
 
 "SETTINGS_LANGUAGE" = "Язык";
 "SETTINGS_TASK" = "Задачи";

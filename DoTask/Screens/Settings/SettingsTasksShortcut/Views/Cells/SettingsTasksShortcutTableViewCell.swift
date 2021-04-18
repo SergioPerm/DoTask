@@ -72,11 +72,12 @@ extension SettingsTasksShortcutTableViewCell {
         shape.removeFromSuperlayer()
         if let hexColor = viewModel.outputs.hexColor {
             shapeView.layer.addSublayer(shape)
-            shape.backgroundColor = UIColor(hexString: hexColor).cgColor
+            shape.fillColor = UIColor(hexString: hexColor).cgColor
+            shape.strokeColor = UIColor(hexString: hexColor).cgColor
         }
         
         title.text = viewModel.outputs.itemTitle
-        checkmark.isHidden = viewModel.outputs.select
+        checkmark.isHidden = !viewModel.outputs.select
         
         viewModel.outputs.selectChangeEvent.subscribe(self) { (this, select) in
             this.checkmark.isHidden = !select
@@ -85,7 +86,13 @@ extension SettingsTasksShortcutTableViewCell {
     }
     
     private func drawShape() {
-        let test = ""
+        let iconSize = StyleGuide.Settings.Sizes.iconSize
+        let circleSize = iconSize/2
+        
+        let path = UIBezierPath(arcCenter: CGPoint(x: iconSize/2, y: iconSize/2), radius: circleSize/2, startAngle: 0.0, endAngle: CGFloat(Double.pi * 2), clockwise: true)
+        
+        shape.path = path.cgPath
+        shape.lineWidth = 1.0
     }
     
     private func setup() {

@@ -61,6 +61,12 @@ class SettingsTasksViewController: UIViewController, SettingsTasksViewType {
         setupConstraints()
         setupNavBar()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.inputs.reloadData()
+        tableView.reloadData()
+    }
 }
 
 extension SettingsTasksViewController {

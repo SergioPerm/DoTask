@@ -10,6 +10,7 @@ import Foundation
 
 protocol SettingsTasksShortcutViewModelInputs {
     func setSelected(index: Int)
+    func reloadData()
 }
 
 protocol SettingsTasksShortcutViewModelOutputs {
@@ -52,6 +53,10 @@ class SettingsTasksShortcutViewModel: SettingsTasksShortcutViewModelType, Settin
         settingsService.saveSettings(settings: currentSettings)
     }
     
+    func reloadData() {
+        loadData()
+    }
+    
     //MARK: Outputs
     
     var items: [SettingsTasksShortcutItemViewModelType] = []
@@ -59,6 +64,8 @@ class SettingsTasksShortcutViewModel: SettingsTasksShortcutViewModelType, Settin
 
 extension SettingsTasksShortcutViewModel {
     private func loadData() {
+        items.removeAll()
+        
         items.append(SettingsTasksShortcutItemViewModel(item: SettingsTasksShortcut(shortcut: nil, select: currentSettings.task.defaultShortcut == nil ? true : false)))
         
         shortcutDataSource.shortcuts.forEach({

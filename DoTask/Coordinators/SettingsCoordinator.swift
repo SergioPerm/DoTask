@@ -30,8 +30,8 @@ class SettingsCoordinator: NSObject, Coordinator {
             self?.openTasksSetting()
         }
         
-        vc.settingSpotlightHandler = {
-            
+        vc.settingSpotlightHandler = { [weak self] in
+            self?.openSpotlightSettings()
         }
         
         router?.push(vc: vc, completion: { [weak self] in
@@ -51,8 +51,16 @@ class SettingsCoordinator: NSObject, Coordinator {
             self?.openNewTaskTimeSetting()
         }
         
-        vc.settingDefaultShortcutHandler = {[weak self] in
+        vc.settingDefaultShortcutHandler = { [weak self] in
             self?.openDefaultShortcutSetting()
+        }
+        
+        vc.settingShowCompletedTasksHandler = { [weak self] in
+            self?.openShowDoneTasksSetting()
+        }
+        
+        vc.settingTransferOverdueHandler = { [weak self] in
+            self?.openTrasnferOverdueSetting()
         }
         
         router?.push(vc: vc, completion: nil, transition: nil)
@@ -60,13 +68,26 @@ class SettingsCoordinator: NSObject, Coordinator {
     
     func openNewTaskTimeSetting() {
         let vc: SettingsTasksNewTimeViewType = AppDI.resolve()
-        
         router?.push(vc: vc, completion: nil, transition: nil)
     }
     
     func openDefaultShortcutSetting() {
         let vc: SettingsTasksShortcutViewType = AppDI.resolve()
-        
+        router?.push(vc: vc, completion: nil, transition: nil)
+    }
+    
+    func openShowDoneTasksSetting() {
+        let vc: SettingsTasksShowDoneViewType = AppDI.resolve()
+        router?.push(vc: vc, completion: nil, transition: nil)
+    }
+    
+    func openTrasnferOverdueSetting() {
+        let vc: SettingsTasksTransferOverdueViewType = AppDI.resolve()
+        router?.push(vc: vc, completion: nil, transition: nil)
+    }
+    
+    func openSpotlightSettings() {
+        let vc: SettingsTasksSpotlightViewType = AppDI.resolve()
         router?.push(vc: vc, completion: nil, transition: nil)
     }
 }

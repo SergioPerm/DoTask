@@ -36,7 +36,7 @@ class SettingsTasksShortcutTableViewCell: UITableViewCell, TableViewCellType {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
         label.textAlignment = .left
-        label.font = FontFactory.AvenirNextMedium.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 20))
+        label.font = FontFactory.AvenirNextMedium.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 18))
 
         return label
     }()

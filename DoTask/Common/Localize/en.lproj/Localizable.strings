@@ -16,6 +16,9 @@
 "SETTINGS_TITLE" = "Settings";
 "SETTINGS_LANGUAGE_TITLE" = "Languages";
 "SETTINGS_SHORTCUT_TITLE" = "Default shortcut";
+"SETTINGS_DONE_TITLE" = "Show done tasks";
+"SETTINGS_TRANSFER_OVERDUE_TITLE" = "Transfer overdue";
+"SETTINGS_SPOTLIGHT_TITLE" = "Spotlight";
 
 "SETTINGS_LANGUAGE" = "Language";
 "SETTINGS_TASK" = "Tasks";
@@ -25,6 +28,15 @@
 "SETTINGS_TASK_SHORTCUT" = "Default shortcut";
 "SETTINGS_TASK_SHOW_DONE" = "Show completed tasks";
 "SETTINGS_TASK_TRANSFER_OVERDUE" = "Transfer overdue";
+
+"SETTINGS_SHOW" = "Show";
+"SETTINGS_SHOWDONE_INFO" = "Show completed tasks for today";
+
+"SETTINGS_TRANSFER" = "Transfer";
+"SETTINGS_TRANSFER_INFO" = "Transfer overdue tasks to today";
+
+"SETTINGS_SPOTLIGHT_VALUE" = "Export tasks";
+"SETTINGS_SPOTLIGHT_INFO" = "Export will allow you to find items using Spotlight search on your device";
 
 "FIRST_IN_DAY" = "First in day";
 "LAST_IN_DAY" = "Last in day";

@@ -16,6 +16,9 @@
 "SETTINGS_TITLE" = "Настройки";
 "SETTINGS_LANGUAGE_TITLE" = "Языки";
 "SETTINGS_SHORTCUT_TITLE" = "Ярлык по-умолчанию";
+"SETTINGS_DONE_TITLE" = "Выполненные";
+"SETTINGS_TRANSFER_OVERDUE_TITLE" = "Просроченные";
+"SETTINGS_SPOTLIGHT_TITLE" = "Spotlight";
 
 "SETTINGS_LANGUAGE" = "Язык";
 "SETTINGS_TASK" = "Задачи";
@@ -25,6 +28,15 @@
 "SETTINGS_TASK_SHORTCUT" = "Ярлык по умолчанию";
 "SETTINGS_TASK_SHOW_DONE" = "Показывать выполненные";
 "SETTINGS_TASK_TRANSFER_OVERDUE" = "Перенос просроченных";
+
+"SETTINGS_SHOW" = "Показывать";
+"SETTINGS_SHOWDONE_INFO" = "Показывать выполненные задачи за сегодня";
+
+"SETTINGS_TRANSFER" = "Переносить";
+"SETTINGS_TRANSFER_INFO" = "Переносить просроченные задачи на сегодня";
+
+"SETTINGS_SPOTLIGHT_VALUE" = "Экспорт задач";
+"SETTINGS_SPOTLIGHT_INFO" = "Экспорт позволит вам искать задачи с помощью Spotlight";
 
 "FIRST_IN_DAY" = "В начало дня";
 "LAST_IN_DAY" = "В конец дня";

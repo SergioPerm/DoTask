@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class SettingsNavBarTitle: UIView {
     
@@ -44,6 +45,10 @@ extension SettingsNavBarTitle {
         addSubview(titleLabel)
         
         titleLabel.localizableString = LocalizableStringResource(stringResource: R.string.localizable.settings_TITLE)
+        
+        titleLabel.snp.makeConstraints({ make in
+            make.left.top.right.bottom.equalToSuperview()
+        })
     }
     
     func setTitle(localizeString: LocalizableStringResource?) {

@@ -25,13 +25,13 @@ class SettingsTasksViewController: UIViewController, SettingsTasksViewType {
     
     var settingShowCompletedTasksHandler: (() -> Void)? {
         didSet {
-            
+            viewModel.inputs.setShowCompletedTasksHandler(handler: settingShowCompletedTasksHandler)
         }
     }
     
     var settingTransferOverdueHandler: (() -> Void)? {
         didSet {
-            
+            viewModel.inputs.setTransferOverdueHandler(handler: settingTransferOverdueHandler)
         }
     }
     
@@ -96,7 +96,7 @@ extension SettingsTasksViewController {
         
         navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 44)))]
         
-        let navBarTitleFrame = CGRect(x: 0, y: 0, width: UIView.globalSafeAreaFrame.width * 0.4, height: navBar.frame.height)
+        let navBarTitleFrame = CGRect(x: 0, y: 0, width: UIView.globalSafeAreaFrame.width * StyleGuide.Settings.Sizes.RatioToScreenWidth.settingsNavBarWidth, height: navBar.frame.height)
         let settingsNavBarTitleView = SettingsNavBarTitle(frame: navBarTitleFrame)
         settingsNavBarTitleView.setTitle(localizeString: LocalizableStringResource(stringResource: R.string.localizable.settings_TASK))
         navigationItem.titleView = settingsNavBarTitleView

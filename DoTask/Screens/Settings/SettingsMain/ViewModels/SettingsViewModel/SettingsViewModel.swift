@@ -92,8 +92,10 @@ extension SettingsViewModel {
             }
         }))
         
-        settingsItems.append(SettingsItemViewModel(settingsItem: spotlightSettings, selectAction: {
-            //
+        settingsItems.append(SettingsItemViewModel(settingsItem: spotlightSettings, selectAction: { [weak self] in
+            if let action = self?.spotlightHandler {
+                action()
+            }
         }))
         
     }

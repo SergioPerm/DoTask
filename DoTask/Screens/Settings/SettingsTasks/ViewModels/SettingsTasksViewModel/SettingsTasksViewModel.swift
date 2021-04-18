@@ -109,12 +109,16 @@ extension SettingsTasksViewModel {
             }
         }))
         
-        items.append(SettingsItemViewModel(settingsItem: showDoneTasksInToday, selectAction: {
-            
+        items.append(SettingsItemViewModel(settingsItem: showDoneTasksInToday, selectAction: { [weak self] in
+            if let action = self?.showCompletedTasksHandler {
+                action()
+            }
         }))
         
-        items.append(SettingsItemViewModel(settingsItem: transferOverdueTasks, selectAction: {
-            
+        items.append(SettingsItemViewModel(settingsItem: transferOverdueTasks, selectAction: { [weak self] in
+            if let action = self?.transferOverdueHandler {
+                action()
+            }
         }))
 
     }

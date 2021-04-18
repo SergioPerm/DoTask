@@ -51,6 +51,30 @@ class SettingsDependency: DIPart {
         container.register({
             SettingsTasksShortcutViewController(viewModel: $0, router: $1, presentableControllerViewType: .navigationStack)
         }).as(SettingsTasksShortcutViewType.self)
+        
+        //Show done tasks
+        container.register(SettingsTasksShowDoneViewModel.init)
+            .as(SettingsTasksShowDoneViewModelType.self)
+        
+        container.register({
+            SettingsTasksShowDoneViewController(viewModel: $0, router: $1, presentableControllerViewType: .navigationStack)
+        }).as(SettingsTasksShowDoneViewType.self)
+        
+        //transfer overdue
+        container.register(SettingsTasksTransferOverdueViewModel.init(settingsService:))
+            .as(SettingsTasksTransferOverdueViewModelType.self)
+        
+        container.register({
+            SettingsTasksTransferOverdueViewController(viewModel: $0, router: $1, presentableControllerViewType:    .navigationStack)
+        }).as(SettingsTasksTransferOverdueViewType.self)
+        
+        //Spotlight
+        container.register(SettingsTasksSpotlightViewModel.init(settingsService:))
+            .as(SettingsTasksSpotlightViewModelType.self)
+        
+        container.register({
+            SettingsTasksSpotlightViewController(viewModel: $0, router: $1, presentableControllerViewType: .navigationStack)
+        }).as(SettingsTasksSpotlightViewType.self)
     }
 }
 

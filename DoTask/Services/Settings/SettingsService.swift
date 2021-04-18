@@ -10,6 +10,8 @@ import Foundation
 
 class SettingService {
           
+    let USERDEFAULTS_KEY = "appSettings"
+    
     enum CurrentLanguage: String, Codable, CaseIterable {
         case en
         case ru
@@ -79,11 +81,18 @@ class SettingService {
                 
         init() {
             //DEFAULT SETTINGS
-            if let regionCode = Locale.current.regionCode {
-                self.language = CurrentLanguage(rawValue: regionCode.lowercased())!
+            
+            if let languageCode = Bundle.main.preferredLocalizations.first?.prefix(2) {
+                self.language = CurrentLanguage(rawValue: String(languageCode)) ?? CurrentLanguage(rawValue: "en")!
             } else {
                 self.language = .en
             }
+            
+//            if let regionCode = Locale.current.regionCode {
+//                self.language = CurrentLanguage(rawValue: regionCode.lowercased())!
+//            } else {
+//                self.language = .en
+//            }
 
             self.task = TaskSetting(newTaskTime: .endDay, defaultShortcut: nil, showDoneTasksInToday: false, transferOverdueTasksToToday: false)
             self.spotlight = true
@@ -96,10 +105,8 @@ class SettingService {
     
     init() {
         self.currentSettings = Settings()
-               
-        saveCurrentSettings()
-        
-        if defaults.object(forKey: "appSettings") == nil {
+                       
+        if defaults.object(forKey: USERDEFAULTS_KEY) == nil {
             //Write default settings
             saveCurrentSettings()
         } else {
@@ -110,7 +117,7 @@ class SettingService {
     private func loadCurrentSettings() {
         let defaults = UserDefaults.standard
         
-        if let saveSettings = defaults.object(forKey: "appSettings") as? Data {
+        if let saveSettings = defaults.object(forKey: USERDEFAULTS_KEY) as? Data {
             let decoder = JSONDecoder()
             if let loadedSettings = try? decoder.decode(Settings.self, from: saveSettings) {
                 self.currentSettings = loadedSettings
@@ -123,7 +130,7 @@ class SettingService {
         
         if let encoded = try? encoder.encode(self.currentSettings) {
             let defaults = UserDefaults.standard
-            defaults.set(encoded, forKey: "appSettings")
+            defaults.set(encoded, forKey: USERDEFAULTS_KEY)
         }
     }
     

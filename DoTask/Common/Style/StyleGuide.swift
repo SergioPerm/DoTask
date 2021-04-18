@@ -333,6 +333,10 @@ struct StyleGuide {
         struct Sizes {
             static let insetImageNavBarBtn: UIEdgeInsets = UIEdgeInsets(top: 14, left: 10, bottom: 14, right: 18)
             
+            enum RatioToScreenWidth {
+                static let settingsNavBarWidth: CGFloat = 0.7
+            }
+            
             static let cellHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 50).rounded(.toNearestOrAwayFromZero)
             static let iconSize: CGFloat = getSizeRelativeToScreenWidth(baseSize: 25).rounded(.toNearestOrAwayFromZero)
             static let controlSize: CGFloat = getSizeRelativeToScreenWidth(baseSize: 15).rounded(.toNearestOrAwayFromZero)

@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol DetailTaskViewModelInputs: class {
+protocol DetailTaskViewModelInputs: AnyObject {
     func setTaskDate(date: Date?)
     func setReminder(date: Date?)
     func setTitle(title: String)

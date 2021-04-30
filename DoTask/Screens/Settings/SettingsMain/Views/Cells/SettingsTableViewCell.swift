@@ -78,6 +78,7 @@ extension SettingsTableViewCell {
     private func setup() {
                 
         selectionStyle = .none
+        contentView.backgroundColor = .white
         
         contentView.addSubview(icon)
         contentView.addSubview(settingsTitle)

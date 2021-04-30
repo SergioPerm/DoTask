@@ -123,8 +123,8 @@
 		B153B357262B32E70056D643 /* SettingsTasksShortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = B153B356262B32E70056D643 /* SettingsTasksShortcut.swift */; };
 		B15479D225DBB38D00B70945 /* TaskListPeriodItemViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15479D125DBB38D00B70945 /* TaskListPeriodItemViewModelInputs.swift */; };
 		B15479D525DBB3AC00B70945 /* TaskListPeriodItemViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15479D425DBB3AC00B70945 /* TaskListPeriodItemViewModelOutputs.swift */; };
-		B15B7D0225D1489E00EC1D98 /* DropNavigationTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B7D0125D1489E00EC1D98 /* DropNavigationTransitionController.swift */; };
-		B15B7D0525D148E200EC1D98 /* DropNavigationAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B7D0425D148E200EC1D98 /* DropNavigationAnimationController.swift */; };
+		B15B7D0225D1489E00EC1D98 /* FromRightToLeftTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B7D0125D1489E00EC1D98 /* FromRightToLeftTransitionController.swift */; };
+		B15B7D0525D148E200EC1D98 /* FromRightToLeftAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B7D0425D148E200EC1D98 /* FromRightToLeftAnimationController.swift */; };
 		B15BFA18259877F2003959B8 /* CheckSubtask.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15BFA17259877F2003959B8 /* CheckSubtask.swift */; };
 		B15C9B672569156A00A809B1 /* CalendarPickerViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15C9B662569156A00A809B1 /* CalendarPickerViewModelOutputs.swift */; };
 		B15C9B7425695B6600A809B1 /* DetailTaskViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15C9B7325695B6600A809B1 /* DetailTaskViewModelType.swift */; };
@@ -143,6 +143,8 @@
 		B1687F6C25DC069A009D3DE2 /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1687F6B25DC069A009D3DE2 /* CalendarCollectionViewCell.swift */; };
 		B1687F7625DC0783009D3DE2 /* CalendarMonthViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1687F7525DC0783009D3DE2 /* CalendarMonthViewModelType.swift */; };
 		B1687F7B25DC07F2009D3DE2 /* CalendarDayViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1687F7A25DC07F2009D3DE2 /* CalendarDayViewModelOutputs.swift */; };
+		B16C23422639B72E008B4AAA /* FullScreenTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16C23412639B72E008B4AAA /* FullScreenTransitionController.swift */; };
+		B16C23442639B79E008B4AAA /* FullScreenAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16C23432639B79E008B4AAA /* FullScreenAnimationController.swift */; };
 		B16D0E0E25DD0631007708AB /* CalendarDayViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D0E0D25DD0631007708AB /* CalendarDayViewModelInputs.swift */; };
 		B16D0E1125DD0697007708AB /* CalendarDayViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D0E1025DD0697007708AB /* CalendarDayViewModelType.swift */; };
 		B16D0E1425DD06D1007708AB /* CalendarDayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D0E1325DD06D1007708AB /* CalendarDayViewModel.swift */; };
@@ -249,6 +251,11 @@
 		B1AAC181262C411000B31C12 /* SettingsTasksTransferOverdueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1AAC17B262C411000B31C12 /* SettingsTasksTransferOverdueViewController.swift */; };
 		B1AAC182262C411000B31C12 /* SettingsTasksTransferOverdueSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1AAC17C262C411000B31C12 /* SettingsTasksTransferOverdueSwitch.swift */; };
 		B1AAC183262C411000B31C12 /* SettingsTasksTransferOverdueViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1AAC17E262C411000B31C12 /* SettingsTasksTransferOverdueViewType.swift */; };
+		B1ABC8FB263819910050616A /* NavigationSwipeTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ABC8FA263819910050616A /* NavigationSwipeTransitionController.swift */; };
+		B1ABC8FD263819D40050616A /* NavigationSwipeAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ABC8FC263819D40050616A /* NavigationSwipeAnimationController.swift */; };
+		B1ABC903263999B40050616A /* Splash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1ABC902263999B40050616A /* Splash.storyboard */; };
+		B1ABC90526399AF30050616A /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ABC90426399AF30050616A /* SplashViewController.swift */; };
+		B1ABC90826399BB80050616A /* SplashDependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ABC90726399BB80050616A /* SplashDependency.swift */; };
 		B1B4CA9325C159B900AF5F61 /* TaskListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B4CA9225C159B900AF5F61 /* TaskListItemViewModel.swift */; };
 		B1B4CA9A25C18A8700AF5F61 /* TaskListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B4CA9925C18A8700AF5F61 /* TaskListViewModel.swift */; };
 		B1B4CA9D25C18F9600AF5F61 /* TaskListItemViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B4CA9C25C18F9600AF5F61 /* TaskListItemViewModelInputs.swift */; };
@@ -477,8 +484,8 @@
 		B153B356262B32E70056D643 /* SettingsTasksShortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTasksShortcut.swift; sourceTree = "<group>"; };
 		B15479D125DBB38D00B70945 /* TaskListPeriodItemViewModelInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPeriodItemViewModelInputs.swift; sourceTree = "<group>"; };
 		B15479D425DBB3AC00B70945 /* TaskListPeriodItemViewModelOutputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPeriodItemViewModelOutputs.swift; sourceTree = "<group>"; };
-		B15B7D0125D1489E00EC1D98 /* DropNavigationTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropNavigationTransitionController.swift; sourceTree = "<group>"; };
-		B15B7D0425D148E200EC1D98 /* DropNavigationAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropNavigationAnimationController.swift; sourceTree = "<group>"; };
+		B15B7D0125D1489E00EC1D98 /* FromRightToLeftTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FromRightToLeftTransitionController.swift; sourceTree = "<group>"; };
+		B15B7D0425D148E200EC1D98 /* FromRightToLeftAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FromRightToLeftAnimationController.swift; sourceTree = "<group>"; };
 		B15BFA17259877F2003959B8 /* CheckSubtask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckSubtask.swift; sourceTree = "<group>"; };
 		B15C9B662569156A00A809B1 /* CalendarPickerViewModelOutputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerViewModelOutputs.swift; sourceTree = "<group>"; };
 		B15C9B7325695B6600A809B1 /* DetailTaskViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskViewModelType.swift; sourceTree = "<group>"; };
@@ -497,6 +504,8 @@
 		B1687F6B25DC069A009D3DE2 /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
 		B1687F7525DC0783009D3DE2 /* CalendarMonthViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarMonthViewModelType.swift; sourceTree = "<group>"; };
 		B1687F7A25DC07F2009D3DE2 /* CalendarDayViewModelOutputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDayViewModelOutputs.swift; sourceTree = "<group>"; };
+		B16C23412639B72E008B4AAA /* FullScreenTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenTransitionController.swift; sourceTree = "<group>"; };
+		B16C23432639B79E008B4AAA /* FullScreenAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenAnimationController.swift; sourceTree = "<group>"; };
 		B16D0E0D25DD0631007708AB /* CalendarDayViewModelInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDayViewModelInputs.swift; sourceTree = "<group>"; };
 		B16D0E1025DD0697007708AB /* CalendarDayViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDayViewModelType.swift; sourceTree = "<group>"; };
 		B16D0E1325DD06D1007708AB /* CalendarDayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDayViewModel.swift; sourceTree = "<group>"; };
@@ -602,6 +611,11 @@
 		B1AAC17B262C411000B31C12 /* SettingsTasksTransferOverdueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTasksTransferOverdueViewController.swift; sourceTree = "<group>"; };
 		B1AAC17C262C411000B31C12 /* SettingsTasksTransferOverdueSwitch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTasksTransferOverdueSwitch.swift; sourceTree = "<group>"; };
 		B1AAC17E262C411000B31C12 /* SettingsTasksTransferOverdueViewType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTasksTransferOverdueViewType.swift; sourceTree = "<group>"; };
+		B1ABC8FA263819910050616A /* NavigationSwipeTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationSwipeTransitionController.swift; sourceTree = "<group>"; };
+		B1ABC8FC263819D40050616A /* NavigationSwipeAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationSwipeAnimationController.swift; sourceTree = "<group>"; };
+		B1ABC902263999B40050616A /* Splash.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Splash.storyboard; sourceTree = "<group>"; };
+		B1ABC90426399AF30050616A /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		B1ABC90726399BB80050616A /* SplashDependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashDependency.swift; sourceTree = "<group>"; };
 		B1B4CA9225C159B900AF5F61 /* TaskListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListItemViewModel.swift; sourceTree = "<group>"; };
 		B1B4CA9925C18A8700AF5F61 /* TaskListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListViewModel.swift; sourceTree = "<group>"; };
 		B1B4CA9C25C18F9600AF5F61 /* TaskListItemViewModelInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListItemViewModelInputs.swift; sourceTree = "<group>"; };
@@ -1344,13 +1358,13 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		B15B7D0025D1487000EC1D98 /* DropNavigationTransition */ = {
+		B15B7D0025D1487000EC1D98 /* FromRightToLeftTransition */ = {
 			isa = PBXGroup;
 			children = (
-				B15B7D0125D1489E00EC1D98 /* DropNavigationTransitionController.swift */,
-				B15B7D0425D148E200EC1D98 /* DropNavigationAnimationController.swift */,
+				B15B7D0125D1489E00EC1D98 /* FromRightToLeftTransitionController.swift */,
+				B15B7D0425D148E200EC1D98 /* FromRightToLeftAnimationController.swift */,
 			);
-			path = DropNavigationTransition;
+			path = FromRightToLeftTransition;
 			sourceTree = "<group>";
 		};
 		B15C9B7125695B4400A809B1 /* Protocols */ = {
@@ -1503,6 +1517,15 @@
 				B16D0E1025DD0697007708AB /* CalendarDayViewModelType.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		B16C23402639B701008B4AAA /* FullScreenTransition */ = {
+			isa = PBXGroup;
+			children = (
+				B16C23412639B72E008B4AAA /* FullScreenTransitionController.swift */,
+				B16C23432639B79E008B4AAA /* FullScreenAnimationController.swift */,
+			);
+			path = FullScreenTransition;
 			sourceTree = "<group>";
 		};
 		B170813D25DBF658007AC23B /* CalendarViewModel */ = {
@@ -1681,7 +1704,7 @@
 		B18349E0256AEA5A00D0D096 /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
-				B18349E4256AEAB200D0D096 /* Presenters */,
+				B18349E4256AEAB200D0D096 /* Router */,
 				B18349E1256AEA8700D0D096 /* Protocols */,
 				B18349EC256AEB7500D0D096 /* MainCoordinator.swift */,
 				B1C39D63256BC72E0005C4B6 /* DetailTaskCoordinator.swift */,
@@ -1699,13 +1722,13 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
-		B18349E4256AEAB200D0D096 /* Presenters */ = {
+		B18349E4256AEAB200D0D096 /* Router */ = {
 			isa = PBXGroup;
 			children = (
 				B18349E5256AEAB900D0D096 /* Protocols */,
 				B18349EA256AEB4E00D0D096 /* Router.swift */,
 			);
-			path = Presenters;
+			path = Router;
 			sourceTree = "<group>";
 		};
 		B18349E5256AEAB900D0D096 /* Protocols */ = {
@@ -1719,6 +1742,7 @@
 		B18349EE256AEBD200D0D096 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				B1ABC8FE263973080050616A /* Splash */,
 				B131899F25EBD95E008C63A0 /* SpeechTask */,
 				B1A9140E252062270021E15C /* TaskList */,
 				B11C75B425C82D25004D6639 /* TaskDiary */,
@@ -1879,13 +1903,13 @@
 			path = AddSubtask;
 			sourceTree = "<group>";
 		};
-		B1A4E3E925EFAFA000F65463 /* SpeechRecorderAnimation */ = {
+		B1A4E3E925EFAFA000F65463 /* SpeechRecorderTransition */ = {
 			isa = PBXGroup;
 			children = (
 				B1A4E3EA25EFAFDB00F65463 /* SpeechRecorderTransitionController.swift */,
 				B1A4E3ED25EFB0E900F65463 /* SpeechRecorderAnimationController.swift */,
 			);
-			path = SpeechRecorderAnimation;
+			path = SpeechRecorderTransition;
 			sourceTree = "<group>";
 		};
 		B1A913E3252056FA0021E15C = {
@@ -2081,6 +2105,41 @@
 				B1AAC17E262C411000B31C12 /* SettingsTasksTransferOverdueViewType.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		B1ABC8F9263819710050616A /* NavigationSwipeTransition */ = {
+			isa = PBXGroup;
+			children = (
+				B1ABC8FA263819910050616A /* NavigationSwipeTransitionController.swift */,
+				B1ABC8FC263819D40050616A /* NavigationSwipeAnimationController.swift */,
+			);
+			path = NavigationSwipeTransition;
+			sourceTree = "<group>";
+		};
+		B1ABC8FE263973080050616A /* Splash */ = {
+			isa = PBXGroup;
+			children = (
+				B1ABC90626399BA10050616A /* DI */,
+				B1ABC8FF263973110050616A /* Views */,
+			);
+			path = Splash;
+			sourceTree = "<group>";
+		};
+		B1ABC8FF263973110050616A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B1ABC902263999B40050616A /* Splash.storyboard */,
+				B1ABC90426399AF30050616A /* SplashViewController.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B1ABC90626399BA10050616A /* DI */ = {
+			isa = PBXGroup;
+			children = (
+				B1ABC90726399BB80050616A /* SplashDependency.swift */,
+			);
+			path = DI;
 			sourceTree = "<group>";
 		};
 		B1AC73F12593300A009029C9 /* SubtaskList */ = {
@@ -2513,8 +2572,10 @@
 		B1E79E7C25B5AC6800C443CA /* TransitionAnimators */ = {
 			isa = PBXGroup;
 			children = (
-				B1A4E3E925EFAFA000F65463 /* SpeechRecorderAnimation */,
-				B15B7D0025D1487000EC1D98 /* DropNavigationTransition */,
+				B16C23402639B701008B4AAA /* FullScreenTransition */,
+				B1ABC8F9263819710050616A /* NavigationSwipeTransition */,
+				B1A4E3E925EFAFA000F65463 /* SpeechRecorderTransition */,
+				B15B7D0025D1487000EC1D98 /* FromRightToLeftTransition */,
 				B1D79B0025CD3B66009DB9BF /* FlipAnimation */,
 				B14C997625C6E1F300E36A94 /* ZoomModalTransition */,
 				B14C996F25C6D5BE00E36A94 /* PopUpModalTransition */,
@@ -2734,6 +2795,7 @@
 				B1D5DECA2523884700124DAD /* CalendarPickerHeaderView.xib in Resources */,
 				B1D5DEC92523884700124DAD /* CalendarPickerViewCell.xib in Resources */,
 				B139A76025822527000BAE55 /* testStoryboard.storyboard in Resources */,
+				B1ABC903263999B40050616A /* Splash.storyboard in Resources */,
 				B1E02A302611F9CF003489BD /* Localizable.strings in Resources */,
 				B189A99725249ACA00EAC6A0 /* testView.xib in Resources */,
 				B11D16D726246A840030B6D4 /* CalendarPickerFooterView.xib in Resources */,
@@ -2818,6 +2880,7 @@
 				B14C996225C69C2200E36A94 /* DetailTaskCellType.swift in Sources */,
 				B12F7E5C2529F83600B71AAC /* PushNotificationService.swift in Sources */,
 				B1D5DECF252388ED00124DAD /* UIView.swift in Sources */,
+				B16C23422639B72E008B4AAA /* FullScreenTransitionController.swift in Sources */,
 				B12B0AF125ADC8CF0078315C /* ShortcutListViewModelType.swift in Sources */,
 				B189A99125247E1D00EAC6A0 /* TimePickerViewController.swift in Sources */,
 				B12B0AF925ADDDE30078315C /* ShortcutViewModel.swift in Sources */,
@@ -2845,6 +2908,7 @@
 				B13920142592329A0087D0E9 /* SubtaskViewModel.swift in Sources */,
 				B1D5DEC52523884700124DAD /* CalendarPickerViewController.swift in Sources */,
 				B15479D525DBB3AC00B70945 /* TaskListPeriodItemViewModelOutputs.swift in Sources */,
+				B1ABC90826399BB80050616A /* SplashDependency.swift in Sources */,
 				B181C152261C95A900DF2CED /* SettingsLanguageViewController.swift in Sources */,
 				B1E30EF925A713120036979D /* ShortcutListDataSourceObserver.swift in Sources */,
 				B12B0AE325ADC1CB0078315C /* ShortcutListViewOutputs.swift in Sources */,
@@ -2854,6 +2918,7 @@
 				B1D5C4C0252B674800C4B988 /* UITableViewCell.swift in Sources */,
 				B1EF664625A4BB9C0050FF1C /* ShowInMainListView.swift in Sources */,
 				B1DC539425E3C8BA00140F17 /* TaskListItemType.swift in Sources */,
+				B1ABC90526399AF30050616A /* SplashViewController.swift in Sources */,
 				B1F0198725A8BECC00A284B5 /* MenuItemViewModelSelectableType.swift in Sources */,
 				B1D4CCE5256D26090085C25C /* SettingsViewController.swift in Sources */,
 				B141729025C154EE00EF0D85 /* TaskListPeriodItemViewModel.swift in Sources */,
@@ -2924,6 +2989,7 @@
 				B1D79AF225CC19F6009DB9BF /* TaskDiaryItemViewModel.swift in Sources */,
 				B153B34B2629BA730056D643 /* SettingsTasksShortcutViewModel.swift in Sources */,
 				B13875ED257159CF002DA626 /* CreateShortcutMenuTableViewCell.swift in Sources */,
+				B16C23442639B79E008B4AAA /* FullScreenAnimationController.swift in Sources */,
 				B1D5DEC72523884700124DAD /* CalendarPickerDay.swift in Sources */,
 				B1D5DECD2523884700124DAD /* CalendarPickerHeaderView.swift in Sources */,
 				B1687F6525DC00BE009D3DE2 /* CalendarMonth.swift in Sources */,
@@ -2931,7 +2997,7 @@
 				B19957BA25F5081900F883D8 /* SpeechTextInfo.swift in Sources */,
 				B1A4E3EB25EFAFDB00F65463 /* SpeechRecorderTransitionController.swift in Sources */,
 				B12785ED26286B1700903A1A /* SettingsTaskNewTime.swift in Sources */,
-				B15B7D0225D1489E00EC1D98 /* DropNavigationTransitionController.swift in Sources */,
+				B15B7D0225D1489E00EC1D98 /* FromRightToLeftTransitionController.swift in Sources */,
 				B13D4F01260B5EFD0059D93A /* SaveAccessory.swift in Sources */,
 				B1D4CCE9256D36EA0085C25C /* UIButton.swift in Sources */,
 				B1C5F80D2566551E0040EB3C /* CalendarPickerViewModelInputs.swift in Sources */,
@@ -2946,7 +3012,7 @@
 				B188593C25F73E2700C4C440 /* SpeechTaskViewModelOutputs.swift in Sources */,
 				B11981B52615F3E80075401C /* StorageDependency.swift in Sources */,
 				B17B8FC025CC0E1A00663F97 /* TaskListTableHeaderView.swift in Sources */,
-				B15B7D0525D148E200EC1D98 /* DropNavigationAnimationController.swift in Sources */,
+				B15B7D0525D148E200EC1D98 /* FromRightToLeftAnimationController.swift in Sources */,
 				B11769CB2610B6FC006391F0 /* TaskCounter.swift in Sources */,
 				B12785E926286ACC00903A1A /* SettingsTasksNewTimeViewController.swift in Sources */,
 				B15BFA18259877F2003959B8 /* CheckSubtask.swift in Sources */,
@@ -2992,6 +3058,7 @@
 				B1A913F0252056FA0021E15C /* AppDelegate.swift in Sources */,
 				B1EF663B25A489B50050FF1C /* DetailShortcutViewController.swift in Sources */,
 				B1AAC183262C411000B31C12 /* SettingsTasksTransferOverdueViewType.swift in Sources */,
+				B1ABC8FB263819910050616A /* NavigationSwipeTransitionController.swift in Sources */,
 				B18C91C225334D74004DFB73 /* ImportanceAccessory.swift in Sources */,
 				B188594725F742EC00C4C440 /* SpeechTaskViewModelInputs.swift in Sources */,
 				B15C9B7625695B7E00A809B1 /* DetailTaskViewModelInputs.swift in Sources */,
@@ -3017,6 +3084,7 @@
 				B17CCE092616E58B00D0C641 /* TaskDiaryDependency.swift in Sources */,
 				B14C997825C6E20C00E36A94 /* ZoomModalTransitionController.swift in Sources */,
 				B1D5DEC62523884700124DAD /* CalendarPickerMonth.swift in Sources */,
+				B1ABC8FD263819D40050616A /* NavigationSwipeAnimationController.swift in Sources */,
 				B13E076B25A9905100020F5E /* MenuItemSectionViewModelType.swift in Sources */,
 				B13875E0257121E7002DA626 /* NSObject.swift in Sources */,
 				B17B8FB125CBED9300663F97 /* TableViewFRCHelper.swift in Sources */,

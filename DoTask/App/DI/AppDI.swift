@@ -17,6 +17,7 @@ class AppDI {
         AppDependency.load(container: container)
         StorageDependency.load(container: container)
         NotificationDependency.load(container: container)
+        SplashDependency.load(container: container)
         SlideMenuDependency.load(container: container)
         TaskListDependency.load(container: container)
         DetailTaskDependency.load(container: container)

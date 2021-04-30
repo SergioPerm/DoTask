@@ -14,7 +14,7 @@ class TaskCounter: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = R.color.taskList.counterText()
-        label.font = FontFactory.AvenirNextBold.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 15))
+        label.font = FontFactory.AvenirNext.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 12))
         label.textAlignment = .center
         
         return label

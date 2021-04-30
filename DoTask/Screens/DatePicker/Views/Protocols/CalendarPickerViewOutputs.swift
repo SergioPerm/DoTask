@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol CalendarPickerViewOutputs: class {
+protocol CalendarPickerViewOutputs: AnyObject {
     var selectedCalendarDate: Date? { get set }
     func comletionAfterCloseCalendar()
 }

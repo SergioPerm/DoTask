@@ -15,9 +15,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var coordinator: MainCoordinator?
     var window: UIWindow?
-    
+        
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
- 
+         
         let path = FileManager
             .default
             .urls(for: .applicationSupportDirectory, in: .userDomainMask)
@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let router: RouterType = AppDI.resolve()
         coordinator = AppDI.resolve()
-        coordinator?.start()
+        coordinator?.start(finishCompletion: nil)
         
         window = UIWindow(frame: UIScreen.main.bounds)
         

@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol MenuViewModelInputs: class {
+protocol MenuViewModelInputs: AnyObject {
     var createShortcutHandler: (() -> Void)? { get set }
     var shortcutTableView: ShortcutListTableViewType? { get set }
     func deleteShortcut(for shortcut: Shortcut)

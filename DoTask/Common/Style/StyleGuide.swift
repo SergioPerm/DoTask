@@ -44,8 +44,8 @@ struct StyleGuide {
         enum Sizes {
             static let headerHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 40.0)
             static let headerTitleHeight: CGFloat = 30.0
-            static let counterHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 23.0)
-            static let counterWidth: CGFloat = getSizeRelativeToScreenWidth(baseSize: 50.0)
+            static let counterHeight: CGFloat = getSizeRelativeToScreenWidth(baseSize: 20.0)
+            static let counterWidth: CGFloat = getSizeRelativeToScreenWidth(baseSize: 40)
             static let checkMarkSize: CGSize = CGSize(width: 24, height: 24)
             static let checkMarkLineWidth: CGFloat = 4.0
             

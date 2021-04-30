@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol TaskDiaryViewType: class {
+protocol TaskDiaryViewType: AnyObject {
     func tableViewReload()
     func tableViewBeginUpdates()
     func tableViewInsertRow(at newIndexPath: IndexPath)

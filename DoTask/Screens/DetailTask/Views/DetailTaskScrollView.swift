@@ -419,7 +419,7 @@ extension DetailTaskScrollView: SubtaskTableViewCellDelegate {
         }
         
         switch state {
-        case UIGestureRecognizerState.began:
+        case UIGestureRecognizer.State.began:
             if let indexPath = indexPath {
                 
                 guard let cell = subtaskTableView.cellForRow(at: indexPath) as? SubtaskTableViewCell else { return }
@@ -455,7 +455,7 @@ extension DetailTaskScrollView: SubtaskTableViewCellDelegate {
                     }
                 })
             }
-        case UIGestureRecognizerState.changed:
+        case UIGestureRecognizer.State.changed:
             if let indexPath = indexPath, let snapshot = My.cellSnapshot {
                 if indexPath.section == 0 {
                     var center = snapshot.center

@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol ColorSelectionItemViewModelType: class {
+protocol ColorSelectionItemViewModelType: AnyObject {
     var inputs: ColorSelectionItemViewModelInputs { get }
     var outputs: ColorSelectionItemViewModelOutputs { get }
 }

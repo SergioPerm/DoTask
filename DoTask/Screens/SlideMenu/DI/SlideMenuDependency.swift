@@ -22,7 +22,7 @@ final class SlideMenuDependency: DIPart {
             .lifetime(.prototype)
         
         container.register {
-            MenuViewController(viewModel: $0, presenter: $1, presentableControllerViewType: .slideMenu)
+            MenuViewController(viewModel: $0, presenter: $1, presentableControllerViewType: .containerChild)
         }.as(SlideMenuViewType.self).lifetime(.perRun(.weak))
                 
     }

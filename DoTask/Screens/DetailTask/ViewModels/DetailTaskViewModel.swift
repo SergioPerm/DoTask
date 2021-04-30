@@ -24,6 +24,9 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
     
     private var filter: TaskListFilter?
     
+    private let settingsService: SettingService = AppDI.resolve()
+    private var currentSettings: SettingService.Settings
+    
     var inputs: DetailTaskViewModelInputs { return self }
     var outputs: DetailTaskViewModelOutputs { return self }
     
@@ -38,23 +41,32 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
         
         self.selectedDate = Observable(task.taskDate)
         self.selectedTime = Observable(task.reminderDate ? task.taskDate : nil)
+        
         self.selectedShortcut = Observable(ShortcutData(title: nil, colorHex: nil))
         
         self.importanceLevel = Int(task.importanceLevel)
         self.asksToDelete = Observable(false)
         self.addSubtaskEvent = Event<Bool>()
+        
+        //data from settings
+        currentSettings = settingsService.getSettings()
+        
+        if task.isNew {
+            if let defaultShortcut = currentSettings.task.defaultShortcut {
+                setShortcut(shortcutUID: defaultShortcut)
+            } else if let lastUsedShortcut = currentSettings.lastUsedShortcut {
+                setShortcut(shortcutUID: lastUsedShortcut)
+            }
+        }
     }
-    
     
     // MARK: INPUTS
     
     func setTaskUID(UID: String?) {
-        task = dataSource.taskModelByIdentifier(identifier: UID) ?? Task()
+        guard let taskUID = UID, let taskFromUID = dataSource.taskModelByIdentifier(identifier: taskUID) else { return }
         
-        if task.isNew {
-            task.taskDate = Date().startOfDay()
-        }
-        
+        task = taskFromUID
+                
         selectedDate = Observable(task.taskDate)
         selectedTime = Observable(task.reminderDate ? task.taskDate : nil)
         
@@ -76,7 +88,7 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
             selectedDate = Observable(task.taskDate)
             selectedTime = Observable(task.reminderDate ? task.taskDate : nil)
         }
-        
+    
         setShortcut(shortcutUID: filter.shortcutFilter)
         setupSections()
     }
@@ -169,6 +181,9 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
         } else {
             dataSource.updateTask(from: task)
         }
+        
+        currentSettings.lastUsedShortcut = task.shortcut?.uid
+        settingsService.saveSettings(settings: currentSettings)
     }
     
     func deleteTask() {

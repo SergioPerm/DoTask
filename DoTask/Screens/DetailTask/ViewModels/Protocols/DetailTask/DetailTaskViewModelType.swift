@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol DetailTaskViewModelType: class {
+protocol DetailTaskViewModelType: AnyObject {
     var inputs: DetailTaskViewModelInputs { get }
     var outputs: DetailTaskViewModelOutputs { get }
 }

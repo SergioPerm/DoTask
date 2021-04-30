@@ -57,6 +57,11 @@ class TaskListViewModel: TaskListViewModelType, TaskListViewModelInputs, TaskLis
     
     // MARK: Inputs
             
+    func reloadData() {
+        dataSource.reloadData()
+        loadData()
+    }
+    
     func setFilter(filter: TaskListFilter) {
         currentFilter = filter
         
@@ -275,6 +280,9 @@ extension TaskListViewModel {
 }
 
 extension TaskListViewModel: TableViewFRCHelperDelegate {
+    func updateItem(indexPath: IndexPath) {
+        updateTaskInData(at: indexPath)
+    }
     
     func addItem(indexPath: IndexPath) {
         
@@ -369,7 +377,8 @@ extension TaskListViewModel: TaskListDataSourceObserver {
     }
     
     func taskUpdated(at indexPath: IndexPath) {
-        updateTaskInData(at: indexPath)
+        tableViewFRCHelper.addTableChange(changeType: .update, indexPath: indexPath)
+        //updateTaskInData(at: indexPath)
     }
     
     func taskSectionDelete(section: Int) {

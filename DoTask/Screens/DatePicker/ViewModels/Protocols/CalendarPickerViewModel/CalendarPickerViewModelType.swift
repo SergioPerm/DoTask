@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol CalendarPickerViewModelType: class {
+protocol CalendarPickerViewModelType: AnyObject {
     var inputs: CalendarPickerViewModelInputs { get }
     var outputs: CalendarPickerViewModelOutputs { get }
 }

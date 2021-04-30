@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol TaskListEmptyItemViewModelType: class, TaskListItemType {
+protocol TaskListEmptyItemViewModelType: AnyObject, TaskListItemType {
     var info: LocalizableStringResource? { get }
     var rowHeight: Int { get }
 }

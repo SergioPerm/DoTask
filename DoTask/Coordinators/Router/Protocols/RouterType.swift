@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol RouterType: class {
+protocol RouterType: AnyObject {
     var presentableControllers: [PresentableController?] { get set }
     var rootViewController: UIViewController { get set }
     

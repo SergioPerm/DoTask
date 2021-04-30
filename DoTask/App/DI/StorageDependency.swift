@@ -18,7 +18,7 @@ class StorageDependency: DIPart {
             .as(ShortcutListDataSource.self)
             .lifetime(.prototype)
         
-        container.register(TaskListDataSourceCoreData.init(coreDataService:))
+        container.register(TaskListDataSourceCoreData.init(coreDataService:settingsService:))
             .as(TaskListDataSource.self)
             .lifetime(.prototype)
         

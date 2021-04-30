@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol TimePickerViewOutputs: class {
+protocol TimePickerViewOutputs: AnyObject {
     var selectedReminderTime: Date? { get set }
     func completionAfterCloseTimePicker()
 }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol TaskListViewObservable: class {
+protocol TaskListViewObservable: AnyObject {
     // TableView
     func tableViewReload()
     func tableViewBeginUpdates()

@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol SubtaskTableViewCellDelegate: class {
+protocol SubtaskTableViewCellDelegate: AnyObject {
     func updateHeightOfRow()
     func deleteSubtask(_ subtaskViewModel: SubtaskViewModelType, cell: SubtaskTableViewCell)
     func reorderCell(_ cell: SubtaskTableViewCell, gestureRecognizer: UILongPressGestureRecognizer)

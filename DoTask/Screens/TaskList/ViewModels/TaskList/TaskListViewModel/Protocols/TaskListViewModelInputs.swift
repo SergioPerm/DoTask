@@ -12,4 +12,5 @@ protocol TaskListViewModelInputs {
     func setFilter(filter: TaskListFilter)
     func editTask(indexPath: IndexPath)
     func setMode(mode: TaskListMode)
+    func reloadData()
 }

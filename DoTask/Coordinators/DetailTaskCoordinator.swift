@@ -24,7 +24,7 @@ class DetailTaskCoordinator: NSObject, Coordinator {
         self.taskDate = taskDate
     }
     
-    func start() {
+    func start(finishCompletion: (() -> Void)?) {
         let vc: DetailTaskViewType = taskUID == nil ? AppDI.resolve(withTag: DetailTaskNewViewController.self) : AppDI.resolve(withTag: DetailTaskEditViewController.self)
         
         vc.setTaskUID(UID: taskUID)

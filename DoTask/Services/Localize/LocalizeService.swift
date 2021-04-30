@@ -40,7 +40,7 @@ protocol LocalizableEntity {
     func subscribe()
 }
 
-protocol LocalizeServiceType: class {
+protocol LocalizeServiceType: AnyObject {
     func subscribe(subscriber: UIView, whenChangeLocale: @escaping (_ locale: String) -> Void)
     func unsubscribe(subscriber: UIView)
     func localizeString(forKey: String, locale: String) -> String

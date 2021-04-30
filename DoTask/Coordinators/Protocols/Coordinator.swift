@@ -13,7 +13,7 @@ protocol Coordinator: NSObject {
     var childCoordinators: [Coordinator] { get set }
     var router: RouterType? { get set }
     
-    func start()
+    func start(finishCompletion: (() -> Void)?)
 }
 
 extension Coordinator {

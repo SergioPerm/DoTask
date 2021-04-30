@@ -21,7 +21,7 @@ protocol SettingsTasksNewTimeItemViewModelOutputs {
     func getTime() -> SettingService.NewTaskTime
 }
 
-protocol SettingsTasksNewTimeItemViewModelType: class {
+protocol SettingsTasksNewTimeItemViewModelType: AnyObject {
     var inputs: SettingsTasksNewTimeItemViewModelInputs { get }
     var outputs: SettingsTasksNewTimeItemViewModelOutputs { get }
 }

@@ -6,9 +6,11 @@
 //  Copyright © 2021 itotdel. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 protocol SettingsViewType: PresentableController {
+    var navDelegate: UINavigationControllerDelegate? { get set }
+    
     var settingLanguageHandler: (() -> Void)? { get set }
     var settingTasksHandler: (() -> Void)? { get set }
     var settingSpotlightHandler: (() -> Void)? { get set }

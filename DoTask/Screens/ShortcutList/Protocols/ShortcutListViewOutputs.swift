@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol ShortcutListViewOutputs: class {
+protocol ShortcutListViewOutputs: AnyObject {
     var selectedShortcutUID: String? { get set }
 }

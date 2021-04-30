@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AnimatableProps: class {
+protocol AnimatableProps: AnyObject {
     
     // [ViewProperty?:Snapshot]
     var animatableProps: [UIView?: UIView] { get set }

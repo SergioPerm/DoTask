@@ -15,17 +15,17 @@ class SettingsDependency: DIPart {
         //Main settings
         container.register(SettingsViewModel.init(settingsService:))
             .as(SettingsViewModelType.self)
-        
+  
         container.register{
-            SettingsViewController(viewModel: $0, router: $1, presentableControllerViewType: .navigationStack)
+            SettingsNavigationController(viewModel: $0, router: $1, presentableControllerViewType: .presentWithTransition)
         }.as(SettingsViewType.self)
-                
+                        
         //Languages
         container.register(SettingsLanguageViewModel.init(settingsService:localizeService:))
             .as(SettingsLanguageViewModelType.self)
         
         container.register{
-            SettingsLanguageViewController(viewModel: $0, router: $1, presentableControllerViewType: .navigationStack)
+            SettingsLanguageViewController(viewModel: $0, router: $1, presentableControllerViewType: .selfNavigationStack)
         }.as(SettingsLanguageViewType.self)
         
         //Tasks
@@ -33,7 +33,7 @@ class SettingsDependency: DIPart {
             .as(SettingsTasksViewModelType.self)
         
         container.register({
-            SettingsTasksViewController.init(viewModel: $0, router: $1, presentableControllerViewType: .navigationStack)
+            SettingsTasksViewController.init(viewModel: $0, router: $1, presentableControllerViewType: .selfNavigationStack)
         }).as(SettingsTasksViewType.self)
         
         //Task new time
@@ -41,7 +41,7 @@ class SettingsDependency: DIPart {
             .as(SettingsTasksNewTimeViewModelType.self)
         
         container.register({
-            SettingsTasksNewTimeViewController(viewModel: $0, router: $1, presentableControllerViewType: .navigationStack)
+            SettingsTasksNewTimeViewController(viewModel: $0, router: $1, presentableControllerViewType: .selfNavigationStack)
         }).as(SettingsTasksNewTimeViewType.self)
         
         //Default shortcut
@@ -49,7 +49,7 @@ class SettingsDependency: DIPart {
             .as(SettingsTasksShortcutViewModelType.self)
         
         container.register({
-            SettingsTasksShortcutViewController(viewModel: $0, router: $1, presentableControllerViewType: .navigationStack)
+            SettingsTasksShortcutViewController(viewModel: $0, router: $1, presentableControllerViewType: .selfNavigationStack)
         }).as(SettingsTasksShortcutViewType.self)
         
         //Show done tasks
@@ -57,7 +57,7 @@ class SettingsDependency: DIPart {
             .as(SettingsTasksShowDoneViewModelType.self)
         
         container.register({
-            SettingsTasksShowDoneViewController(viewModel: $0, router: $1, presentableControllerViewType: .navigationStack)
+            SettingsTasksShowDoneViewController(viewModel: $0, router: $1, presentableControllerViewType: .selfNavigationStack)
         }).as(SettingsTasksShowDoneViewType.self)
         
         //transfer overdue
@@ -65,7 +65,7 @@ class SettingsDependency: DIPart {
             .as(SettingsTasksTransferOverdueViewModelType.self)
         
         container.register({
-            SettingsTasksTransferOverdueViewController(viewModel: $0, router: $1, presentableControllerViewType:    .navigationStack)
+            SettingsTasksTransferOverdueViewController(viewModel: $0, router: $1, presentableControllerViewType:    .selfNavigationStack)
         }).as(SettingsTasksTransferOverdueViewType.self)
         
         //Spotlight
@@ -73,7 +73,7 @@ class SettingsDependency: DIPart {
             .as(SettingsTasksSpotlightViewModelType.self)
         
         container.register({
-            SettingsTasksSpotlightViewController(viewModel: $0, router: $1, presentableControllerViewType: .navigationStack)
+            SettingsTasksSpotlightViewController(viewModel: $0, router: $1, presentableControllerViewType: .selfNavigationStack)
         }).as(SettingsTasksSpotlightViewType.self)
     }
 }

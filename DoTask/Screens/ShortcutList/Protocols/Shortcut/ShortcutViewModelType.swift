@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol ShortcutViewModelType: class {
+protocol ShortcutViewModelType: AnyObject {
     var outputs: ShortcutViewModelOutputs { get }
 }

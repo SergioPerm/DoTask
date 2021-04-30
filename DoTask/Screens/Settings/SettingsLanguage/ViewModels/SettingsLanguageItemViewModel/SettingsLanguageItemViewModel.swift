@@ -21,7 +21,7 @@ protocol SettingsLanguageItemViewModelOutputs {
     var selectChangeEvent: Event<Bool> { get }
 }
 
-protocol SettingsLanguageItemViewModelType: class {
+protocol SettingsLanguageItemViewModelType: AnyObject {
     var inputs: SettingsLanguageItemViewModelInputs { get }
     var outputs: SettingsLanguageItemViewModelOutputs { get }
 }

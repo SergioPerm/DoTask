@@ -8,7 +8,66 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController, SettingsViewType {
+class SettingsNavigationController: UINavigationController, SettingsViewType {
+    
+    //SettingsViewType
+    var navDelegate: UINavigationControllerDelegate? {
+        didSet {
+            delegate = navDelegate
+        }
+    }
+    
+    var settingLanguageHandler: (() -> Void)? {
+        didSet {
+            vc.settingLanguageHandler = settingLanguageHandler
+        }
+    }
+    
+    var settingTasksHandler: (() -> Void)? {
+        didSet {
+            vc.settingTasksHandler = settingTasksHandler
+        }
+    }
+    
+    var settingSpotlightHandler: (() -> Void)? {
+        didSet {
+            vc.settingSpotlightHandler = settingSpotlightHandler
+        }
+    }
+    
+    var presentableControllerViewType: PresentableControllerViewType
+    var router: RouterType?
+    var persistentType: PersistentViewControllerType?
+        
+    private let vc: SettingsViewController
+    
+    init(viewModel: SettingsViewModelType, router: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
+        self.router = router
+        self.presentableControllerViewType = presentableControllerViewType
+        
+        self.vc = SettingsViewController(viewModel: viewModel)
+        
+        if #available(iOS 13.0, *) {
+            super.init(rootViewController: vc)
+        } else {
+            super.init(nibName: nil, bundle: nil)
+            self.viewControllers = [vc]
+        }
+        
+        view.backgroundColor = .white
+    }
+        
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+        
+    func getNavigationController() -> UINavigationController? {
+        return self
+    }
+    
+}
+
+class SettingsViewController: UIViewController {
     
     //SettingsViewType
     var settingLanguageHandler: (() -> Void)? {
@@ -33,14 +92,12 @@ class SettingsViewController: UIViewController, SettingsViewType {
     
     private let tableView: UITableView = UITableView()
     
-    var presentableControllerViewType: PresentableControllerViewType
+    var presentableControllerViewType: PresentableControllerViewType = .mainNavigationStack
     var router: RouterType?
     var persistentType: PersistentViewControllerType?
     
-    init(viewModel: SettingsViewModelType, router: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
+    init(viewModel: SettingsViewModelType) {
         self.viewModel = viewModel
-        self.router = router
-        self.presentableControllerViewType = presentableControllerViewType
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -52,7 +109,7 @@ class SettingsViewController: UIViewController, SettingsViewType {
         super.viewDidLoad()
 
         setup()
-        setupConstraints()
+        //setupConstraints()
         setupNavBar()
     }
     
@@ -61,12 +118,20 @@ class SettingsViewController: UIViewController, SettingsViewType {
         viewModel.inputs.reloadData()
         tableView.reloadData()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        tableView.layoutSubviews()
+    }
+    
 }
 
 extension SettingsViewController {
     private func setup() {
-        tableView.translatesAutoresizingMaskIntoConstraints = false
+        //tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(tableView)
         
+        tableView.frame = view.frame
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = 600
         tableView.backgroundColor = .white
@@ -76,7 +141,7 @@ extension SettingsViewController {
         
         tableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: SettingsTableViewCell.className)
         
-        view.addSubview(tableView)
+        
     }
     
     private func setupConstraints() {
@@ -87,6 +152,8 @@ extension SettingsViewController {
     
     private func setupNavBar() {
         guard let navBar = self.navigationController?.navigationBar else { return }
+        
+        navBar.setFlatNavBar()
         
         navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 44)))]
         
@@ -103,8 +170,11 @@ extension SettingsViewController {
     }
     
     @objc private func closeSettings(sender: UIBarButtonItem) {
-        router?.pop(vc: self)
+        if let navPresentable = self.navigationController as? PresentableController {
+            navPresentable.router?.pop(vc: navPresentable)
+        }
     }
+    
 }
 
 extension SettingsViewController: UITableViewDataSource {

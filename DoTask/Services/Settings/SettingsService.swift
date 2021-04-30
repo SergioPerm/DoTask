@@ -74,11 +74,13 @@ class SettingService {
     }
     
     struct Settings: Codable, PropertyIterator {
-    
         var language: CurrentLanguage
         var task: TaskSetting
         var spotlight: Bool
                 
+        //additional data
+        var lastUsedShortcut: String?
+        
         init() {
             //DEFAULT SETTINGS
             
@@ -87,17 +89,10 @@ class SettingService {
             } else {
                 self.language = .en
             }
-            
-//            if let regionCode = Locale.current.regionCode {
-//                self.language = CurrentLanguage(rawValue: regionCode.lowercased())!
-//            } else {
-//                self.language = .en
-//            }
-
+        
             self.task = TaskSetting(newTaskTime: .endDay, defaultShortcut: nil, showDoneTasksInToday: false, transferOverdueTasksToToday: false)
             self.spotlight = true
         }
-    
     }
     
     private var currentSettings: Settings

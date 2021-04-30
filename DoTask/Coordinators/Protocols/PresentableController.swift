@@ -13,10 +13,11 @@ enum PersistentViewControllerType {
 }
 
 enum PresentableControllerViewType {
-    case slideMenu
     case containerChild
-    case navigationStack
-    case navigationStackWithTransition
+    case mainNavigationStack
+    case mainNavigationStackWithTransition
+    case selfNavigationStack
+    case selfNavigationStackWithTransition
     case systemPopoverModal
     case presentWithTransition
 }
@@ -25,9 +26,11 @@ protocol PresentableController: UIViewController {
     var presentableControllerViewType: PresentableControllerViewType { get set }
     var router: RouterType? { get set }
     var persistentType: PersistentViewControllerType? { get set }
+    
+    func getNavigationController() -> UINavigationController?
 }
 
-extension PresentableController where Self: UIViewController {
+extension PresentableController {
     func getNavigationController() -> UINavigationController? {
         return navigationController ?? nil
     }

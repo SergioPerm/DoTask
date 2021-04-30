@@ -95,6 +95,10 @@ extension TaskDiaryViewModel: TableViewFRCHelperDelegate {
     func deleteSection(indexPath: IndexPath) {
         
     }
+    
+    func updateItem(indexPath: IndexPath) {
+        
+    }
 }
 
 extension TaskDiaryViewModel: TaskListDataSourceObserver {

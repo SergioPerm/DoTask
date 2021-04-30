@@ -18,7 +18,15 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
         self.router = presenter
     }
     
-    func start() {
+    func start(finishCompletion: (() -> Void)?) {
+        let vc: SplashViewController = AppDI.resolve()
+        
+        router?.push(vc: vc, completion: { [weak self] in
+            self?.openMainScreen()
+        }, transition: FullScreenTransitionController())
+    }
+            
+    func openMainScreen() {
         let vc: SlideMenuViewType = AppDI.resolve()//SlideMenuAssembly.createInstance(router: router)
 
         vc.openTaskListHandler = { menu, shortcutFilter in
@@ -36,7 +44,7 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
         
         router?.push(vc: vc, completion: nil, transition: nil)
     }
-            
+    
     func editShortcut(shortcutUID: String?) {
         let vc: DetailShortcutViewType = AppDI.resolve()//DetailShortcutAssembly.createInstance(shortcutUID: shortcutUID, router: router)
         vc.shortcutUID = shortcutUID
@@ -83,19 +91,20 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
     }
     
     func openSettings(menu: SlideMenuViewType?) {
-        menu?.toggleMenu()
-        
         let child = SettingsCoordinator(router: router)
         child.parentCoordinator = self
         childCoordinators.append(child)
-        child.start()
+        child.start(finishCompletion: {
+            menu?.toggleMenu()
+            //menu?.parentController?.didMenuCollapse()
+        })
     }
     
     func editTask(taskUID: String?, shortcutUID: String?, taskDate: Date?) {
         let child = DetailTaskCoordinator(router: router, taskUID: taskUID, shortcutUID: shortcutUID, taskDate: taskDate)
         child.parentCoordinator = self
         childCoordinators.append(child)
-        child.start()
+        child.start(finishCompletion: nil)
     }
     
     func speechTask(recognizer: UILongPressGestureRecognizer, shortcutUID: String?, taskDate: Date?) {

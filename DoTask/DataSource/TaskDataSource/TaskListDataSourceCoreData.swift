@@ -20,6 +20,8 @@ class TaskListDataSourceCoreData: NSObject {
     private var shortcutFecthResultsController: NSFetchedResultsController<ShortcutManaged> = NSFetchedResultsController()
     private let notificationCenter: PushNotificationService = AppDI.resolve()
     
+    private let settingsService: SettingService
+    
     // MARK: Filters
     
     private var shortcutFilter: String?
@@ -28,8 +30,9 @@ class TaskListDataSourceCoreData: NSObject {
     
     // MARK: Init
     
-    init(coreDataService: CoreDataService) {
+    init(coreDataService: CoreDataService, settingsService: SettingService) {
         self.context = coreDataService.context
+        self.settingsService = settingsService
         
         super.init()
         
@@ -40,6 +43,10 @@ class TaskListDataSourceCoreData: NSObject {
 
 // MARK: TaskListDataSource
 extension TaskListDataSourceCoreData: TaskListDataSource {
+    
+    func reloadData() {
+        setupFetchResultsController()
+    }
     
     func applyFilters(filter: TaskListFilter) {
         self.shortcutFilter = filter.shortcutFilter
@@ -362,6 +369,24 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
             newTask.isDone = false
             newTask.sortDate = task.sortDate
             
+            if settingsService.getSettings().task.newTaskTime == .startDay {
+                //get all task for daily period and calculate lower date
+                let dailyPeriod = task.taskDate?.dailyNameForTask() ?? .later
+                
+                let fetchTasksForPeriod: NSFetchRequest<TaskManaged> = TaskManaged.fetchRequest()
+                fetchTasksForPeriod.sortDescriptors = [NSSortDescriptor(key: "sortDate", ascending: true)]
+                fetchTasksForPeriod.predicate = getPredicateForDailyPeriod(dailyPeriod: dailyPeriod)
+                
+                do {
+                    let periodTasks = try context.fetch(fetchTasksForPeriod)
+                    if let firstTask = periodTasks.first {
+                        newTask.sortDate = firstTask.sortDate - 1
+                    }
+                } catch {
+                    fatalError()
+                }
+            }
+            
             if let shortcut = task.shortcut {
                 newTask.shortcut = shortcutByIdentifier(identifier: shortcut.uid)
             }
@@ -388,7 +413,6 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
             } catch {
                 fatalError()
             }
-            
         }
     }
     
@@ -474,7 +498,7 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
             predicate = NSPredicate(format: "taskDate >= %@ AND taskDate <= %@", afterTommorowDay.startOfDay() as NSDate, endOfWeek.endOfDay() as NSDate)
         case .later:
             guard let endOfWeek = Date().endOfWeek else { return predicate }
-            predicate = NSPredicate(format: "taskDate > %@", endOfWeek.startOfDay() as NSDate)
+            predicate = NSPredicate(format: "taskDate > %@ OR taskDate = nil", endOfWeek.startOfDay() as NSDate)
         }
         
         return predicate
@@ -594,7 +618,7 @@ extension TaskListDataSourceCoreData: NSFetchedResultsControllerDelegate {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         
         if shortcutFecthResultsController == controller, let shortcutManaged = anObject as? ShortcutManaged {
-            context.performAndWait {
+            context.perform {
                 shortcutManaged.tasks.forEach {
                     if let taskManaged = $0 as? TaskManaged {
                         taskManaged.shortcut = shortcutManaged
@@ -660,7 +684,6 @@ extension TaskListDataSourceCoreData {
         let taskListOrderSort = NSSortDescriptor(key: "mainTaskListOrder", ascending: true)
         let taskDateSort = NSSortDescriptor(key: "taskDate", ascending: true)
         let taskCreateDateSort = NSSortDescriptor(key: "sortDate", ascending: true)
-        //let taskTitleSort = NSSortDescriptor(key: "title", ascending: true)
         let doneDateSort = NSSortDescriptor(key: "doneDate", ascending: false)
                 
         var sectionNameKeyPath = "dailyName"
@@ -682,14 +705,25 @@ extension TaskListDataSourceCoreData {
             predicates.append(NSPredicate(format: "taskDate >= %@ AND taskDate <= %@", dayFilter.startOfDay() as NSDate, dayFilter.endOfDay() as NSDate))
             sectionNameKeyPath = "taskDay"
         } else {
-            predicates.append(NSPredicate(format: "isDone == %@", NSNumber(value: onlyFinishedTasksFilter)))
+            var donePredicates: [NSPredicate] = []
+            donePredicates.append(NSPredicate(format: "isDone == %@", NSNumber(value: onlyFinishedTasksFilter)))
+            
+            //Settings for show done tasks
+            let settingsService: SettingService = AppDI.resolve()
+                     
+            if settingsService.getSettings().task.showDoneTasksInToday {
+                donePredicates.append(NSPredicate(format: "taskDate <= %@ AND taskDate >= %@ AND isDone == %@", Date().endOfDay() as NSDate, Date().startOfDay() as NSDate, NSNumber(value: true)))
+            }
+            
+            let doneCompaundPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: donePredicates)
+            predicates.append(doneCompaundPredicate)
         }
         
         if onlyFinishedTasksFilter {
             sectionNameKeyPath = "doneDay"
             fetchRequest.sortDescriptors = taskDiarySortDescriptors
         }
-                
+        
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         
         // Initialize Fetched Results Controller

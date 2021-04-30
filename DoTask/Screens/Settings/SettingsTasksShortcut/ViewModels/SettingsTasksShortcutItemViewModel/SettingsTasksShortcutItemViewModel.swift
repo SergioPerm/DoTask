@@ -20,7 +20,7 @@ protocol SettingsTasksShortcutItemViewModelOutputs {
     var selectChangeEvent: Event<Bool> { get }
 }
 
-protocol SettingsTasksShortcutItemViewModelType: class {
+protocol SettingsTasksShortcutItemViewModelType: AnyObject {
     var inputs: SettingsTasksShortcutItemViewModelInputs { get }
     var outputs: SettingsTasksShortcutItemViewModelOutputs { get }
 }

@@ -8,11 +8,12 @@
 
 import Foundation
 
-protocol TableViewFRCHelperDelegate: class {
+protocol TableViewFRCHelperDelegate: AnyObject {
     func addItem(indexPath: IndexPath)
     func deleteItem(indexPath: IndexPath)
     func addSection(indexPath: IndexPath)
     func deleteSection(indexPath: IndexPath)
+    func updateItem(indexPath: IndexPath)
 }
 
 class TableViewFRCHelper {
@@ -23,6 +24,7 @@ class TableViewFRCHelper {
         case deleteItem
         case insertSection
         case deleteSection
+        case update
     }
     
     struct TableChange {
@@ -57,6 +59,8 @@ class TableViewFRCHelper {
                 delegate?.addItem(indexPath: tableChange.indexPath)
             case .deleteSection:
                 delegate?.deleteSection(indexPath: tableChange.indexPath)
+            case .update:
+                delegate?.updateItem(indexPath: tableChange.indexPath)
             }
         }
         

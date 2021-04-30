@@ -30,15 +30,22 @@ class Router: NSObject, RouterType {
         presentableControllers = presentableControllers.filter { $0! != vc as UIViewController }
                 
         switch vc.presentableControllerViewType {
-        case .slideMenu:
-            vc.remove(withDimmedBack: false)
         case .containerChild:
-            vc.remove(withDimmedBack: true)
-        case .navigationStack:
+            vc.remove(withDimmedBack: false)
+        case .mainNavigationStack:
+            //rootNavigationController?.popViewController(animated: true)
             if let presentableControllerNavBar = getNavigationController(from: vc) {
                 presentableControllerNavBar.popViewController(animated: true)
             }
-        case .navigationStackWithTransition:
+        case .mainNavigationStackWithTransition:
+            if let presentableControllerNavBar = getNavigationController(from: vc) {
+                presentableControllerNavBar.popViewController(animated: true)
+            }
+        case .selfNavigationStack:
+            if let presentableControllerNavBar = getNavigationController(from: vc) {
+                presentableControllerNavBar.popViewController(animated: true)
+            }
+        case .selfNavigationStackWithTransition:
             if let presentableControllerNavBar = getNavigationController(from: vc) {
                 presentableControllerNavBar.popViewController(animated: true)
             }
@@ -72,11 +79,9 @@ class Router: NSObject, RouterType {
         }
                         
         switch vc.presentableControllerViewType {
-        case .slideMenu:
-            rootViewController.add(vc, atIndex: 0)
         case .containerChild:
-            rootViewController.add(vc, withDimmedBack: true)
-        case .navigationStack:
+            rootViewController.add(vc, atIndex: 0)
+        case .mainNavigationStack:
             if let presentableControllerNavBar = getNavigationController(from: vc) {
                 presentableControllerNavBar.pushViewController(vc, animated: false)
                 presentableControllerNavBar.delegate = self
@@ -90,11 +95,34 @@ class Router: NSObject, RouterType {
                     rootViewController.add(rootNavigationController)
                 }
             }
-        case .navigationStackWithTransition:
+        case .mainNavigationStackWithTransition:
             if let presentableControllerNavBar = getNavigationController(from: vc) {
                 presentableControllerNavBar.pushViewController(vc, animated: true)
                 presentableControllerNavBar.delegate = self
                 rootViewController.add(presentableControllerNavBar)
+            } else {
+                //Instantiate first navigation controller
+                let navigationController = UINavigationController(rootViewController: vc)
+                navigationController.delegate = self
+                rootViewController.add(navigationController)
+            }
+        case .selfNavigationStack:
+            if let presentableControllerNavBar = getNavigationController(from: vc) {
+                presentableControllerNavBar.pushViewController(vc, animated: true)
+                //presentableControllerNavBar.delegate = self
+            } else {
+                //Instantiate first navigation controller
+                let navigationController = UINavigationController(rootViewController: vc)
+                //navigationController.delegate = self
+                rootViewController.add(navigationController)
+            }
+        case .selfNavigationStackWithTransition:
+            if let presentableControllerNavBar = getNavigationController(from: vc) {
+                if let transitionDelegate = transitions[vc] {
+                    vc.transitioningDelegate = transitionDelegate
+                }
+                presentableControllerNavBar.pushViewController(vc, animated: true)
+                presentableControllerNavBar.delegate = self
             } else {
                 //Instantiate first navigation controller
                 let navigationController = UINavigationController(rootViewController: vc)
@@ -112,8 +140,7 @@ class Router: NSObject, RouterType {
             
             rootVC.present(vc, animated: true, completion: nil)
         case .systemPopoverModal:
-            rootViewController.modalTransitionStyle   = .crossDissolve
-            rootViewController.modalPresentationStyle = .popover
+            rootViewController.modalPresentationStyle = .overFullScreen
             rootViewController.present(vc, animated: true, completion: nil)
         }
         
@@ -136,7 +163,9 @@ class Router: NSObject, RouterType {
 
 extension Router {
     private func getNavigationController(from vc: PresentableController) -> UINavigationController? {
-        return presentableControllers.compactMap { $0?.getNavigationController() }.last
+        return presentableControllers.compactMap {
+            $0?.getNavigationController()
+        }.last
     }
     
     private func runCompletion(for controller: UIViewController) {
@@ -157,5 +186,10 @@ extension Router: UINavigationControllerDelegate {
 //        if let presentableController = poppedViewController as? PresentableController {
 //            pop(vc: presentableController)
 //        }
+    }
+    
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        
+        return transitions[toVC]?.animationController?(forPresented: toVC, presenting: toVC, source: fromVC)
     }
 }

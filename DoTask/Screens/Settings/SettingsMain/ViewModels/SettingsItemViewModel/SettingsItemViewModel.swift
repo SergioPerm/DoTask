@@ -19,7 +19,7 @@ protocol SettingsItemViewModelOutputs {
     var itemTitle: LocalizableStringResource { get }
 }
 
-protocol SettingsItemViewModelType: class {
+protocol SettingsItemViewModelType: AnyObject {
     var inputs: SettingsItemViewModelInputs { get }
     var outputs: SettingsItemViewModelOutputs { get }
 }

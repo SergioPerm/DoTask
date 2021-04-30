@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol ShortcutListDataSourceObserver: class {
+protocol ShortcutListDataSourceObserver: AnyObject {
     func shortcutWillChange()
     func shortcutDidChange()
     func shortcutInserted(at newIndexPath: IndexPath)

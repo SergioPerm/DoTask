@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol TaskListDataSourceObserver: class {
+protocol TaskListDataSourceObserver: AnyObject {
     func tasksWillChange()
     func tasksDidChange()
     func taskInserted(at newIndexPath: IndexPath)

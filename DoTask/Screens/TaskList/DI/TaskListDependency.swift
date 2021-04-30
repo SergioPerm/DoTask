@@ -17,7 +17,7 @@ class TaskListDependency: DIPart {
             .lifetime(.prototype)
                 
         container.register {
-            TaskListViewController(viewModel: $0, router: $1, presentableControllerViewType: .navigationStack, persistentType: .taskList)
+            TaskListViewController(viewModel: $0, router: $1, presentableControllerViewType: .mainNavigationStack, persistentType: .taskList)
         }.as(TaskListViewType.self).lifetime(.perRun(.weak))
         
     }

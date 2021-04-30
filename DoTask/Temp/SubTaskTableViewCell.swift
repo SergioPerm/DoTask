@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol SubTaskTableViewCellProtocol: class {
+protocol SubTaskTableViewCellProtocol: AnyObject {
     func updateHeightOfRow(_ cell: SubTaskTableViewCell, _ textView: UITextView)
     func deleteSubtask(_ cell: SubTaskTableViewCell)
 }

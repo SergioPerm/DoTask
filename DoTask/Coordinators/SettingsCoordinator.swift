@@ -15,11 +15,13 @@ class SettingsCoordinator: NSObject, Coordinator {
 
     var router: RouterType?
 
+    private var navigationDelegate: UINavigationControllerDelegate?
+    
     init(router: RouterType?) {
         self.router = router
     }
 
-    func start() {
+    func start(finishCompletion: (() -> Void)?) {
         let vc: SettingsViewType = AppDI.resolve()
         
         vc.settingLanguageHandler = { [weak self] in
@@ -34,13 +36,25 @@ class SettingsCoordinator: NSObject, Coordinator {
             self?.openSpotlightSettings()
         }
         
+        var navigationForTransition: UINavigationController = UINavigationController()
+
+        if let navVC = vc as? UINavigationController {
+            navigationForTransition = navVC
+        }
+        
+        vc.navDelegate = NavigationSwipeTransitionController(router: router, vc: navigationForTransition)
+        
         router?.push(vc: vc, completion: { [weak self] in
+            if let completion = finishCompletion {
+                completion()
+            }
             self?.parentCoordinator?.childDidFinish(self)
-        }, transition: nil)
+        }, transition: FromRightToLeftTransitionController(vc: navigationForTransition, router: router))
     }
     
     func openLanguageSetting() {
         let vc: SettingsLanguageViewType = AppDI.resolve()
+                
         router?.push(vc: vc, completion: nil, transition: nil)
     }
     

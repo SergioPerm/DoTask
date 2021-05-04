@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Description
 final class Observable<T> {
     typealias Listener = (T) -> Void
     var listener: Listener?

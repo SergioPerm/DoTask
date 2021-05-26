@@ -114,7 +114,7 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
         fetchRequest.predicate = predicate
         fetchRequest.sortDescriptors = [sortDescriptor]
         
-        var firstDate = Date()
+        var firstDate: Date?
         
         do {
             let tasks = try context.fetch(fetchRequest)
@@ -123,7 +123,7 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
                 return nil
             }
             
-            firstDate = tasks[0].taskDate ?? Date()
+            firstDate = tasks[0].taskDate
         } catch {
             fatalError()
         }
@@ -655,9 +655,43 @@ extension TaskListDataSourceCoreData: NSFetchedResultsControllerDelegate {
     
 }
 
-// MARK: Shortcut FRC Delegate
+// MARK: Maintaince
 
-
+extension TaskListDataSourceCoreData: TasksMaintainceDataSource {
+    func transferOverdueTasks() {
+        let fetchTasks: NSFetchRequest<TaskManaged> = TaskManaged.fetchRequest()
+        fetchTasks.predicate = NSPredicate(format: "taskDate < %@ AND isDone == %@", Date().startOfDay() as NSDate, NSNumber(value: false))
+        
+        do {
+            let tasksOverdue = try context.fetch(fetchTasks)
+            
+            tasksOverdue.forEach {
+                $0.taskDate = Date().startOfDay()
+            }
+            
+            try context.save()
+        } catch {
+            fatalError()
+        }
+    }
+    
+    func getAllTasks() -> [Task] {
+        let fetchTasks: NSFetchRequest<TaskManaged> = TaskManaged.fetchRequest()
+        var tasks: [Task] = []
+        
+        do {
+            let fetchedTasks = try context.fetch(fetchTasks)
+            
+            fetchedTasks.forEach {
+                tasks.append(Task(with: $0))
+            }
+            
+            return tasks
+        } catch {
+            fatalError()
+        }
+    }
+}
 
 // MARK: FRC
 extension TaskListDataSourceCoreData {

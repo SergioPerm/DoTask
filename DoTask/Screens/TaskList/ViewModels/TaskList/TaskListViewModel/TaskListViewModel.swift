@@ -21,7 +21,8 @@ enum TaskListMode {
 class TaskListViewModel: TaskListViewModelType, TaskListViewModelInputs, TaskListViewModelOutputs {
     
     private var dataSource: TaskListDataSource
-            
+    private let spotlightService: SpotlightTasksService
+    
     weak var view: TaskListViewObservable?
     
     var inputs: TaskListViewModelInputs { return self }
@@ -34,8 +35,9 @@ class TaskListViewModel: TaskListViewModelType, TaskListViewModelInputs, TaskLis
     //data for FRC state without empty values, in OUTPUTS -> periodItems store all section including empty values
     private var periodItemsFRC: [TaskListPeriodItemViewModelType] = []
     
-    init(dataSource: TaskListDataSource) {
+    init(dataSource: TaskListDataSource, spotlightService: SpotlightTasksService) {
         self.dataSource = dataSource
+        self.spotlightService = spotlightService
         self.shortcutFilter = Observable(nil)
         self.taskDiaryMode = Observable(false)
         self.periodItems = []
@@ -144,10 +146,15 @@ extension TaskListViewModel {
     }
     
     private func changeDoneTask(taskUID: String, done: Bool) {
+    
         if done {
             dataSource.setDoneForTask(with: taskUID)
         } else {
             dataSource.unsetDoneForTask(with: taskUID)
+        }
+    
+        if let task = dataSource.taskModelByIdentifier(identifier: taskUID) {
+            spotlightService.updateTask(task: task)
         }
     }
     

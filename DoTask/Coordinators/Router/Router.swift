@@ -57,6 +57,7 @@ class Router: NSObject, RouterType {
             })
         }
         
+        transitions.removeValue(forKey: vc)
         runCompletion(for: vc)
     }
     

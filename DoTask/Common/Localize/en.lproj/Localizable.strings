@@ -74,3 +74,7 @@
 "SPEAK" = "Speak";
 "RELEASE_TO_SAVE" = "Release to quick save";
 "SWIPE_LEFT_CANCEL" = "Swipe to left for CANCEL";
+
+"TASK_DONE_STATUS" = "Done!";
+"TASK_PROGRESS_STATUS" = "In progress..";
+"WITHOUT_DATE" = "Without date";

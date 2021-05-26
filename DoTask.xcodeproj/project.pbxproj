@@ -193,6 +193,7 @@
 		B188594025F73E5000C4C440 /* SpeechTaskViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B188593F25F73E5000C4C440 /* SpeechTaskViewModelType.swift */; };
 		B188594425F73FBA00C4C440 /* SpeechTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B188594325F73FBA00C4C440 /* SpeechTaskViewModel.swift */; };
 		B188594725F742EC00C4C440 /* SpeechTaskViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B188594625F742EC00C4C440 /* SpeechTaskViewModelInputs.swift */; };
+		B188CFB0265E29560055DA81 /* SpotlightService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B188CFAF265E29560055DA81 /* SpotlightService.swift */; };
 		B189A99125247E1D00EAC6A0 /* TimePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B189A98D25247E1C00EAC6A0 /* TimePickerViewController.swift */; };
 		B189A9942524803E00EAC6A0 /* TimePickerViewOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B189A9932524803E00EAC6A0 /* TimePickerViewOutputs.swift */; };
 		B189A99725249ACA00EAC6A0 /* testView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B189A99625249ACA00EAC6A0 /* testView.xib */; };
@@ -317,6 +318,8 @@
 		B1E30EED25A70FCD0036979D /* MenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E30EEC25A70FCD0036979D /* MenuViewModel.swift */; };
 		B1E30EF625A712920036979D /* ShortcutListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E30EF525A712920036979D /* ShortcutListDataSource.swift */; };
 		B1E30EF925A713120036979D /* ShortcutListDataSourceObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E30EF825A713120036979D /* ShortcutListDataSourceObserver.swift */; };
+		B1E3B0D5265D0CF8003ABEEE /* SplashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E3B0D4265D0CF8003ABEEE /* SplashViewModel.swift */; };
+		B1E3B0D7265D101A003ABEEE /* TasksMaintainceDataSouce.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E3B0D6265D101A003ABEEE /* TasksMaintainceDataSouce.swift */; };
 		B1E4746625FE21E300EE5AB1 /* CalendarDayWithTasksLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E4746525FE21E300EE5AB1 /* CalendarDayWithTasksLayer.swift */; };
 		B1E47889257A3E2A0055A0B4 /* ShortcutManaged+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E47885257A3E2A0055A0B4 /* ShortcutManaged+CoreDataClass.swift */; };
 		B1E4788A257A3E2A0055A0B4 /* ShortcutManaged+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E47886257A3E2A0055A0B4 /* ShortcutManaged+CoreDataProperties.swift */; };
@@ -553,6 +556,7 @@
 		B188593F25F73E5000C4C440 /* SpeechTaskViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTaskViewModelType.swift; sourceTree = "<group>"; };
 		B188594325F73FBA00C4C440 /* SpeechTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTaskViewModel.swift; sourceTree = "<group>"; };
 		B188594625F742EC00C4C440 /* SpeechTaskViewModelInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTaskViewModelInputs.swift; sourceTree = "<group>"; };
+		B188CFAF265E29560055DA81 /* SpotlightService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightService.swift; sourceTree = "<group>"; };
 		B189A98D25247E1C00EAC6A0 /* TimePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimePickerViewController.swift; sourceTree = "<group>"; };
 		B189A9932524803E00EAC6A0 /* TimePickerViewOutputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerViewOutputs.swift; sourceTree = "<group>"; };
 		B189A99625249ACA00EAC6A0 /* testView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = testView.xib; sourceTree = "<group>"; };
@@ -677,6 +681,8 @@
 		B1E30EEC25A70FCD0036979D /* MenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewModel.swift; sourceTree = "<group>"; };
 		B1E30EF525A712920036979D /* ShortcutListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutListDataSource.swift; sourceTree = "<group>"; };
 		B1E30EF825A713120036979D /* ShortcutListDataSourceObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutListDataSourceObserver.swift; sourceTree = "<group>"; };
+		B1E3B0D4265D0CF8003ABEEE /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
+		B1E3B0D6265D101A003ABEEE /* TasksMaintainceDataSouce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksMaintainceDataSouce.swift; sourceTree = "<group>"; };
 		B1E4746525FE21E300EE5AB1 /* CalendarDayWithTasksLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDayWithTasksLayer.swift; sourceTree = "<group>"; };
 		B1E47885257A3E2A0055A0B4 /* ShortcutManaged+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShortcutManaged+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B1E47886257A3E2A0055A0B4 /* ShortcutManaged+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShortcutManaged+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -1776,6 +1782,14 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
+		B188CFAE265E293D0055DA81 /* Spotlight */ = {
+			isa = PBXGroup;
+			children = (
+				B188CFAF265E29560055DA81 /* SpotlightService.swift */,
+			);
+			path = Spotlight;
+			sourceTree = "<group>";
+		};
 		B189A98A25247E1C00EAC6A0 /* TimePicker */ = {
 			isa = PBXGroup;
 			children = (
@@ -1952,6 +1966,7 @@
 		B1A9140625205DD30021E15C /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				B188CFAE265E293D0055DA81 /* Spotlight */,
 				B142DDDB2619EBA700748D77 /* Settings */,
 				B1BB02E926184CD300A569EA /* Localize */,
 				B1BB02E82618338900A569EA /* Storage */,
@@ -2012,6 +2027,7 @@
 			children = (
 				B1A91418252063C30021E15C /* TaskListDataSource.swift */,
 				B1A9141A252063FA0021E15C /* TaskListDataSourceObserver.swift */,
+				B1E3B0D6265D101A003ABEEE /* TasksMaintainceDataSouce.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -2119,6 +2135,7 @@
 		B1ABC8FE263973080050616A /* Splash */ = {
 			isa = PBXGroup;
 			children = (
+				B1E3B0D3265D0CE0003ABEEE /* ViewModels */,
 				B1ABC90626399BA10050616A /* DI */,
 				B1ABC8FF263973110050616A /* Views */,
 			);
@@ -2425,21 +2442,6 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
-		B1E02A1B2611E7A0003489BD /* SettingsDataSource */ = {
-			isa = PBXGroup;
-			children = (
-				B1E02A1C2611E7AD003489BD /* Protocols */,
-			);
-			path = SettingsDataSource;
-			sourceTree = "<group>";
-		};
-		B1E02A1C2611E7AD003489BD /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Protocols;
-			sourceTree = "<group>";
-		};
 		B1E02A1D2611EA1E003489BD /* Localize */ = {
 			isa = PBXGroup;
 			children = (
@@ -2479,7 +2481,6 @@
 		B1E30EEF25A711520036979D /* DataSource */ = {
 			isa = PBXGroup;
 			children = (
-				B1E02A1B2611E7A0003489BD /* SettingsDataSource */,
 				B1E30EF225A711E90036979D /* ShortcutListDataSource */,
 				B1E30EF025A711850036979D /* TaskDataSource */,
 			);
@@ -2511,6 +2512,14 @@
 				B1E30EF825A713120036979D /* ShortcutListDataSourceObserver.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		B1E3B0D3265D0CE0003ABEEE /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				B1E3B0D4265D0CF8003ABEEE /* SplashViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		B1E47890257A435D0055A0B4 /* Buttons */ = {
@@ -2906,6 +2915,7 @@
 				B1AAC182262C411000B31C12 /* SettingsTasksTransferOverdueSwitch.swift in Sources */,
 				B12785D326283FBE00903A1A /* SettingsTasksViewModel.swift in Sources */,
 				B13920142592329A0087D0E9 /* SubtaskViewModel.swift in Sources */,
+				B188CFB0265E29560055DA81 /* SpotlightService.swift in Sources */,
 				B1D5DEC52523884700124DAD /* CalendarPickerViewController.swift in Sources */,
 				B15479D525DBB3AC00B70945 /* TaskListPeriodItemViewModelOutputs.swift in Sources */,
 				B1ABC90826399BB80050616A /* SplashDependency.swift in Sources */,
@@ -2993,6 +3003,7 @@
 				B1D5DEC72523884700124DAD /* CalendarPickerDay.swift in Sources */,
 				B1D5DECD2523884700124DAD /* CalendarPickerHeaderView.swift in Sources */,
 				B1687F6525DC00BE009D3DE2 /* CalendarMonth.swift in Sources */,
+				B1E3B0D7265D101A003ABEEE /* TasksMaintainceDataSouce.swift in Sources */,
 				B1D79AEF25CC19CB009DB9BF /* TaskDiaryItemViewModelType.swift in Sources */,
 				B19957BA25F5081900F883D8 /* SpeechTextInfo.swift in Sources */,
 				B1A4E3EB25EFAFDB00F65463 /* SpeechRecorderTransitionController.swift in Sources */,
@@ -3129,6 +3140,7 @@
 				B11981B02615E2180075401C /* DetailShortcutDependency.swift in Sources */,
 				B142DDDD2619EBB600748D77 /* SettingsService.swift in Sources */,
 				B1AAC173262C26A500B31C12 /* SettingsTasksShowDoneSwitch.swift in Sources */,
+				B1E3B0D5265D0CF8003ABEEE /* SplashViewModel.swift in Sources */,
 				B18349E9256AEAF300D0D096 /* PresentableController.swift in Sources */,
 				B170814625DBF6AC007AC23B /* CalendarViewModelType.swift in Sources */,
 				B191CA792617446800696737 /* CalendarPickerViewType.swift in Sources */,

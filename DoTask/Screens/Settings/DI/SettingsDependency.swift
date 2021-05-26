@@ -69,7 +69,7 @@ class SettingsDependency: DIPart {
         }).as(SettingsTasksTransferOverdueViewType.self)
         
         //Spotlight
-        container.register(SettingsTasksSpotlightViewModel.init(settingsService:))
+        container.register(SettingsTasksSpotlightViewModel.init(settingsService:spotlightService:tasksDataSource:))
             .as(SettingsTasksSpotlightViewModelType.self)
         
         container.register({

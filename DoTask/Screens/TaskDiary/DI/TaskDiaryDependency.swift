@@ -12,7 +12,7 @@ import DITranquillity
 class TaskDiaryDependency: DIPart {
     static func load(container: DIContainer) {
         
-        container.register(TaskDiaryViewModel.init(dataSource:))
+        container.register(TaskDiaryViewModel.init(dataSource:spotlightService:))
             .as(TaskDiaryViewModelType.self).lifetime(.prototype)
         
         container.register {

@@ -12,7 +12,7 @@ import DITranquillity
 class DetailTaskDependency: DIPart {
     static func load(container: DIContainer) {
         
-        container.register(DetailTaskViewModel.init(dataSource:))
+        container.register(DetailTaskViewModel.init(dataSource:spotlightService:))
             .as(DetailTaskViewModelType.self)
             .lifetime(.prototype)
         

@@ -15,6 +15,8 @@ class SplashViewController: UIViewController, PresentableController {
     var router: RouterType?
     var persistentType: PersistentViewControllerType?
     
+    let viewModel: SplashViewModelType
+    
     private let imageDT: UIImageView = {
         let imageView = UIImageView(image: R.image.launch.launchText())
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -33,7 +35,8 @@ class SplashViewController: UIViewController, PresentableController {
         return label
     }()
     
-    init(router: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
+    init(viewModel: SplashViewModelType, router: RouterType?, presentableControllerViewType: PresentableControllerViewType) {
+        self.viewModel = viewModel
         self.router = router
         self.presentableControllerViewType = presentableControllerViewType
         super.init(nibName: nil, bundle: nil)
@@ -47,11 +50,12 @@ class SplashViewController: UIViewController, PresentableController {
         super.viewDidLoad()
         setup()
         setupConstraints()
+        bindViewModel()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        startAnimation()
+        viewModel.inputs.startMaintainceTasks()
     }
     
 }
@@ -88,6 +92,14 @@ extension SplashViewController {
             self.imageDT.alpha = 0.0
         } completion: { finished in
             self.router?.pop(vc: self)
+        }
+        
+    }
+    
+    private func bindViewModel() {
+        
+        viewModel.outputs.onFinishMaintainceTasksEvent.subscribe(self) { this, success in
+            this.startAnimation()
         }
         
     }

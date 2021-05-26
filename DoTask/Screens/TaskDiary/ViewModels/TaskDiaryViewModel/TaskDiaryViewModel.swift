@@ -11,15 +11,18 @@ import Foundation
 class TaskDiaryViewModel: TaskDiaryViewModelType, TaskDiaryViewModelInputs, TaskDiaryViewModelOutputs {
     
     private var dataSource: TaskListDataSource
-    private var tableViewFRCHelper: TableViewFRCHelper = TableViewFRCHelper()
+    private let spotlightService: SpotlightTasksService
+    
+    private let tableViewFRCHelper: TableViewFRCHelper = TableViewFRCHelper()
     
     var inputs: TaskDiaryViewModelInputs { return self }
     var outputs: TaskDiaryViewModelOutputs { return self }
 
     weak var view: TaskDiaryViewType?
     
-    init(dataSource: TaskListDataSource) {
+    init(dataSource: TaskListDataSource, spotlightService: SpotlightTasksService) {
         self.dataSource = dataSource
+        self.spotlightService = spotlightService
         self.periodItems = []
                 
         self.dataSource.observer = self
@@ -47,6 +50,10 @@ class TaskDiaryViewModel: TaskDiaryViewModelType, TaskDiaryViewModelInputs, Task
 extension TaskDiaryViewModel {
     private func unsetDoneTask(taskUID: String) {
         dataSource.unsetDoneForTask(with: taskUID)
+        
+        if let task = dataSource.taskModelByIdentifier(identifier: taskUID) {
+            spotlightService.updateTask(task: task)
+        }
     }
     
     private func loadData() {

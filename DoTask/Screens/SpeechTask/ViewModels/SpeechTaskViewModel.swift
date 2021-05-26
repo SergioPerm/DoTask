@@ -12,6 +12,7 @@ import Speech
 class SpeechTaskViewModel: NSObject, SpeechTaskViewModelType, SpeechTaskViewModelInputs, SpeechTaskViewModelOutputs {
     
     private let dataSource: TaskListDataSource
+    private let spotlightService: SpotlightTasksService
     
     // MARK: Audio
 
@@ -26,8 +27,9 @@ class SpeechTaskViewModel: NSObject, SpeechTaskViewModelType, SpeechTaskViewMode
     var inputs: SpeechTaskViewModelInputs { return self }
     var outputs: SpeechTaskViewModelOutputs { return self }
     
-    init(dataSource: TaskListDataSource, localizeService: LocalizeServiceType) {
+    init(dataSource: TaskListDataSource, localizeService: LocalizeServiceType, spotlightService: SpotlightTasksService) {
         self.dataSource = dataSource
+        self.spotlightService = spotlightService
         self.localizeService = localizeService
         self.speechTextChangeEvent = Event<String>()
         self.volumeLevel = Event<Float>()
@@ -63,6 +65,7 @@ class SpeechTaskViewModel: NSObject, SpeechTaskViewModelType, SpeechTaskViewMode
             newTask.taskDate = Date()
             
             dataSource.addTask(from: newTask)
+            spotlightService.addTask(task: newTask)
         }
         
         stopAudio()

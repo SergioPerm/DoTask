@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 import DITranquillity
+import CoreSpotlight
+import MobileCoreServices
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -54,6 +56,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = router.rootViewController
         window?.makeKeyAndVisible()
                          
+        return true
+    }
+    
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+     
+        if userActivity.activityType == CSSearchableItemActionType {
+            if let userInfo = userActivity.userInfo {
+                if let selectedID = userInfo[CSSearchableItemActivityIdentifier] as? String {
+                    coordinator?.editTask(taskUID: selectedID, shortcutUID: nil, taskDate: nil)
+                }
+            }
+        }
+        
         return true
     }
 }

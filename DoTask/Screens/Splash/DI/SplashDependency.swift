@@ -12,8 +12,11 @@ import DITranquillity
 class SplashDependency: DIPart {
     static func load(container: DIContainer) {
         
+        container.register(SplashViewModel.init(dataSource:))
+            .as(SplashViewModelType.self).lifetime(.prototype)
+        
         container.register({
-            SplashViewController(router: $0, presentableControllerViewType: .containerChild)
+            SplashViewController(viewModel: $0, router: $1, presentableControllerViewType: .containerChild)
         })
         
     }

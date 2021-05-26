@@ -19,9 +19,11 @@ class StorageDependency: DIPart {
             .lifetime(.prototype)
         
         container.register(TaskListDataSourceCoreData.init(coreDataService:settingsService:))
-            .as(TaskListDataSource.self)
+            .as(TaskListDataSource.self).as(TasksMaintainceDataSource.self)
             .lifetime(.prototype)
         
-        
+//        container.register(TaskListDataSourceCoreData.init(coreDataService:settingsService:))
+//            .as(TasksMaintainceDataSource.self)
+//            .lifetime(.prototype)
     }
 }

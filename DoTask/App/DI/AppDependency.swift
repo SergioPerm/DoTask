@@ -22,6 +22,8 @@ class AppDependency: DIPart {
             .as(LocalizeServiceType.self).as(LocalizeServiceSettingsType.self).lifetime(.perRun(.strong))
         
         container.register(SettingService.init).lifetime(.perRun(.strong))
+        
+        container.register(SpotlightService.init(localizeService:)).as(SpotlightTasksService.self).lifetime(.perRun(.strong))
                
     }
 }

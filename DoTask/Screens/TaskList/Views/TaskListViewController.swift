@@ -48,7 +48,7 @@ class TaskListViewController: UIViewController, TaskListViewType {
     private var calendarTopConstraint: NSLayoutConstraint = NSLayoutConstraint()
     private var calendarTopConstraintMargin: CGFloat = 0
     
-    var slideMenu: SlideMenuViewType?
+    weak var slideMenu: SlideMenuViewType?
     private var withSlideMenu: Bool
     
     var editTaskAction: ((_ taskUID: String?, _ shortcutUID: String?, _ taskDate: Date?) ->  Void)?

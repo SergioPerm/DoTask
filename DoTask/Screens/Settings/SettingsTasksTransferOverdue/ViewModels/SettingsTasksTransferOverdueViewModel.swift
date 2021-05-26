@@ -23,6 +23,8 @@ protocol SettingsTasksTransferOverdueViewModelType {
 
 class SettingsTasksTransferOverdueViewModel: SettingsTasksTransferOverdueViewModelType, SettingsTasksTransferOverdueViewModelInputs, SettingsTasksTransferOverdueViewModelOutputs {
     
+    private let dataSource: TasksMaintainceDataSource = AppDI.resolve()
+    
     private let settingsService: SettingService
     private var currentSettings: SettingService.Settings
     
@@ -39,6 +41,10 @@ class SettingsTasksTransferOverdueViewModel: SettingsTasksTransferOverdueViewMod
     func changeTransferOverdueSetting() {
         currentSettings.task.transferOverdueTasksToToday = !currentSettings.task.transferOverdueTasksToToday
         settingsService.saveSettings(settings: currentSettings)
+        
+        if currentSettings.task.transferOverdueTasksToToday {
+            dataSource.transferOverdueTasks()
+        }
     }
     
     // MARK: Outputs

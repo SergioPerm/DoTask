@@ -25,12 +25,17 @@ class SettingsTasksSpotlightViewModel: SettingsTasksSpotlightViewModelType, Sett
     
     private let settingsService: SettingService
     private var currentSettings: SettingService.Settings
+    private let spotlightService: SpotlightTasksService
+    
+    private let tasksDataSource: TasksMaintainceDataSource
     
     var inputs: SettingsTasksSpotlightViewModelInputs { return self }
     var outputs: SettingsTasksSpotlightViewModelOutputs { return self }
     
-    init(settingsService: SettingService) {
+    init(settingsService: SettingService, spotlightService: SpotlightTasksService, tasksDataSource: TasksMaintainceDataSource) {
         self.settingsService = settingsService
+        self.spotlightService = spotlightService
+        self.tasksDataSource = tasksDataSource
         currentSettings = settingsService.getSettings()
     }
     
@@ -39,6 +44,15 @@ class SettingsTasksSpotlightViewModel: SettingsTasksSpotlightViewModelType, Sett
     func changeSpotlightSetting() {
         currentSettings.spotlight = !currentSettings.spotlight
         settingsService.saveSettings(settings: currentSettings)
+        
+        let allTasks = tasksDataSource.getAllTasks()
+        if currentSettings.spotlight {
+            allTasks.forEach {
+                spotlightService.addTask(task: $0)
+            }
+        } else {
+            spotlightService.deleteAllTasks()
+        }
     }
     
     // MARK: Outputs

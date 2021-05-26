@@ -11,7 +11,7 @@ import DITranquillity
 
 class SpeechTaskDependency: DIPart {
     static func load(container: DIContainer) {
-        container.register(SpeechTaskViewModel.init(dataSource:localizeService:))
+        container.register(SpeechTaskViewModel.init(dataSource:localizeService:spotlightService:))
             .as(SpeechTaskViewModelType.self)
         
         container.register{

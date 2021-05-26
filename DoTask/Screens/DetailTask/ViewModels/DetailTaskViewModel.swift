@@ -11,7 +11,8 @@ import Foundation
 class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, DetailTaskViewModelOutputs {
     
     private var task: Task
-    private var dataSource: TaskListDataSource
+    private let dataSource: TaskListDataSource
+    private let spotlightService: SpotlightTasksService
     
     private var onCalendarSelect: ((Date?, CalendarPickerViewOutputs) -> Void)?
     private var onTimeReminderSelect: ((Date, TimePickerViewOutputs) -> Void)?
@@ -30,7 +31,7 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
     var inputs: DetailTaskViewModelInputs { return self }
     var outputs: DetailTaskViewModelOutputs { return self }
     
-    init(dataSource: TaskListDataSource) {
+    init(dataSource: TaskListDataSource, spotlightService: SpotlightTasksService) {
         self.task = Task()
         
         if self.task.isNew {
@@ -38,6 +39,7 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
         }
         
         self.dataSource = dataSource
+        self.spotlightService = spotlightService
         
         self.selectedDate = Observable(task.taskDate)
         self.selectedTime = Observable(task.reminderDate ? task.taskDate : nil)
@@ -178,8 +180,10 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
         
         if task.isNew {
             dataSource.addTask(from: task)
+            spotlightService.addTask(task: task)
         } else {
             dataSource.updateTask(from: task)
+            spotlightService.updateTask(task: task)
         }
         
         currentSettings.lastUsedShortcut = task.shortcut?.uid
@@ -188,6 +192,7 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
     
     func deleteTask() {
         dataSource.deleteTask(from: task)
+        spotlightService.deleteTask(task: task)
     }
     
     func askForDelete() {

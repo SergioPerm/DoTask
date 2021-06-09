@@ -116,10 +116,10 @@ extension CalendarCollectionView: UICollectionViewDelegate {
 }
 
 extension CalendarCollectionView: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let index = Int(contentOffset.y / frame.size.height)
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let index = Int(round(contentOffset.y / frame.size.height))
         
-        if (contentOffset.y / frame.size.height) == CGFloat(index) && currentIndex != index {
+        if currentIndex != index {
             currentIndex = index
             if let monthViewModel = viewModel?.outputs.calendarData[index] {
                 viewModel?.inputs.setSelectedMonth(monthViewModel: monthViewModel)

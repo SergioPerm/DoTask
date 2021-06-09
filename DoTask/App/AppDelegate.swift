@@ -43,6 +43,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let pushNotificationService: PushNotificationService = AppDI.resolve()
         pushNotificationService.checkAuthorization()
         
+//        let dataSource: TaskListDataSourceCoreData = AppDI.resolve()
+//        dataSource.clearData()
+        
         let router: RouterType = AppDI.resolve()
         coordinator = AppDI.resolve()
         coordinator?.start(finishCompletion: nil)
@@ -55,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window?.rootViewController = router.rootViewController
         window?.makeKeyAndVisible()
-                         
+                        
         return true
     }
     

@@ -14,6 +14,8 @@ class SpeechTaskViewModel: NSObject, SpeechTaskViewModelType, SpeechTaskViewMode
     private let dataSource: TaskListDataSource
     private let spotlightService: SpotlightTasksService
     
+    private var shortcutUID: String?
+    
     // MARK: Audio
 
     private var audioEngine: AVAudioEngine?
@@ -64,11 +66,19 @@ class SpeechTaskViewModel: NSObject, SpeechTaskViewModelType, SpeechTaskViewMode
             newTask.title = taskTitle
             newTask.taskDate = Date()
             
+            if let shortcutUID = shortcutUID {
+                newTask.shortcut = dataSource.shortcutModelByIdentifier(identifier: shortcutUID)
+            }
+            
             dataSource.addTask(from: newTask)
             spotlightService.addTask(task: newTask)
         }
         
         stopAudio()
+    }
+    
+    func setShortcut(uid: String) {
+        shortcutUID = uid
     }
     
     func cancelTask() {

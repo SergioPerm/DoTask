@@ -22,7 +22,13 @@ class SpeechTaskViewController: UIViewController, SpeechTaskViewType {
     }
     
     var longTapRecognizer: UILongPressGestureRecognizer?
-    var shortcutUID: String?
+    var shortcutUID: String? {
+        didSet {
+            if let shortcutUID = shortcutUID {
+                viewModel.inputs.setShortcut(uid: shortcutUID)
+            }
+        }
+    }
     var taskDate: Date?
     
     private let speakWave: SpeakWave = {

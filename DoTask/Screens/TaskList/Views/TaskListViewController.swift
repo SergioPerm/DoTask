@@ -160,7 +160,7 @@ extension TaskListViewController {
             }
         } onLongTapAction: { recognizer in
             if let speechAction = self.speechTaskAction {
-                speechAction(recognizer, nil, nil)
+                speechAction(recognizer, self.filter?.shortcutFilter, nil)
             }
         }
         

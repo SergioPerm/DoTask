@@ -12,4 +12,5 @@ protocol SpeechTaskViewModelInputs {
     func startRecording()
     func saveTask(taskTitle: String)
     func cancelTask()
+    func setShortcut(uid: String)
 }

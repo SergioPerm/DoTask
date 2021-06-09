@@ -86,11 +86,7 @@ class CalendarViewModel: CalendarViewModelType, CalendarViewModelInputs, Calenda
     
     func setSelectedMonth(monthViewModel: CalendarMonthViewModelType) {
         guard let monthDate = calendar.date(bySetting: .month, value: monthViewModel.month, of: Date()) else { return }
-        
-//        dateFormatter.locale = Locale(identifier: settingsService.getSettings().language.rawValue)
-//        dateFormatter.setLocalizedDateFormatFromTemplate("MMMM")
-//        let monthName = dateFormatter.string(from: monthDate).capitalizingFirstLetter()
-                
+                        
         if let setCalendarMonthAction = setCalendarMonthHandler {
             setCalendarMonthAction(monthDate)
         }

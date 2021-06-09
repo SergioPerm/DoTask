@@ -186,8 +186,10 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
             spotlightService.updateTask(task: task)
         }
         
-        currentSettings.lastUsedShortcut = task.shortcut?.uid
-        settingsService.saveSettings(settings: currentSettings)
+        if let shortcut = task.shortcut, shortcut.showInMainList {
+            currentSettings.lastUsedShortcut = task.shortcut?.uid
+            settingsService.saveSettings(settings: currentSettings)
+        }
     }
     
     func deleteTask() {

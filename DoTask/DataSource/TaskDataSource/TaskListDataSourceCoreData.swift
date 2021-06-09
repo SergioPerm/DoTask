@@ -423,13 +423,11 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
             
             //change sortDate if change period in task
             let oldDailyPeriod = taskManaged.taskDate?.dailyNameForTask()
-            let newDailyPeriod = task.taskDate?.dailyNameForTask()
+            let newDailyPeriod = task.taskDate?.dailyNameForTask() ?? DailyName.later
             
             if oldDailyPeriod != newDailyPeriod {
                 let fetchTasksForPeriod: NSFetchRequest<TaskManaged> = TaskManaged.fetchRequest()
                 fetchTasksForPeriod.sortDescriptors = [NSSortDescriptor(key: "sortDate", ascending: true)]
-                
-                guard let newDailyPeriod = newDailyPeriod else { return }
                 fetchTasksForPeriod.predicate = getPredicateForDailyPeriod(dailyPeriod: newDailyPeriod)
                 
                 do {

@@ -20,8 +20,8 @@ class TableViewFRCHelper {
     private var tableChanges: [TableChange] = []
     
     enum ChangeType: Int {
-        case insertItem
         case deleteItem
+        case insertItem
         case insertSection
         case deleteSection
         case update

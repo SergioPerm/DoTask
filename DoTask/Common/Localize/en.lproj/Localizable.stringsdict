@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>shortcutDetailTaskCount</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@detailShortcutTaskCount@</string>
+		<key>detailShortcutTaskCount</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>zero</key>
+			<string>No tasks for shortcut</string>
+			<key>one</key>
+			<string>One task for shortcut</string>
+			<key>two</key>
+			<string>%d tasks for shortcut</string>
+			<key>few</key>
+			<string>%d tasks for shortcut</string>
+			<key>many</key>
+			<string>%d tasks for shortcut</string>
+			<key>other</key>
+			<string>%d tasks for shortcut</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

@@ -27,8 +27,8 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
     }
             
     func openMainScreen() {
-        let vc: SlideMenuViewType = AppDI.resolve()//SlideMenuAssembly.createInstance(router: router)
-
+        let vc: SlideMenuViewType = AppDI.resolve()
+        
         vc.openTaskListHandler = { menu, shortcutFilter in
             self.openTaskList(menu: menu, shortcutFilter: shortcutFilter)
         }
@@ -48,6 +48,9 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
     func editShortcut(shortcutUID: String?) {
         let vc: DetailShortcutViewType = AppDI.resolve()//DetailShortcutAssembly.createInstance(shortcutUID: shortcutUID, router: router)
         vc.shortcutUID = shortcutUID
+        vc.openMainTaskListHandler = {
+            self.openTaskList(menu: AppDI.resolve())
+        }
         
         router?.push(vc: vc, completion: nil, transition: CardModalTransitionController(viewController: vc, router: router))
     }

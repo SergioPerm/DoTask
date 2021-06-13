@@ -81,7 +81,7 @@ class LocalizeService: LocalizeServiceType {
         let bundlePath = Bundle.main.path(forResource: currentLocal.rawValue, ofType: "lproj")
         guard let path = bundlePath else { return "" }
         guard let localBundle = Bundle(path: path) else { return "" }
-        
+                        
         return localBundle.localizedString(forKey: forKey, value: "", table: nil)
     }
 

@@ -12,11 +12,7 @@ import DITranquillity
 final class SlideMenuDependency: DIPart {
     
     static func load(container: DIContainer) {
-        
-//        container.register(ShortcutListDataSourceCoreData.init(coreDataService:))
-//            .as(ShortcutListDataSource.self)
-//            .lifetime(.prototype)
-        
+                
         container.register(MenuViewModel.init(dataSource:))
             .as(MenuViewModelType.self)
             .lifetime(.prototype)

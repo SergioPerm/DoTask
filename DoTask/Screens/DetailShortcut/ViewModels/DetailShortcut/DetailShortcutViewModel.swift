@@ -8,11 +8,40 @@
 
 import Foundation
 
+protocol DetailShortcutViewModelInputs {
+    func setShortcutUID(UID: String?)
+    func setColor(colorHex: String)
+    func setTitle(title: String)
+    func toggleshowInMainListSetting()
+    func save()
+    func delete()
+    func updateTasksCounter()
+    func setOpenMainTaskListHandler(handler: (() -> ())?)
+}
+
+protocol DetailShortcutViewModelOutputs {
+    var selectedColor: Observable<String> { get }
+    var countOfTasksEvent: Event<String> { get }
+    var title: String { get }
+    var isNew: Bool { get }
+    var showInMainListSetting: Bool { get }
+    func getAllColors() -> [ColorSelectionItemViewModelType]
+}
+
+protocol DetailShortcutViewModelType {
+    var inputs: DetailShortcutViewModelInputs { get }
+    var outputs: DetailShortcutViewModelOutputs { get }
+}
+
 class DetailShortcutViewModel: DetailShortcutViewModelType, DetailShortcutViewModelInputs, DetailShortcutViewModelOutputs {
     
     private var shortcut: Shortcut
     private var dataSource: ShortcutListDataSource
+    private var tasksDataSource: TaskListDataSourceCoreData
+    private let settingsService: SettingService
 
+    private var openMainTasksHandler: (() -> ())?
+    
     private var shortcutUID: String? {
         didSet {
             if let shortcutUID = shortcutUID {
@@ -53,10 +82,13 @@ class DetailShortcutViewModel: DetailShortcutViewModelType, DetailShortcutViewMo
     var inputs: DetailShortcutViewModelInputs { return self }
     var outputs: DetailShortcutViewModelOutputs { return self }
 
-    init(dataSource: ShortcutListDataSource) {
+    init(dataSource: ShortcutListDataSource, tasksDataSource: TaskListDataSourceCoreData, settingsService: SettingService) {
         self.shortcut = Shortcut()
         self.dataSource = dataSource
+        self.tasksDataSource = tasksDataSource
+        self.settingsService = settingsService
         self.selectedColor = Observable(shortcut.color)
+        self.countOfTasksEvent = Event<String>()
     }
         
     // MARK: Inputs
@@ -84,12 +116,26 @@ class DetailShortcutViewModel: DetailShortcutViewModelType, DetailShortcutViewMo
     
     func delete() {
         if !shortcut.isNew {
+            if let openMainTasksListAction = openMainTasksHandler {
+                openMainTasksListAction()
+            }
             dataSource.deleteShortcut(for: shortcut)
         }
     }
 
     func setShortcutUID(UID: String?) {
         self.shortcutUID = UID
+    }
+    
+    func updateTasksCounter() {
+        guard let shortcutUID = shortcutUID else { return }
+        tasksDataSource.applyFilters(filter: TaskListFilter(shortcutFilter: shortcutUID, dayFilter: nil))
+        let tasksCount = tasksDataSource.tasks.count
+        countOfTasksEvent.raise(R.string.localizable.shortcutDetailTaskCount(detailShortcutTaskCount: tasksCount, preferredLanguages: [settingsService.getSettings().language.rawValue]))
+    }
+    
+    func setOpenMainTaskListHandler(handler: (() -> ())?) {
+        openMainTasksHandler = handler
     }
     
     // MARK: OUTPUTS
@@ -121,4 +167,6 @@ class DetailShortcutViewModel: DetailShortcutViewModelType, DetailShortcutViewMo
     var isNew: Bool {
         return shortcut.isNew
     }
+    
+    var countOfTasksEvent: Event<String>
 }

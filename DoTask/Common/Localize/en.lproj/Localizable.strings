@@ -78,3 +78,5 @@
 "TASK_DONE_STATUS" = "Done!";
 "TASK_PROGRESS_STATUS" = "In progress..";
 "WITHOUT_DATE" = "Without date";
+
+"shortcutDetailTaskCount" = "";

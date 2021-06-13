@@ -11,7 +11,7 @@ import DITranquillity
 
 class DetailShortcutDependency: DIPart {
     static func load(container: DIContainer) {        
-        container.register(DetailShortcutViewModel.init(dataSource:))
+        container.register(DetailShortcutViewModel.init(dataSource:tasksDataSource:settingsService:))
             .as(DetailShortcutViewModelType.self)
             .lifetime(.prototype)
                 

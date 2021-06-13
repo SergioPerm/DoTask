@@ -127,9 +127,6 @@
 		B15B7D0525D148E200EC1D98 /* FromRightToLeftAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B7D0425D148E200EC1D98 /* FromRightToLeftAnimationController.swift */; };
 		B15BFA18259877F2003959B8 /* CheckSubtask.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15BFA17259877F2003959B8 /* CheckSubtask.swift */; };
 		B15C9B672569156A00A809B1 /* CalendarPickerViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15C9B662569156A00A809B1 /* CalendarPickerViewModelOutputs.swift */; };
-		B15C9B7425695B6600A809B1 /* DetailTaskViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15C9B7325695B6600A809B1 /* DetailTaskViewModelType.swift */; };
-		B15C9B7625695B7E00A809B1 /* DetailTaskViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15C9B7525695B7E00A809B1 /* DetailTaskViewModelInputs.swift */; };
-		B15C9B7825695B9E00A809B1 /* DetailTaskViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15C9B7725695B9E00A809B1 /* DetailTaskViewModelOutputs.swift */; };
 		B15C9B7A25695BB800A809B1 /* DetailTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15C9B7925695BB800A809B1 /* DetailTaskViewModel.swift */; };
 		B1603C522521C0480022BE49 /* TaskTimePeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1603C512521C0480022BE49 /* TaskTimePeriod.swift */; };
 		B1603C552521C5C20022BE49 /* TaskListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1603C542521C5C20022BE49 /* TaskListTableViewCell.swift */; };
@@ -489,9 +486,6 @@
 		B15B7D0425D148E200EC1D98 /* FromRightToLeftAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FromRightToLeftAnimationController.swift; sourceTree = "<group>"; };
 		B15BFA17259877F2003959B8 /* CheckSubtask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckSubtask.swift; sourceTree = "<group>"; };
 		B15C9B662569156A00A809B1 /* CalendarPickerViewModelOutputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerViewModelOutputs.swift; sourceTree = "<group>"; };
-		B15C9B7325695B6600A809B1 /* DetailTaskViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskViewModelType.swift; sourceTree = "<group>"; };
-		B15C9B7525695B7E00A809B1 /* DetailTaskViewModelInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskViewModelInputs.swift; sourceTree = "<group>"; };
-		B15C9B7725695B9E00A809B1 /* DetailTaskViewModelOutputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskViewModelOutputs.swift; sourceTree = "<group>"; };
 		B15C9B7925695BB800A809B1 /* DetailTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskViewModel.swift; sourceTree = "<group>"; };
 		B1603C512521C0480022BE49 /* TaskTimePeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTimePeriod.swift; sourceTree = "<group>"; };
 		B1603C542521C5C20022BE49 /* TaskListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListTableViewCell.swift; sourceTree = "<group>"; };
@@ -1085,16 +1079,6 @@
 			path = CoreData;
 			sourceTree = "<group>";
 		};
-		B1392016259233950087D0E9 /* DetailTask */ = {
-			isa = PBXGroup;
-			children = (
-				B15C9B7325695B6600A809B1 /* DetailTaskViewModelType.swift */,
-				B15C9B7525695B7E00A809B1 /* DetailTaskViewModelInputs.swift */,
-				B15C9B7725695B9E00A809B1 /* DetailTaskViewModelOutputs.swift */,
-			);
-			path = DetailTask;
-			sourceTree = "<group>";
-		};
 		B1392017259233A70087D0E9 /* Subtask */ = {
 			isa = PBXGroup;
 			children = (
@@ -1401,7 +1385,6 @@
 				B11C75A125C817FC004D6639 /* TaskReminder */,
 				B14C994325C68B0C00E36A94 /* TaskDate */,
 				B1392017259233A70087D0E9 /* Subtask */,
-				B1392016259233950087D0E9 /* DetailTask */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -2975,7 +2958,6 @@
 				B18522A325F2481D00BBC9D1 /* SpeakWave.swift in Sources */,
 				B1A2A3FE260A17610073FE8D /* AddSubtaskViewModelType.swift in Sources */,
 				B12785D626283FBE00903A1A /* SettingsTasksViewType.swift in Sources */,
-				B15C9B7825695B9E00A809B1 /* DetailTaskViewModelOutputs.swift in Sources */,
 				B1E30EE425A6FBEE0036979D /* MenuViewModelInputs.swift in Sources */,
 				B1A9141B252063FA0021E15C /* TaskListDataSourceObserver.swift in Sources */,
 				B1F9B4DC25B8487F0049FE58 /* CardModalAnimationController.swift in Sources */,
@@ -3057,7 +3039,6 @@
 				B1ABC8FB263819910050616A /* NavigationSwipeTransitionController.swift in Sources */,
 				B18C91C225334D74004DFB73 /* ImportanceAccessory.swift in Sources */,
 				B188594725F742EC00C4C440 /* SpeechTaskViewModelInputs.swift in Sources */,
-				B15C9B7625695B7E00A809B1 /* DetailTaskViewModelInputs.swift in Sources */,
 				B141727125C138EB00EF0D85 /* SubtasksTableView.swift in Sources */,
 				B13B31EF261B2F6A00A2D696 /* SettingsMainItem.swift in Sources */,
 				B12B0AF525ADDCEE0078315C /* ShortcutListViewModel.swift in Sources */,
@@ -3114,7 +3095,6 @@
 				B1DC539B25E3CB4F00140F17 /* TaskListCellFactoryType.swift in Sources */,
 				B11C75B925C83307004D6639 /* TaskDiaryViewModelOutputs.swift in Sources */,
 				B15C9B672569156A00A809B1 /* CalendarPickerViewModelOutputs.swift in Sources */,
-				B15C9B7425695B6600A809B1 /* DetailTaskViewModelType.swift in Sources */,
 				B11C75B225C81CD7004D6639 /* TaskReminderTableViewCell.swift in Sources */,
 				B1D79B1225CEAD03009DB9BF /* DiaryMenuTableViewCell.swift in Sources */,
 				B19957B725F5072B00F883D8 /* SpeechText.swift in Sources */,

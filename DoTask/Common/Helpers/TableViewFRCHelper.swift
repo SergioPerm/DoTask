@@ -46,7 +46,13 @@ class TableViewFRCHelper {
     
     func applyChanges() {
         tableChanges.sort {
-            $0.changeType.rawValue < $1.changeType.rawValue
+            if $0.changeType.rawValue != $1.changeType.rawValue {
+                return $0.changeType.rawValue < $1.changeType.rawValue
+            } else if $0.indexPath.section != $1.indexPath.section {
+                return $0.indexPath.section < $1.indexPath.section
+            } else {
+                return $0.indexPath.row < $1.indexPath.row
+            }
         }
         
         tableChanges.forEach { tableChange in

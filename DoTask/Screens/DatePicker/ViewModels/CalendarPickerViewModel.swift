@@ -50,7 +50,7 @@ class CalendarPickerViewModel: CalendarPickerViewModelType, CalendarPickerViewMo
     // MARK: Initializers
     
     init() {
-        self.selectedDate = Observable(Date())
+        self.selectedDate = Observable(nil)
         self.days = Observable([])
     }
         

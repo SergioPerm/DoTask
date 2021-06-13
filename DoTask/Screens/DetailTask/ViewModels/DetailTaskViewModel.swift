@@ -8,6 +8,52 @@
 
 import Foundation
 
+protocol DetailTaskViewModelInputs: AnyObject {
+    func setTaskDate(date: Date?)
+    func setReminder(date: Date?)
+    func setTitle(title: String)
+    func setShortcut(shortcutUID: String?)
+    func increaseImportance()
+    func addSubtask() -> IndexPath
+    func deleteSubtask(indexPath: IndexPath)
+    func moveSubtask(from: Int, to: Int)
+    func saveTask()
+    func deleteTask()
+    func askForDelete()
+    
+    func setCalendarHandler(onCalendarSelect: ((_ selectedDate: Date?, _ vc: CalendarPickerViewOutputs) -> Void)?)
+    func setReminderHandler(onTimeReminderSelect: ((_ selectedTime: Date, _ vc: TimePickerViewOutputs) -> Void)?)
+    func setShortcutHandler(onShortcutSelect: ((String?, ShortcutListViewOutputs) -> Void)?)
+    
+    func openCalendar()
+    func openReminder()
+    func openShortcuts()
+    
+    func setTaskUID(UID: String?)
+    func setFilter(filter: TaskListFilter)
+}
+
+protocol DetailTaskViewModelOutputs {
+    var selectedDate: Observable<Date?> { get }
+    var selectedTime: Observable<Date?> { get }
+    var selectedShortcut: Observable<ShortcutData> { get }
+    var shortcutUID: String? { get }
+    var isNewTask: Bool { get }
+    var isDone: Bool { get }
+    var importanceLevel: Int { get }
+    var title: String { get }
+    var tableSections: [DetailTaskTableSectionViewModelType] { get }
+    var onReturnToEdit: Observable<Bool> { get }
+    var asksToDelete: Observable<Bool> { get }
+    
+    var addSubtaskEvent: Event<Bool> { get }
+}
+
+protocol DetailTaskViewModelType: AnyObject {
+    var inputs: DetailTaskViewModelInputs { get }
+    var outputs: DetailTaskViewModelOutputs { get }
+}
+
 class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, DetailTaskViewModelOutputs {
     
     private var task: Task
@@ -129,7 +175,14 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
     func setReminder(date: Date?) {
         if let date = date {
             task.reminderDate = true
+            
+            //return current task date when is empty
             task.taskDate = date
+            selectedDate.value = date
+            
+            if let taskDateViewModel = taskDateInfoCell as? TaskDateViewModelType {
+                taskDateViewModel.inputs.setDate(date: date)
+            }
         } else {
             task.reminderDate = false
         }
@@ -230,6 +283,8 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
         } else if !normalizeTimeFromDate.isDayToday() {
             guard let dateWithTime = Calendar.current.taskCalendar.date(bySettingHour: 8, minute: 00, second: 0, of: normalizeTimeFromDate) else { return }
             normalizeTimeFromDate = dateWithTime
+        } else {
+            normalizeTimeFromDate = Date()
         }
         
         if let reminderAction = onTimeReminderSelect {

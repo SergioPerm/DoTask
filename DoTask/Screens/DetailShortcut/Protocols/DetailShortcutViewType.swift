@@ -10,4 +10,5 @@ import Foundation
 
 protocol DetailShortcutViewType: PresentableController {
     var shortcutUID: String? { get set }
+    var openMainTaskListHandler: (() -> ())? { get set }
 }

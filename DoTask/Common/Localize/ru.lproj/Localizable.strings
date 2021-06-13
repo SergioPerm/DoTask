@@ -78,3 +78,4 @@
 "TASK_DONE_STATUS" = "Готово!";
 "TASK_PROGRESS_STATUS" = "В процессе..";
 "WITHOUT_DATE" = "Без даты";
+"shortcutDetailTaskCount" = "";

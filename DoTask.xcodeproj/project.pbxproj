@@ -224,6 +224,7 @@
 		B1A2A402260A18100073FE8D /* AddSubtaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A2A401260A18100073FE8D /* AddSubtaskTableViewCell.swift */; };
 		B1A2A405260A29200073FE8D /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = B1A2A404260A29200073FE8D /* Lottie */; };
 		B1A303D625AC9EFA00BFAE68 /* DeleteShortcutButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A303D525AC9EFA00BFAE68 /* DeleteShortcutButton.swift */; };
+		B1A3E72F2675FB81000D1920 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = B1A3E7312675FB81000D1920 /* Localizable.stringsdict */; };
 		B1A4E3EB25EFAFDB00F65463 /* SpeechRecorderTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A4E3EA25EFAFDB00F65463 /* SpeechRecorderTransitionController.swift */; };
 		B1A4E3EE25EFB0E900F65463 /* SpeechRecorderAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A4E3ED25EFB0E900F65463 /* SpeechRecorderAnimationController.swift */; };
 		B1A913F0252056FA0021E15C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A913EF252056FA0021E15C /* AppDelegate.swift */; };
@@ -335,9 +336,6 @@
 		B1EF664925A4C3980050FF1C /* SaveShortcutButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EF664825A4C3980050FF1C /* SaveShortcutButton.swift */; };
 		B1EF664C25A4CD470050FF1C /* ColorSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EF664B25A4CD470050FF1C /* ColorSelectionView.swift */; };
 		B1EF664F25A4CE610050FF1C /* ColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EF664E25A4CE610050FF1C /* ColorCollectionViewCell.swift */; };
-		B1EF665225A4CFB80050FF1C /* DetailShortcutViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EF665125A4CFB80050FF1C /* DetailShortcutViewModelType.swift */; };
-		B1EF665625A4CFDF0050FF1C /* DetailShortcutViewModelInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EF665525A4CFDF0050FF1C /* DetailShortcutViewModelInputs.swift */; };
-		B1EF665925A4CFEE0050FF1C /* DetailShortcutViewModelOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EF665825A4CFEE0050FF1C /* DetailShortcutViewModelOutputs.swift */; };
 		B1EF665C25A4D11E0050FF1C /* DetailShortcutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EF665B25A4D11E0050FF1C /* DetailShortcutViewModel.swift */; };
 		B1EF666025A4D2E40050FF1C /* Shortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EF665F25A4D2E40050FF1C /* Shortcut.swift */; };
 		B1EF666525A4D8BA0050FF1C /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EF666425A4D8BA0050FF1C /* UIColor.swift */; };
@@ -586,6 +584,8 @@
 		B1A2A3FF260A17850073FE8D /* AddSubtaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubtaskViewModel.swift; sourceTree = "<group>"; };
 		B1A2A401260A18100073FE8D /* AddSubtaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubtaskTableViewCell.swift; sourceTree = "<group>"; };
 		B1A303D525AC9EFA00BFAE68 /* DeleteShortcutButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteShortcutButton.swift; sourceTree = "<group>"; };
+		B1A3E7302675FB81000D1920 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ru; path = ru.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		B1A3E7322675FB85000D1920 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		B1A4E3EA25EFAFDB00F65463 /* SpeechRecorderTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecorderTransitionController.swift; sourceTree = "<group>"; };
 		B1A4E3ED25EFB0E900F65463 /* SpeechRecorderAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecorderAnimationController.swift; sourceTree = "<group>"; };
 		B1A913EC252056FA0021E15C /* DoTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DoTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -696,9 +696,6 @@
 		B1EF664825A4C3980050FF1C /* SaveShortcutButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveShortcutButton.swift; sourceTree = "<group>"; };
 		B1EF664B25A4CD470050FF1C /* ColorSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelectionView.swift; sourceTree = "<group>"; };
 		B1EF664E25A4CE610050FF1C /* ColorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCollectionViewCell.swift; sourceTree = "<group>"; };
-		B1EF665125A4CFB80050FF1C /* DetailShortcutViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailShortcutViewModelType.swift; sourceTree = "<group>"; };
-		B1EF665525A4CFDF0050FF1C /* DetailShortcutViewModelInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailShortcutViewModelInputs.swift; sourceTree = "<group>"; };
-		B1EF665825A4CFEE0050FF1C /* DetailShortcutViewModelOutputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailShortcutViewModelOutputs.swift; sourceTree = "<group>"; };
 		B1EF665B25A4D11E0050FF1C /* DetailShortcutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailShortcutViewModel.swift; sourceTree = "<group>"; };
 		B1EF665F25A4D2E40050FF1C /* Shortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shortcut.swift; sourceTree = "<group>"; };
 		B1EF666425A4D8BA0050FF1C /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
@@ -1565,7 +1562,6 @@
 		B1778F0D26039789009A9328 /* DetailShortcut */ = {
 			isa = PBXGroup;
 			children = (
-				B1EF663525A488E90050FF1C /* Protocols */,
 				B1EF665B25A4D11E0050FF1C /* DetailShortcutViewModel.swift */,
 			);
 			path = DetailShortcut;
@@ -2446,6 +2442,7 @@
 			isa = PBXGroup;
 			children = (
 				B1E02A322611F9CF003489BD /* Localizable.strings */,
+				B1A3E7312675FB81000D1920 /* Localizable.stringsdict */,
 			);
 			path = Localize;
 			sourceTree = "<group>";
@@ -2623,16 +2620,6 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		B1EF663525A488E90050FF1C /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				B1EF665125A4CFB80050FF1C /* DetailShortcutViewModelType.swift */,
-				B1EF665525A4CFDF0050FF1C /* DetailShortcutViewModelInputs.swift */,
-				B1EF665825A4CFEE0050FF1C /* DetailShortcutViewModelOutputs.swift */,
-			);
-			path = Protocols;
-			sourceTree = "<group>";
-		};
 		B1EF663625A488F00050FF1C /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -2803,6 +2790,7 @@
 				B1A913FC252056FC0021E15C /* Assets.xcassets in Resources */,
 				B1D5DECA2523884700124DAD /* CalendarPickerHeaderView.xib in Resources */,
 				B1D5DEC92523884700124DAD /* CalendarPickerViewCell.xib in Resources */,
+				B1A3E72F2675FB81000D1920 /* Localizable.stringsdict in Resources */,
 				B139A76025822527000BAE55 /* testStoryboard.storyboard in Resources */,
 				B1ABC903263999B40050616A /* Splash.storyboard in Resources */,
 				B1E02A302611F9CF003489BD /* Localizable.strings in Resources */,
@@ -2865,7 +2853,6 @@
 				B17B8FB725CBFDFE00663F97 /* TaskDiaryViewType.swift in Sources */,
 				B13E078C25A998AB00020F5E /* MenuItemSectionViewModel.swift in Sources */,
 				B14C994825C68BB900E36A94 /* TaskDateViewModelOutputs.swift in Sources */,
-				B1EF665625A4CFDF0050FF1C /* DetailShortcutViewModelInputs.swift in Sources */,
 				B141728325C1544500EF0D85 /* TaskListItemViewModelOutputs.swift in Sources */,
 				B139201D259234520087D0E9 /* SubtaskViewModelOutputs.swift in Sources */,
 				B1A4E3EE25EFB0E900F65463 /* SpeechRecorderAnimationController.swift in Sources */,
@@ -2895,7 +2882,6 @@
 				B12B0AF925ADDDE30078315C /* ShortcutViewModel.swift in Sources */,
 				B1A303D625AC9EFA00BFAE68 /* DeleteShortcutButton.swift in Sources */,
 				B181C162261CAA0300DF2CED /* SettingsLanguageItem.swift in Sources */,
-				B1EF665225A4CFB80050FF1C /* DetailShortcutViewModelType.swift in Sources */,
 				B1228E1325289DDB00567062 /* UIImage.swift in Sources */,
 				B153B34C2629BA730056D643 /* SettingsTasksShortcutItemViewModel.swift in Sources */,
 				B17B8FA725CBEBE300663F97 /* TaskDiaryViewModelInputs.swift in Sources */,
@@ -3018,7 +3004,6 @@
 				B1EF665C25A4D11E0050FF1C /* DetailShortcutViewModel.swift in Sources */,
 				B1B4CA9325C159B900AF5F61 /* TaskListItemViewModel.swift in Sources */,
 				B1294493253469D4002FD1EF /* CalendarAccessory.swift in Sources */,
-				B1EF665925A4CFEE0050FF1C /* DetailShortcutViewModelOutputs.swift in Sources */,
 				B14C994525C68B4300E36A94 /* TaskDateViewModelInputs.swift in Sources */,
 				B188593C25F73E2700C4C440 /* SpeechTaskViewModelOutputs.swift in Sources */,
 				B11981B52615F3E80075401C /* StorageDependency.swift in Sources */,
@@ -3178,6 +3163,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		B1A3E7312675FB81000D1920 /* Localizable.stringsdict */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B1A3E7302675FB81000D1920 /* ru */,
+				B1A3E7322675FB85000D1920 /* en */,
+			);
+			name = Localizable.stringsdict;
+			sourceTree = "<group>";
+		};
 		B1A913FD252056FC0021E15C /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

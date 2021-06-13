@@ -11,6 +11,12 @@ import SnapKit
 
 class DetailShortcutViewController: UIViewController, DetailShortcutViewType {
     
+    var openMainTaskListHandler: (() -> ())?  {
+        didSet {
+            viewModel.inputs.setOpenMainTaskListHandler(handler: openMainTaskListHandler)
+        }
+    }
+    
     var shortcutUID: String? {
         didSet {
             viewModel.inputs.setShortcutUID(UID: shortcutUID)
@@ -21,11 +27,11 @@ class DetailShortcutViewController: UIViewController, DetailShortcutViewType {
     var router: RouterType?
     var persistentType: PersistentViewControllerType?
     
-    // MARK: ViewModel
+    // MARK: - ViewModel
     private var viewModel: DetailShortcutViewModelType
     
-    // MARK: View's properties
     
+    // MARK: - View's properties
     private let labelView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -46,6 +52,15 @@ class DetailShortcutViewController: UIViewController, DetailShortcutViewType {
         label.font = FontFactory.AvenirNextMedium.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 23))
         label.textColor = R.color.shortcutDetail.placeholder()
         label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
+    private let tasksCounterLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = FontFactory.HelveticaNeue.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 16))
+        label.textColor = R.color.shortcutDetail.taskCounterText()
         
         return label
     }()
@@ -91,6 +106,7 @@ class DetailShortcutViewController: UIViewController, DetailShortcutViewType {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         nameTextField.becomeFirstResponder()
+        viewModel.inputs.updateTasksCounter()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -125,6 +141,7 @@ extension DetailShortcutViewController {
         view.addSubview(colorSelectionView)
         view.insertSubview(saveShortcutBtn, belowSubview: colorSelectionView)
         view.insertSubview(deleteShortcutBtn, belowSubview: colorSelectionView)
+        view.addSubview(tasksCounterLabel)
         
         deleteShortcutBtn.isHidden = viewModel.outputs.isNew
         
@@ -180,6 +197,13 @@ extension DetailShortcutViewController {
             make.right.equalToSuperview().offset(-25)
         })
         
+        tasksCounterLabel.snp.makeConstraints({ make in
+            make.top.equalTo(showInMainListView.snp.bottom).offset(5)
+            make.left.equalToSuperview().offset(25)
+            make.right.equalToSuperview().offset(-25)
+            make.height.equalTo(rowHeight)
+        })
+        
         labelView.snp.makeConstraints({ make in
             make.height.equalTo(rowHeight)
             make.top.equalToSuperview().offset(30)
@@ -199,14 +223,14 @@ extension DetailShortcutViewController {
         let btnWidthRatioToScreenWidth = StyleGuide.DetailShortcut.Sizes.RatioToScreenWidth.btnWidth
         
         saveShortcutBtn.snp.makeConstraints({ make in
-            make.left.equalToSuperview().offset(10)
+            make.right.equalToSuperview().offset(-10)
             make.bottom.equalTo(colorSelectionView.snp.top).offset(-10)
             make.width.equalTo(UIView.globalSafeAreaFrame.width * btnWidthRatioToScreenWidth)
             make.height.equalTo(30)
         })
         
         deleteShortcutBtn.snp.makeConstraints({ make in
-            make.right.equalToSuperview().offset(-10)
+            make.left.equalToSuperview().offset(10)
             make.bottom.equalTo(colorSelectionView.snp.top).offset(-10)
             make.width.equalTo(UIView.globalSafeAreaFrame.width * btnWidthRatioToScreenWidth)
             make.height.equalTo(30)
@@ -226,6 +250,10 @@ extension DetailShortcutViewController {
         
         viewModel.outputs.selectedColor.bind { [weak self] colorHex in
             self?.colorDotView.currentColor = UIColor(hexString: colorHex)
+        }
+        
+        viewModel.outputs.countOfTasksEvent.subscribe(self) { this, tasksCountString in
+            this.tasksCounterLabel.text = tasksCountString
         }
     }
 }

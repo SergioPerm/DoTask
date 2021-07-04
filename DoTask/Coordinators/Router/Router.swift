@@ -69,8 +69,6 @@ class Router: NSObject, RouterType {
             }
         }
         
-        let lastVC: PresentableController? = presentableControllers.last ?? nil
-        
         presentableControllers.append(vc)
         
         if let completion = completion {

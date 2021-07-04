@@ -47,7 +47,7 @@ class CreateShortcutMenuTableViewCell: UITableViewCell, TableViewCellType {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setImage(R.image.menu.addPlus(), for: .normal)
-        btn.contentMode = .left
+        btn.contentMode = .center
         btn.imageView?.contentMode = .scaleAspectFit
         
         return btn
@@ -97,8 +97,8 @@ extension CreateShortcutMenuTableViewCell {
             createShortcutBtn.leadingAnchor.constraint(equalTo: title1.trailingAnchor),
             createShortcutBtn.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             createShortcutBtn.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            createShortcutBtn.heightAnchor.constraint(equalToConstant: 15),
-            createShortcutBtn.widthAnchor.constraint(equalToConstant: 30)
+            createShortcutBtn.heightAnchor.constraint(equalToConstant: 25),
+            createShortcutBtn.widthAnchor.constraint(equalToConstant: 45)
         ]
         
         createShortcutBtn.imageEdgeInsets = StyleGuide.SlideMenu.CreateShortcut.Sizes.createBtnImgInsets

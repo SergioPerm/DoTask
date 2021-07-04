@@ -10,4 +10,6 @@ import Foundation
 
 protocol NotificationTaskObserver {
     func onTapNotification(with id: String)
+    func setDone(with id: String)
+    func remindIn30Minutes(with id: String)
 }

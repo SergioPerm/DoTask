@@ -40,8 +40,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         #endif
         
-        let pushNotificationService: PushNotificationService = AppDI.resolve()
-        pushNotificationService.checkAuthorization()
+//        let pushNotificationService: PushNotificationService = AppDI.resolve()
+//        pushNotificationService.checkAuthorization()
         
 //        let dataSource: TaskListDataSourceCoreData = AppDI.resolve()
 //        dataSource.clearData()

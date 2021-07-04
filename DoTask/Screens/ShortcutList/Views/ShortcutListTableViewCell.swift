@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class ShortcutListTableViewCell: UITableViewCell {
 
@@ -43,6 +44,15 @@ class ShortcutListTableViewCell: UITableViewCell {
         return view
     }()
     
+    private let showInMainListIcon: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = R.image.shortcutList.hidden()?.maskWithColor(color: .gray)
+        imageView.contentMode = .scaleAspectFit
+        
+        return imageView
+    }()
+    
     private let dotShape = CAShapeLayer()
     
     override func awakeFromNib() {
@@ -61,6 +71,7 @@ class ShortcutListTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setup()
+        setupConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -69,19 +80,20 @@ class ShortcutListTableViewCell: UITableViewCell {
                 
 }
 
-extension ShortcutListTableViewCell {
+private extension ShortcutListTableViewCell {
         
-    private func bindViewModel() {
+    func bindViewModel() {
         
         guard let viewModel = viewModel else { return }
         
         color = UIColor(hexString: viewModel.outputs.color)
         titleLabel.text = viewModel.outputs.title
+        showInMainListIcon.isHidden = viewModel.outputs.showInMainList
         
         drawDot()
     }
     
-    private func drawDot() {
+    func drawDot() {
         dotShape.removeFromSuperlayer()
         
         let rowHeight = StyleGuide.ShortcutList.Sizes.tableRowHeight
@@ -97,7 +109,7 @@ extension ShortcutListTableViewCell {
         colorDotView.layer.addSublayer(dotShape)
     }
     
-    private func setup() {
+    func setup() {
         selectionStyle = .none
         
         let globalWidth = UIView.globalSafeAreaFrame.width
@@ -105,20 +117,32 @@ extension ShortcutListTableViewCell {
                 
         contentView.addSubview(colorDotView)
         contentView.addSubview(titleLabel)
-        
-        let constraints = [
-            colorDotView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            colorDotView.widthAnchor.constraint(equalToConstant: 50),
-            colorDotView.heightAnchor.constraint(equalToConstant: 50),
-            colorDotView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            colorDotView.trailingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            titleLabel.heightAnchor.constraint(equalToConstant: 50),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
-        ]
+        contentView.addSubview(showInMainListIcon)
         
         backgroundColor = .clear
-        
-        NSLayoutConstraint.activate(constraints)
     }
+    
+    func setupConstraints() {
+        
+        colorDotView.snp.makeConstraints({ make in
+            make.left.centerY.equalToSuperview()
+            make.width.height.equalTo(50)
+            make.right.equalTo(titleLabel.snp.left)
+        })
+        
+        titleLabel.snp.makeConstraints({ make in
+            make.centerY.equalToSuperview()
+            make.right.equalTo(showInMainListIcon.snp.left)
+            make.height.equalTo(50)
+        })
+        
+        showInMainListIcon.snp.makeConstraints({ make in
+            make.centerY.equalToSuperview()
+            make.right.equalToSuperview().offset(-15)
+            make.width.height.equalTo(20)
+        })
+        
+    }
+    
+    
 }

@@ -42,18 +42,12 @@ class TaskListTableHeaderView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        //titleLabel.frame = CGRect.init(x: 0, y: 5, width: frame.width, height: StyleGuide.TaskList.Sizes.headerTitleHeight)
-    }
-    
+        
 }
 
-extension TaskListTableHeaderView {
+private extension TaskListTableHeaderView {
     
-    private func setup() {
+    func setup() {
         addSubview(titleLabel)
         
         addSubview(counter)
@@ -74,9 +68,12 @@ extension TaskListTableHeaderView {
         ]
         
         NSLayoutConstraint.activate(constraints)
+        
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(createTaskForDailyAction(sender:)))
+        addGestureRecognizer(gestureRecognizer)
     }
     
-    private func bindViewModel() {
+    func bindViewModel() {
                 
         counter.isHidden = true
                 
@@ -111,5 +108,9 @@ extension TaskListTableHeaderView {
             }
         }
                 
+    }
+    
+    @objc func createTaskForDailyAction(sender: UITapGestureRecognizer) {
+        viewModel?.inputs.createTask()
     }
 }

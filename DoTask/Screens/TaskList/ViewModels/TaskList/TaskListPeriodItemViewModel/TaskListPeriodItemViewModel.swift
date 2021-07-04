@@ -25,6 +25,42 @@ enum EmptyCapMode {
     }
 }
 
+struct DoneCounter {
+    var allCount: Int
+    var doneCount: Int
+}
+
+protocol TaskListPeriodItemViewModelInputs {
+    func insert(task: TaskListItemViewModelType, at index: Int)
+    func insert(task: TaskListItemViewModelType)
+    func remove(at index: Int)
+    func setTaskListMode(mode: TaskListMode)
+    func setShowingCapWhenTasksIsEmpty(emptyState: Bool, capMode: EmptyCapMode?)
+    func setDoneCounter(counter: DoneCounter)
+    func createTask()
+}
+
+protocol TaskListPeriodItemViewModelOutputs {
+    var title: String { get }
+    var localizedTitle: LocalizableStringResource? { get }
+    var date: Date? { get }
+    var titleHexColor: String { get }
+    var dailyName: DailyName? { get }
+    var tasks: [TaskListItemType] { get }
+    var taskListMode: TaskListMode { get }
+    var isEmpty: Bool { get }
+    var showingCapWhenTasksIsEmpty: Bool { get }
+    var capMode: EmptyCapMode? { get }
+    var doneCounter: DoneCounter? { get }
+    
+    var doneCounterEvent: Event<DoneCounter?> { get }
+}
+
+protocol TaskListPeriodItemViewModelType {
+    var inputs: TaskListPeriodItemViewModelInputs { get }
+    var outputs: TaskListPeriodItemViewModelOutputs { get }
+}
+
 class TaskListPeriodItemViewModel: TaskListPeriodItemViewModelType, TaskListPeriodItemViewModelInputs, TaskListPeriodItemViewModelOutputs {
     
     private let timePeriodName: String
@@ -32,14 +68,17 @@ class TaskListPeriodItemViewModel: TaskListPeriodItemViewModelType, TaskListPeri
         
     private let taskTimePeriod: TaskTimePeriod
     
+    private let createTaskHandler: (_ dailyPeriod: DailyName) -> Void
+    
     var inputs: TaskListPeriodItemViewModelInputs { return self }
     var outputs: TaskListPeriodItemViewModelOutputs { return self }
     
-    init(taskTimePeriod: TaskTimePeriod, taskListMode: TaskListMode = .list) {
+    init(taskTimePeriod: TaskTimePeriod, taskListMode: TaskListMode = .list, createTaskHandler: @escaping (_ dailyPeriod: DailyName) -> Void) {
         self.taskTimePeriod = taskTimePeriod
         self.timePeriodName = taskTimePeriod.name
         self.taskListMode = taskListMode
         self.doneCounterEvent = Event<DoneCounter?>()
+        self.createTaskHandler = createTaskHandler
     }
     
     // MARK: Inputs
@@ -81,6 +120,12 @@ class TaskListPeriodItemViewModel: TaskListPeriodItemViewModelType, TaskListPeri
     func setDoneCounter(counter: DoneCounter) {
         self.doneCounter = counter
         self.doneCounterEvent.raise(counter)
+    }
+    
+    func createTask() {
+        if let dailyName = taskTimePeriod.dailyName {
+            createTaskHandler(dailyName)
+        }
     }
     
     // MARK: Outputs

@@ -21,7 +21,14 @@ class SpeechTaskViewController: UIViewController, SpeechTaskViewType {
         }
     }
     
+    var onDoNotAllowSpeech: (()->())? {
+        didSet {
+            viewModel.inputs.setSpeechPermissionDontAllowHandler(handler: onDoNotAllowSpeech)
+        }
+    }
+    
     var longTapRecognizer: UILongPressGestureRecognizer?
+    
     var shortcutUID: String? {
         didSet {
             if let shortcutUID = shortcutUID {
@@ -29,7 +36,11 @@ class SpeechTaskViewController: UIViewController, SpeechTaskViewType {
             }
         }
     }
-    var taskDate: Date?
+    var taskDate: Date? {
+        didSet {
+            viewModel.inputs.setTaskDate(date: taskDate)
+        }
+    }
     
     private let speakWave: SpeakWave = {
         let view = SpeakWave()
@@ -77,15 +88,19 @@ class SpeechTaskViewController: UIViewController, SpeechTaskViewType {
         
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setup()
         bindViewModel()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-                       
-        viewModel.inputs.startRecording()
-        
+                   
+        if longTapRecognizer?.numberOfTouches == 0 {
+            router?.pop(vc: self)
+        } else {
+            viewModel.inputs.startRecording()
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -113,14 +128,20 @@ extension SpeechTaskViewController {
             self.speakWave.setVolume(value: volumeLevel)
         }
         
+        viewModel.outputs.closeEvent.subscribe(self) { this in
+            this.router?.pop(vc: this)
+        }
+        
     }
     
     private func setup() {
         view.backgroundColor = R.color.commonColors.blue()!
         
         if let longTapRecognizer = longTapRecognizer {
-            longTapRecognizer.addTarget(self, action: #selector(tapAction(sender:)))
-            view.addGestureRecognizer(longTapRecognizer)
+            if longTapRecognizer.numberOfTouches != 0 {
+                longTapRecognizer.addTarget(self, action: #selector(tapAction(sender:)))
+                view.addGestureRecognizer(longTapRecognizer)
+            }
         }
                         
         [crossBtn, speakWave, speechText, infoText, swipeToCancel].forEach({
@@ -174,6 +195,10 @@ extension SpeechTaskViewController {
 
 extension SpeechTaskViewController {
         
+    @objc private func closeAction(sender: UITapGestureRecognizer) {
+        router?.pop(vc: self)
+    }
+    
     @objc private func tapAction(sender: UILongPressGestureRecognizer) {
         
         switch sender.state {

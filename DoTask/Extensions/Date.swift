@@ -27,6 +27,23 @@ enum DailyName: String, CaseIterable {
         }
     }
     
+    func dateOfPeriod() -> Date? {
+        
+        switch self {
+        case .today:
+            return Date().startOfDay()
+        case .tommorow:
+            guard let tommorowDay = Calendar.current.taskCalendar.date(byAdding: .day, value: 1, to: Date()) else { return Date()}
+            return tommorowDay.startOfDay()
+        case .currentWeek:
+            guard let endOfWeek = Date().endOfWeek else { return Date() }
+            return endOfWeek.startOfDay()
+        case .later:
+            return nil
+        }
+        
+    }
+    
     func haveDoneCounter() -> Bool {
         return self == .today ? true : false
     }

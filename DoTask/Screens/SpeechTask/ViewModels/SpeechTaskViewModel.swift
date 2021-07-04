@@ -7,64 +7,82 @@
 //
 
 import Foundation
-import Speech
+//import Speech
 
-class SpeechTaskViewModel: NSObject, SpeechTaskViewModelType, SpeechTaskViewModelInputs, SpeechTaskViewModelOutputs {
+protocol SpeechTaskViewModelInputs {
+    func startRecording()
+    func stopRecording()
+    func saveTask(taskTitle: String)
+    func cancelTask()
+    func setShortcut(uid: String)
+    func setTaskDate(date: Date?)
+    
+    func setSpeechPermissionDontAllowHandler(handler: (() -> ())?)
+}
+
+protocol SpeechTaskViewModelOutputs {
+    var speechTextChangeEvent: Event<String> { get }
+    var volumeLevel: Event<Float> { get }
+    var closeEvent: Event<Void> { get }
+}
+
+protocol SpeechTaskViewModelType {
+    var inputs: SpeechTaskViewModelInputs { get }
+    var outputs: SpeechTaskViewModelOutputs { get }
+}
+
+final class SpeechTaskViewModel: NSObject, SpeechTaskViewModelType, SpeechTaskViewModelInputs, SpeechTaskViewModelOutputs {
     
     private let dataSource: TaskListDataSource
     private let spotlightService: SpotlightTasksService
     
     private var shortcutUID: String?
     
-    // MARK: Audio
-
-    private var audioEngine: AVAudioEngine?
-    private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
-    private var recognitionTask: SFSpeechRecognitionTask?
-    private var inputNode: AVAudioInputNode?
+    private var onDoNotAllowSpeech: (()->())?
     
-    private var speechSentenses: [String] = []
     private var localizeService: LocalizeServiceType
+    private let speechService: SpeechRecognitionServiceType
+    
+    private var taskDate: Date?
     
     var inputs: SpeechTaskViewModelInputs { return self }
     var outputs: SpeechTaskViewModelOutputs { return self }
     
-    init(dataSource: TaskListDataSource, localizeService: LocalizeServiceType, spotlightService: SpotlightTasksService) {
+    init(dataSource: TaskListDataSource, localizeService: LocalizeServiceType, spotlightService: SpotlightTasksService, speechService: SpeechRecognitionServiceType) {
         self.dataSource = dataSource
         self.spotlightService = spotlightService
         self.localizeService = localizeService
+        self.speechService = speechService
         self.speechTextChangeEvent = Event<String>()
         self.volumeLevel = Event<Float>()
+        self.closeEvent = Event<Void>()
     }
         
     // MARK: Inputs
     
     func startRecording() {
-        SFSpeechRecognizer.requestAuthorization { requestStatus in
-            
-            switch requestStatus {
-            case .authorized:
-                print("ZBS")
-            case .denied:
-                print("speech denied")
-            case .notDetermined:
-                print("not determined")
-            case .restricted:
-                print("restricted")
-            @unknown default:
-                print("default")
+        
+        speechService.checkAuthorization { [weak self] didAllow in
+            if didAllow {
+                self?.speechService.recordSpeech { speechText in
+                    self?.speechTextChangeEvent.raise(speechText)
+                } audioLevelUpdate: { audioLevel in
+                    self?.volumeLevel.raise(audioLevel)
+                }
+
             }
-            
         }
+    }
     
-        record()
+    func stopRecording() {
+        speechService.stopRecord()
     }
     
     func saveTask(taskTitle: String) {
         if !taskTitle.trimmingCharacters(in: .whitespaces).isEmpty {
             var newTask = Task()
             newTask.title = taskTitle
-            newTask.taskDate = Date()
+            newTask.taskDate = taskDate ?? Date()
             
             if let shortcutUID = shortcutUID {
                 newTask.shortcut = dataSource.shortcutModelByIdentifier(identifier: shortcutUID)
@@ -74,7 +92,7 @@ class SpeechTaskViewModel: NSObject, SpeechTaskViewModelType, SpeechTaskViewMode
             spotlightService.addTask(task: newTask)
         }
         
-        stopAudio()
+        speechService.stopRecord()
     }
     
     func setShortcut(uid: String) {
@@ -82,174 +100,22 @@ class SpeechTaskViewModel: NSObject, SpeechTaskViewModelType, SpeechTaskViewMode
     }
     
     func cancelTask() {
-        stopAudio()
+        speechService.stopRecord()
+    }
+    
+    func setSpeechPermissionDontAllowHandler(handler: (() -> ())?) {
+        onDoNotAllowSpeech = handler
+    }
+    
+    func setTaskDate(date: Date?) {
+        taskDate = date
     }
     
     // MARK: Outputs
     
     var speechTextChangeEvent: Event<String>
     var volumeLevel: Event<Float>
+    var closeEvent: Event<Void>
     
 }
 
-extension SpeechTaskViewModel {
-    
-    private func stopAudio() {
-        recognitionRequest?.endAudio()
-        recognitionTask?.finish()
-        recognitionRequest = nil
-        recognitionTask = nil
-        audioEngine?.inputNode.removeTap(onBus: 0)
-        audioEngine?.stop()
-        audioEngine = nil
-    }
-    
-    private func getFullSpeechText() -> String {
-        var fullText = ""
-        speechSentenses.forEach({
-            fullText += " \($0)"
-        })
-        
-        return fullText
-    }
-    
-    private func getVolume(from buffer: AVAudioPCMBuffer, bufferSize: Int) -> Float {
-        guard let channelData = buffer.floatChannelData?[0] else {
-            return 0
-        }
-
-        let channelDataArray = Array(UnsafeBufferPointer(start:channelData, count: bufferSize))
-
-        var outEnvelope = [Float]()
-        var envelopeState:Float = 0
-        let envConstantAtk:Float = 0.16
-        let envConstantDec:Float = 0.003
-
-        for sample in channelDataArray {
-            let rectified = abs(sample)
-
-            if envelopeState < rectified {
-                envelopeState += envConstantAtk * (rectified - envelopeState)
-            } else {
-                envelopeState += envConstantDec * (rectified - envelopeState)
-            }
-            outEnvelope.append(envelopeState)
-        }
-
-        // 0.007 is the low pass filter to prevent
-        // getting the noise entering from the microphone
-        if let maxVolume = outEnvelope.max(),
-            maxVolume > Float(0.01) {
-            return maxVolume
-        } else {
-            return 0.0
-        }
-    }
-    
-    private func record() {
-        
-        if audioEngine == nil {
-            audioEngine = AVAudioEngine()
-        }
-                
-        inputNode = audioEngine?.inputNode
-        
-        recognitionTask?.cancel()
-        
-        let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: localizeService.currentLocal?.rawValue ?? "en"))
-        
-        recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
-        
-        let audioSession = AVAudioSession.sharedInstance()
-        
-        do {
-            try audioSession.setCategory(.record, mode: .measurement, options: .duckOthers)
-        } catch {
-            print(error.localizedDescription)
-        }
-        
-        do {
-            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
-        } catch {
-            print(error.localizedDescription)
-        }
-                
-        audioEngine?.inputNode.removeTap(onBus: AVAudioNodeBus(0))
-               
-        speechRecognizer?.delegate = self
-        
-        let recordingFormat = inputNode?.inputFormat(forBus: 0)
-        
-        audioEngine?.inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { [weak self] (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
-            self?.recognitionRequest?.append(buffer)
-            
-            let level = self?.getVolume(from: buffer, bufferSize: 1024)
-
-            if let level = level {
-                DispatchQueue.main.async { [weak self] in
-                    self?.volumeLevel.raise(level)
-                }
-            }
-        }
-
-        audioEngine?.prepare()
-        
-        do {
-            try audioEngine?.start()
-        } catch {
-            print(error.localizedDescription)
-        }
-        
-        guard let recognitionRequest = recognitionRequest else { fatalError("Unable to create a SFSpeechAudioBufferRecognitionRequest object") }
-        recognitionRequest.shouldReportPartialResults = true
-        
-        if #available(iOS 13, *) {
-            if speechRecognizer?.supportsOnDeviceRecognition ?? false{
-                recognitionRequest.requiresOnDeviceRecognition = true
-            }
-        }
-                        
-        recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest) { [weak self] result, error in
-            
-            guard let result = result else { return }
-            guard let strongSelf = self else { return }
-            
-            let bestTranscription = result.bestTranscription
-            let transcribedString = result.bestTranscription.formattedString
-            
-            var confidence: Float = 0.0
-            if !bestTranscription.segments.isEmpty {
-                confidence = result.bestTranscription.segments[0].confidence
-            }
-            
-            print(confidence)
-            if !strongSelf.speechSentenses.isEmpty {
-                var currentSentese = strongSelf.speechSentenses.removeLast()
-                currentSentese = transcribedString
-                strongSelf.speechSentenses.append(currentSentese)
-            } else {
-                strongSelf.speechSentenses.append(transcribedString)
-            }
-
-            let speechText = strongSelf.getFullSpeechText()
-            
-            print(speechText)
-            DispatchQueue.main.async { [weak self] in
-                self?.speechTextChangeEvent.raise(speechText.trimmingCharacters(in: .whitespaces))
-            }
-            
-            if error != nil {
-                self?.recognitionTask?.finish()
-                self?.inputNode?.removeTap(onBus: 0)
-                self?.audioEngine?.stop()
-                self?.recognitionRequest = nil
-            }
-        }
-    }
-}
-
-extension SpeechTaskViewModel: SFSpeechRecognizerDelegate {
-    func speechRecognizer(_ speechRecognizer: SFSpeechRecognizer, availabilityDidChange available: Bool) {
-        print("speech \(available)")
-    }
-}

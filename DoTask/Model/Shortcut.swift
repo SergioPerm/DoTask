@@ -25,6 +25,14 @@ struct Shortcut {
         self.isNew = true
     }
     
+    init(name: String, color: String) {
+        self.uid = UUID().uuidString
+        self.name = name
+        self.color = color
+        self.showInMainList = true
+        self.isNew = true
+    }
+    
     init(with managedObject: ShortcutManaged) {
         self.uid = managedObject.identificator.uuidString
         self.name = managedObject.name

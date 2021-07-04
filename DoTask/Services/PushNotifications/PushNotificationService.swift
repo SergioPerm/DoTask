@@ -9,7 +9,7 @@
 import Foundation
 import UserNotifications
 
-class PushNotificationService: NSObject {
+final class PushNotificationService: NSObject {
         
     let notificationCenter = UNUserNotificationCenter.current()
         
@@ -20,15 +20,51 @@ class PushNotificationService: NSObject {
         notificationCenter.delegate = self
     }
     
-    func checkAuthorization() {
+    func checkAuthorization(completion: ((_ didAllow: Bool) -> ())? = nil) {
         let notificationsOptions: UNAuthorizationOptions = [.alert, .sound, .badge]
          
         notificationCenter.getNotificationSettings { (settings) in
-            if settings.authorizationStatus != .authorized {
+            switch settings.authorizationStatus {
+            case .notDetermined:
                 self.notificationCenter.requestAuthorization(options: notificationsOptions) {
                     (didAllow, error) in
-                    if !didAllow {
-                        print("User has declined notifications")
+                    if let completion = completion {
+                        DispatchQueue.main.async {
+                            completion(didAllow)
+                        }
+                    }
+                }
+            case .denied:
+                self.notificationCenter.requestAuthorization(options: notificationsOptions) {
+                    (didAllow, error) in
+                    if let completion = completion {
+                        DispatchQueue.main.async {
+                            completion(didAllow)
+                        }
+                    }
+                }
+            case .authorized:
+                if let completion = completion {
+                    DispatchQueue.main.async {
+                        completion(true)
+                    }
+                }
+            case .provisional:
+                if let completion = completion {
+                    DispatchQueue.main.async {
+                        completion(true)
+                    }
+                }
+            case .ephemeral:
+                if let completion = completion {
+                    DispatchQueue.main.async {
+                        completion(true)
+                    }
+                }
+            @unknown default:
+                if let completion = completion {
+                    DispatchQueue.main.async {
+                        completion(false)
                     }
                 }
             }
@@ -42,6 +78,7 @@ class PushNotificationService: NSObject {
         content.body = notifyModel.body
         content.sound = .default
         content.badge = 1
+        content.categoryIdentifier = "DOTASK_NOTIFYTASK"
         
         let triggerDate = notifyModel.dateTrigger
         let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
@@ -64,6 +101,14 @@ class PushNotificationService: NSObject {
     func attachObserver(_ observer: NotificationTaskObserver) {
         notificationObservers.append(observer)
     }
+    
+    func registerCategories() {
+        let doneAction = UNNotificationAction(identifier: "DONE", title: "Done", options: .foreground)
+        let remindAction = UNNotificationAction(identifier: "REMIND", title: "Remind in 30 minutes", options: .foreground)
+        let taskNotifyCategory = UNNotificationCategory(identifier: "DOTASK_NOTIFYTASK", actions: [doneAction, remindAction], intentIdentifiers: [])
+        
+        notificationCenter.setNotificationCategories([taskNotifyCategory])
+    }
         
 }
 
@@ -74,6 +119,7 @@ extension PushNotificationService: UNUserNotificationCenterDelegate {
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+                
         let notifyRequest = response.notification.request
         let identifier = notifyRequest.identifier
         
@@ -82,7 +128,18 @@ extension PushNotificationService: UNUserNotificationCenterDelegate {
             let index = identifier.index(identifier.endIndex, offsetBy: -36)
             let strID = String(identifier[index...])
 
-            notificationObservers.forEach({ $0.onTapNotification(with: strID)})
+            switch response.actionIdentifier {
+            case "DONE":
+                notificationObservers.forEach({ $0.setDone(with: strID)})
+                completionHandler()
+            case "REMIND":
+                print("sdf")
+                completionHandler()
+            default:
+                notificationObservers.forEach({ $0.onTapNotification(with: strID)})
+            }
+            
+            
         }
     }
     

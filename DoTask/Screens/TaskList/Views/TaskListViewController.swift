@@ -91,7 +91,7 @@ extension TaskListViewController {
     // MARK: Bind ViewModel
     
     private func bindViewModel() {
-        viewModel.outputs.shortcutFilter.bind { [weak self] shortcut in
+        viewModel.outputs.shortcutData.bind { [weak self] shortcut in
             self?.navBarTitle?.setShortcut(shortcut: shortcut)
         }
         
@@ -160,7 +160,11 @@ extension TaskListViewController {
             }
         } onLongTapAction: { recognizer in
             if let speechAction = self.speechTaskAction {
-                speechAction(recognizer, self.filter?.shortcutFilter, nil)
+                if self.viewModel.outputs.taskListMode.value == .calendar {
+                    speechAction(recognizer, self.filter?.shortcutFilter, self.viewModel.outputs.calendarSelectedDate)
+                } else {
+                    speechAction(recognizer, self.filter?.shortcutFilter, nil)
+                }
             }
         }
         
@@ -187,6 +191,7 @@ extension TaskListViewController {
         menuBtn.imageEdgeInsets = UIEdgeInsets(top: imageInset, left: imageInset, bottom: imageInset, right: imageInset)
         menuBtn.addTarget(self, action: #selector(tapMenuAction(sender:)), for: .touchUpInside)
         menuBtn.frame = CGRect(x: 0, y: 0, width: navBar.frame.height, height: navBar.frame.height)
+        menuBtn.contentMode = .scaleAspectFit
                 
         let menuBarItem = UIBarButtonItem(customView: menuBtn)
         
@@ -339,9 +344,9 @@ extension TaskListViewController: UITableViewDelegate {
 // MARK: TaskListView
 
 extension TaskListViewController: TaskListViewObservable {
-    func editTask(taskUID: String) {
+    func editTask(taskUID: String?, taskDate: Date?) {
         if let editAction = editTaskAction {
-            editAction(taskUID, nil, nil)
+            editAction(taskUID, nil, taskDate)
         }
     }
     

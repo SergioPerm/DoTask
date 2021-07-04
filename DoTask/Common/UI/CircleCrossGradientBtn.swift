@@ -62,8 +62,6 @@ class CircleCrossGradientBtn: UIView {
         
         cross.frame = bounds
         cross.cornerRadius = bounds.width / 2.0
-    
-        
     }
     
 }

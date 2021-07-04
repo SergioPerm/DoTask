@@ -25,6 +25,8 @@ protocol DetailTaskViewModelInputs: AnyObject {
     func setReminderHandler(onTimeReminderSelect: ((_ selectedTime: Date, _ vc: TimePickerViewOutputs) -> Void)?)
     func setShortcutHandler(onShortcutSelect: ((String?, ShortcutListViewOutputs) -> Void)?)
     
+    func setNotifyPermissionDontAllowHandler(handler: (() -> ())?)
+    
     func openCalendar()
     func openReminder()
     func openShortcuts()
@@ -64,8 +66,10 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
     private var onTimeReminderSelect: ((Date, TimePickerViewOutputs) -> Void)?
     private var onShortcutSelect: ((String?, ShortcutListViewOutputs) -> Void)?
     
-    private var taskDateInfoCell: DetailTaskTableItemViewModelType?
-    private var taskReminderInfoCell: DetailTaskTableItemViewModelType?
+    private var onDoNotAllowNotify: (()->())?
+    
+    private var taskDateInfoViewModel: DetailTaskTableItemViewModelType?
+    private var taskReminderInfoViewModel: DetailTaskTableItemViewModelType?
         
     private let subtaskSectionIndex: Int = 0
     
@@ -79,11 +83,7 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
     
     init(dataSource: TaskListDataSource, spotlightService: SpotlightTasksService) {
         self.task = Task()
-        
-        if self.task.isNew {
-            self.task.taskDate = Date().startOfDay()
-        }
-        
+                
         self.dataSource = dataSource
         self.spotlightService = spotlightService
         
@@ -129,7 +129,8 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
     
     func setFilter(filter: TaskListFilter) {
         if task.isNew {
-            task.taskDate = filter.dayFilter?.startOfDay() ?? Date().startOfDay()
+            task.taskDate = filter.dayFilter?.startOfDay()// ?? Date().startOfDay()
+            selectedDate = Observable(task.taskDate)
         }
         
         if let _ = filter.dayFilter {
@@ -167,7 +168,7 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
         }
         selectedDate.value = date
         
-        if let taskDateViewModel = taskDateInfoCell as? TaskDateViewModelType {
+        if let taskDateViewModel = taskDateInfoViewModel as? TaskDateViewModelType {
             taskDateViewModel.inputs.setDate(date: date)
         }
     }
@@ -180,7 +181,7 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
             task.taskDate = date
             selectedDate.value = date
             
-            if let taskDateViewModel = taskDateInfoCell as? TaskDateViewModelType {
+            if let taskDateViewModel = taskDateInfoViewModel as? TaskDateViewModelType {
                 taskDateViewModel.inputs.setDate(date: date)
             }
         } else {
@@ -188,7 +189,7 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
         }
         selectedTime.value = date
         
-        if let taskReminderViewModel = taskReminderInfoCell as? TaskReminderViewModelType {
+        if let taskReminderViewModel = taskReminderInfoViewModel as? TaskReminderViewModelType {
             taskReminderViewModel.inputs.setTime(time: date)
         }
     }
@@ -270,32 +271,33 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
     }
     
     func openReminder() {
-        var normalizeTimeFromDate = selectedDate.value ?? Date()
-        if let taskTime = selectedTime.value {
-            normalizeTimeFromDate = taskTime
-            let calendar = Calendar.current.taskCalendar
-            let timeComponents = calendar.dateComponents([.hour, .minute], from: normalizeTimeFromDate)
-            
-            if let hour = timeComponents.hour, let minute = timeComponents.minute {
-                guard let dateWithTime = Calendar.current.taskCalendar.date(bySettingHour: hour, minute: minute, second: 0, of: normalizeTimeFromDate) else { return }
-                normalizeTimeFromDate = dateWithTime
-            }
-        } else if !normalizeTimeFromDate.isDayToday() {
-            guard let dateWithTime = Calendar.current.taskCalendar.date(bySettingHour: 8, minute: 00, second: 0, of: normalizeTimeFromDate) else { return }
-            normalizeTimeFromDate = dateWithTime
-        } else {
-            normalizeTimeFromDate = Date()
-        }
         
-        if let reminderAction = onTimeReminderSelect {
-            reminderAction(normalizeTimeFromDate, self)
+        // check permissions
+        
+        let pushNotificationService: PushNotificationService = AppDI.resolve()
+        pushNotificationService.checkAuthorization { [weak self] didAllow in
+            guard let strongSelf = self else { return }
+            if didAllow {
+                if let reminderAction = strongSelf.onTimeReminderSelect {
+                    reminderAction(strongSelf.normalizeTimeForReminder(), strongSelf)
+                }
+            } else {
+                if let onDoNotAllowNotify = strongSelf.onDoNotAllowNotify {
+                    onDoNotAllowNotify()
+                }
+            }
         }
+                
     }
     
     func openShortcuts() {
         if let shortcutAction = onShortcutSelect {
             shortcutAction(shortcutUID, self)
         }
+    }
+    
+    func setNotifyPermissionDontAllowHandler(handler: (() -> ())?) {
+        onDoNotAllowNotify = handler
     }
     
     // MARK: OUTPUTS
@@ -335,6 +337,31 @@ class DetailTaskViewModel: DetailTaskViewModelType, DetailTaskViewModelInputs, D
     var addSubtaskEvent: Event<Bool>
 }
 
+// MARK: Methods
+
+private extension DetailTaskViewModel {
+    func normalizeTimeForReminder() -> Date {
+        var normalizeTimeFromDate = selectedDate.value ?? Date()
+        if let taskTime = selectedTime.value {
+            normalizeTimeFromDate = taskTime
+            let calendar = Calendar.current.taskCalendar
+            let timeComponents = calendar.dateComponents([.hour, .minute], from: normalizeTimeFromDate)
+            
+            if let hour = timeComponents.hour, let minute = timeComponents.minute {
+                guard let dateWithTime = Calendar.current.taskCalendar.date(bySettingHour: hour, minute: minute, second: 0, of: normalizeTimeFromDate) else { return Date() }
+                normalizeTimeFromDate = dateWithTime
+            }
+        } else if !normalizeTimeFromDate.isDayToday() {
+            guard let dateWithTime = Calendar.current.taskCalendar.date(bySettingHour: 8, minute: 00, second: 0, of: normalizeTimeFromDate) else { return Date() }
+            normalizeTimeFromDate = dateWithTime
+        } else {
+            normalizeTimeFromDate = Date()
+        }
+        
+        return normalizeTimeFromDate
+    }
+}
+
 // MARK: Setup Sections
 
 extension DetailTaskViewModel {
@@ -357,14 +384,14 @@ extension DetailTaskViewModel {
         cells.append(addSubtaskCell)
         
         if !isNewTask {
-            taskDateInfoCell = TaskDateViewModel(taskDate: task.taskDate) { [weak self] in
+            taskDateInfoViewModel = TaskDateViewModel(taskDate: task.taskDate) { [weak self] in
                 guard let strongSelf = self else { return }
                 if !strongSelf.isDone {
                     self?.openCalendar()
                 }
             }
             
-            taskReminderInfoCell = TaskReminderViewModel(taskTime: task.reminderDate ? task.taskDate : nil) { [weak self] in
+            taskReminderInfoViewModel = TaskReminderViewModel(taskTime: task.reminderDate ? task.taskDate : nil) { [weak self] in
                 guard let strongSelf = self else { return }
                 if !strongSelf.isDone {
                     self?.openReminder()
@@ -375,7 +402,7 @@ extension DetailTaskViewModel {
                 self?.asksToDelete.value = true
             }
                                     
-            guard let taskDateInfoCell = taskDateInfoCell, let taskReminderInfoCell = taskReminderInfoCell else { return }
+            guard let taskDateInfoCell = taskDateInfoViewModel, let taskReminderInfoCell = taskReminderInfoViewModel else { return }
             
             cells.append(contentsOf: [taskDateInfoCell, taskReminderInfoCell, deleteCell])
         }

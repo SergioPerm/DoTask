@@ -33,9 +33,9 @@ class TimePickerViewController: UIViewController, TimePickerViewType {
     
     // MARK: View's
     
-    private let btnCancel: UIButton = {
-        let btn = UIButton()
-        btn.setTitle("Delete", for: .normal)
+    private let btnCancel: LocalizableButton = {
+        let btn = LocalizableButton()
+        btn.localizableString = LocalizableStringResource(stringResource: R.string.localizable.delete_REMINDER)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.titleLabel?.font = FontFactory.HelveticaNeueBold.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 17))
         btn.setTitleColor(.black, for: .normal)
@@ -43,9 +43,9 @@ class TimePickerViewController: UIViewController, TimePickerViewType {
         return btn
     }()
     
-    private let btnSet: UIButton = {
-        let btn = UIButton()
-        btn.setTitle("Set", for: .normal)
+    private let btnSet: LocalizableButton = {
+        let btn = LocalizableButton()
+        btn.localizableString = LocalizableStringResource(stringResource: R.string.localizable.set_REMINDER_SHORT)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.titleLabel?.font = FontFactory.HelveticaNeueBold.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 17))
         btn.setTitleColor(.black, for: .normal)

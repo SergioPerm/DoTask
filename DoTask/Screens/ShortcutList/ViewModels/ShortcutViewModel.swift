@@ -8,6 +8,17 @@
 
 import Foundation
 
+protocol ShortcutViewModelType: AnyObject {
+    var outputs: ShortcutViewModelOutputs { get }
+}
+
+protocol ShortcutViewModelOutputs {
+    var title: String { get }
+    var color: String { get }
+    var showInMainList: Bool { get }
+    var uid: String { get }
+}
+
 class ShortcutViewModel: ShortcutViewModelType, ShortcutViewModelOutputs {
     
     private var shortcut: Shortcut

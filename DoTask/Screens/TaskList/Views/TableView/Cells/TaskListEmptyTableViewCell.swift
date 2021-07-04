@@ -31,6 +31,7 @@ class TaskListEmptyTableViewCell: UITableViewCell, TableViewCellType {
         label.textAlignment = .center
         label.textColor = .gray
         label.numberOfLines = 0
+        label.font = FontFactory.Helvetica.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 18))
         
         return label
     }()

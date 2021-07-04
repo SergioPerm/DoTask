@@ -24,6 +24,8 @@ class AppDependency: DIPart {
         container.register(SettingService.init).lifetime(.perRun(.strong))
         
         container.register(SpotlightService.init(localizeService:)).as(SpotlightTasksService.self).lifetime(.perRun(.strong))
+        
+        container.register(SpeechRecognitionService.init).as(SpeechRecognitionServiceType.self).lifetime(.perRun(.strong))
                
     }
 }

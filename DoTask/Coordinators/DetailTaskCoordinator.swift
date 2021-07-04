@@ -17,6 +17,8 @@ class DetailTaskCoordinator: NSObject, Coordinator {
     private var shortcutUID: String?
     private var taskDate: Date?
     
+    var onNotifyPermissionDenied: (()->())?
+    
     init(router: RouterType?, taskUID: String?, shortcutUID: String?, taskDate: Date?) {
         self.router = router
         self.taskUID = taskUID
@@ -39,7 +41,12 @@ class DetailTaskCoordinator: NSObject, Coordinator {
         vc.onShortcutSelect = { [weak self] shortcutUID, outputs in
             self?.selectShortcut(shortcutUID: shortcutUID, shortcutListOutputs: outputs)
         }
-
+        vc.onDoNotAllowNotify = { [weak self] in
+            if let onNotifyPermissionDenied = self?.onNotifyPermissionDenied {
+                onNotifyPermissionDenied()
+            }
+        }
+        
         let transition = PopUpModalTransitionController(viewController: vc, interactionView: vc.scrollContentView, router: router)
 
         router?.push(vc: vc, completion: { [weak self] in

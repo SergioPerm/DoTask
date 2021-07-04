@@ -502,6 +502,8 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
         return predicate
     }
     
+    // MARK: Done counter
+    
     func getDoneCounterForPeriod(dailyPeriod: DailyName, taskListFilter: TaskListFilter? = nil) -> DoneCounter? {
         if !dailyPeriod.haveDoneCounter() {
             return nil
@@ -510,20 +512,26 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
         let fetchTasksForPeriod: NSFetchRequest<TaskManaged> = TaskManaged.fetchRequest()
         let donePredicate = NSPredicate(format: "isDone == %@", NSNumber(value: true))
         
-        let showInMainListPredicate = NSPredicate(format: "shortcut.showInMainList == %@ OR shortcut == nil", NSNumber(value: true))
+        var predicates: [NSPredicate] = [NSPredicate(format: "doneDate <= %@ AND doneDate => %@", Date().endOfDay() as NSDate, Date().startOfDay() as NSDate)]
                 
-        var predicates: [NSPredicate] = [getPredicateForDailyPeriod(dailyPeriod: dailyPeriod)]
-        predicates.append(showInMainListPredicate)
+        var shortcutPredicate: NSPredicate?
+        
+        if let taskListFilter = taskListFilter {
+            if let shortcutFilter = taskListFilter.shortcutFilter {
+                if let uuid = UUID(uuidString: shortcutFilter) {
+                    shortcutPredicate = NSPredicate(format: "shortcut.identificator == %@", uuid as NSUUID)
+                }
+            }
+        }
+        
+        if shortcutPredicate == nil {
+            shortcutPredicate = NSPredicate(format: "shortcut.showInMainList == %@ OR shortcut == nil", NSNumber(value: true))
+        }
+        
+        guard let shortcutPredicate = shortcutPredicate else { return nil }
+        
+        predicates.append(shortcutPredicate)
         predicates.append(donePredicate)
-        
-        
-//        if let filter = taskListFilter {
-//            if let shortcutUID = filter.shortcutFilter {
-//                predicates.append(NSPredicate(format: "shortcut.identificator == %@", shortcutUID))
-//            }
-//        } else {
-//
-//        }
         
         fetchTasksForPeriod.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         
@@ -537,8 +545,11 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
             fatalError()
         }
         
-        _ = predicates.removeLast()
-        fetchTasksForPeriod.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        predicates.append(getPredicateForDailyPeriod(dailyPeriod: dailyPeriod))
+                
+        let predicates2 = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "isDone == %@", NSNumber(value: false)), shortcutPredicate, getPredicateForDailyPeriod(dailyPeriod: dailyPeriod)])
+        
+        fetchTasksForPeriod.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [NSCompoundPredicate(andPredicateWithSubpredicates: predicates), predicates2])
         
         do {
             let periodTasks = try context.fetch(fetchTasksForPeriod)
@@ -558,9 +569,7 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
         do {
             let tasksForDelete = try context.fetch(requestTasks)
             for task in tasksForDelete {
-                //if task.isDone && task.doneDate == nil {
-                    context.delete(task)
-                //}
+                context.delete(task)
             }
         } catch {
             fatalError()

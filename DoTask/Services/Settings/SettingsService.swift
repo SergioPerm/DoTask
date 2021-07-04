@@ -77,6 +77,7 @@ class SettingService {
         var language: CurrentLanguage
         var task: TaskSetting
         var spotlight: Bool
+        var firstRun: Bool
                 
         //additional data
         var lastUsedShortcut: String?
@@ -92,6 +93,7 @@ class SettingService {
         
             self.task = TaskSetting(newTaskTime: .endDay, defaultShortcut: nil, showDoneTasksInToday: false, transferOverdueTasksToToday: false)
             self.spotlight = true
+            self.firstRun = true
         }
     }
     

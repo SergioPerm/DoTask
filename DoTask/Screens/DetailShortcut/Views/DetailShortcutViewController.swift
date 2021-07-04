@@ -107,6 +107,7 @@ class DetailShortcutViewController: UIViewController, DetailShortcutViewType {
         super.viewWillAppear(animated)
         nameTextField.becomeFirstResponder()
         viewModel.inputs.updateTasksCounter()
+        viewModel.inputs.setDefaultColor()
     }
     
     override func viewDidAppear(_ animated: Bool) {

@@ -18,6 +18,28 @@ enum TaskListMode {
     case list
 }
 
+protocol TaskListViewModelInputs {
+    func setFilter(filter: TaskListFilter)
+    func editTask(indexPath: IndexPath)
+    func setMode(mode: TaskListMode)
+    func reloadData()
+}
+
+protocol TaskListViewModelOutputs {
+    var periodItems: [TaskListPeriodItemViewModelType] { get }
+    var shortcutData: Observable<ShortcutData?> { get }
+    var taskDiaryMode: Observable<Bool> { get }
+    var taskListMode: Observable<TaskListMode> { get }
+    var calendarViewModel: CalendarViewModelType? { get }
+    var calendarSelectedDate: Date? { get }
+    var calendarMonth: Observable<Date> { get }
+}
+
+protocol TaskListViewModelType {
+    var inputs: TaskListViewModelInputs { get }
+    var outputs: TaskListViewModelOutputs { get }
+}
+
 class TaskListViewModel: TaskListViewModelType, TaskListViewModelInputs, TaskListViewModelOutputs {
     
     private var dataSource: TaskListDataSource
@@ -38,7 +60,7 @@ class TaskListViewModel: TaskListViewModelType, TaskListViewModelInputs, TaskLis
     init(dataSource: TaskListDataSource, spotlightService: SpotlightTasksService) {
         self.dataSource = dataSource
         self.spotlightService = spotlightService
-        self.shortcutFilter = Observable(nil)
+        self.shortcutData = Observable(nil)
         self.taskDiaryMode = Observable(false)
         self.periodItems = []
         self.taskListMode = Observable(TaskListMode.list)
@@ -82,10 +104,10 @@ class TaskListViewModel: TaskListViewModelType, TaskListViewModelInputs, TaskLis
         //send to view
         if let shortcutUID = currentFilter.shortcutFilter {
             let shortcut = dataSource.shortcutModelByIdentifier(identifier: shortcutUID)
-            shortcutFilter.value = (title: shortcut?.name, colorHex: shortcut?.color)
+            shortcutData.value = (title: shortcut?.name, colorHex: shortcut?.color)
         } else {
-            if shortcutFilter.value != nil {
-                shortcutFilter.value = nil
+            if shortcutData.value != nil {
+                shortcutData.value = nil
             }
         }
     }
@@ -93,8 +115,12 @@ class TaskListViewModel: TaskListViewModelType, TaskListViewModelInputs, TaskLis
     func editTask(indexPath: IndexPath) {
         if let itemViewModel = periodItems[indexPath.section].outputs.tasks[indexPath.row] as? TaskListItemViewModelType {
             let taskUID = itemViewModel.outputs.getTaskUID()
-            view?.editTask(taskUID: taskUID)
+            view?.editTask(taskUID: taskUID, taskDate: nil)
         }
+    }
+    
+    func createTask(_ dailyPeriod: DailyName) {
+        view?.editTask(taskUID: nil, taskDate: dailyPeriod.dateOfPeriod())
     }
     
     func setMode(mode: TaskListMode) {
@@ -121,7 +147,7 @@ class TaskListViewModel: TaskListViewModelType, TaskListViewModelInputs, TaskLis
     // MARK: Outputs
     
     var periodItems: [TaskListPeriodItemViewModelType]
-    var shortcutFilter: Observable<ShortcutData?>
+    var shortcutData: Observable<ShortcutData?>
     var taskDiaryMode: Observable<Bool>
     var taskListMode: Observable<TaskListMode>
     var calendarViewModel: CalendarViewModelType?
@@ -134,9 +160,9 @@ class TaskListViewModel: TaskListViewModelType, TaskListViewModelInputs, TaskLis
     
 }
 
-extension TaskListViewModel {
+private extension TaskListViewModel {
     
-    private func setupCalendarViewModel() {
+    func setupCalendarViewModel() {
         let firstTaskDate = dataSource.getFirstTaskDate() ?? Date()
         let calendarVM = CalendarViewModel(startDate: firstTaskDate)
         calendarVM.selectedDateHandler = setCalendarDate(date:)
@@ -145,7 +171,7 @@ extension TaskListViewModel {
         calendarViewModel = calendarVM
     }
     
-    private func changeDoneTask(taskUID: String, done: Bool) {
+    func changeDoneTask(taskUID: String, done: Bool) {
     
         if done {
             dataSource.setDoneForTask(with: taskUID)
@@ -156,9 +182,11 @@ extension TaskListViewModel {
         if let task = dataSource.taskModelByIdentifier(identifier: taskUID) {
             spotlightService.updateTask(task: task)
         }
+        
+        updateCounter()
     }
     
-    private func setCalendarDate(date: Date) {
+    func setCalendarDate(date: Date) {
         var filter = currentFilter ?? TaskListFilter(shortcutFilter: nil, dayFilter: nil)
         filter.dayFilter = date
         
@@ -171,11 +199,11 @@ extension TaskListViewModel {
         }
     }
     
-    private func setCalendarMonth(date: Date) {
+    func setCalendarMonth(date: Date) {
         calendarMonth.value = date
     }
     
-    private func loadData() {
+    func loadData() {
         
         recreatePeriodItemsWireframe()
         periodItemsFRC.removeAll()
@@ -204,7 +232,7 @@ extension TaskListViewModel {
         }
     }
      
-    private func updateCounter() {
+    func updateCounter() {
         guard let periodItem = periodItems.first(where: {
             $0.outputs.dailyName?.haveDoneCounter() == true
         }) else {
@@ -212,13 +240,13 @@ extension TaskListViewModel {
         }
         
         if let dailyName = periodItem.outputs.dailyName {
-            if let counter = dataSource.getDoneCounterForPeriod(dailyPeriod: dailyName, taskListFilter: nil) {
+            if let counter = dataSource.getDoneCounterForPeriod(dailyPeriod: dailyName, taskListFilter: currentFilter) {
                 periodItem.inputs.setDoneCounter(counter: counter)
             }
         }
     }
     
-    private func recreatePeriodItemsWireframe() {
+    func recreatePeriodItemsWireframe() {
         periodItems.removeAll()
         
         if taskListMode.value == .list {
@@ -227,7 +255,7 @@ extension TaskListViewModel {
                 taskTimePeriod.dailyName = $0
                 taskTimePeriod.name = $0.localized()
                 
-                let periodItem = TaskListPeriodItemViewModel(taskTimePeriod: taskTimePeriod, taskListMode: taskListMode.value)
+                let periodItem = TaskListPeriodItemViewModel(taskTimePeriod: taskTimePeriod, taskListMode: taskListMode.value, createTaskHandler: createTask)
                 
                 if $0 == DailyName.today {
                     periodItem.inputs.setShowingCapWhenTasksIsEmpty(emptyState: true, capMode: .MainCap)
@@ -249,7 +277,7 @@ extension TaskListViewModel {
                 taskTimePeriod.name = dateFormatter.string(from: dayFilter)
                 taskTimePeriod.date = dayFilter
                 
-                let periodItem = TaskListPeriodItemViewModel(taskTimePeriod: taskTimePeriod, taskListMode: taskListMode.value)
+                let periodItem = TaskListPeriodItemViewModel(taskTimePeriod: taskTimePeriod, taskListMode: taskListMode.value, createTaskHandler: createTask)
                 
                 periodItem.inputs.setShowingCapWhenTasksIsEmpty(emptyState: true, capMode: .CalendarCap)
                 
@@ -258,7 +286,7 @@ extension TaskListViewModel {
         }
     }
             
-    private func updateTaskInData(at indexPath: IndexPath) {
+    func updateTaskInData(at indexPath: IndexPath) {
         if let itemViewModel = periodItemsFRC[indexPath.section].outputs.tasks[indexPath.row] as? TaskListItemViewModelType {
             let task = dataSource.tasksWithSections[indexPath.section].tasks[indexPath.row]
             itemViewModel.inputs.reuse(task: task)
@@ -269,13 +297,13 @@ extension TaskListViewModel {
         }
     }
     
-    private func updateTasksInfoInCalendar() {
+    func updateTasksInfoInCalendar() {
         let availabilityTasksByDate = dataSource.getTasksByDate()
         
         calendarViewModel?.inputs.updateTasksInDays(availabilityTasksByDate: availabilityTasksByDate)
     }
     
-    private func isTodaySection(section: Int) -> Bool {
+    func isTodaySection(section: Int) -> Bool {
         let taskData = dataSource.tasksWithSections[section]
         
         if taskData.name == DailyName.today.rawValue {
@@ -401,7 +429,15 @@ extension TaskListViewModel: TaskListDataSourceObserver {
 
 extension TaskListViewModel: NotificationTaskObserver {
     func onTapNotification(with id: String) {
-        view?.editTask(taskUID: id)
+        view?.editTask(taskUID: id, taskDate: nil)
+    }
+    
+    func setDone(with id: String) {
+        changeDoneTask(taskUID: id, done: true)
+    }
+    
+    func remindIn30Minutes(with id: String) {
+        
     }
 }
 

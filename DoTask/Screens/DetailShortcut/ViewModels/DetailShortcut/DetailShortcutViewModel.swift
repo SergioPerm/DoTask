@@ -17,6 +17,7 @@ protocol DetailShortcutViewModelInputs {
     func delete()
     func updateTasksCounter()
     func setOpenMainTaskListHandler(handler: (() -> ())?)
+    func setDefaultColor()
 }
 
 protocol DetailShortcutViewModelOutputs {
@@ -58,25 +59,27 @@ class DetailShortcutViewModel: DetailShortcutViewModelType, DetailShortcutViewMo
     }
 
     private var presetColors: [String] = [
-        R.color.shortcutDetail.colorSelection.lightBlue()!.toHexString(),
-        R.color.shortcutDetail.colorSelection.dullPurple()!.toHexString(),
-        R.color.shortcutDetail.colorSelection.pink()!.toHexString(),
-        R.color.shortcutDetail.colorSelection.yellow()!.toHexString(),
-        R.color.shortcutDetail.colorSelection.green()!.toHexString(),
         R.color.shortcutDetail.colorSelection.red()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.pink()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.lightPink()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.lightOrange()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.darkOrange()!.toHexString(),
         R.color.shortcutDetail.colorSelection.orange()!.toHexString(),
-        R.color.shortcutDetail.colorSelection.purple()!.toHexString(),
-        R.color.shortcutDetail.colorSelection.lightGreen()!.toHexString(),
-        R.color.shortcutDetail.colorSelection.dullPurple()!.toHexString(),
-        R.color.shortcutDetail.colorSelection.dullGreen()!.toHexString(),
-        R.color.shortcutDetail.colorSelection.darkBlue()!.toHexString(),
-        R.color.shortcutDetail.colorSelection.blue()!.toHexString(),
-        R.color.shortcutDetail.colorSelection.black()!.toHexString(),
-        R.color.shortcutDetail.colorSelection.brown()!.toHexString(),
-        R.color.shortcutDetail.colorSelection.dullPink()!.toHexString(),
-        R.color.shortcutDetail.colorSelection.dullRed()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.green2()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.darkYellow()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.darkGreen()!.toHexString(),
         R.color.shortcutDetail.colorSelection.green()!.toHexString(),
-        R.color.shortcutDetail.colorSelection.silver()!.toHexString()
+        R.color.shortcutDetail.colorSelection.lightGreen()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.lightBlue()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.blue()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.blue2()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.darkBlue()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.darkPurple()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.purple()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.lightPurple()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.lilac()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.brown()!.toHexString(),
+        R.color.shortcutDetail.colorSelection.black()!.toHexString()
     ]
     
     var inputs: DetailShortcutViewModelInputs { return self }
@@ -92,6 +95,12 @@ class DetailShortcutViewModel: DetailShortcutViewModelType, DetailShortcutViewMo
     }
         
     // MARK: Inputs
+    
+    func setDefaultColor() {
+        if isNew {
+            setColor(colorHex: presetColors[0])
+        }
+    }
     
     func setColor(colorHex: String) {
         shortcut.color = colorHex

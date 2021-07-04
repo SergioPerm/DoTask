@@ -41,6 +41,12 @@ class DetailTaskNewViewController: UIViewController, DetailTaskViewType, Present
         }
     }
     
+    var onDoNotAllowNotify: (()->())? {
+        didSet {
+            viewModel.inputs.setNotifyPermissionDontAllowHandler(handler: onDoNotAllowNotify)
+        }
+    }
+    
     // MARK: View properties
     private let topMargin: CGFloat = StyleGuide.DetailTask.Sizes.topMargin
         

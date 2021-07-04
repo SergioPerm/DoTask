@@ -14,7 +14,7 @@ class TaskCounter: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = R.color.taskList.counterText()
-        label.font = FontFactory.AvenirNext.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 12))
+        label.font = FontFactory.HelveticaNeueBold.of(size: StyleGuide.getSizeRelativeToScreenWidth(baseSize: 15))
         label.textAlignment = .center
         
         return label
@@ -22,8 +22,8 @@ class TaskCounter: UIView {
     
     private let gradient: CAGradientLayer = {
         let gradient = CAGradientLayer()
-        gradient.colors = [R.color.taskList.gradientCounter1()!.cgColor, R.color.taskList.gradientCounter2()!.cgColor]
-        gradient.startPoint = CGPoint(x: 0, y: 0)
+        gradient.colors = [R.color.taskList.gradientCounter1()!.withAlphaComponent(0.5).cgColor, R.color.taskList.gradientCounter2()!.cgColor]
+        gradient.startPoint = CGPoint(x: 0.5, y: 0)
         gradient.endPoint = CGPoint(x: 1, y: 1)
         
         return gradient

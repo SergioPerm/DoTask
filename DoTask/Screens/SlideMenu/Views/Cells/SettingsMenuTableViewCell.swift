@@ -18,9 +18,9 @@ class SettingsMenuTableViewCell: UITableViewCell, TableViewCellType {
     
     // MARK: View's properties
     
-    private let settingsButton: UIButton = {
+    private let settingsButton: BarButtonItem = {
         //Settings button
-        let btn = UIButton()
+        let btn = BarButtonItem()
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.tintImageWithColor(color: R.color.commonColors.blue()!, image: R.image.menu.settings())
         btn.addTarget(self, action: #selector(menuSettingsAction(sender:)), for: .touchUpInside)

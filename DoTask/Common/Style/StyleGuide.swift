@@ -312,7 +312,7 @@ struct StyleGuide {
 
         struct CreateShortcut {
             enum Sizes {
-                static let createBtnImgInsets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 15)
+                static let createBtnImgInsets: UIEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
             }
         }
         

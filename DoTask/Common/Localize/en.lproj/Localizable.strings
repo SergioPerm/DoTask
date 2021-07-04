@@ -66,6 +66,8 @@
 "ADD_SUBTASK" = "Add subtask";
 "SET_DATE" = "Set date";
 "SET_RIMENDER" = "Set reminder";
+"DELETE_REMINDER" = "Delete";
+"SET_REMINDER_SHORT" = "Set";
 "SHORTCUT" = "Shortcut";
 
 "NO_SELECTED_DATE" = "No selected date";
@@ -80,3 +82,28 @@
 "WITHOUT_DATE" = "Without date";
 
 "shortcutDetailTaskCount" = "";
+
+"ONBOARDING_START_MAIN" = "this is your new personal task manager with calendar, bookmark shortcuts, reminders and more!";
+"ONBOARDING_NOTIFY_MAIN" = "In order not to miss a single reminder, you need to allow access to notifications";
+
+"ONBOARDING_SPEECH_MAIN" = "Do you want to add tasks by voice? Not a problem! You just need to allow access to the microphone and speech recognition";
+
+"ONBOARDING_START_ADD" = "";
+
+"ONBOARDING_CONTINUE" = "Continue";
+"ONBOARDING_CONTINUE_END" = "Start";
+"ONBOARDING_START" = "Start";
+
+"ONBOARDING_ALLOW_NOTIFY" = "Allow access";
+"ONBOARDING_ALLOW_SPEECH" = "Allow access";
+
+"STOCK_SHORTCUT_WORK" = "Work";
+"STOCK_SHORTCUT_HOME" = "Home";
+"STOCK_SHORTCUT_SHOPING" = "Shoping";
+"STOCK_SHORTCUT_ROUTINE" = "Routine";
+"STOCK_SHORTCUT_IDEAS" = "Ideas 💡";
+
+"PERMISSION_TITLE_NOTIFY" = "Permission denied (Notifications)";
+"PERMISSION_INFO_NOTIFY" = "Please, go to the Settings and allow permissions for notifications";
+"PERMISSION_TITLE_SPEECH" = "Permission denied (Speech recognition and microphone)";
+"PERMISSION_INFO_SPEECH" = "Please, go to the Settings and allow permissions for speech recognition and microphone";

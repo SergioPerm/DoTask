@@ -22,8 +22,8 @@ class TableViewFRCHelper {
     enum ChangeType: Int {
         case deleteItem
         case insertItem
-        case insertSection
         case deleteSection
+        case insertSection
         case update
     }
     
@@ -49,9 +49,17 @@ class TableViewFRCHelper {
             if $0.changeType.rawValue != $1.changeType.rawValue {
                 return $0.changeType.rawValue < $1.changeType.rawValue
             } else if $0.indexPath.section != $1.indexPath.section {
-                return $0.indexPath.section < $1.indexPath.section
+                if $0.changeType == .deleteSection {
+                    return $0.indexPath.section > $1.indexPath.section
+                } else {
+                    return $0.indexPath.section < $1.indexPath.section
+                }
             } else {
-                return $0.indexPath.row < $1.indexPath.row
+                if $0.changeType == .deleteItem {
+                    return $0.indexPath.row > $1.indexPath.row
+                } else {
+                    return $0.indexPath.row < $1.indexPath.row
+                }
             }
         }
         

@@ -18,5 +18,5 @@ protocol TaskListViewObservable: AnyObject {
     func tableViewSectionDelete(at indexSet: IndexSet)
     func tableViewEndUpdates()
     
-    func editTask(taskUID: String)
+    func editTask(taskUID: String?, taskDate: Date?)
 }

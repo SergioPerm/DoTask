@@ -19,13 +19,45 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
     }
     
     func start(finishCompletion: (() -> Void)?) {
+        
+        let notifyService: PushNotificationService = AppDI.resolve()
+        notifyService.registerCategories()
+        
         let vc: SplashViewController = AppDI.resolve()
         
         router?.push(vc: vc, completion: { [weak self] in
-            self?.openMainScreen()
+            self?.openOnboarding()
         }, transition: FullScreenTransitionController())
     }
+          
+    func openOnboarding() {
+        let settingsService: SettingService = AppDI.resolve()
+        var currentSettings = settingsService.getSettings()
+        
+        if currentSettings.firstRun {
+            let vc: OnboardingViewType = AppDI.resolve()
             
+            vc.onDoNotAllowNotify = { [weak self] in
+                self?.openNotifyPermissionInfo()
+            }
+            
+            vc.onDoNotAllowSpeech = { [weak self] in
+                self?.openSpeechPermissionInfo()
+            }
+            
+            createStockShortcuts()
+            
+            router?.push(vc: vc, completion: {[weak self] in
+                currentSettings.firstRun = false
+                settingsService.saveSettings(settings: currentSettings)
+                
+                self?.openMainScreen()
+            }, transition: nil)
+        } else {
+            openMainScreen()
+        }
+    }
+    
     func openMainScreen() {
         let vc: SlideMenuViewType = AppDI.resolve()
         
@@ -46,7 +78,7 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
     }
     
     func editShortcut(shortcutUID: String?) {
-        let vc: DetailShortcutViewType = AppDI.resolve()//DetailShortcutAssembly.createInstance(shortcutUID: shortcutUID, router: router)
+        let vc: DetailShortcutViewType = AppDI.resolve()
         vc.shortcutUID = shortcutUID
         vc.openMainTaskListHandler = {
             self.openTaskList(menu: AppDI.resolve())
@@ -99,26 +131,85 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
         childCoordinators.append(child)
         child.start(finishCompletion: {
             menu?.toggleMenu()
-            //menu?.parentController?.didMenuCollapse()
         })
     }
     
     func editTask(taskUID: String?, shortcutUID: String?, taskDate: Date?) {
         let child = DetailTaskCoordinator(router: router, taskUID: taskUID, shortcutUID: shortcutUID, taskDate: taskDate)
+        
+        child.onNotifyPermissionDenied = { [weak self] in
+            self?.openNotifyPermissionInfo()
+        }
+        
         child.parentCoordinator = self
         childCoordinators.append(child)
         child.start(finishCompletion: nil)
     }
     
     func speechTask(recognizer: UILongPressGestureRecognizer, shortcutUID: String?, taskDate: Date?) {
-        let vc: SpeechTaskViewType = AppDI.resolve()
         
-        vc.longTapRecognizer = recognizer
-        vc.shortcutUID = shortcutUID
-        vc.taskDate = taskDate
+        //Check did allow permission for speech
+        let speechService: SpeechRecognitionServiceType = AppDI.resolve()
         
-        let transition = SpeechRecorderTransitionController()
+        speechService.checkAuthorization { [weak self] didAllow in
+            guard let strongSelf = self else { return }
+            
+            if !didAllow {
+                strongSelf.openSpeechPermissionInfo()
+                return
+            }
+            
+            let vc: SpeechTaskViewType = AppDI.resolve()
+            
+            vc.longTapRecognizer = recognizer
+            vc.shortcutUID = shortcutUID
+            vc.taskDate = taskDate
+            
+            vc.onDoNotAllowSpeech = {
+                strongSelf.openSpeechPermissionInfo()
+            }
+            
+            let transition = SpeechRecorderTransitionController()
+            strongSelf.router?.push(vc: vc, completion: nil, transition: transition)
+        }
+    }
+    
+    func openNotifyPermissionInfo() {
+        let vc: PermissionDeniedViewType = AppDI.resolve()
+        
+        vc.setLocalizeTitle(title: LocalizableStringResource(stringResource: R.string.localizable.permission_TITLE_NOTIFY))
+        vc.setLocalizeInfo(info: LocalizableStringResource(stringResource: R.string.localizable.permission_INFO_NOTIFY))
+        vc.setIcon(icon: R.image.permissionDenied.permissionNotify())
+        
+        let transition = ZoomModalTransitionController()
+        
         router?.push(vc: vc, completion: nil, transition: transition)
     }
     
+    func openSpeechPermissionInfo() {
+        let vc: PermissionDeniedViewType = AppDI.resolve()
+        
+        vc.setLocalizeTitle(title: LocalizableStringResource(stringResource: R.string.localizable.permission_TITLE_SPEECH))
+        vc.setLocalizeInfo(info: LocalizableStringResource(stringResource: R.string.localizable.permission_INFO_SPEECH))
+        vc.setIcon(icon: R.image.permissionDenied.permissionSpeech())
+        
+        let transition = ZoomModalTransitionController()
+        
+        router?.push(vc: vc, completion: nil, transition: transition)
+    }
+    
+}
+
+private extension MainCoordinator {
+    // Перенести во viewModel onBoarding
+    func createStockShortcuts() {
+        //setup shortcuts
+        let shortcutService: ShortcutListDataSource = AppDI.resolve()
+        
+        shortcutService.addShortcut(for: Shortcut(name: R.string.localizable.stock_SHORTCUT_HOME(), color: R.color.shortcutDetail.colorSelection.green()!.toHexString()))
+        shortcutService.addShortcut(for: Shortcut(name: R.string.localizable.stock_SHORTCUT_WORK(), color: R.color.shortcutDetail.colorSelection.red()!.toHexString()))
+        shortcutService.addShortcut(for: Shortcut(name: R.string.localizable.stock_SHORTCUT_SHOPING(), color: R.color.shortcutDetail.colorSelection.orange()!.toHexString()))
+        shortcutService.addShortcut(for: Shortcut(name: R.string.localizable.stock_SHORTCUT_ROUTINE(), color: R.color.shortcutDetail.colorSelection.blue()!.toHexString()))
+        shortcutService.addShortcut(for: Shortcut(name: R.string.localizable.stock_SHORTCUT_IDEAS(), color: R.color.shortcutDetail.colorSelection.lightBlue()!.toHexString()))
+    }
 }

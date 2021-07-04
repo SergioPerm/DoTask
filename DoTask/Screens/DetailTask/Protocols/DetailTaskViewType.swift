@@ -13,6 +13,8 @@ protocol DetailTaskViewType: PresentableController {
     var onTimeReminderSelect: ((_ selectedTime: Date, _ vc: TimePickerViewOutputs) -> Void)? { get set }
     var onShortcutSelect: ((_ selectedShortcutUID: String?, _ vc: ShortcutListViewOutputs) -> Void)? { get set }
     
+    var onDoNotAllowNotify: (()->())? { get set }
+    
     var scrollContentView: DetailTaskScrollViewType { get }
     
     func setTaskUID(UID: String?)

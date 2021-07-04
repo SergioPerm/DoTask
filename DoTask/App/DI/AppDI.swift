@@ -28,6 +28,8 @@ class AppDI {
         TimePickerDependency.load(container: container)
         DatePickerDependency.load(container: container)
         SpeechTaskDependency.load(container: container)
+        OnBoardingDependency.load(container: container)
+        PermissionDeniedDependency.load(container: container)
         
         container.initializeSingletonObjects()
     }

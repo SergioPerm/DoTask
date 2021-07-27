@@ -62,7 +62,7 @@ class SplashViewController: UIViewController, PresentableController {
 
 extension SplashViewController {
     private func setup() {
-        infoLabel.text = "It's splash screen!"
+        infoLabel.text = R.string.localizable.splashscreen_TITLE()
         
         view.backgroundColor = .white
         
@@ -86,22 +86,17 @@ extension SplashViewController {
     }
     
     private func startAnimation() {
-        
         UIView.animate(withDuration: 0.3, delay: 0.3, options: .curveEaseIn) {
-//            self.imageDT.transform = CGAffineTransform(scaleX: 4.0, y: 4.0)
             self.imageDT.frame.origin.y += 200
             self.imageDT.alpha = 0.0
         } completion: { finished in
             self.router?.pop(vc: self)
         }
-        
     }
     
     private func bindViewModel() {
-        
         viewModel.outputs.onFinishMaintainceTasksEvent.subscribe(self) { this, success in
             this.startAnimation()
         }
-        
     }
 }

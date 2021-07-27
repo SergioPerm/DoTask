@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CalendarCollectionView: UICollectionView {
+final class CalendarCollectionView: UICollectionView {
 
     private var selectedDate: Date
     private var selectedDay: CalendarDayViewModelType?

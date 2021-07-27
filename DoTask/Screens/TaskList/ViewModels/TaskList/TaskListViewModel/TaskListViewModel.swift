@@ -23,6 +23,7 @@ protocol TaskListViewModelInputs {
     func editTask(indexPath: IndexPath)
     func setMode(mode: TaskListMode)
     func reloadData()
+    func onAppear()
 }
 
 protocol TaskListViewModelOutputs {
@@ -81,6 +82,15 @@ class TaskListViewModel: TaskListViewModelType, TaskListViewModelInputs, TaskLis
     
     // MARK: Inputs
             
+    func onAppear() {
+        let onLaunchAppData: OnLaunchAppData = AppDI.resolve()
+        
+        if let openTaskID = onLaunchAppData.read(dataType: .openTask) {
+            view?.editTask(taskUID: openTaskID, taskDate: nil)
+            onLaunchAppData.remove(dataType: .openTask)
+        }
+    }
+    
     func reloadData() {
         dataSource.reloadData()
         loadData()

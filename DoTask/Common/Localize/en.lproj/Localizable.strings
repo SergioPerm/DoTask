@@ -6,6 +6,8 @@
   Copyright © 2021 itotdel. All rights reserved.
 */
 
+"SPLASHSCREEN_TITLE" = "Purposeful living";
+
 "DAILY_TODAY" = "TODAY";
 "TOMORROW" = "TOMORROW";
 "CURRENT_WEEK" = "CURRENT WEEK";

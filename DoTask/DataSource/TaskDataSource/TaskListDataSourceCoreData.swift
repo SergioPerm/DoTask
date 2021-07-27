@@ -64,6 +64,8 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
         return Task(with: task)
     }
             
+    // MARK: Get tasks by date
+    
     func getTasksByDate() -> [Date:CalendarDayStatus] {
         
         var result: [Date:CalendarDayStatus] = [:]
@@ -105,6 +107,8 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
         }
     }
         
+    // MARK: Get first task date
+    
     func getFirstTaskDate() -> Date? {
         let fetchRequest: NSFetchRequest<TaskManaged> = TaskManaged.fetchRequest()
         
@@ -130,7 +134,7 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
         
         return firstDate
     }
-    
+        
     // MARK: Get task model by UID
     
     func taskModelByIdentifier(identifier: String?) -> Task? {
@@ -470,6 +474,7 @@ extension TaskListDataSourceCoreData: TaskListDataSource {
                 try context.save()
                 
                 let notifyModel = DateNotifier(with: task)
+                                
                 notificationCenter.deleteLocalNotifications(identifiers: [notifyModel.identifier])
                 if task.reminderDate {
                     notificationCenter.addLocalNotification(notifyModel: notifyModel)

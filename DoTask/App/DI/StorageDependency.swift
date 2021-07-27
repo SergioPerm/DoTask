@@ -11,7 +11,6 @@ import DITranquillity
 
 class StorageDependency: DIPart {
     static func load(container: DIContainer) {
-        
         container.register(CoreDataService.init).lifetime(.perRun(.strong))
         
         container.register(ShortcutListDataSourceCoreData.init(coreDataService:))
@@ -22,8 +21,6 @@ class StorageDependency: DIPart {
             .as(TaskListDataSource.self).as(TasksMaintainceDataSource.self)
             .lifetime(.prototype)
         
-//        container.register(TaskListDataSourceCoreData.init(coreDataService:settingsService:))
-//            .as(TasksMaintainceDataSource.self)
-//            .lifetime(.prototype)
+        container.register(UserDefaultService.init).as(OnLaunchAppData.self).lifetime(.prototype)
     }
 }

@@ -19,10 +19,6 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
     }
     
     func start(finishCompletion: (() -> Void)?) {
-        
-        let notifyService: PushNotificationService = AppDI.resolve()
-        notifyService.registerCategories()
-        
         let vc: SplashViewController = AppDI.resolve()
         
         router?.push(vc: vc, completion: { [weak self] in

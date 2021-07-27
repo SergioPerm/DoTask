@@ -6,7 +6,7 @@
 //  Copyright © 2020 itotdel. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import UserNotifications
 
 final class PushNotificationService: NSObject {
@@ -74,10 +74,12 @@ final class PushNotificationService: NSObject {
     func addLocalNotification(notifyModel: DateNotifier) {
         let content = UNMutableNotificationContent()
         
+        UIApplication.shared.applicationIconBadgeNumber += 1
+        
         content.title = notifyModel.title
         content.body = notifyModel.body
         content.sound = .default
-        content.badge = 1
+        content.badge = UIApplication.shared.applicationIconBadgeNumber as NSNumber
         content.categoryIdentifier = "DOTASK_NOTIFYTASK"
         
         let triggerDate = notifyModel.dateTrigger
@@ -94,6 +96,13 @@ final class PushNotificationService: NSObject {
     }
     
     func deleteLocalNotifications(identifiers: [String]) {
+        let currentBadgeNumber = UIApplication.shared.applicationIconBadgeNumber
+        if currentBadgeNumber - identifiers.count < 0 {
+            UIApplication.shared.applicationIconBadgeNumber = 0
+        } else {
+            UIApplication.shared.applicationIconBadgeNumber = currentBadgeNumber - identifiers.count
+        }
+        
         notificationCenter.removeDeliveredNotifications(withIdentifiers: identifiers)
         notificationCenter.removePendingNotificationRequests(withIdentifiers: identifiers)
     }
@@ -136,7 +145,12 @@ extension PushNotificationService: UNUserNotificationCenterDelegate {
                 print("sdf")
                 completionHandler()
             default:
-                notificationObservers.forEach({ $0.onTapNotification(with: strID)})
+                if notificationObservers.isEmpty {
+                    let onLaunchAppData: OnLaunchAppData = AppDI.resolve()
+                    onLaunchAppData.save(dataType: .openTask, data: strID)
+                } else {
+                    notificationObservers.forEach({ $0.onTapNotification(with: strID)})
+                }
             }
             
             

@@ -267,7 +267,7 @@ struct StyleGuide {
         static let ratioToScreenWidthCellFont: CGFloat = 0.049
         
         //view
-        static let viewCornerRadius: CGFloat = 8.0
+        static let viewCornerRadius: CGFloat = 16.0
         static let borderWidth: CGFloat = 1.0
         
         //animation values
@@ -282,7 +282,7 @@ struct StyleGuide {
         static let ratioPanelToViewHeight: CGFloat = 0.21
         
         //view
-        static let viewCornerRadius: CGFloat = 8.0
+        static let viewCornerRadius: CGFloat = 16.0
         static let pickerRowHeightComponent: CGFloat = 100
         static let pickerWidthComponent: CGFloat = 60
                 

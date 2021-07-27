@@ -15,6 +15,26 @@ enum CalendarDayStatus {
     case empty
 }
 
+protocol CalendarViewModelInputs {
+    func calculateDays()
+    func setSelectedDay(dayViewModel: CalendarDayViewModelType)
+    func setSelectedMonth(monthViewModel: CalendarMonthViewModelType)
+    func selectCurrentDay()
+    func updateTasksInDays(availabilityTasksByDate: [Date:CalendarDayStatus])
+}
+
+protocol CalendarViewModelOutputs {
+    var selectedDate: Observable<Date?> { get set }
+    var selectedDay: CalendarDayViewModelType? { get }
+    var calendarData: [CalendarMonthViewModelType] { get }
+    var focusDate: Observable<Date> { get }
+}
+
+protocol CalendarViewModelType {
+    var inputs: CalendarViewModelInputs { get }
+    var outputs: CalendarViewModelOutputs { get }
+}
+
 class CalendarViewModel: CalendarViewModelType, CalendarViewModelInputs, CalendarViewModelOutputs {
   
     var inputs: CalendarViewModelInputs { return self }
@@ -72,7 +92,7 @@ class CalendarViewModel: CalendarViewModelType, CalendarViewModelInputs, Calenda
             calendarMonth.days.forEach { calendarDay in
                 let dayViewModel = CalendarDayViewModel(calendarDay: calendarDay, status: .empty)
                 
-                if calendarDay.currentDay {
+                if calendarDay.currentDay && calendarDay.isWithinDisplayedMonth {
                     selectedDay = dayViewModel
                     currentDay = dayViewModel
                 }

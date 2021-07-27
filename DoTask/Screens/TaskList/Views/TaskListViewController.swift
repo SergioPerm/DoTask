@@ -84,6 +84,11 @@ class TaskListViewController: UIViewController, TaskListViewType {
         setupView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.inputs.onAppear()
+    }
+    
 }
 
 extension TaskListViewController {

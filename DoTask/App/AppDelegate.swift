@@ -32,6 +32,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 
         AppDI.reg()
         
+        let notifyService: PushNotificationService = AppDI.resolve()
+        notifyService.registerCategories()
+        
         #if DEBUG
         do {
             try R.validate()
@@ -39,12 +42,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             fatalError()
         }
         #endif
-        
+            
 //        let pushNotificationService: PushNotificationService = AppDI.resolve()
 //        pushNotificationService.checkAuthorization()
         
 //        let dataSource: TaskListDataSourceCoreData = AppDI.resolve()
 //        dataSource.clearData()
+        
+        UIApplication.shared.applicationIconBadgeNumber = 0
         
         let router: RouterType = AppDI.resolve()
         coordinator = AppDI.resolve()

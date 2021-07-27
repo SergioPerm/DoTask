@@ -6,6 +6,8 @@
   Copyright © 2021 itotdel. All rights reserved.
 */
 
+"SPLASHSCREEN_TITLE" = "Целенаправленная жизнь";
+
 "DAILY_TODAY" = "СЕГОДНЯ";
 "TOMORROW" = "ЗАВТРА";
 "CURRENT_WEEK" = "НА НЕДЕЛЕ";

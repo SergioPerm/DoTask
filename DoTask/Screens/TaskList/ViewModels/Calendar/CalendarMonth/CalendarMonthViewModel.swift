@@ -8,6 +8,12 @@
 
 import Foundation
 
+protocol CalendarMonthViewModelType {
+    var days: [CalendarDayViewModelType] { get set }
+    var year: Int { get set }
+    var month: Int { get set }
+}
+
 class CalendarMonthViewModel: CalendarMonthViewModelType {
     var days: [CalendarDayViewModelType]
     var year: Int = 0

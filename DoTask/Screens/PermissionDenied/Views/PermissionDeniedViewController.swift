@@ -143,7 +143,7 @@ private extension PermissionDeniedViewController {
     func setupConstraints() {
         mainView.snp.makeConstraints({ make in
             make.centerX.centerY.equalToSuperview()
-            make.width.equalToSuperview().multipliedBy(0.6)
+            make.width.equalToSuperview().multipliedBy(0.75)
             make.height.equalTo(mainView.snp.width).priority(.low)
         })
         

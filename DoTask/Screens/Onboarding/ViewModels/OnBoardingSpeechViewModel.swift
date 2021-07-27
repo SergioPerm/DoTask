@@ -10,7 +10,7 @@ import Foundation
 import Speech
 
 protocol OnBoardingSpeechViewModelInputs {
-    func allowSpeech()
+    func requestPermissions()
 }
 
 protocol OnBoardingSpeechViewModelOutputs {
@@ -31,6 +31,9 @@ final class OnBoardingSpeechViewModel: OnBoardingSpeechViewModelType, OnBoarding
         
     private var onDoNotAllowSpeech: (()->())?
     
+    private var speechAllow: Bool = false
+    private var microphoneAllow: Bool = false
+    
     init(lottieAnimationName: String, mainText: LocalizableStringResource, onDoNotAllowNotifyHandler: (()->())?) {
         self.lottieAnimationName = lottieAnimationName
         self.mainText = mainText
@@ -40,17 +43,25 @@ final class OnBoardingSpeechViewModel: OnBoardingSpeechViewModelType, OnBoarding
     
     // MARK: Inputs
     
-    func allowSpeech() {
+    func requestPermissions() {
+        allowSpeech { [weak self] in
+            self?.checkAudioPermission()
+        }
+    }
+    
+    func checkPermissions() {
+        checkAudioPermission()
+    }
+    
+    func allowSpeech(completion: @escaping () -> ()) {
         SFSpeechRecognizer.requestAuthorization { [weak self] requestStatus in
             guard let strongSelf = self else { return }
             if requestStatus == .authorized {
-                strongSelf.checkPermission()
+                strongSelf.speechAllow = true
+                completion()
             } else {
-                DispatchQueue.main.async {
-                    if let action = strongSelf.onDoNotAllowSpeech {
-                        action()
-                    }
-                }
+                strongSelf.speechAllow = false
+                completion()
             }
         }
     }
@@ -64,7 +75,7 @@ final class OnBoardingSpeechViewModel: OnBoardingSpeechViewModelType, OnBoarding
 }
 
 private extension OnBoardingSpeechViewModel {
-    func checkPermission() {
+    func checkAudioPermission() {
         switch AVAudioSession.sharedInstance().recordPermission {
         case .undetermined:
             allowMicrophone()

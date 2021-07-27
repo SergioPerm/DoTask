@@ -121,6 +121,7 @@ private extension OnBoardingSpeechView {
     }
     
     @objc func allowNotifyAction(sender: UIButton) {
-        viewModel?.inputs.allowSpeech()
+        viewModel?.inputs.requestPermissions()
+        //viewModel?.inputs.allowSpeech()
     }
 }
